@@ -1,37 +1,42 @@
 <h1 style="text-align: center"> Takenoko 🎋</h1>
 
-## Le jeu
-Le thème du jeu est de s'occuper d'un panda, cadeau de l'empereur de Chine à celui du Japon,
-tout en prenant soin de la bambouseraie impériale, entretenue par un jardinier.
+<img alt="GitHub contributors" src="https://shields.ozeliurs.com/github/contributors/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c">
+<img alt="GitHub commit activity" src="https://shields.ozeliurs.com/github/commit-activity/w/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c">
 
-Les joueurs cultivent des parcelles de terrain, les irriguent,
-et y font pousser l’une des trois variétés de bambou (vert, jaune ou rose)
-par l’intermédiaire de ce jardinier. 
+## The game
+The theme of the game is to take care of a panda, a gift from the emperor of China to the emperor of Japan,
+while taking care of the imperial bamboo grove, maintained by a gardener.
 
-[Wikipedia](https://fr.wikipedia.org/wiki/Takenoko#Th%C3%A8me)
+Players cultivate plots of land, irrigate them,
+and grow one of three varieties of bamboo (green, yellow or pink)
+through this gardener. 
 
-## Installation
+[Wikipedia](https://en.wikipedia.org/wiki/Takenoko_(board_game)#Premise_and_Gameplay)
+
+## Getting Started
+
+### Prerequisites
+
+- maven
+
+### Installation
 
 ```bash
 git clone git@github.com:pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c.git
 ```
 
-## Dépendances
-
-- maven
-
-## Usage
+### Usage
 
 ```bash
-mvn run
+mvn exec
 ```
 
 ## Documentation
 
-Accessible depuis [ce lien](https://example.com).
+Available from [this link](https://example.com) along with tests reports.
 
-## Remerciements
+## Acknowledgements
 
-Merci à Mme. BLAY-FORNARINO, M. COLLET et Mme. DERY. 
+Thanks to Mme. BLAY-FORNARINO, M. COLLET and Mme. DERY. 
 
-Projet développé par Raphaël ANJOU, Maxime BILLY, Sayf HALMI et Apoorva SRINIVAS APPADOO.
+Project developed by Raphaël ANJOU, Maxime BILLY, Sayf HALMI and Apoorva SRINIVAS APPADOO.
