@@ -37,6 +37,23 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.rudikershaw.gitbuildhook</groupId>
+                <artifactId>git-build-hook-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <installHooks>
+                        <commit-msg>hooks/commit-msg</commit-msg>
+                    </installHooks>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- JUnit 5.9.1 requires maven surefire 3.0.0-M6 / maven compiler 3.8.1 -->
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
