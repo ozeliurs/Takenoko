@@ -35,6 +35,13 @@ public class GameEngine {
                 "The new game has been set up. You can start the game !");
     }
 
+    /** This method change the game state to playing and add the first tile to the board. */
+    public void startGame() {
+        board.placeTile(new Tile());
+        gameState = GameState.PLAYING;
+        consoleUserInterface.displayMessage("The game has started !");
+    }
+
     /** This method is used to end the game correctly. */
     public void endGame() {
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
