@@ -2,9 +2,7 @@ package com.takenoko;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 /** Test class for the GameEngine class. */
 class GameEngineTest {
@@ -22,10 +20,47 @@ class GameEngineTest {
         gameEngine = null;
     }
 
-    /** Test that the game engine is correctly created with an empty board. */
-    @Test
-    void newGame_thenBoardHasOneTile() {
-        gameEngine.newGame();
-        assertThat(gameEngine.getBoard().getTiles()).hasSize(0);
+    @Nested
+    @DisplayName("Test newGame method")
+    class TestNewGame {
+        /** Test that the game state is set to READY after a new game is created. */
+        @Test
+        @DisplayName("newGame should set the game state to READY")
+        void newGame_shouldSetGameStateToReady() {
+            gameEngine.newGame();
+            assertThat(gameEngine.getGameState()).isEqualTo(GameState.READY);
+        }
+    }
+
+    @Nested
+    @DisplayName("Test startGame method")
+    class TestStartGame {
+        /** Test that the game state is set to PLAYING after the game is started. */
+        @Test
+        @DisplayName("startGame should set the game state to PLAYING")
+        void startGame_shouldSetGameStateToPlaying() {
+            gameEngine.startGame();
+            assertThat(gameEngine.getGameState()).isEqualTo(GameState.PLAYING);
+        }
+
+        /** Test that the game is correctly started with the first tile in the board. */
+        @Test
+        @DisplayName("startGame should add the first tile to the board")
+        void startGame_thenBoardHasOneTile() {
+            gameEngine.startGame();
+            assertThat(gameEngine.getBoard().getTiles()).hasSize(1);
+        }
+    }
+
+    @Nested
+    @DisplayName("Test endGame method")
+    class TestEndGame {
+        /** Test that the game state is set to FINISHED after the game is ended. */
+        @Test
+        @DisplayName("endGame should set the game state to FINISHED")
+        void endGame_shouldSetGameStateToFinished() {
+            gameEngine.endGame();
+            assertThat(gameEngine.getGameState()).isEqualTo(GameState.FINISHED);
+        }
     }
 }
