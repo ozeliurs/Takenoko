@@ -115,7 +115,7 @@ class GameEngineTest {
             @ParameterizedTest(name = "i.e. : {0}")
             @MethodSource("streamOfStatesThatAreNotPLAYING")
             @DisplayName("should throw an exception when the game state is not PLAYING")
-            void endGame_shouldThrowExceptionWhenGameStateIsInitialized(
+            void endGame_shouldThrowException_WhenGameStateIsNotPLAYING(
                     GameState currentGameState) {
                 gameEngine.setGameState(currentGameState);
                 assertThatThrownBy(() -> gameEngine.endGame())
