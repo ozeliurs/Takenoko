@@ -7,6 +7,7 @@ public class GameEngine {
     private final Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
+    private final Bot bot;
 
     /**
      * Constructor for the GameEngine class. Instantiate the board and the console user interface
@@ -16,6 +17,7 @@ public class GameEngine {
         board = new Board();
         consoleUserInterface = new ConsoleUserInterface();
         gameState = GameState.INITIALIZED;
+        bot = new Bot(board);
     }
 
     /**
@@ -51,9 +53,12 @@ public class GameEngine {
                     "The game is already started. You must create a new game to call this method.");
         }
 
-        board.placeTile(new Tile());
         gameState = GameState.PLAYING;
         consoleUserInterface.displayMessage("The game has started !");
+    }
+
+    public void playGame() {
+        bot.placeTile();
     }
 
     /** This method is used to end the game correctly. */
