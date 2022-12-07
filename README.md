@@ -10,7 +10,7 @@ while taking care of the imperial bamboo grove, maintained by a gardener.
 
 Players cultivate plots of land, irrigate them,
 and grow one of three varieties of bamboo (green, yellow or pink)
-through this gardener. 
+through this gardener.
 
 [Wikipedia](https://en.wikipedia.org/wiki/Takenoko_(board_game)#Premise_and_Gameplay)
 
@@ -45,6 +45,6 @@ Available from [this link](https://example.com) along with tests reports.
 
 ## Acknowledgements
 
-Thanks to Mme. BLAY-FORNARINO, M. COLLET and Mme. DERY. 
+Thanks to Mme. BLAY-FORNARINO, M. COLLET and Mme. DERY.
 
 Project developed by Raphaël ANJOU, Maxime BILLY, Sayf HALMI and Apoorva SRINIVAS APPADOO.
