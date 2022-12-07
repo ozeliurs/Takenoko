@@ -62,4 +62,3 @@ Project developed by Raphaël ANJOU, Maxime BILLY, Sayf HALMI and Apoorva SRINIV
 [closed-issues-shield]: https://shields.ozeliurs.com/github/issues-closed-raw/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c?style=for-the-badge
 [pr-shield]: https://shields.ozeliurs.com/github/issues-pr-raw/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c?style=for-the-badge
 [closed-pr-shield]: https://shields.ozeliurs.com/github/issues-pr-closed-raw/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c?style=for-the-badge
-

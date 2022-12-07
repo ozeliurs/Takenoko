@@ -13,7 +13,7 @@ First off, thanks for taking the time to contribute! 😍
 ## Code of Conduct
 
 When interacting with members of this project you are expected
-to follow standards of conduct such as: 
+to follow standards of conduct such as:
 - Be nice
 - Be respectful
 - Be helpful
