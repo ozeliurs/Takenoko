@@ -23,6 +23,7 @@ class BoardTest {
 
     @Nested
     class TestGetTiles {
+        /** Test that the board is empty when created. */
         @Test
         void getTiles_shouldReturnEmptyList() {
             assertThat(board.getTiles()).isEmpty();
@@ -31,6 +32,7 @@ class BoardTest {
 
     @Nested
     class TestPlaceTile {
+        /** Test that a tile can be placed on the board. */
         @Test
         void placeTile_WhenGivenTile_AddsTileToBoard() {
             Tile tile = new Tile();
