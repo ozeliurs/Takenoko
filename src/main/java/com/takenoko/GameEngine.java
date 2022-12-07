@@ -19,6 +19,9 @@ public class GameEngine {
 
         consoleUserInterface.displayMessage(
                 "The board is now set up with a single tile. You can start the game !");
+    }
+
+    public void endGame() {
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
     }
 }
