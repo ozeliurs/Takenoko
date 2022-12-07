@@ -24,4 +24,12 @@ public class GameEngine {
     public void endGame() {
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
     }
+
+    /**
+     * Returns the game board
+     * @return board object
+     */
+    public Board getBoard() {
+        return board;
+    }
 }
