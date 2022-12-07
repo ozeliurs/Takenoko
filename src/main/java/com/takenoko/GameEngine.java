@@ -6,6 +6,7 @@ import com.takenoko.ui.ConsoleUserInterface;
 public class GameEngine {
     private final Board board;
     private final ConsoleUserInterface consoleUserInterface;
+    private GameState gameState;
 
     /**
      * Constructor for the GameEngine class. Instantiate the board and the console user interface
@@ -14,6 +15,7 @@ public class GameEngine {
     public GameEngine() {
         board = new Board();
         consoleUserInterface = new ConsoleUserInterface();
+        gameState = GameState.INITIALIZED;
     }
 
     /**
@@ -26,6 +28,8 @@ public class GameEngine {
         Tile tile = new Tile();
         board.placeTile(tile);
 
+        gameState = GameState.READY;
+
         consoleUserInterface.displayMessage(
                 "The board is now set up with a single tile. You can start the game !");
     }
@@ -33,6 +37,7 @@ public class GameEngine {
     /** This method is used to end the game correctly. */
     public void endGame() {
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
+        gameState = GameState.FINISHED;
     }
 
     /**
@@ -42,5 +47,14 @@ public class GameEngine {
      */
     public Board getBoard() {
         return board;
+    }
+
+    /**
+     * Return the current game state
+     *
+     * @return {@link GameState} object
+     */
+    public GameState getGameState() {
+        return gameState;
     }
 }
