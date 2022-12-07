@@ -19,19 +19,20 @@ public class GameEngine {
     }
 
     /**
-     * This method starts the game. 1. Display the welcome message 2. Create the board with a single
-     * tile 3. Tell the user that the board has been created
+     * This method creates a blank new game.
+     *
+     * <ol>
+     *   <li>Display the welcome message
+     *   <li>Change game state to READY
+     *   <li>Tell the user that the game is setup
+     * </ol>
      */
-    public void startGame() {
+    public void newGame() {
         consoleUserInterface.displayMessage("Welcome to Takenoko!");
-
-        Tile tile = new Tile();
-        board.placeTile(tile);
-
         gameState = GameState.READY;
 
         consoleUserInterface.displayMessage(
-                "The board is now set up with a single tile. You can start the game !");
+                "The new game has been set up. You can start the game !");
     }
 
     /** This method is used to end the game correctly. */

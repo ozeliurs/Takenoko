@@ -22,10 +22,10 @@ class GameEngineTest {
         gameEngine = null;
     }
 
-    /** Test that the game engine is correctly created with only one tile. */
+    /** Test that the game engine is correctly created with an empty board. */
     @Test
-    void startGame_thenBoardHasOneTile() {
-        gameEngine.startGame();
-        assertThat(gameEngine.getBoard().getTiles()).hasSize(1);
+    void newGame_thenBoardHasOneTile() {
+        gameEngine.newGame();
+        assertThat(gameEngine.getBoard().getTiles()).hasSize(0);
     }
 }
