@@ -10,7 +10,7 @@ public class GameEngine {
 
     /**
      * Constructor for the GameEngine class. Instantiate the board and the console user interface
-     * used.
+     * used. It does not start the game ! It simply instantiates the objects needed for the game.
      */
     public GameEngine() {
         board = new Board();
@@ -28,6 +28,11 @@ public class GameEngine {
      * </ol>
      */
     public void newGame() {
+        if (gameState != GameState.INITIALIZED) {
+            throw new IllegalStateException(
+                    "The game is already started. You must end the game first.");
+        }
+
         consoleUserInterface.displayMessage("Welcome to Takenoko!");
         gameState = GameState.READY;
 
@@ -37,6 +42,15 @@ public class GameEngine {
 
     /** This method change the game state to playing and add the first tile to the board. */
     public void startGame() {
+        if (gameState == GameState.INITIALIZED) {
+            throw new IllegalStateException(
+                    "The game is not ready yet. You must first create a new game.");
+        }
+        if (gameState != GameState.READY) {
+            throw new IllegalStateException(
+                    "The game is already started. You must create a new game to call this method.");
+        }
+
         board.placeTile(new Tile());
         gameState = GameState.PLAYING;
         consoleUserInterface.displayMessage("The game has started !");
@@ -44,6 +58,10 @@ public class GameEngine {
 
     /** This method is used to end the game correctly. */
     public void endGame() {
+        if (gameState != GameState.PLAYING) {
+            throw new IllegalStateException(
+                    "The game is not started yet. You must first start the game.");
+        }
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
     }
@@ -64,5 +82,12 @@ public class GameEngine {
      */
     public GameState getGameState() {
         return gameState;
+    }
+
+    /**
+     * @param gameState the game state to set
+     */
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 }
