@@ -1,8 +1,8 @@
 <h1 style="text-align: center"> Takenoko 🎋</h1>
 
-[![Contributors][contributors-shield]]
-[![Commit Activity][commit-activity-shield]]
-[![Github Release][github-release-shield]]
+![Contributors][contributors-shield]
+![Commit Activity][commit-activity-shield]
+![Github Release][github-release-shield]
 
 ## The game
 The theme of the game is to take care of a panda, a gift from the emperor of China to the emperor of Japan,
@@ -44,10 +44,10 @@ This in order to make the lives of everybody easier.
 
 ## Progress
 
-[![Github Issues][issues-shield]]
-[![Github Closed Issues][closed-issues-shield]]
-[![Github Pr][pr-shield]]
-[![Github Closed Pr][closed-pr-shield]]
+![Github Issues][issues-shield]
+![Github Closed Issues][closed-issues-shield]
+![Github Pr][pr-shield]
+![Github Closed Pr][closed-pr-shield]
 
 ## Acknowledgements
 
