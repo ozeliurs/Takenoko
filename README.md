@@ -1,8 +1,8 @@
 <h1 style="text-align: center"> Takenoko 🎋</h1>
 
-<img alt="GitHub contributors" src="https://shields.ozeliurs.com/github/contributors/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c">
-<img alt="GitHub commit activity" src="https://shields.ozeliurs.com/github/commit-activity/w/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c">
-<img alt="GitHub release (latest by date)" src="https://shields.ozeliurs.com/github/v/release/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c">
+![Contributors][contributors-shield]
+![Commit Activity][commit-activity-shield]
+![Github Release][github-release-shield]
 
 ## The game
 The theme of the game is to take care of a panda, a gift from the emperor of China to the emperor of Japan,
@@ -36,15 +36,29 @@ mvn exec
 
 Available from [this link](https://example.com) along with tests reports.
 
+## Development
+
+When contributing on this project it is important to follow the
+[contributing guidelines](CONTRIBUTING.md) as well as the code of conduct.
+This in order to make the lives of everybody easier.
+
 ## Progress
 
-<img alt="GitHub pull requests" src="https://shields.ozeliurs.com/github/issues-raw/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c">
-<img alt="GitHub pull requests" src="https://shields.ozeliurs.com/github/issues-closed-raw/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c">
-<img alt="GitHub pull requests" src="https://shields.ozeliurs.com/github/issues-pr-raw/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c">
-<img alt="GitHub pull requests" src="https://shields.ozeliurs.com/github/issues-pr-closed-raw/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c">
+![Github Issues][issues-shield]
+![Github Closed Issues][closed-issues-shield]
+![Github Pr][pr-shield]
+![Github Closed Pr][closed-pr-shield]
 
 ## Acknowledgements
 
 Thanks to Mme. BLAY-FORNARINO, M. COLLET and Mme. DERY.
 
 Project developed by Raphaël ANJOU, Maxime BILLY, Sayf HALMI and Apoorva SRINIVAS APPADOO.
+
+[contributors-shield]: https://shields.ozeliurs.com/github/contributors/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c?style=for-the-badge
+[commit-activity-shield]: https://shields.ozeliurs.com/github/commit-activity/w/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c?style=for-the-badge
+[github-release-shield]: https://shields.ozeliurs.com/github/v/release/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c?style=for-the-badge
+[issues-shield]: https://shields.ozeliurs.com/github/issues-raw/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c?style=for-the-badge
+[closed-issues-shield]: https://shields.ozeliurs.com/github/issues-closed-raw/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c?style=for-the-badge
+[pr-shield]: https://shields.ozeliurs.com/github/issues-pr-raw/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c?style=for-the-badge
+[closed-pr-shield]: https://shields.ozeliurs.com/github/issues-pr-closed-raw/pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c?style=for-the-badge
