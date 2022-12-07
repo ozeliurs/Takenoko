@@ -1,2 +1,3 @@
-package com.takenoko;public class Tile {
-}
+package com.takenoko;
+
+public class Tile {}
