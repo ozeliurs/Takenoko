@@ -22,6 +22,7 @@ public class Bot implements Playable {
     public void placeTile() {
         try {
             board.placeTile(new Tile());
+            consoleUserInterface.displayMessage("The bot placed a tile on the board.");
         }
         catch (IllegalStateException e) {
             consoleUserInterface.displayMessage(e.getMessage());
