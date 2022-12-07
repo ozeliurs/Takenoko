@@ -5,6 +5,7 @@ public class Main {
         GameEngine gameEngine = new GameEngine();
         gameEngine.newGame();
         gameEngine.startGame();
+        gameEngine.playGame();
         gameEngine.endGame();
     }
 }
