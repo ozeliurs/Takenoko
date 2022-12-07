@@ -33,6 +33,7 @@ public class Board {
 
     /**
      * Get the number of available tiles.
+     *
      * @return int representing the number of available tiles
      */
     public int getAvailableTileNumber() {
