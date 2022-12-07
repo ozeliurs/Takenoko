@@ -89,13 +89,18 @@ class GameEngineTest {
             void startGame_shouldSetGameStateToPlaying() {
                 assertThat(gameEngine.getGameState()).isEqualTo(GameState.PLAYING);
             }
+        }
+    }
 
-            /** Test that the game is correctly started with the first tile in the board. */
-            @Test
-            @DisplayName("should add the first tile to the board")
-            void startGame_thenBoardHasOneTile() {
-                assertThat(gameEngine.getBoard().getTiles()).hasSize(1);
-            }
+    @Nested
+    @DisplayName("Method playGame")
+    class TestPlayGame {
+        @Test
+        void playGame_whenCalled_aTileIsPlacedOnTheBoard() {
+            gameEngine.newGame();
+            gameEngine.startGame();
+            gameEngine.playGame();
+            assertThat(gameEngine.getBoard().getTiles()).hasSize(1);
         }
     }
 
