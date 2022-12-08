@@ -3,23 +3,23 @@ package com.takenoko;
 import java.util.List;
 
 public class Bot implements Playable {
-    private Objective objective;
+    private PlaceTileObjective placeTileObjective;
 
-    public Bot(){
-        objective=new Objective();
+    public Bot() {
+        placeTileObjective = new PlaceTileObjective(1);
     }
 
-    public Objective getObjective(){
-        return objective;
+    public PlaceTileObjective getObjective() {
+        return placeTileObjective;
     }
 
     /**
      * This method is used to assign an Objective to the bot
-     * @param assignedObjectiveType
+     *
      * @param goal
      */
-    public void setObjective(String assignedObjectiveType,int goal){
-        objective.setAction(goal, assignedObjectiveType);
+    public void setObjective(int goal) {
+        placeTileObjective.setAction(goal);
     }
 
     /**
