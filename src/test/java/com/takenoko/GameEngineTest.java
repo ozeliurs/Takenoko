@@ -96,6 +96,7 @@ class GameEngineTest {
     @DisplayName("Method playGame")
     class TestPlayGame {
         @Test
+        @DisplayName("When called, a tile is placed on the board")
         void playGame_whenCalled_aTileIsPlacedOnTheBoard() {
             gameEngine.newGame();
             gameEngine.startGame();

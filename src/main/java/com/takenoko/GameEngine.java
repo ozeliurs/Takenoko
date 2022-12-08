@@ -58,6 +58,9 @@ public class GameEngine {
     }
 
     public void playGame() {
+        consoleUserInterface.displayMessage(
+                "Bot must achieve the following objective in order to win"
+                        + bot.getObjective().toString());
         board.placeTile(bot.chooseTileToPlace(board.getAvailableTiles()));
     }
 
@@ -66,6 +69,9 @@ public class GameEngine {
         if (gameState != GameState.PLAYING) {
             throw new IllegalStateException(
                     "The game is not started yet. You must first start the game.");
+        }
+        if (bot.getObjective().isAchieved()) {
+            consoleUserInterface.displayMessage("Bot has achieved the objective, it has won");
         }
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
