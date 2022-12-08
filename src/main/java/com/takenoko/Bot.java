@@ -3,6 +3,18 @@ package com.takenoko;
 import java.util.List;
 
 public class Bot implements Playable {
+    private Objective objective;
+
+    public Bot(){
+        objective=new Objective();
+    }
+
+    public Objective getObjective(){
+        return objective;
+    }
+    public void setObjective(String assignedObjectiveType,int goal){
+        objective.setAction(goal, assignedObjectiveType);
+    }
 
     /**
      * This method return the chosen tile to place on the board.

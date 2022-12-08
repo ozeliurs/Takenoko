@@ -27,7 +27,8 @@ public class Objective {
     }
 
     public boolean isAchieved(){
-        return status=(counter==counterGoal);
+        status=(counter==counterGoal);
+        return status;
     }
 
     public String toString(){
