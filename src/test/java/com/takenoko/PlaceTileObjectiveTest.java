@@ -1,37 +1,62 @@
 package com.takenoko;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 class PlaceTileObjectiveTest {
 
     private PlaceTileObjective placeTileObjective;
+    private Board board;
 
     @BeforeEach
     void setup() {
         placeTileObjective = new PlaceTileObjective(1);
+        board = new Board();
     }
 
-    @Test
-    void setAction() {
-        assertFalse(placeTileObjective.getCounterGoal() == 3);
-        placeTileObjective.setAction(3);
-        assertTrue(placeTileObjective.getCounterGoal() == 3);
+    @AfterEach
+    void tearDown() {
+        placeTileObjective = null;
+        board = null;
     }
 
-    @Test
-    void incrementCounter() {
-        assertTrue(placeTileObjective.getCounter() == 0);
-        placeTileObjective.incrementCounter();
-        assertTrue(placeTileObjective.getCounter() == 1);
+    @Nested
+    @DisplayName("Method verify")
+    class TestVerify {
+        @Test
+        @DisplayName("When board has no tiles placed, state is NOT_ACHIEVED")
+        void verify_WhenBoardHasNoTiles_ThenObjectiveStateIsNOT_ACHIEVED() {
+            placeTileObjective.verify(board);
+            assertThat(placeTileObjective.getState()).isEqualTo(ObjectiveState.NOT_ACHIEVED);
+        }
+
+        @Test
+        @DisplayName("When board has one tile placed, state is ACHIEVED")
+        void verify_WhenBoardHasOneTile_ThenObjectiveStateIsACHIEVED() {
+            Tile tile = board.getAvailableTiles().get(0);
+            board.placeTile(tile);
+            placeTileObjective.verify(board);
+            assertThat(placeTileObjective.getState()).isEqualTo(ObjectiveState.ACHIEVED);
+        }
     }
 
-    @Test
-    void isAchieved() {
-        assertFalse(placeTileObjective.isAchieved());
-        placeTileObjective.incrementCounter();
-        assertTrue(placeTileObjective.isAchieved());
+    @Nested
+    @DisplayName("Method isAchieved")
+    class TestIsAchieved {
+        @Test
+        @DisplayName("When Objective is initialized return false")
+        void isAchieved_WhenObjectiveIsInitialized_ThenReturnsFalse() {
+            assertThat(placeTileObjective.isAchieved()).isFalse();
+        }
+
+        @Test
+        @DisplayName("When Objective is achieved return true")
+        void isAchieved_WhenObjectiveIsAchieved_ThenReturnsTrue() {
+            Tile tile = board.getAvailableTiles().get(0);
+            board.placeTile(tile);
+            placeTileObjective.verify(board);
+            assertThat(placeTileObjective.isAchieved()).isTrue();
+        }
     }
 }
