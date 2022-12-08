@@ -5,8 +5,15 @@ import java.util.List;
 
 /** Board class. The board contains the tiles. */
 public class Board {
-    private final ArrayList<Tile> tiles = new ArrayList<>();
-    private int availableTileNumber = 1;
+    private final ArrayList<Tile> tiles;
+    private final ArrayList<Tile> availableTiles;
+
+    /** Constructor for the Board class. Instantiate the tiles and the available tiles. */
+    public Board() {
+        this.tiles = new ArrayList<>();
+        this.availableTiles = new ArrayList<>();
+        this.availableTiles.add(new Tile());
+    }
 
     /**
      * Place a tile on the board.
@@ -14,12 +21,12 @@ public class Board {
      * @param tile the tile to add to the board
      */
     public void placeTile(Tile tile) {
-        if (availableTileNumber == 0) {
-            throw new IllegalStateException("There is no more available tile.");
+        if (availableTiles.contains(tile)) {
+            tiles.add(tile);
+            availableTiles.remove(tile);
+        } else {
+            throw new IllegalArgumentException("The tile is not available.");
         }
-
-        tiles.add(tile);
-        availableTileNumber--;
     }
 
     /**
@@ -32,11 +39,11 @@ public class Board {
     }
 
     /**
-     * Get the number of available tiles.
+     * Get the available tiles.
      *
-     * @return int representing the number of available tiles
+     * @return the available tiles
      */
-    public int getAvailableTileNumber() {
-        return availableTileNumber;
+    public List<Tile> getAvailableTiles() {
+        return availableTiles;
     }
 }

@@ -28,11 +28,15 @@ class BoardTest {
         void getTiles_shouldReturnEmptyList() {
             assertThat(board.getTiles()).isEmpty();
         }
+    }
 
+    @Nested
+    @DisplayName("Method getAvailableTiles")
+    class TestGetAvailableTiles {
         @Test
-        @DisplayName("should only have one available tile when the board is created")
-        void getTiles_shouldHaveOneAvailableTile() {
-            assertThat(board.getAvailableTileNumber()).isEqualTo(1);
+        @DisplayName("should return a list with one tile when the board is created")
+        void getAvailableTiles_shouldReturnListWithOneTile() {
+            assertThat(board.getAvailableTiles()).hasSize(1);
         }
     }
 
@@ -42,28 +46,27 @@ class BoardTest {
         /** Test that a tile can be placed on the board. */
         @Test
         void placeTile_WhenCalled_AddsTileToBoard() {
-            Tile tile = new Tile();
+            Tile tile = board.getAvailableTiles().get(0);
             board.placeTile(tile);
             assertThat(board.getTiles()).containsExactly(tile);
         }
 
         @Test
-        @DisplayName("should decrease the number of available tiles by one")
-        void placeTile_WhenCalled_DecreasesAvailableTileNumber() {
-            int availableTileNumber = board.getAvailableTileNumber();
-            board.placeTile(new Tile());
-            assertThat(board.getAvailableTileNumber()).isEqualTo(availableTileNumber - 1);
+        @DisplayName("should remove the tile from the available tiles when placed")
+        void placeTile_WhenCalled_RemovesTileFromAvailableTiles() {
+            Tile tile = board.getAvailableTiles().get(0);
+            board.placeTile(tile);
+            assertThat(board.getAvailableTiles()).doesNotContain(tile);
         }
 
         @Test
         @DisplayName("should throw an exception when there is no more available tile")
         void placeTile_WhenNoAvailableTile_ThrowsException() {
-            assert board.getAvailableTileNumber() == 1;
-            board.placeTile(new Tile());
-
-            assertThatThrownBy(() -> board.placeTile(new Tile()))
-                    .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("There is no more available tile.");
+            Tile tile = board.getAvailableTiles().get(0);
+            board.placeTile(tile);
+            assertThatThrownBy(() -> board.placeTile(tile))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("The tile is not available.");
         }
     }
 }
