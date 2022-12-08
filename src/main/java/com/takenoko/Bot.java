@@ -1,29 +1,17 @@
 package com.takenoko;
 
-import com.takenoko.ui.ConsoleUserInterface;
+import java.util.List;
 
 public class Bot implements Playable {
-    private final Board board;
-    private final ConsoleUserInterface consoleUserInterface;
 
     /**
-     * Constructor for the Bot class. Instantiate a user interface for the bot.
+     * This method return the chosen tile to place on the board.
      *
-     * @param board the board of the game the bot is currently on
+     * @param possibleTiles The list of possible tiles to place.
+     * @return The chosen tile to place.
      */
-    public Bot(Board board) {
-        this.board = board;
-        this.consoleUserInterface = new ConsoleUserInterface();
-    }
-
-    /** This method place on the board the only available tile. */
     @Override
-    public void placeTile() {
-        try {
-            board.placeTile(new Tile());
-            consoleUserInterface.displayMessage("The bot placed a tile on the board.");
-        } catch (IllegalStateException e) {
-            consoleUserInterface.displayMessage(e.getMessage());
-        }
+    public Tile chooseTileToPlace(List<Tile> possibleTiles) {
+        return possibleTiles.get(0);
     }
 }
