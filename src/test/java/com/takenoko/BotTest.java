@@ -27,4 +27,18 @@ class BotTest {
         Tile tile = bot.chooseTileToPlace(board.getAvailableTiles());
         assertThat(tile).isNotNull();
     }
+
+    @Test
+    void testGetObjective() {
+        PlaceTileObjective testObjective = new PlaceTileObjective(1);
+        assertThat(testObjective == bot.getObjective());
+    }
+
+    @Test
+    void testSetObjective() {
+        PlaceTileObjective testObjective = new PlaceTileObjective(2);
+        assertThat(testObjective != bot.getObjective());
+        bot.setObjective(2);
+        assertThat(testObjective == bot.getObjective());
+    }
 }
