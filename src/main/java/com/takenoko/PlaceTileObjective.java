@@ -1,5 +1,7 @@
 package com.takenoko;
 
+import java.util.Objects;
+
 public class PlaceTileObjective implements Objective {
     private static final ObjectiveTypes type = ObjectiveTypes.NUMBER_OF_TILES_PLACED;
     private final int numberOfTileToPlace;
@@ -52,11 +54,15 @@ public class PlaceTileObjective implements Objective {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return ((obj.getClass() == PlaceTileObjective.class)
-                && (((PlaceTileObjective) obj).getState() == getState())
-                && (((PlaceTileObjective) obj).getType() == getType())
-                && (((PlaceTileObjective) obj).getNumberOfTileToPlace()
-                        == getNumberOfTileToPlace()));
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlaceTileObjective objective = (PlaceTileObjective) o;
+        return numberOfTileToPlace == objective.numberOfTileToPlace && state == objective.state;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numberOfTileToPlace, state);
     }
 }
