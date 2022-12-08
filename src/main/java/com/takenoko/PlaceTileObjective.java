@@ -18,6 +18,14 @@ public class PlaceTileObjective implements Objective {
         this.counterGoal = counterGoal;
     }
 
+    public int getCounterGoal() {
+        return counterGoal;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
     /**
      * This method will be used each time the bot adds a tile (and later on eat/plant a bamboo) so
      * we can track the progression towards achieving the objective
