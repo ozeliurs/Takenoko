@@ -3,14 +3,14 @@ package com.takenoko;
 import java.util.List;
 
 public class Bot implements Playable {
-    private PlaceTileObjective placeTileObjective;
+    private final Objective objective;
 
     public Bot() {
-        placeTileObjective = new PlaceTileObjective(1);
+        objective = new PlaceTileObjective(1);
     }
 
-    public PlaceTileObjective getObjective() {
-        return placeTileObjective;
+    public Objective getObjective() {
+        return objective;
     }
 
     /**
