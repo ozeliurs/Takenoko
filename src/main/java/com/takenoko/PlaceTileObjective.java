@@ -46,4 +46,17 @@ public class PlaceTileObjective implements Objective {
     public ObjectiveState getState() {
         return state;
     }
+
+    public int getNumberOfTileToPlace() {
+        return numberOfTileToPlace;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((obj.getClass() == PlaceTileObjective.class)
+                && (((PlaceTileObjective) obj).getState() == getState())
+                && (((PlaceTileObjective) obj).getType() == getType())
+                && (((PlaceTileObjective) obj).getNumberOfTileToPlace()
+                        == getNumberOfTileToPlace()));
+    }
 }

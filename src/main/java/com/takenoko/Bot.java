@@ -21,6 +21,9 @@ public class Bot implements Playable {
      */
     @Override
     public Tile chooseTileToPlace(List<Tile> possibleTiles) {
+        if (possibleTiles.isEmpty()) {
+            throw new IllegalArgumentException("No possible tiles");
+        }
         return possibleTiles.get(0);
     }
 }
