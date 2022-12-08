@@ -1,7 +1,6 @@
 package com.takenoko;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +13,7 @@ class BotTest {
     @BeforeEach
     void setUp() {
         board = new Board();
-        bot = new Bot(board);
+        bot = new Bot();
     }
 
     @AfterEach
@@ -25,9 +24,7 @@ class BotTest {
 
     @Test
     void testPlaceTile() {
-        int availableTileNumber = board.getAvailableTileNumber();
-        bot.placeTile();
-        assertThat(board.getAvailableTileNumber()).isEqualTo(availableTileNumber - 1);
-        assertThat(board.getTiles()).hasSize(1);
+        Tile tile = bot.chooseTileToPlace(board.getAvailableTiles());
+        assertThat(tile).isNotNull();
     }
 }

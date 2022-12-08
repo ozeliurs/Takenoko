@@ -17,7 +17,7 @@ public class GameEngine {
         board = new Board();
         consoleUserInterface = new ConsoleUserInterface();
         gameState = GameState.INITIALIZED;
-        bot = new Bot(board);
+        bot = new Bot();
     }
 
     /**
@@ -58,7 +58,7 @@ public class GameEngine {
     }
 
     public void playGame() {
-        bot.placeTile();
+        board.placeTile(bot.chooseTileToPlace(board.getAvailableTiles()));
     }
 
     /** This method is used to end the game correctly. */
