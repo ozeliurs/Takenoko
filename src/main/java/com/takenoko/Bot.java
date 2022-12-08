@@ -12,6 +12,12 @@ public class Bot implements Playable {
     public Objective getObjective(){
         return objective;
     }
+
+    /**
+     * This method is used to assign an Objective to the bot
+     * @param assignedObjectiveType
+     * @param goal
+     */
     public void setObjective(String assignedObjectiveType,int goal){
         objective.setAction(goal, assignedObjectiveType);
     }

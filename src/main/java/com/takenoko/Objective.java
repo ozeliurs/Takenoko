@@ -22,10 +22,18 @@ public class Objective {
         this.counterGoal=counterGoal;
     }
 
+    /**
+     * This method will be used each time the bot adds a tile (and later on eat/plant a bamboo) so we can track the progression
+     * towards achieving the objective
+     */
     public void incrementCounter(){
         counter++;
     }
 
+    /**
+     * this methods is used to check whether the objective has been achieved yet
+     * @return
+     */
     public boolean isAchieved(){
         status=(counter==counterGoal);
         return status;
