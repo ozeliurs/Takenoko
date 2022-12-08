@@ -14,15 +14,6 @@ public class Bot implements Playable {
     }
 
     /**
-     * This method is used to assign an Objective to the bot
-     *
-     * @param goal
-     */
-    public void setObjective(int goal) {
-        placeTileObjective.setAction(goal);
-    }
-
-    /**
      * This method return the chosen tile to place on the board.
      *
      * @param possibleTiles The list of possible tiles to place.

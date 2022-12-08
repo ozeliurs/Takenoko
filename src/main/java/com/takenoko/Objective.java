@@ -2,9 +2,7 @@ package com.takenoko;
 
 public interface Objective {
 
-    public void setAction(int counterGoal);
+    void verify(Board board);
 
-    public void incrementCounter();
-
-    public boolean isAchieved();
+    boolean isAchieved();
 }

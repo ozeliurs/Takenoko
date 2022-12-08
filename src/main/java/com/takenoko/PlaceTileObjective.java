@@ -1,51 +1,49 @@
 package com.takenoko;
 
 public class PlaceTileObjective implements Objective {
-    private int counterGoal = 0;
-    private ObjectiveTypes type = ObjectiveTypes.TileOrientedObjective;
-    private boolean status;
-    private int counter;
+    private static final ObjectiveTypes type = ObjectiveTypes.NUMBER_OF_TILES_PLACED;
+    private final int numberOfTileToPlace;
+    private ObjectiveState state;
 
-    public PlaceTileObjective(int counterGoal) {
-        this.counterGoal = counterGoal;
-        status = false;
-        counter = 0;
-    }
-
-    public PlaceTileObjective() {}
-
-    public void setAction(int counterGoal) {
-        this.counterGoal = counterGoal;
-    }
-
-    public int getCounterGoal() {
-        return counterGoal;
-    }
-
-    public int getCounter() {
-        return counter;
+    public PlaceTileObjective(int numberOfTileToPlace) {
+        state = ObjectiveState.NOT_ACHIEVED;
+        this.numberOfTileToPlace = numberOfTileToPlace;
     }
 
     /**
-     * This method will be used each time the bot adds a tile (and later on eat/plant a bamboo) so
-     * we can track the progression towards achieving the objective
+     * This method will be used each time the bot adds a tile, so we can track the progression
+     * towards achieving the objective
      */
-    public void incrementCounter() {
-        counter++;
+    public void verify(Board board) {
+        if (board.getTiles().size() >= numberOfTileToPlace) {
+            state = ObjectiveState.ACHIEVED;
+        }
     }
 
     /**
-     * this methods is used to check whether the objective has been achieved yet
+     * This method is used to check whether the objective has been achieved yet
      *
-     * @return
+     * @return true if the objective has been achieved, false otherwise
      */
     public boolean isAchieved() {
-        status = (counter == counterGoal);
-        return status;
+        return state == ObjectiveState.ACHIEVED;
     }
 
+    @Override
     public String toString() {
-        String s = (counterGoal > 1 ? "s" : "");
-        return "You must place " + counterGoal + " tile" + s;
+        return "PlaceTileObjective{"
+                + "numberOfTileToPlace="
+                + numberOfTileToPlace
+                + ", state="
+                + state
+                + '}';
+    }
+
+    public ObjectiveTypes getType() {
+        return type;
+    }
+
+    public ObjectiveState getState() {
+        return state;
     }
 }

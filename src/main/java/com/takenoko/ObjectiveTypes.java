@@ -1,5 +1,5 @@
 package com.takenoko;
 
 public enum ObjectiveTypes {
-    TileOrientedObjective;
+    NUMBER_OF_TILES_PLACED
 }
