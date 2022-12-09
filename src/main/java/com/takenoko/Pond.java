@@ -5,4 +5,3 @@ public class Pond extends Tile {
         super(TileType.POND);
     }
 }
-
