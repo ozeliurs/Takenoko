@@ -7,6 +7,7 @@ import com.takenoko.Board;
 import com.takenoko.tile.Tile;
 import com.takenoko.vector.Vector;
 import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.*;
 
@@ -42,10 +43,8 @@ class BotTest {
         @DisplayName("When there is no valid tile, throw exception")
         void chooseTileToPlace_WhenThereIsNoValidTile_ThenThrowException() {
             ArrayList<Tile> emptyList = new ArrayList<>();
-            assertThatThrownBy(
-                            () ->
-                                    bot.chooseTileToPlace(
-                                            emptyList, board.getAvailableTilePositions()))
+            List<Vector> p = board.getAvailableTilePositions();
+            assertThatThrownBy(() -> bot.chooseTileToPlace(emptyList, p))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("No possible tiles");
         }
