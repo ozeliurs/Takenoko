@@ -66,21 +66,4 @@ public class BotManagerTest {
             assertThat(botManager.objectiveIsAchieved()).isTrue();
         }
     }
-
-    @Nested
-    @DisplayName("Method playBot")
-    class TestPlayBot {
-        @Test
-        @DisplayName("When bot plays, it checks if objective is achieved")
-        void playbot_andWin() {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-            Board board = new Board();
-            botManager.setConsoleUserInterface(
-                    new ConsoleUserInterface(new PrintStream(out), new PrintStream(out)));
-            botManager.playBot(board);
-
-            assertThat(out.toString()).contains("The bot has completed the objective!");
-        }
-    }
 }

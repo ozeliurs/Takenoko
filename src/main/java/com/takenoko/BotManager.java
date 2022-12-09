@@ -21,9 +21,5 @@ public class BotManager extends PlayableManager {
         }
 
         verifyObjective(board);
-
-        if (this.objectiveIsAchieved()) {
-            displayMessage("The bot has completed the objective!");
-        }
     }
 }
