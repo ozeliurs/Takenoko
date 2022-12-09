@@ -48,15 +48,4 @@ class BotTest {
                     .hasMessage("No possible tiles");
         }
     }
-
-    @Nested
-    @DisplayName("Method getObjective")
-    class TestGetObjective {
-        @Test
-        @DisplayName("should return the place one tile objective")
-        void getObjective_ShouldReturnThePlaceOneTileObjective() {
-            Objective objective = new PlaceTileObjective(1);
-            assertThat(bot.getObjective()).isEqualTo(objective);
-        }
-    }
 }

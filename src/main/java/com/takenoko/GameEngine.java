@@ -1,8 +1,6 @@
 package com.takenoko;
 
 import com.takenoko.ui.ConsoleUserInterface;
-import com.takenoko.vector.Vector;
-import org.apache.commons.lang3.tuple.Pair;
 
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
@@ -60,12 +58,16 @@ public class GameEngine {
     }
 
     public void playGame() {
+        BotManager botManager = new BotManager(bot);
         consoleUserInterface.displayMessage(
-                "Bot must achieve the following objective in order to win"
-                        + bot.getObjective().toString());
-        Pair<Vector, Tile> tileToPlace =
-                bot.chooseTileToPlace(board.getAvailableTiles(), board.getAvailableTilePositions());
-        board.placeTile(tileToPlace.getRight(), tileToPlace.getLeft());
+                "The bot objective is : " + botManager.getObjectiveDescription());
+        botManager.playBot(board);
+        if (botManager.objectiveIsAchieved()) {
+            consoleUserInterface.displayMessage(
+                    "Bot has achieved the objective "
+                            + botManager.getObjectiveDescription()
+                            + ", it has won");
+        }
     }
 
     /** This method is used to end the game correctly. */
@@ -73,9 +75,6 @@ public class GameEngine {
         if (gameState != GameState.PLAYING) {
             throw new IllegalStateException(
                     "The game is not started yet. You must first start the game.");
-        }
-        if (bot.getObjective().isAchieved()) {
-            consoleUserInterface.displayMessage("Bot has achieved the objective, it has won");
         }
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
