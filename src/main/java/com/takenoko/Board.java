@@ -21,7 +21,7 @@ public class Board {
     }
 
     /**
-     * Place a tile on the board.
+     * Place a tile on the board. and update the available tiles and the available tile positions.
      *
      * @param tile the tile to add to the board
      * @param position the position of the tile
@@ -57,6 +57,34 @@ public class Board {
      */
     private void updateAvailableTilePositions(Vector position) {
         availableTilePositions.remove(position);
+        for (Vector neighbor : position.getNeighbors()) {
+            if (isPositionAvailable(neighbor)) {
+                availableTilePositions.add(neighbor);
+            }
+        }
+    }
+
+    /**
+     * Check if a position is available. A position is available if: - it is not already occupied by
+     * a tile - it has at least 2 neighbors or 1 neighbor is a pond
+     *
+     * @param position the position to check
+     */
+    private boolean isPositionAvailable(Vector position) {
+        if (tiles.containsKey(position)) {
+            return false;
+        }
+        int nbNeighbors = 0;
+        for (Vector neighbor : position.getNeighbors()) {
+
+            if (tiles.containsKey(neighbor)) {
+                if (tiles.get(neighbor).getType() == TileType.POND) {
+                    return true;
+                }
+                nbNeighbors++;
+            }
+        }
+        return nbNeighbors >= 2;
     }
 
     /**
