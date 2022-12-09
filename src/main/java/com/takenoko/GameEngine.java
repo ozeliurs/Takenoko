@@ -1,6 +1,8 @@
 package com.takenoko;
 
 import com.takenoko.ui.ConsoleUserInterface;
+import com.takenoko.vector.Vector;
+import org.apache.commons.lang3.tuple.Pair;
 
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
@@ -61,7 +63,9 @@ public class GameEngine {
         consoleUserInterface.displayMessage(
                 "Bot must achieve the following objective in order to win"
                         + bot.getObjective().toString());
-        board.placeTile(bot.chooseTileToPlace(board.getAvailableTiles()));
+        Pair<Vector, Tile> tileToPlace =
+                bot.chooseTileToPlace(board.getAvailableTiles(), board.getAvailableTilePositions());
+        board.placeTile(tileToPlace.getRight(), tileToPlace.getLeft());
     }
 
     /** This method is used to end the game correctly. */
