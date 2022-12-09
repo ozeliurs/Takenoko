@@ -24,4 +24,18 @@ public class Shape {
             throw new IllegalArgumentException("The shape must contain the origin");
         }
     }
+
+    public List<Vector> getPattern() {
+        return new ArrayList<>(this.pattern);
+    }
+
+    public Shape rotate60() {
+        List<Vector> newPattern = new ArrayList<>();
+
+        for (Vector vector : this.pattern) {
+            newPattern.add(vector.rotate60());
+        }
+
+        return new Shape(newPattern);
+    }
 }
