@@ -14,8 +14,9 @@ public class Board {
         this.tiles = new HashMap<>();
         this.tiles.put(new Vector(0, 0, 0), new Pond());
         this.availableTilePositions = new HashSet<>();
-        this.availableTilePositions.addAll(new Vector(0, 0, 0).getNeighbors());
+        updateAvailableTilePositions(new Vector(0, 0, 0));
         this.availableTiles = new ArrayList<>();
+        this.availableTiles.add(new Tile(TileType.OTHER));
         this.availableTiles.add(new Tile(TileType.OTHER));
         this.availableTiles.add(new Tile(TileType.OTHER));
     }
