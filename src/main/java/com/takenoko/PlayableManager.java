@@ -8,7 +8,7 @@ public abstract class PlayableManager {
     private final Objective placeTileObjective;
     private final ConsoleUserInterface consoleUserInterface;
 
-    public PlayableManager() {
+    protected PlayableManager() {
         numberOfActions = DEFAULT_NUMBER_OF_ACTIONS;
         placeTileObjective = new PlaceTileObjective(2);
         consoleUserInterface = new ConsoleUserInterface();
