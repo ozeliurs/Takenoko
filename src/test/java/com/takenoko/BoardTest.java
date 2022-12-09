@@ -75,11 +75,9 @@ class BoardTest {
         @Test
         @DisplayName("should throw an exception when there is no more available tile")
         void placeTile_WhenNoAvailableTile_ThrowsException() {
-            assertThatThrownBy(
-                            () ->
-                                    board.placeTile(
-                                            new Tile(TileType.OTHER),
-                                            board.getAvailableTilePositions().get(0)))
+            Tile t = new Tile(TileType.OTHER);
+            Vector p = board.getAvailableTilePositions().get(0);
+            assertThatThrownBy(() -> board.placeTile(t, p))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("The tile is not available");
         }
@@ -87,7 +85,9 @@ class BoardTest {
         @Test
         @DisplayName("should throw an exception when there is already a tile in the position")
         void placeTile_WhenTileAlreadyAtPosition_ThrowsException() {
-            assertThatThrownBy(() -> board.placeTile(new Tile(TileType.OTHER), new Vector(0, 0, 0)))
+            Tile t = new Tile(TileType.OTHER);
+            Vector p = new Vector(0, 0, 0);
+            assertThatThrownBy(() -> board.placeTile(t, p))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Tile already present at this position");
         }
@@ -95,10 +95,9 @@ class BoardTest {
         @Test
         @DisplayName("should throw an exception when the position is not available (not adjacent)")
         void placeTile_WhenPositionNotAvailable_ThrowsException() {
-            assertThatThrownBy(
-                            () ->
-                                    board.placeTile(
-                                            new Tile(TileType.OTHER), new Vector(100, 0, -100)))
+            Tile t = new Tile(TileType.OTHER);
+            Vector p = new Vector(100, 0, -100);
+            assertThatThrownBy(() -> board.placeTile(t, p))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Tile position not available");
         }
