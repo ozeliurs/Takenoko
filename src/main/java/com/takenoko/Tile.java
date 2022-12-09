@@ -10,5 +10,4 @@ public class Tile {
     public void setPond(boolean isPond) {
         this.isPond = isPond;
     }
-
 }

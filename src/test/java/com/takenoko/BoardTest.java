@@ -22,11 +22,15 @@ class BoardTest {
     @Nested
     @DisplayName("Method getTile")
     class TestGetTiles {
-        /** Test that the board is empty when created. */
+        /** Test that the board contains only pond when created. */
         @Test
-        @DisplayName("should return an empty list when the board is created")
-        void getTiles_shouldReturnEmptyList() {
-            assertThat(board.getTiles()).isEmpty();
+        @DisplayName(
+                "should return a list of size 1 containing only a pond when the board is created")
+        void getTiles_shouldReturnOnlyOneItem() {
+            Tile pond = new Tile();
+            pond.setPond(true);
+            assertThat(board.getTiles()).hasSize(1);
+            assertThat(board.getTiles().get(0).getPond()).isTrue();
         }
     }
 
@@ -48,7 +52,7 @@ class BoardTest {
         void placeTile_WhenCalled_AddsTileToBoard() {
             Tile tile = board.getAvailableTiles().get(0);
             board.placeTile(tile);
-            assertThat(board.getTiles()).containsExactly(tile);
+            assertThat(board.getTiles()).contains(tile);
         }
 
         @Test

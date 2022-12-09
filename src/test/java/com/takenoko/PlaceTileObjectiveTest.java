@@ -11,7 +11,7 @@ class PlaceTileObjectiveTest {
 
     @BeforeEach
     void setup() {
-        placeTileObjective = new PlaceTileObjective(1);
+        placeTileObjective = new PlaceTileObjective(2);
         board = new Board();
     }
 
