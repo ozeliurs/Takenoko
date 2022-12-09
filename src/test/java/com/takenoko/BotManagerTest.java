@@ -2,10 +2,7 @@ package com.takenoko;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.takenoko.ui.ConsoleUserInterface;
 import com.takenoko.vector.Vector;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import org.junit.jupiter.api.*;
 
 public class BotManagerTest {
