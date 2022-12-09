@@ -9,16 +9,12 @@ public abstract class PlayableManager {
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
     private final int numberOfActions;
     private final Objective placeTileObjective;
-    private ConsoleUserInterface consoleUserInterface;
+    private final ConsoleUserInterface consoleUserInterface;
 
     protected PlayableManager() {
         numberOfActions = DEFAULT_NUMBER_OF_ACTIONS;
         placeTileObjective = new PlaceTileObjective(2);
         consoleUserInterface = new ConsoleUserInterface();
-    }
-
-    public void setConsoleUserInterface(ConsoleUserInterface consoleUserInterface) {
-        this.consoleUserInterface = consoleUserInterface;
     }
 
     public String getObjectiveDescription() {
