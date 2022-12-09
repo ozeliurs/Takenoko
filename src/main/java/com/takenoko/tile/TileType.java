@@ -1,4 +1,4 @@
-package com.takenoko;
+package com.takenoko.tile;
 
 /** Type of the Tile. */
 public enum TileType {

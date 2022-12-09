@@ -1,7 +1,9 @@
-package com.takenoko;
+package com.takenoko.objective;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.takenoko.Board;
+import com.takenoko.tile.Tile;
 import org.junit.jupiter.api.*;
 
 class PlaceTileObjectiveTest {

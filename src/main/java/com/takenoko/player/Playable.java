@@ -1,5 +1,6 @@
-package com.takenoko;
+package com.takenoko.player;
 
+import com.takenoko.tile.Tile;
 import com.takenoko.vector.Vector;
 import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
