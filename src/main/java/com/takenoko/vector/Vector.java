@@ -40,6 +40,15 @@ public record Vector(int q, int r, int s) {
         return new Vector(q() - other.q(), r() - other.r(), s() - other.s());
     }
 
+    /**
+     * Rotate the vector by 60 degrees.
+     *
+     * @return The rotated vector.
+     */
+    public Vector rotate60() {
+        return new Vector(-r(), -s(), -q());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
