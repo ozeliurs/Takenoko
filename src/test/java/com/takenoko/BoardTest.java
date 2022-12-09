@@ -75,5 +75,29 @@ class BoardTest {
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("The tile is not available");
         }
+
+        @Test
+        @DisplayName("should throw an exception when there is already a tile in the position")
+        void placeTile_WhenTileAlreadyAtPosition_ThrowsException() {
+            assertThatThrownBy(
+                    () ->
+                            board.placeTile(
+                                    new Tile(TileType.OTHER),
+                                    new Vector(0, 0, 0)))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Tile already present at this position");
+        }
+
+        @Test
+        @DisplayName("should throw an exception when the position is not available (not adjacent)")
+        void placeTile_WhenPositionNotAvailable_ThrowsException() {
+            assertThatThrownBy(
+                    () ->
+                            board.placeTile(
+                                    new Tile(TileType.OTHER),
+                                    new Vector(100, 0, -100)))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Tile position not available");
+        }
     }
 }
