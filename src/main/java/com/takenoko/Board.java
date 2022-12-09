@@ -41,10 +41,20 @@ public class Board {
         updateAvailableTiles(tile);
     }
 
+    /**
+     * Update the available tile positions after placing a tile.
+     *
+     * @param tile the tile to remove
+     */
     private void updateAvailableTiles(Tile tile) {
         availableTiles.remove(tile);
     }
 
+    /**
+     * Update the available tile positions after placing a tile.
+     *
+     * @param position the position of the tile to remove
+     */
     private void updateAvailableTilePositions(Vector position) {
         availableTilePositions.remove(position);
     }
@@ -67,6 +77,11 @@ public class Board {
         return availableTilePositions.stream().toList();
     }
 
+    /**
+     * Get the available tiles.
+     *
+     * @return the list of available tiles
+     */
     public List<Tile> getAvailableTiles() {
         return availableTiles;
     }
