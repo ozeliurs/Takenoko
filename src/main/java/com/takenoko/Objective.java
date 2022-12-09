@@ -2,9 +2,7 @@ package com.takenoko;
 
 public interface Objective {
 
-    /**
-     * Verify state of the objective.
-     */
+    /** Verify state of the objective. */
     void verify(Board board);
 
     /**
