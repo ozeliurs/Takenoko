@@ -11,7 +11,7 @@ class PlaceTileObjectiveTest {
 
     @BeforeEach
     void setup() {
-        placeTileObjective = new PlaceTileObjective(1);
+        placeTileObjective = new PlaceTileObjective(2);
         board = new Board();
     }
 
@@ -35,7 +35,7 @@ class PlaceTileObjectiveTest {
         @DisplayName("When board has one tile placed, state is ACHIEVED")
         void verify_WhenBoardHasOneTile_ThenObjectiveStateIsACHIEVED() {
             Tile tile = board.getAvailableTiles().get(0);
-            board.placeTile(tile);
+            board.placeTile(tile, board.getAvailableTilePositions().get(0));
             placeTileObjective.verify(board);
             assertThat(placeTileObjective.getState()).isEqualTo(ObjectiveState.ACHIEVED);
         }
@@ -54,9 +54,112 @@ class PlaceTileObjectiveTest {
         @DisplayName("When Objective is achieved return true")
         void isAchieved_WhenObjectiveIsAchieved_ThenReturnsTrue() {
             Tile tile = board.getAvailableTiles().get(0);
-            board.placeTile(tile);
+            board.placeTile(tile, board.getAvailableTilePositions().get(0));
             placeTileObjective.verify(board);
             assertThat(placeTileObjective.isAchieved()).isTrue();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getType")
+    class TestGetType {
+        @Test
+        @DisplayName("When Objective is initialized return PLACE_TILE")
+        void getType_WhenObjectiveIsInitialized_ThenReturnsPLACE_TILE() {
+            assertThat(placeTileObjective.getType())
+                    .isEqualTo(ObjectiveTypes.NUMBER_OF_TILES_PLACED);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getNumberOfTilesToPlace")
+    class TestGetNumberOfTilesToPlace {
+        @Test
+        @DisplayName("When Objective is initialized return 2")
+        void getNumberOfTilesToPlace_WhenObjectiveIsInitialized_ThenReturns2() {
+            assertThat(placeTileObjective.getNumberOfTileToPlace()).isEqualTo(2);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method equals")
+    class TestEquals {
+        @Test
+        @DisplayName("When Objective is compared to null return false")
+        @SuppressWarnings("ConstantConditions")
+        void equals_WhenObjectiveIsComparedToNull_ThenReturnsFalse() {
+            assertThat(placeTileObjective.equals(null)).isFalse();
+        }
+
+        @Test
+        @DisplayName("When Objective is compared to itself return true")
+        @SuppressWarnings("EqualsWithItself")
+        void equals_WhenObjectiveIsComparedToItself_ThenReturnsTrue() {
+            assertThat(placeTileObjective.equals(placeTileObjective)).isTrue();
+        }
+
+        @Test
+        @DisplayName(
+                "When Objective is compared to another Objective with same number of tiles return"
+                        + " true")
+        void
+                equals_WhenObjectiveIsComparedToAnotherObjectiveWithSameNumberOfTiles_ThenReturnsTrue() {
+            PlaceTileObjective otherPlaceTileObjective = new PlaceTileObjective(2);
+            assertThat(placeTileObjective.equals(otherPlaceTileObjective)).isTrue();
+        }
+
+        @Test
+        @DisplayName(
+                "When Objective is compared to another Objective with different number of tiles"
+                        + " return false")
+        void
+                equals_WhenObjectiveIsComparedToAnotherObjectiveWithDifferentNumberOfTiles_ThenReturnsFalse() {
+            PlaceTileObjective otherPlaceTileObjective = new PlaceTileObjective(3);
+            assertThat(placeTileObjective.equals(otherPlaceTileObjective)).isFalse();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method hashCode")
+    class TestHashCode {
+        @Test
+        @DisplayName("When Objective is compared to itself return true")
+        void hashCode_WhenObjectiveIsComparedToItself_ThenReturnsTrue() {
+            assertThat(placeTileObjective.hashCode())
+                    .hasSameHashCodeAs(placeTileObjective.hashCode());
+        }
+
+        @Test
+        @DisplayName(
+                "When Objective is compared to another Objective with same number of tiles return"
+                        + " true")
+        void
+                hashCode_WhenObjectiveIsComparedToAnotherObjectiveWithSameNumberOfTiles_ThenReturnsTrue() {
+            PlaceTileObjective otherPlaceTileObjective = new PlaceTileObjective(2);
+            assertThat(placeTileObjective.hashCode())
+                    .hasSameHashCodeAs(otherPlaceTileObjective.hashCode());
+        }
+
+        @Test
+        @DisplayName(
+                "When Objective is compared to another Objective with different number of tiles"
+                        + " return false")
+        void
+                hashCode_WhenObjectiveIsComparedToAnotherObjectiveWithDifferentNumberOfTiles_ThenReturnsFalse() {
+            PlaceTileObjective otherPlaceTileObjective = new PlaceTileObjective(3);
+            assertThat(placeTileObjective.hashCode())
+                    .doesNotHaveSameHashCodeAs(otherPlaceTileObjective.hashCode());
+        }
+    }
+
+    @Nested
+    @DisplayName("Method toString")
+    class TestToString {
+        @Test
+        @DisplayName("When Objective is initialized return correct string")
+        void toString_WhenObjectiveIsInitialized_ThenReturnsCorrectString() {
+            assertThat(placeTileObjective)
+                    .hasToString("PlaceTileObjective{numberOfTileToPlace=2, state=NOT_ACHIEVED}");
         }
     }
 }
