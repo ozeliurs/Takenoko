@@ -1,4 +1,4 @@
-package com.takenoko;
+package com.takenoko.vector;
 
 import java.util.Objects;
 
