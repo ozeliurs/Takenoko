@@ -11,6 +11,9 @@ public class Board {
     /** Constructor for the Board class. Instantiate the tiles and the available tiles. */
     public Board() {
         this.tiles = new ArrayList<>();
+        Tile pond = new Tile();
+        pond.setPond(true);
+        this.tiles.add(pond);
         this.availableTiles = new ArrayList<>();
         this.availableTiles.add(new Tile());
     }
