@@ -1,8 +1,10 @@
-package com.takenoko;
+package com.takenoko.player;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.takenoko.Board;
+import com.takenoko.tile.Tile;
 import com.takenoko.vector.Vector;
 import java.util.ArrayList;
 import org.apache.commons.lang3.tuple.Pair;

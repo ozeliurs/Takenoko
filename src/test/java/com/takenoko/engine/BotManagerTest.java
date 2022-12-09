@@ -1,7 +1,10 @@
-package com.takenoko;
+package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.takenoko.Board;
+import com.takenoko.objective.PlaceTileObjective;
+import com.takenoko.player.Bot;
 import com.takenoko.vector.Vector;
 import org.junit.jupiter.api.*;
 

@@ -1,4 +1,4 @@
-package com.takenoko;
+package com.takenoko.tile;
 
 /** Class Tile represents a tile in the game. A tile has a type {@link TileType}. */
 public class Tile {

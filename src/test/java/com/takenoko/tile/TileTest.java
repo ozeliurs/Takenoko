@@ -1,4 +1,4 @@
-package com.takenoko;
+package com.takenoko.tile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

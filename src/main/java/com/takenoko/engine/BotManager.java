@@ -1,5 +1,8 @@
-package com.takenoko;
+package com.takenoko.engine;
 
+import com.takenoko.Board;
+import com.takenoko.player.Bot;
+import com.takenoko.tile.Tile;
 import com.takenoko.vector.Vector;
 import org.apache.commons.lang3.tuple.Pair;
 

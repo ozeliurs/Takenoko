@@ -1,4 +1,4 @@
-package com.takenoko;
+package com.takenoko.objective;
 
 public enum ObjectiveState {
     ACHIEVED,

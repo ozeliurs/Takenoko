@@ -1,4 +1,4 @@
-package com.takenoko;
+package com.takenoko.engine;
 
 /** The GameState enum is used to represent the different states of the game as it progresses. */
 public enum GameState {
