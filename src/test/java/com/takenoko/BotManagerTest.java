@@ -2,7 +2,10 @@ package com.takenoko;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.takenoko.ui.ConsoleUserInterface;
 import com.takenoko.vector.Vector;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import org.junit.jupiter.api.*;
 
 public class BotManagerTest {
@@ -61,6 +64,23 @@ public class BotManagerTest {
             board.placeTile(board.getAvailableTiles().get(0), new Vector(-1, 1, 0));
             botManager.verifyObjective(board);
             assertThat(botManager.objectiveIsAchieved()).isTrue();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method playBot")
+    class TestPlayBot {
+        @Test
+        @DisplayName("When bot plays, it checks if objective is achieved")
+        void playbot_andWin() {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+            Board board = new Board();
+            botManager.setConsoleUserInterface(
+                    new ConsoleUserInterface(new PrintStream(out), new PrintStream(out)));
+            botManager.playBot(board);
+
+            assertThat(out.toString()).contains("The bot has completed the objective!");
         }
     }
 }
