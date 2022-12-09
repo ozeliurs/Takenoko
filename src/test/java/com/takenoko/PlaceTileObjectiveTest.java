@@ -59,4 +59,59 @@ class PlaceTileObjectiveTest {
             assertThat(placeTileObjective.isAchieved()).isTrue();
         }
     }
+
+    @Nested
+    @DisplayName("Method equals")
+    class TestEquals {
+        @Test
+        @DisplayName("When Objective is compared to null return false")
+        void equals_WhenObjectiveIsComparedToNull_ThenReturnsFalse() {
+            assertThat(placeTileObjective).isNotNull();
+        }
+
+        @Test
+        @DisplayName("When Objective is compared to itself return true")
+        @SuppressWarnings("EqualsWithItself")
+        void equals_WhenObjectiveIsComparedToItself_ThenReturnsTrue() {
+            assertThat(placeTileObjective.equals(placeTileObjective)).isTrue();
+        }
+
+        @Test
+        @DisplayName("When Objective is compared to another Objective with same number of tiles return true")
+        void equals_WhenObjectiveIsComparedToAnotherObjectiveWithSameNumberOfTiles_ThenReturnsTrue() {
+            PlaceTileObjective otherPlaceTileObjective = new PlaceTileObjective(2);
+            assertThat(placeTileObjective.equals(otherPlaceTileObjective)).isTrue();
+        }
+
+        @Test
+        @DisplayName("When Objective is compared to another Objective with different number of tiles return false")
+        void equals_WhenObjectiveIsComparedToAnotherObjectiveWithDifferentNumberOfTiles_ThenReturnsFalse() {
+            PlaceTileObjective otherPlaceTileObjective = new PlaceTileObjective(3);
+            assertThat(placeTileObjective.equals(otherPlaceTileObjective)).isFalse();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method hashCode")
+    class TestHashCode {
+        @Test
+        @DisplayName("When Objective is compared to itself return true")
+        void hashCode_WhenObjectiveIsComparedToItself_ThenReturnsTrue() {
+            assertThat(placeTileObjective.hashCode()).hasSameHashCodeAs(placeTileObjective.hashCode());
+        }
+
+        @Test
+        @DisplayName("When Objective is compared to another Objective with same number of tiles return true")
+        void hashCode_WhenObjectiveIsComparedToAnotherObjectiveWithSameNumberOfTiles_ThenReturnsTrue() {
+            PlaceTileObjective otherPlaceTileObjective = new PlaceTileObjective(2);
+            assertThat(placeTileObjective.hashCode()).hasSameHashCodeAs(otherPlaceTileObjective.hashCode());
+        }
+
+        @Test
+        @DisplayName("When Objective is compared to another Objective with different number of tiles return false")
+        void hashCode_WhenObjectiveIsComparedToAnotherObjectiveWithDifferentNumberOfTiles_ThenReturnsFalse() {
+            PlaceTileObjective otherPlaceTileObjective = new PlaceTileObjective(3);
+            assertThat(placeTileObjective.hashCode()).doesNotHaveSameHashCodeAs(otherPlaceTileObjective.hashCode());
+        }
+    }
 }
