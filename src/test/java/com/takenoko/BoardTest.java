@@ -65,6 +65,14 @@ class BoardTest {
         }
 
         @Test
+        @DisplayName("should remove the vector from the available tiles positions when placed")
+        void placeTile_WhenCalled_RemovesVectorFromAvailablePositions() {
+            Vector vector = board.getAvailableTilePositions().get(0);
+            board.placeTile(board.getAvailableTiles().get(0), vector);
+            assertThat(board.getAvailableTilePositions()).doesNotContain(vector);
+        }
+
+        @Test
         @DisplayName("should throw an exception when there is no more available tile")
         void placeTile_WhenNoAvailableTile_ThrowsException() {
             assertThatThrownBy(
@@ -79,11 +87,7 @@ class BoardTest {
         @Test
         @DisplayName("should throw an exception when there is already a tile in the position")
         void placeTile_WhenTileAlreadyAtPosition_ThrowsException() {
-            assertThatThrownBy(
-                    () ->
-                            board.placeTile(
-                                    new Tile(TileType.OTHER),
-                                    new Vector(0, 0, 0)))
+            assertThatThrownBy(() -> board.placeTile(new Tile(TileType.OTHER), new Vector(0, 0, 0)))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Tile already present at this position");
         }
@@ -92,10 +96,9 @@ class BoardTest {
         @DisplayName("should throw an exception when the position is not available (not adjacent)")
         void placeTile_WhenPositionNotAvailable_ThrowsException() {
             assertThatThrownBy(
-                    () ->
-                            board.placeTile(
-                                    new Tile(TileType.OTHER),
-                                    new Vector(100, 0, -100)))
+                            () ->
+                                    board.placeTile(
+                                            new Tile(TileType.OTHER), new Vector(100, 0, -100)))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Tile position not available");
         }
