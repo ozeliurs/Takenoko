@@ -12,7 +12,7 @@ public class Board {
     /** Constructor for the Board class. Instantiate the tiles and the available tile positions. */
     public Board() {
         this.tiles = new HashMap<>();
-        this.tiles.put(new Vector(0, 0, 0), new Tile(TileType.POND));
+        this.tiles.put(new Vector(0, 0, 0), new Pond());
         this.availableTilePositions = new HashSet<>();
         this.availableTilePositions.addAll(new Vector(0, 0, 0).getNeighbors());
         this.availableTiles = new ArrayList<>();
