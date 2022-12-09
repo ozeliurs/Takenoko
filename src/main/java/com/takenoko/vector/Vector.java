@@ -1,5 +1,7 @@
 package com.takenoko.vector;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 /** The Vector class represents a vector in a 2D hexagonal grid. */
@@ -39,5 +41,13 @@ public record Vector(int q, int r, int s) {
     @Override
     public int hashCode() {
         return Objects.hash(q(), r(), s());
+    }
+
+    public Collection<Vector> getNeighbors() {
+        ArrayList<Vector> neighbors = new ArrayList<>();
+        for (Direction direction : Direction.values()) {
+            neighbors.add(add(direction.getVector()));
+        }
+        return neighbors;
     }
 }
