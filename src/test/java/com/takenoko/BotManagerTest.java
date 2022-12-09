@@ -28,8 +28,8 @@ public class BotManagerTest {
     @DisplayName("Method getObjectiveDescription")
     class TestGetObjectiveDescription {
         @Test
-        @DisplayName("When the objective is to have 3 bamboo, returns the correct description")
-        void getObjectiveDescription_WhenObjectiveIsToHave3Bamboo_ThenReturnsCorrectDescription() {
+        @DisplayName("The objective is to place two tiles, returns the correct description")
+        void getObjectiveDescription_WhenObjectiveIsToPlace2Tiles_ThenReturnsCorrectDescription() {
             assertThat(botManager.getObjectiveDescription())
                     .isEqualTo(new PlaceTileObjective(2).toString());
         }
@@ -40,7 +40,7 @@ public class BotManagerTest {
     class TestGetNumberOfActions {
         @Test
         @DisplayName("Default number of actions should be 2")
-        void getNumberOfActions_WhenObjectiveIsToHave3Bamboo_ThenReturns3() {
+        void getNumberOfActions_ThenReturns2() {
             assertThat(botManager.getNumberOfActions()).isEqualTo(2);
         }
     }
