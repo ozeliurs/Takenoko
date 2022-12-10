@@ -85,4 +85,17 @@ public class Shape {
 
         return matches;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Shape shape = (Shape) o;
+        return getPattern().equals(shape.getPattern());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPattern());
+    }
 }
