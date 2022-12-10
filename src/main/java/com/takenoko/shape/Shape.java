@@ -53,15 +53,11 @@ public class Shape {
     public Shape translate(Vector vector) {
         List<Vector> newPattern = new ArrayList<>();
 
-        for (Vector tile : this.pattern) {
-            newPattern.add(tile.add(vector));
+        for (Vector v : this.pattern) {
+            newPattern.add(v.add(vector));
         }
 
-        // Bypass the check in the constructor
-        Shape shape = new Shape();
-        shape.pattern = newPattern;
-
-        return shape;
+        return new Shape(newPattern);
     }
 
     public List<List<Vector>> match(List<Vector> board) {
