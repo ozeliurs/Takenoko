@@ -1,8 +1,10 @@
 package com.takenoko.shape;
 
+import com.takenoko.Board;
 import com.takenoko.vector.Vector;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Shape {
     private final List<Vector> pattern;
@@ -60,29 +62,29 @@ public class Shape {
         return new Shape(newPattern);
     }
 
-    public List<List<Vector>> match(List<Vector> board) {
-        List<List<Vector>> matches = new ArrayList<>();
+    /**
+     * Method to match a shape on the board.
+     *
+     * @param board the board to check the shape on
+     * @return the matching translated/rotated shapes
+     */
+    public List<Shape> match(Board board) {
+        List<Shape> matches = new ArrayList<>();
 
-        for (Vector tile : board) {
+        for (Vector tilePosition : board.getTiles().keySet()) {
 
-            // For each tile on the board translate the shape to the tile
-            Shape translatedShape = this.translate(tile);
+            // For each tilePosition on the board translate the shape to the tilePosition
+            Shape translatedShape = this.translate(tilePosition);
 
             // Check if the translated shape matches the board
-            boolean fullMatch = true;
-            for (Vector vector : translatedShape.getPattern()) {
-                fullMatch = true;
-
-                if (!board.contains(vector)) {
-                    fullMatch = false;
-                }
-            }
+            boolean fullMatch =
+                    translatedShape.getPattern().stream()
+                            .allMatch(vector -> board.getTiles().containsKey(vector));
 
             if (fullMatch) {
-                matches.add(translatedShape.getPattern());
+                matches.add(translatedShape);
             }
         }
-
         return matches;
     }
 

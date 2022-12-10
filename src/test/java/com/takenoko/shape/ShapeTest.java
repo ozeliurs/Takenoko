@@ -101,12 +101,11 @@ public class ShapeTest {
         void match_shouldReturnTrueWhenShapeMatchesSingleTilePattern() {
             Shape shape = new Shape(List.of(new Vector(0, 0, 0)));
 
-            ArrayList<ArrayList<Vector>> expected = new ArrayList<>();
-            expected.add(new ArrayList<>(List.of(new Vector(0, 0, 0))));
-            expected.add(new ArrayList<>(List.of(new Vector(1, 0, -1))));
+            ArrayList<Shape> expected = new ArrayList<>();
+            expected.add(new Shape(new ArrayList<>(List.of(new Vector(0, 0, 0)))));
+            expected.add(new Shape(new ArrayList<>(List.of(new Vector(1, 0, -1)))));
 
-            assertThat(shape.match(board.getTiles().keySet().stream().toList()))
-                    .isEqualTo(expected);
+            assertThat(shape.match(board)).isEqualTo(expected);
         }
 
         @Test
@@ -114,11 +113,11 @@ public class ShapeTest {
         void match_shouldReturnTrueWhenShapeMatchesNTilePattern() {
             Shape shape = new Shape(List.of(new Vector(0, 0, 0), new Vector(1, 0, -1)));
 
-            ArrayList<ArrayList<Vector>> expected = new ArrayList<>();
-            expected.add(new ArrayList<>(List.of(new Vector(0, 0, 0), new Vector(1, 0, -1))));
+            ArrayList<Shape> expected = new ArrayList<>();
+            expected.add(
+                    new Shape(new ArrayList<>(List.of(new Vector(0, 0, 0), new Vector(1, 0, -1)))));
 
-            assertThat(shape.match(board.getTiles().keySet().stream().toList()))
-                    .isEqualTo(expected);
+            assertThat(shape.match(board)).isEqualTo(expected);
         }
 
         @Test
@@ -129,7 +128,7 @@ public class ShapeTest {
             pattern.add(new Vector(1, 0, -1));
             pattern.add(new Vector(2, 0, -2));
             Shape shape = new Shape(pattern);
-            assertThat(shape.match(board.getTiles().keySet().stream().toList())).isEmpty();
+            assertThat(shape.match(board)).isEmpty();
         }
     }
 }
