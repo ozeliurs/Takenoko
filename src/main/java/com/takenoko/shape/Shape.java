@@ -5,12 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Shape {
-    List<Vector> pattern;
-
-    /** Constructor for the Shape class. */
-    public Shape() {
-        this(new ArrayList<>(List.of(new Vector(0, 0, 0))));
-    }
+    private final List<Vector> pattern;
 
     /**
      * Constructor for the Shape class.
@@ -19,26 +14,42 @@ public class Shape {
      */
     public Shape(List<Vector> shape) {
         this.pattern = shape;
-
-        if (!this.pattern.contains(new Vector(0, 0, 0))) {
-            throw new IllegalArgumentException("The shape must contain the origin");
-        }
     }
 
     public List<Vector> getPattern() {
         return new ArrayList<>(this.pattern);
     }
 
-    public Shape rotate60() {
+    /**
+     * Returns a new shape with the same pattern but rotated 60 degrees around the given origin.
+     *
+     * @param origin pivot point of the rotation
+     * @return the rotated shape
+     */
+    public Shape rotate60(Vector origin) {
         List<Vector> newPattern = new ArrayList<>();
-
-        for (Vector vector : this.pattern) {
-            newPattern.add(vector.rotate60());
+        for (Vector v : this.pattern) {
+            newPattern.add(v.sub(origin).rotate60().add(origin));
         }
-
         return new Shape(newPattern);
     }
 
+    /**
+     * Returns a new shape with the same pattern but rotated 60 degrees around the first element of
+     * the pattern.
+     *
+     * @return the shape rotated 60 degrees around the first element of the pattern
+     */
+    public Shape rotate60() {
+        return this.rotate60(this.pattern.get(0));
+    }
+
+    /**
+     * Returns a new shape with the same pattern but translated by the given vector.
+     *
+     * @param vector the vector to translate the shape by
+     * @return a new shape with the same pattern but translated by the given vector
+     */
     public Shape translate(Vector vector) {
         List<Vector> newPattern = new ArrayList<>();
 

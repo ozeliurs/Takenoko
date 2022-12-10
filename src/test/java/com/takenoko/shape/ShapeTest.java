@@ -1,7 +1,6 @@
 package com.takenoko.shape;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.takenoko.Board;
 import com.takenoko.vector.Vector;
@@ -26,22 +25,6 @@ public class ShapeTest {
     @AfterEach
     void tearDown() {
         shape = null;
-    }
-
-    @Nested
-    @DisplayName("Constructor Shape")
-    class TestConstructor {
-        @Test
-        @DisplayName("should throw an exception when the shape does not contain the origin")
-        void constructor_shouldThrowExceptionWhenShapeDoesNotContainOrigin() {
-            ArrayList<Vector> pattern = new ArrayList<>();
-            pattern.add(new Vector(1, 0, -1));
-            pattern.add(new Vector(1, -1, 0));
-
-            assertThatThrownBy(() -> new Shape(pattern))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("The shape must contain the origin");
-        }
     }
 
     @Nested
