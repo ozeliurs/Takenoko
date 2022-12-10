@@ -38,4 +38,44 @@ public class Shape {
 
         return new Shape(newPattern);
     }
+
+    public Shape translate(Vector vector) {
+        List<Vector> newPattern = new ArrayList<>();
+
+        for (Vector tile : this.pattern) {
+            newPattern.add(tile.add(vector));
+        }
+
+        // Bypass the check in the constructor
+        Shape shape = new Shape();
+        shape.pattern = newPattern;
+
+        return shape;
+    }
+
+    public List<List<Vector>> match(List<Vector> board) {
+        List<List<Vector>> matches = new ArrayList<>();
+
+        for (Vector tile : board) {
+
+            // For each tile on the board translate the shape to the tile
+            Shape translatedShape = this.translate(tile);
+
+            // Check if the translated shape matches the board
+            boolean fullMatch = true;
+            for (Vector vector : translatedShape.getPattern()) {
+                fullMatch = true;
+
+                if (!board.contains(vector)) {
+                    fullMatch = false;
+                }
+            }
+
+            if (fullMatch) {
+                matches.add(translatedShape.getPattern());
+            }
+        }
+
+        return matches;
+    }
 }
