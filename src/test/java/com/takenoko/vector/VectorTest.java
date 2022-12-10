@@ -29,6 +29,38 @@ class VectorTest {
     }
 
     @Nested
+    @DisplayName("Method sub")
+    class TestSub {
+        @Test
+        @DisplayName("should subtract the two vectors")
+        void sub_shouldSubtractTheTwoVectors() {
+            Vector vector1 = new Vector(1, -2, 1);
+            Vector vector2 = new Vector(1, 0, -1);
+            Vector expected = new Vector(0, -2, 2);
+            assertThat(vector1.sub(vector2)).isEqualTo(expected);
+            vector1 = new Vector(-1, 2, -1);
+            vector2 = new Vector(1, 1, -2);
+            expected = new Vector(-2, 1, 1);
+            assertThat(vector1.sub(vector2)).isEqualTo(expected);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method rotate60")
+    class TestRotate60 {
+        @Test
+        @DisplayName("should rotate the vector by 60 degrees")
+        void rotate60_shouldRotateTheVectorBy60Degrees() {
+            Vector vector = new Vector(1, -2, 1);
+            Vector expected = new Vector(2, -1, -1);
+            assertThat(vector.rotate60()).isEqualTo(expected);
+            vector = new Vector(-1, 2, -1);
+            expected = new Vector(-2, 1, 1);
+            assertThat(vector.rotate60()).isEqualTo(expected);
+        }
+    }
+
+    @Nested
     @DisplayName("Constructor")
     class TestConstructor {
         @Test

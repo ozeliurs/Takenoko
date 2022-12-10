@@ -30,6 +30,25 @@ public record Vector(int q, int r, int s) {
         return new Vector(q() + other.q(), r() + other.r(), s() + other.s());
     }
 
+    /**
+     * Subtract two vectors.
+     *
+     * @param other The vector to subtract to this vector.
+     * @return The difference of this vector and the other vector.
+     */
+    public Vector sub(Vector other) {
+        return new Vector(q() - other.q(), r() - other.r(), s() - other.s());
+    }
+
+    /**
+     * Rotate the vector by 60 degrees.
+     *
+     * @return The rotated vector.
+     */
+    public Vector rotate60() {
+        return new Vector(-r(), -s(), -q());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
