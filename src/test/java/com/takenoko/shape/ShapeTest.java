@@ -106,7 +106,7 @@ public class ShapeTest {
             expected.add(new Shape(new HashSet<>(List.of(new Vector(0, 0, 0)))));
             expected.add(new Shape(new HashSet<>(List.of(new Vector(1, 0, -1)))));
 
-            assertThat(shape.match(board)).isEqualTo(expected);
+            assertThat(shape.match(board.getTiles())).isEqualTo(expected);
         }
 
         @Test
@@ -122,7 +122,7 @@ public class ShapeTest {
                                     new ArrayList<>(
                                             List.of(new Vector(0, 0, 0), new Vector(1, 0, -1))))));
 
-            assertThat(shape.match(board)).isEqualTo(expected);
+            assertThat(shape.match(board.getTiles())).isEqualTo(expected);
         }
 
         @Test
@@ -135,7 +135,7 @@ public class ShapeTest {
             expected.add(
                     new Shape(new HashSet<>(List.of(new Vector(0, 0, 0), new Vector(1, 0, -1)))));
 
-            assertThat(shape.match(board)).isEqualTo(expected);
+            assertThat(shape.match(board.getTiles())).isEqualTo(expected);
         }
 
         @Test
@@ -146,7 +146,7 @@ public class ShapeTest {
             pattern.add(new Vector(1, 0, -1));
             pattern.add(new Vector(2, 0, -2));
             Shape shape = new Shape(new HashSet<>(pattern));
-            assertThat(shape.match(board)).isEmpty();
+            assertThat(shape.match(board.getTiles())).isEmpty();
         }
     }
 }

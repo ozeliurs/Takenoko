@@ -1,12 +1,9 @@
 package com.takenoko.shape;
 
-import com.takenoko.Board;
+import com.takenoko.tile.Tile;
 import com.takenoko.vector.Direction;
 import com.takenoko.vector.Vector;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Shape {
     private final Set<Vector> pattern;
@@ -92,20 +89,19 @@ public class Shape {
     /**
      * Method to match a shape on the board.
      *
-     * @param board the board to check the shape on
+     * @param tileMap the tileMap to match the shape on
      * @return the matching translated/rotated shapes
      */
-    public List<Shape> match(Board board) {
+    public List<Shape> match(Map<Vector, Tile> tileMap) {
         HashSet<Shape> matches = new HashSet<>();
 
-        for (Vector tilePosition : board.getTiles().keySet()) {
+        for (Vector tilePosition : tileMap.keySet()) {
             // For each tilePosition on the board translate the shape to the tilePosition
             Shape translatedShape = this.translate(tilePosition);
             for (int i = 0; i < Direction.values().length; i++) {
                 // Check if the translated shape matches the board
                 boolean fullMatch =
-                        translatedShape.getPattern().stream()
-                                .allMatch(vector -> board.getTiles().containsKey(vector));
+                        translatedShape.getPattern().stream().allMatch(tileMap::containsKey);
 
                 if (fullMatch) {
                     matches.add(translatedShape);
