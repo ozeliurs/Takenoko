@@ -128,4 +128,9 @@ public class Shape {
     public int hashCode() {
         return Objects.hash(getPattern());
     }
+
+    @Override
+    public String toString() {
+        return "Shape{" + "pattern=" + pattern + ", origin=" + origin + '}';
+    }
 }
