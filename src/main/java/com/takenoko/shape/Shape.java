@@ -23,17 +23,16 @@ public class Shape {
     }
 
     /**
-     * Returns a new shape with the same pattern but rotated 60 degrees around the given origin.
+     * Returns a new shape with the same pattern but rotated 60 degrees around the given origin. see
+     * <a
+     * href="https://www.redblobgames.com/grids/hexagons/#rotation">https://www.redblobgames.com/grids/hexagons/#rotation</a>
      *
      * @param origin pivot point of the rotation
      * @return the rotated shape
      */
     public Shape rotate60(Vector origin) {
-        List<Vector> newPattern = new ArrayList<>();
-        for (Vector v : this.pattern) {
-            newPattern.add(v.sub(origin).rotate60().add(origin));
-        }
-        return new Shape(newPattern);
+        return new Shape(
+                this.pattern.stream().map(v -> v.sub(origin).rotate60().add(origin)).toList());
     }
 
     /**
@@ -53,13 +52,7 @@ public class Shape {
      * @return a new shape with the same pattern but translated by the given vector
      */
     public Shape translate(Vector vector) {
-        List<Vector> newPattern = new ArrayList<>();
-
-        for (Vector v : this.pattern) {
-            newPattern.add(v.add(vector));
-        }
-
-        return new Shape(newPattern);
+        return new Shape(this.pattern.stream().map(v -> v.add(vector)).toList());
     }
 
     /**
