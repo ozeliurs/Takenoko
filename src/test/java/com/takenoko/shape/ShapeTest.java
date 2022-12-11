@@ -126,6 +126,19 @@ public class ShapeTest {
         }
 
         @Test
+        @DisplayName("should return the shapes when the shape matches a rotated n tile pattern")
+        void match_shouldReturnTrueWhenShapeMatchesRotatedNTilePattern() {
+            Shape shape =
+                    new Shape(new HashSet<>(List.of(new Vector(0, 0, 0), new Vector(0, 1, -1))));
+
+            ArrayList<Shape> expected = new ArrayList<>();
+            expected.add(
+                    new Shape(new HashSet<>(List.of(new Vector(0, 0, 0), new Vector(1, 0, -1)))));
+
+            assertThat(shape.match(board)).isEqualTo(expected);
+        }
+
+        @Test
         @DisplayName("should return false when the shape does not match the pattern")
         void match_shouldReturnFalseWhenShapeDoesNotMatchPattern() {
             ArrayList<Vector> pattern = new ArrayList<>();
