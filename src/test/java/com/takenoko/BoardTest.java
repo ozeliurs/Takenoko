@@ -54,7 +54,7 @@ class BoardTest {
         /** Test that a tile can be placed on the board. */
         @Test
         void placeTile_WhenCalled_AddsTileToBoard() {
-            Tile tile = board.getAvailableTiles().get(0);
+            Tile tile = new Tile();
             board.placeTile(tile, board.getAvailableTilePositions().get(0));
             assertThat(board.getTiles()).containsValue(tile);
         }
@@ -62,27 +62,28 @@ class BoardTest {
         @Test
         @DisplayName("should remove the tile from the available tiles when placed")
         void placeTile_WhenCalled_RemovesTileFromAvailableTiles() {
-            Tile tile = board.getAvailableTiles().get(0);
-            board.placeTile(tile, board.getAvailableTilePositions().get(0));
-            assertThat(board.getAvailableTiles()).doesNotContain(tile);
+            int availableTilesSize = board.getAvailableTiles().size();
+            board.placeTile(new Tile(), board.getAvailableTilePositions().get(0));
+            assertThat(board.getAvailableTiles()).hasSizeLessThan(availableTilesSize);
         }
 
         @Test
         @DisplayName("should remove the vector from the available tiles positions when placed")
         void placeTile_WhenCalled_RemovesVectorFromAvailablePositions() {
             Vector vector = board.getAvailableTilePositions().get(0);
-            board.placeTile(board.getAvailableTiles().get(0), vector);
+            board.placeTile(new Tile(), vector);
             assertThat(board.getAvailableTilePositions()).doesNotContain(vector);
         }
 
         @Test
         @DisplayName("should throw an exception when there is no more available tile")
         void placeTile_WhenNoAvailableTile_ThrowsException() {
-            Tile t = new Tile(TileType.OTHER);
-            Vector p = board.getAvailableTilePositions().get(0);
-            assertThatThrownBy(() -> board.placeTile(t, p))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("The tile is not available");
+            board.getAvailableTiles().clear();
+            assertThatThrownBy(
+                            () ->
+                                    board.placeTile(
+                                            new Tile(), board.getAvailableTilePositions().get(0)))
+                    .isInstanceOf(IllegalArgumentException.class);
         }
 
         @Test
@@ -143,12 +144,12 @@ class BoardTest {
         @Test
         @DisplayName("two adjacent tiles should create one available position next to them")
         void updateAvailableTilePositions_WhenCalled_AddsPositionToAvailableTilePositions() {
-            Tile t = board.getAvailableTiles().get(0);
+            Tile t = new Tile();
             Vector p = new Vector(1, -1, 0);
             board.placeTile(t, p);
             assertThat(board.getAvailableTilePositions()).doesNotContain(p);
 
-            t = board.getAvailableTiles().get(0);
+            t = new Tile();
             p = new Vector(1, 0, -1);
             board.placeTile(t, p);
             assertThat(board.getAvailableTilePositions()).doesNotContain(p);
@@ -161,7 +162,7 @@ class BoardTest {
         @DisplayName("two adjacent tiles should create two available position next to them")
         void updateAvailableTilePositions_WhenCalled_AddsTwoPositionToAvailableTilePositions() {
             for (Vector v : Arrays.asList(pm101, pm110, pm211)) {
-                board.placeTile(board.getAvailableTiles().get(0), v);
+                board.placeTile(new Tile(), v);
                 assertThat(board.getAvailableTilePositions()).doesNotContain(v);
             }
 
