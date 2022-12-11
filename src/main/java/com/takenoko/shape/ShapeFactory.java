@@ -6,7 +6,15 @@ public enum ShapeFactory {
         public Shape createShape() {
             return new Line();
         }
+    },
+
+    ADJACENT {
+        @Override
+        public Shape createShape() {
+            return new Adjacent();
+        }
     };
+
 
     public abstract Shape createShape();
 }
