@@ -96,23 +96,24 @@ public class Shape {
      * @return the matching translated/rotated shapes
      */
     public List<Shape> match(Board board) {
-        List<Shape> matches = new ArrayList<>();
+        HashSet<Shape> matches = new HashSet<>();
 
         for (Vector tilePosition : board.getTiles().keySet()) {
-
             // For each tilePosition on the board translate the shape to the tilePosition
             Shape translatedShape = this.translate(tilePosition);
+            for (int i = 0; i < Direction.values().length; i++) {
+                // Check if the translated shape matches the board
+                boolean fullMatch =
+                        translatedShape.getPattern().stream()
+                                .allMatch(vector -> board.getTiles().containsKey(vector));
 
-            // Check if the translated shape matches the board
-            boolean fullMatch =
-                    translatedShape.getPattern().stream()
-                            .allMatch(vector -> board.getTiles().containsKey(vector));
-
-            if (fullMatch) {
-                matches.add(translatedShape);
+                if (fullMatch) {
+                    matches.add(translatedShape);
+                }
+                translatedShape = translatedShape.rotate60();
             }
         }
-        return matches;
+        return matches.stream().toList();
     }
 
     @Override
