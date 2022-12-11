@@ -49,6 +49,25 @@ public record Vector(int q, int r, int s) {
         return new Vector(-r(), -s(), -q());
     }
 
+    /**
+     * Determine the length of the vector.
+     *
+     * @return The length of the vector.
+     */
+    public float length() {
+        return ((Math.abs(q()) + Math.abs(r()) + Math.abs(s())) / 2.0f);
+    }
+
+    /**
+     * Determine the distance between two vectors.
+     *
+     * @param other The other vector.
+     * @return The distance between the two vectors.
+     */
+    public float distance(Vector other) {
+        return sub(other).length();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
