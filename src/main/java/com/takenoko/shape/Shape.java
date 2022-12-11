@@ -66,8 +66,8 @@ public class Shape {
     }
 
     /**
-     * Returns a new shape with the same pattern but rotated 60 degrees around the first element of
-     * the pattern.
+     * Returns a new shape with the same pattern but rotated 60 degrees around the origin of the
+     * shape.
      *
      * @return the shape rotated 60 degrees around the first element of the pattern
      */
