@@ -5,9 +5,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    types: [opened, reopened, review_requested]
+    branches: [ action-add-docs-gen ]
   workflow_dispatch:
 
 jobs:
