@@ -1,25 +1,52 @@
 package com.takenoko.shape;
 
 import com.takenoko.Board;
+import com.takenoko.vector.Direction;
 import com.takenoko.vector.Vector;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class Shape {
-    private final List<Vector> pattern;
+    private final Set<Vector> pattern;
+    private final Vector origin;
 
     /**
      * Constructor for the Shape class.
      *
      * @param shape the pattern of the shape
+     * @param origin the origin of the shape
      */
-    public Shape(List<Vector> shape) {
+    public Shape(Set<Vector> shape, Vector origin) {
+        if (shape.isEmpty()) {
+            throw new IllegalArgumentException("The shape cannot be empty");
+        }
         this.pattern = shape;
+        this.origin = origin;
     }
 
-    public List<Vector> getPattern() {
-        return new ArrayList<>(this.pattern);
+    /**
+     * Constructor for the Shape class. The origin is the element the closest to the origin of the
+     * coordinate system.
+     *
+     * @param shape the pattern of the shape
+     */
+    public Shape(Set<Vector> shape) {
+        this(
+                shape,
+                shape.stream()
+                        .min(
+                                (v1, v2) -> {
+                                    float v1Distance = v1.distance(new Vector(0, 0, 0));
+                                    float v2Distance = v2.distance(new Vector(0, 0, 0));
+                                    return Float.compare(v1Distance, v2Distance);
+                                })
+                        .orElseThrow());
+    }
+
+    public Set<Vector> getPattern() {
+        return new HashSet<>(this.pattern);
     }
 
     /**
@@ -32,7 +59,10 @@ public class Shape {
      */
     public Shape rotate60(Vector origin) {
         return new Shape(
-                this.pattern.stream().map(v -> v.sub(origin).rotate60().add(origin)).toList());
+                this.pattern.stream()
+                        .map(v -> v.sub(origin).rotate60().add(origin))
+                        .collect(HashSet::new, HashSet::add, HashSet::addAll),
+                origin);
     }
 
     /**
@@ -42,7 +72,7 @@ public class Shape {
      * @return the shape rotated 60 degrees around the first element of the pattern
      */
     public Shape rotate60() {
-        return this.rotate60(this.pattern.get(0));
+        return this.rotate60(this.origin);
     }
 
     /**
@@ -52,7 +82,11 @@ public class Shape {
      * @return a new shape with the same pattern but translated by the given vector
      */
     public Shape translate(Vector vector) {
-        return new Shape(this.pattern.stream().map(v -> v.add(vector)).toList());
+        return new Shape(
+                this.pattern.stream()
+                        .map(v -> v.add(vector))
+                        .collect(HashSet::new, HashSet::add, HashSet::addAll),
+                this.origin.add(vector));
     }
 
     /**

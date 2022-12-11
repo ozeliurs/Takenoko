@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.takenoko.Board;
 import com.takenoko.vector.Vector;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.junit.jupiter.api.*;
 
@@ -14,7 +15,7 @@ public class ShapeTest {
 
     @BeforeEach
     void setUp() {
-        ArrayList<Vector> pattern = new ArrayList<>();
+        HashSet<Vector> pattern = new HashSet<>();
         pattern.add(new Vector(0, 0, 0));
         pattern.add(new Vector(1, 0, -1));
         pattern.add(new Vector(1, -1, 0));
@@ -99,11 +100,11 @@ public class ShapeTest {
         @Test
         @DisplayName("should return the shapes when the shape matches a one tile pattern")
         void match_shouldReturnTrueWhenShapeMatchesSingleTilePattern() {
-            Shape shape = new Shape(List.of(new Vector(0, 0, 0)));
+            Shape shape = new Shape(new HashSet<>(List.of(new Vector(0, 0, 0))));
 
             ArrayList<Shape> expected = new ArrayList<>();
-            expected.add(new Shape(new ArrayList<>(List.of(new Vector(0, 0, 0)))));
-            expected.add(new Shape(new ArrayList<>(List.of(new Vector(1, 0, -1)))));
+            expected.add(new Shape(new HashSet<>(List.of(new Vector(0, 0, 0)))));
+            expected.add(new Shape(new HashSet<>(List.of(new Vector(1, 0, -1)))));
 
             assertThat(shape.match(board)).isEqualTo(expected);
         }
@@ -111,11 +112,15 @@ public class ShapeTest {
         @Test
         @DisplayName("should return the shapes when the shape matches a n tile pattern")
         void match_shouldReturnTrueWhenShapeMatchesNTilePattern() {
-            Shape shape = new Shape(List.of(new Vector(0, 0, 0), new Vector(1, 0, -1)));
+            Shape shape =
+                    new Shape(new HashSet<>(List.of(new Vector(0, 0, 0), new Vector(1, 0, -1))));
 
             ArrayList<Shape> expected = new ArrayList<>();
             expected.add(
-                    new Shape(new ArrayList<>(List.of(new Vector(0, 0, 0), new Vector(1, 0, -1)))));
+                    new Shape(
+                            new HashSet<>(
+                                    new ArrayList<>(
+                                            List.of(new Vector(0, 0, 0), new Vector(1, 0, -1))))));
 
             assertThat(shape.match(board)).isEqualTo(expected);
         }
@@ -127,7 +132,7 @@ public class ShapeTest {
             pattern.add(new Vector(0, 0, 0));
             pattern.add(new Vector(1, 0, -1));
             pattern.add(new Vector(2, 0, -2));
-            Shape shape = new Shape(pattern);
+            Shape shape = new Shape(new HashSet<>(pattern));
             assertThat(shape.match(board)).isEmpty();
         }
     }
