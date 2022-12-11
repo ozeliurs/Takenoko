@@ -34,7 +34,7 @@ mvn exec
 
 ## Documentation
 
-Available from [this link](https://example.com) along with tests reports.
+Available from [this link](https://pns-si3-projects.github.io/projet2-ps5-22-23-takenoko-2023-c/) along with tests reports.
 
 ## Development
 
