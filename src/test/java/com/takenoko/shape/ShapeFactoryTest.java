@@ -1,11 +1,11 @@
 package com.takenoko.shape;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.takenoko.vector.Vector;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class ShapeFactoryTest {
     @Nested
@@ -21,13 +21,15 @@ public class ShapeFactoryTest {
         @Test
         @DisplayName("When the shape is ADJACENT should contain the origin")
         void createShape_shouldReturnAdjacentContainingOrigin() {
-            assertThat(ShapeFactory.ADJACENT.createShape().getPattern()).contains(new Vector(0, 0, 0));
+            assertThat(ShapeFactory.ADJACENT.createShape().getPattern())
+                    .contains(new Vector(0, 0, 0));
         }
 
         @Test
         @DisplayName("When the shape is ADJACENT should contain the adjacent tile")
         void createShape_shouldReturnAdjacentContainingAdjacentTile() {
-            assertThat(ShapeFactory.ADJACENT.createShape().getPattern()).contains(new Vector(1, 0, -1));
+            assertThat(ShapeFactory.ADJACENT.createShape().getPattern())
+                    .contains(new Vector(1, 0, -1));
         }
     }
 

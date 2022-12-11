@@ -15,6 +15,5 @@ public enum ShapeFactory {
         }
     };
 
-
     public abstract Shape createShape();
 }
