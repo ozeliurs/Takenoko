@@ -1,0 +1,51 @@
+# This workflow will run site and deploy it to GitHub Pages
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-jekyll-with-github-pages
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+  workflow_dispatch:
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: 'maven'
+      - run: mvn --batch-mode --update-snapshots site
+      - run: mkdir staging && cp -r target/site/* staging
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Site
+          path: staging
+  deploy:
+    needs: site
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: download site
+        uses: actions/download-artifact@v3
+        with:
+          name: Site
+          path: staging
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: staging
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
