@@ -5,7 +5,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ action-add-docs-gen ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
