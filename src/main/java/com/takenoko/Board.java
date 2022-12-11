@@ -2,15 +2,19 @@ package com.takenoko;
 
 import com.takenoko.tile.Pond;
 import com.takenoko.tile.Tile;
+import com.takenoko.tile.TileDeck;
 import com.takenoko.tile.TileType;
 import com.takenoko.vector.Vector;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 /** Board class. The board contains the tiles. */
 public class Board {
     private final HashMap<Vector, Tile> tiles;
     private final HashSet<Vector> availableTilePositions;
-    private final ArrayList<Tile> availableTiles;
+    private final TileDeck tileDeck;
 
     /** Constructor for the Board class. Instantiate the tiles and the available tile positions. */
     public Board() {
@@ -18,10 +22,7 @@ public class Board {
         this.tiles.put(new Vector(0, 0, 0), new Pond());
         this.availableTilePositions = new HashSet<>();
         updateAvailableTilePositions(new Vector(0, 0, 0));
-        this.availableTiles = new ArrayList<>();
-        this.availableTiles.add(new Tile(TileType.OTHER));
-        this.availableTiles.add(new Tile(TileType.OTHER));
-        this.availableTiles.add(new Tile(TileType.OTHER));
+        this.tileDeck = new TileDeck();
     }
 
     /**
@@ -37,21 +38,9 @@ public class Board {
         if (!availableTilePositions.contains(position)) {
             throw new IllegalArgumentException("Tile position not available");
         }
-        if (!availableTiles.contains(tile)) {
-            throw new IllegalArgumentException("The tile is not available");
-        }
+        tileDeck.take(tile);
         tiles.put(position, tile);
         updateAvailableTilePositions(position);
-        updateAvailableTiles(tile);
-    }
-
-    /**
-     * Update the available tile positions after placing a tile.
-     *
-     * @param tile the tile to remove
-     */
-    private void updateAvailableTiles(Tile tile) {
-        availableTiles.remove(tile);
     }
 
     /**
@@ -115,6 +104,6 @@ public class Board {
      * @return the list of available tiles
      */
     public List<Tile> getAvailableTiles() {
-        return availableTiles;
+        return tileDeck.getTiles();
     }
 }
