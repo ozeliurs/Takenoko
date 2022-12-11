@@ -6,6 +6,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
+  pull_request:
+    types: [opened, reopened, review_requested]
   workflow_dispatch:
 
 jobs:
