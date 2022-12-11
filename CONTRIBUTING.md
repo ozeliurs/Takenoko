@@ -24,7 +24,7 @@ If ignored we will do the same to you (ignore you).
 
 ## I Have a Question
 
-> First, read the available [Documentation]().
+> First, read the available [Documentation](https://pns-si3-projects.github.io/projet2-ps5-22-23-takenoko-2023-c/).
 
 If you have a question, follow these steps:
 - Open an issue with the label `question`.
