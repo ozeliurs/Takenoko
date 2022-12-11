@@ -61,6 +61,34 @@ class VectorTest {
     }
 
     @Nested
+    @DisplayName("Method length")
+    class TestLength {
+        @Test
+        @DisplayName("should return the length of the vector")
+        void length_shouldReturnTheLengthOfTheVector() {
+            Vector vector = new Vector(1, -2, 1);
+            assertEquals(2, vector.length());
+            vector = new Vector(-1, 2, -1);
+            assertEquals(2, vector.length());
+        }
+    }
+
+    @Nested
+    @DisplayName("Method distance")
+    class TestDistance {
+        @Test
+        @DisplayName("should return the distance between the two vectors")
+        void distance_shouldReturnTheDistanceBetweenTheTwoVectors() {
+            Vector vector1 = new Vector(1, -2, 1);
+            Vector vector2 = new Vector(1, 0, -1);
+            assertEquals(2, vector1.distance(vector2));
+            vector1 = new Vector(-1, 2, -1);
+            vector2 = new Vector(1, 1, -2);
+            assertEquals(2, vector1.distance(vector2));
+        }
+    }
+
+    @Nested
     @DisplayName("Constructor")
     class TestConstructor {
         @Test
