@@ -30,16 +30,34 @@ public class Shape {
      * @param shape the pattern of the shape
      */
     public Shape(Set<Vector> shape) {
-        this(
-                shape,
-                shape.stream()
-                        .min(
-                                (v1, v2) -> {
-                                    float v1Distance = v1.distance(new Vector(0, 0, 0));
-                                    float v2Distance = v2.distance(new Vector(0, 0, 0));
-                                    return Float.compare(v1Distance, v2Distance);
-                                })
-                        .orElseThrow());
+        this(shape, findOrigin(shape));
+    }
+
+    /**
+     * Find the origin of the shape.
+     *
+     * @param shape the pattern of the shape
+     * @return the origin of the shape
+     */
+    private static Vector findOrigin(Set<Vector> shape) {
+        return shape.stream()
+                .min(
+                        (v1, v2) -> {
+                            float v1Distance = v1.distance(new Vector(0, 0, 0));
+                            float v2Distance = v2.distance(new Vector(0, 0, 0));
+                            return Float.compare(v1Distance, v2Distance);
+                        })
+                .orElse(new Vector(0, 0, 0));
+    }
+
+    /**
+     * Constructor of the Shape class. To facilitate the creation of the shape, the shape is defined
+     * by a list of vectors. The origin is the element the closest to the origin of the coordinate
+     *
+     * @param vectors the vectors of the shape
+     */
+    public Shape(Vector... vectors) {
+        this(new HashSet<>(Arrays.asList(vectors)));
     }
 
     public Set<Vector> getPattern() {
