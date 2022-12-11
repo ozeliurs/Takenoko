@@ -25,6 +25,11 @@ jobs:
           name: Site
           path: staging
   deploy:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
     needs: site
     environment:
       name: github-pages
