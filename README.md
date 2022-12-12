@@ -34,7 +34,7 @@ git clone git@github.com:pns-si3-projects/projet2-ps5-22-23-takenoko-2023-c.git
 ### Usage
 
 ```bash
-mvn exec
+mvn exec:java
 ```
 
 ## Documentation
