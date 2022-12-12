@@ -4,8 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.WriterAppender;
@@ -15,26 +13,26 @@ import org.junit.jupiter.api.*;
 /** Console user interface test */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ConsoleUserInterfaceTest {
-    Logger logger;
+    org.apache.logging.log4j.core.Logger logger;
     ByteArrayOutputStream testOut;
+    Appender appender;
     private ConsoleUserInterface consoleUserInterface;
 
     /** Create a new ConsoleUserInterface with test streams */
-    @BeforeAll
+    @BeforeEach
     void beforeAllTests() {
         LoggerContext context = LoggerContext.getContext();
         testOut = new ByteArrayOutputStream();
         Configuration config = context.getConfiguration();
-        Appender appender =
+        appender =
                 WriterAppender.newBuilder()
                         .setTarget(new OutputStreamWriter(testOut))
                         .setName("Test")
                         .setConfiguration(config)
                         .build();
         appender.start();
-        config.getRootLogger().setLevel(Level.ALL);
-        config.getRootLogger().addAppender(appender, Level.ALL, null);
-        logger = context.getLogger(ConsoleUserInterface.class);
+        logger = context.getLogger("Test");
+        logger.addAppender(appender);
         consoleUserInterface = new ConsoleUserInterface(logger);
     }
 
@@ -42,6 +40,8 @@ class ConsoleUserInterfaceTest {
     @AfterEach
     void tearDown() {
         testOut.reset();
+        logger.removeAppender(appender);
+        appender.stop();
     }
 
     /** Test the message display */
