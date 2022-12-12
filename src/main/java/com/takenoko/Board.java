@@ -1,5 +1,8 @@
 package com.takenoko;
 
+import com.takenoko.tile.Pond;
+import com.takenoko.tile.Tile;
+import com.takenoko.tile.TileType;
 import com.takenoko.vector.Vector;
 import java.util.*;
 
@@ -7,7 +10,6 @@ import java.util.*;
 public class Board {
     private final HashMap<Vector, Tile> tiles;
     private final HashSet<Vector> availableTilePositions;
-    private final ArrayList<Tile> availableTiles;
 
     /** Constructor for the Board class. Instantiate the tiles and the available tile positions. */
     public Board() {
@@ -15,10 +17,6 @@ public class Board {
         this.tiles.put(new Vector(0, 0, 0), new Pond());
         this.availableTilePositions = new HashSet<>();
         updateAvailableTilePositions(new Vector(0, 0, 0));
-        this.availableTiles = new ArrayList<>();
-        this.availableTiles.add(new Tile(TileType.OTHER));
-        this.availableTiles.add(new Tile(TileType.OTHER));
-        this.availableTiles.add(new Tile(TileType.OTHER));
     }
 
     /**
@@ -34,21 +32,8 @@ public class Board {
         if (!availableTilePositions.contains(position)) {
             throw new IllegalArgumentException("Tile position not available");
         }
-        if (!availableTiles.contains(tile)) {
-            throw new IllegalArgumentException("The tile is not available");
-        }
         tiles.put(position, tile);
         updateAvailableTilePositions(position);
-        updateAvailableTiles(tile);
-    }
-
-    /**
-     * Update the available tile positions after placing a tile.
-     *
-     * @param tile the tile to remove
-     */
-    private void updateAvailableTiles(Tile tile) {
-        availableTiles.remove(tile);
     }
 
     /**
@@ -112,6 +97,21 @@ public class Board {
      * @return the list of available tiles
      */
     public List<Tile> getAvailableTiles() {
+        // This list only contains one new tile for now
+        // It will then be used when we have a specific number of tiles
+        List<Tile> availableTiles = new ArrayList<>();
+        availableTiles.add(new Tile());
         return availableTiles;
+    }
+
+    /**
+     * Get the tile placed on the board but without the pond.
+     *
+     * @return the tile placed on the board but without the pond.
+     */
+    public Map<Vector, Tile> getTilesWithoutPond() {
+        Map<Vector, Tile> filteredMap = new HashMap<>(tiles);
+        filteredMap.remove(new Vector(0, 0, 0));
+        return filteredMap;
     }
 }

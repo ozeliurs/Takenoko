@@ -1,5 +1,7 @@
-package com.takenoko;
+package com.takenoko.engine;
 
+import com.takenoko.Board;
+import com.takenoko.player.Bot;
 import com.takenoko.ui.ConsoleUserInterface;
 
 /** The game engine is responsible for the gameplay throughout the game. */
@@ -62,7 +64,7 @@ public class GameEngine {
         consoleUserInterface.displayMessage(
                 "The bot objective is : " + botManager.getObjectiveDescription());
         botManager.playBot(board);
-        if (botManager.objectiveIsAchieved()) {
+        if (botManager.isObjectiveAchieved()) {
             consoleUserInterface.displayMessage(
                     "Bot has achieved the objective "
                             + botManager.getObjectiveDescription()

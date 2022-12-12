@@ -3,6 +3,11 @@
 ![Contributors][contributors-shield]
 ![Commit Activity][commit-activity-shield]
 ![Github Release][github-release-shield]
+<p align="center">
+    <a href="https://sonarqube.ozeliurs.com/dashboard?id=PS5-Takenoko">
+        <img src="https://sonarqube.ozeliurs.com/api/project_badges/quality_gate?project=PS5-Takenoko&token=5760b908e6ccb30c1d5d048977df1419adc9db2b" alt="Quality Gate Status">
+    </a>
+</p>
 
 ## The game
 The theme of the game is to take care of a panda, a gift from the emperor of China to the emperor of Japan,

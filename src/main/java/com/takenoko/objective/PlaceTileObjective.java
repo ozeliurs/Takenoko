@@ -1,5 +1,6 @@
-package com.takenoko;
+package com.takenoko.objective;
 
+import com.takenoko.Board;
 import java.util.Objects;
 
 public class PlaceTileObjective implements Objective {
@@ -17,7 +18,8 @@ public class PlaceTileObjective implements Objective {
      * towards achieving the objective
      */
     public void verify(Board board) {
-        if (board.getTiles().size() >= numberOfTileToPlace) {
+        // The -1 is there to take into account the pond tile which is there by default
+        if (board.getTiles().size() - 1 >= numberOfTileToPlace) {
             state = ObjectiveState.ACHIEVED;
         }
     }

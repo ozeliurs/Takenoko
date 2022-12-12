@@ -30,6 +30,44 @@ public record Vector(int q, int r, int s) {
         return new Vector(q() + other.q(), r() + other.r(), s() + other.s());
     }
 
+    /**
+     * Subtract two vectors.
+     *
+     * @param other The vector to subtract to this vector.
+     * @return The difference of this vector and the other vector.
+     */
+    public Vector sub(Vector other) {
+        return new Vector(q() - other.q(), r() - other.r(), s() - other.s());
+    }
+
+    /**
+     * Rotate the vector by 60 degrees.
+     *
+     * @return The rotated vector.
+     */
+    public Vector rotate60() {
+        return new Vector(-r(), -s(), -q());
+    }
+
+    /**
+     * Determine the length of the vector.
+     *
+     * @return The length of the vector.
+     */
+    public float length() {
+        return ((Math.abs(q()) + Math.abs(r()) + Math.abs(s())) / 2.0f);
+    }
+
+    /**
+     * Determine the distance between two vectors.
+     *
+     * @param other The other vector.
+     * @return The distance between the two vectors.
+     */
+    public float distance(Vector other) {
+        return sub(other).length();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
