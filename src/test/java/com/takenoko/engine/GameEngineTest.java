@@ -35,6 +35,15 @@ class GameEngineTest {
             gameEngine.newGame();
             assertThat(gameEngine.getGameState()).isEqualTo(GameState.READY);
         }
+
+        @Test
+        @DisplayName("newGame should throw exception when the game state is not READY")
+        void newGame_shouldThrowExceptionWhenGameStateIsNotReady() {
+            gameEngine.newGame();
+            assertThatThrownBy(() -> gameEngine.newGame())
+                    .isInstanceOf(IllegalStateException.class)
+                    .hasMessage("The game is already started. You must end the game first.");
+        }
     }
 
     @Nested

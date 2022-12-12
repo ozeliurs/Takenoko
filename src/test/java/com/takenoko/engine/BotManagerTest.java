@@ -36,6 +36,13 @@ public class BotManagerTest {
             assertThat(botManager.getObjectiveDescription())
                     .isEqualTo(new TwoAdjacentTilesObjective().toString());
         }
+
+        @Test
+        @DisplayName("When there is no objective, returns correctly")
+        void getObjectiveDescription_WhenThereIsNoObjective_ThenReturnsCorrectly() {
+            botManager.setObjective(null);
+            assertThat(botManager.getObjectiveDescription()).isEqualTo("No current objective");
+        }
     }
 
     @Nested
