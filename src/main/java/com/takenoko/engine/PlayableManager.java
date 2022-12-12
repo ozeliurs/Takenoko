@@ -12,18 +12,21 @@ public abstract class PlayableManager {
     // ATTRIBUTES
     private final int numberOfActions;
     private final int numberOfRounds;
-    private final Objective placeTileObjective;
+    private Objective objective;
     private final ConsoleUserInterface consoleUserInterface;
 
     protected PlayableManager() {
         numberOfActions = DEFAULT_NUMBER_OF_ACTIONS;
         numberOfRounds = DEFAULT_NUMBER_OF_ROUNDS;
-        placeTileObjective = new PlaceTileObjective(2);
+        objective = new PlaceTileObjective(2);
         consoleUserInterface = new ConsoleUserInterface();
     }
 
     public String getObjectiveDescription() {
-        return placeTileObjective.toString();
+        if (objective != null) {
+            return objective.toString();
+        }
+        return "No current objective";
     }
 
     protected int getNumberOfActions() {
@@ -39,10 +42,19 @@ public abstract class PlayableManager {
     }
 
     public boolean isObjectiveAchieved() {
-        return placeTileObjective.isAchieved();
+        if (objective != null) {
+            return objective.isAchieved();
+        }
+        return false;
     }
 
     public void verifyObjective(Board board) {
-        placeTileObjective.verify(board);
+        if (objective != null) {
+            objective.verify(board);
+        }
+    }
+
+    public void setObjective(Objective objective) {
+        this.objective = objective;
     }
 }
