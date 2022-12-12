@@ -103,4 +103,14 @@ public class Board {
         availableTiles.add(new Tile());
         return availableTiles;
     }
+
+    /**
+     * Get the tile placed on the board but without the pond.
+     * @return the tile placed on the board but without the pond.
+     */
+    public Map<Vector, Tile> getTilesWithoutPond() {
+        return tiles.entrySet().stream()
+                .filter(entry -> entry.getValue().getType() != TileType.POND)
+                .collect(HashMap::new, (m, v) -> m.put(v.getKey(), v.getValue()), HashMap::putAll);
+    }
 }
