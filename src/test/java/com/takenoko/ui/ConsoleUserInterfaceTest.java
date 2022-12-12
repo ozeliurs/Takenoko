@@ -1,35 +1,47 @@
 package com.takenoko.ui;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.OutputStreamWriter;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.WriterAppender;
+import org.apache.logging.log4j.core.config.Configuration;
 import org.junit.jupiter.api.*;
 
 /** Console user interface test */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ConsoleUserInterfaceTest {
-    ConsoleUserInterface consoleUserInterface;
-    PrintStream sysOutBackup = System.out;
-    PrintStream sysErrBackup = System.err;
-
+    Logger logger;
     ByteArrayOutputStream testOut;
-    ByteArrayOutputStream testErr;
+    private ConsoleUserInterface consoleUserInterface;
 
     /** Create a new ConsoleUserInterface with test streams */
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    void beforeAllTests() {
+        LoggerContext context = LoggerContext.getContext();
         testOut = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(testOut));
-        testErr = new ByteArrayOutputStream();
-        System.setErr(new PrintStream(testErr));
-        consoleUserInterface = new ConsoleUserInterface();
+        Configuration config = context.getConfiguration();
+        Appender appender =
+                WriterAppender.newBuilder()
+                        .setTarget(new OutputStreamWriter(testOut))
+                        .setName("Test")
+                        .setConfiguration(config)
+                        .build();
+        appender.start();
+        config.getRootLogger().setLevel(Level.ALL);
+        config.getRootLogger().addAppender(appender, Level.ALL, null);
+        logger = context.getLogger(ConsoleUserInterface.class);
+        consoleUserInterface = new ConsoleUserInterface(logger);
     }
 
     /** Restore the original streams */
     @AfterEach
     void tearDown() {
-        System.setOut(sysOutBackup);
-        System.setErr(sysErrBackup);
+        testOut.reset();
     }
 
     /** Test the message display */
@@ -39,15 +51,15 @@ class ConsoleUserInterfaceTest {
         /** Test the message display */
         @Test
         void displayMessage() {
-            consoleUserInterface.displayMessage("test");
-            assertEquals("test" + System.lineSeparator(), testOut.toString());
+            consoleUserInterface.displayMessage("message");
+            assertThat(testOut.toString()).contains("message");
         }
 
         /** Test an error message display */
         @Test
         void displayErrorMessage() {
-            consoleUserInterface.displayError("test");
-            assertEquals("test" + System.lineSeparator(), testErr.toString());
+            consoleUserInterface.displayError("error message");
+            assertThat(testOut.toString()).contains("error message");
         }
     }
 }

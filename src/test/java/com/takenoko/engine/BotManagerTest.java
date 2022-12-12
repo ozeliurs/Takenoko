@@ -6,8 +6,6 @@ import com.takenoko.Board;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.player.Bot;
 import com.takenoko.vector.Vector;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import org.junit.jupiter.api.*;
 
 public class BotManagerTest {
@@ -92,17 +90,11 @@ public class BotManagerTest {
         @Test
         @DisplayName("when bot has no goals, should display ten tile placement messages")
         void playBot_WhenBotHasNoGoals_ThenDisplaysTenTilePlacementMessages() {
-            ByteArrayOutputStream testOut = new ByteArrayOutputStream();
-            System.setOut(new PrintStream(testOut));
-
             Board board = new Board();
             BotManager botManager = new BotManager(bot);
             botManager.setObjective(null);
             botManager.playBot(board);
-
-            String message = testOut.toString();
-            String[] messages = message.split("The bot has placed a tile");
-            assertThat(messages).hasSize(10 + 1); // +1 because of the first empty string
+            assertThat(board.getTiles()).hasSize(10 + 1); // +1 because of the first empty string
         }
     }
 }
