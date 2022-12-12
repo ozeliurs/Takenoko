@@ -24,14 +24,26 @@ public class TwoAdjacentTilesObjective implements Objective {
         state = ObjectiveState.NOT_ACHIEVED;
     }
 
+    /**
+     * Allows checking if the objective has been achieved
+     * @return whether the objective has been achieved or not
+     */
     public boolean isAchieved() {
         return state == ObjectiveState.ACHIEVED;
     }
 
+    /**
+     *
+     * @return ObjectiveTypes of the current objective
+     */
     public ObjectiveTypes getType() {
         return type;
     }
 
+    /**
+     *
+     * @return ObjectiveState of the current objective
+     */
     public ObjectiveState getState() {
         return state;
     }
@@ -41,6 +53,10 @@ public class TwoAdjacentTilesObjective implements Objective {
         return "TwoAdjacentTilesObjective{" + "state=" + state + '}';
     }
 
+    /**
+     * This will try to match the tiles on the board to see if there are two of them adjacent to each other.
+     * @param board the current board of the game
+     */
     public void verify(Board board) {
         Shape adjacentShape = new Adjacent();
         Map<Vector, Tile> boardTiles = board.getTilesWithoutPond();
