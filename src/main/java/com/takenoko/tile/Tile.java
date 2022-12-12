@@ -1,5 +1,7 @@
 package com.takenoko.tile;
 
+import java.util.Objects;
+
 /** Class Tile represents a tile in the game. A tile has a type {@link TileType}. */
 public class Tile {
     private final TileType type;
@@ -28,5 +30,18 @@ public class Tile {
      */
     public TileType getType() {
         return type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tile tile = (Tile) o;
+        return getType() == tile.getType();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getType());
     }
 }

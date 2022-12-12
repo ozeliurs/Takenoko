@@ -8,6 +8,10 @@ import com.takenoko.player.Bot;
 import com.takenoko.vector.Vector;
 import org.junit.jupiter.api.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.Arrays;
+
 public class BotManagerTest {
     Bot bot;
     BotManager botManager;
@@ -53,7 +57,7 @@ public class BotManagerTest {
         void verifyObjective_ThenReturnsFalse() {
             Board board = new Board();
             botManager.verifyObjective(board);
-            assertThat(botManager.objectiveIsAchieved()).isFalse();
+            assertThat(botManager.isObjectiveAchieved()).isFalse();
         }
 
         @Test
@@ -63,7 +67,36 @@ public class BotManagerTest {
             board.placeTile(board.getAvailableTiles().get(0), new Vector(1, -1, 0));
             board.placeTile(board.getAvailableTiles().get(0), new Vector(-1, 1, 0));
             botManager.verifyObjective(board);
-            assertThat(botManager.objectiveIsAchieved()).isTrue();
+            assertThat(botManager.isObjectiveAchieved()).isTrue();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method playBot")
+    class playBot {
+        @Test
+        @DisplayName("when bot has no goals, should place ten tiles")
+        void playBot_WhenBotHasNoGoals_ThenPlacesTenTiles() {
+            Board board = new Board();
+            botManager.setObjective(null);
+            botManager.playBot(board);
+            assertThat(board.getTiles().size() - 1).isEqualTo(10);
+        }
+
+        @Test
+        @DisplayName("when bot has no goals, should display ten tile placement messages")
+        void playBot_WhenBotHasNoGoals_ThenDisplaysTenTilePlacementMessages() {
+            ByteArrayOutputStream testOut = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(testOut));
+
+            Board board = new Board();
+            BotManager botManager = new BotManager(bot);
+            botManager.setObjective(null);
+            botManager.playBot(board);
+
+            String message = testOut.toString();
+            String[] messages = message.split("The bot has placed a tile");
+            assertThat(messages).hasSize(10 + 1); // +1 because of the first empty string
         }
     }
 }

@@ -15,14 +15,17 @@ public class BotManager extends PlayableManager {
     }
 
     public void playBot(Board board) {
-        for (int i = 0; i < this.getNumberOfActions(); i++) {
+        for (int i = 0; i < this.getNumberOfRounds(); i++) {
             Pair<Vector, Tile> botChoice =
                     bot.chooseTileToPlace(
                             board.getAvailableTiles(), board.getAvailableTilePositions());
             board.placeTile(botChoice.getRight(), botChoice.getLeft());
             displayMessage("The bot has placed a tile at " + botChoice.getLeft());
-        }
 
-        verifyObjective(board);
+            verifyObjective(board);
+            if (isObjectiveAchieved()) {
+                return;
+            }
+        }
     }
 }
