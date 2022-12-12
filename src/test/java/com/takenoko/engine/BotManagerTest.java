@@ -6,11 +6,9 @@ import com.takenoko.Board;
 import com.takenoko.objective.PlaceTileObjective;
 import com.takenoko.player.Bot;
 import com.takenoko.vector.Vector;
-import org.junit.jupiter.api.*;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
+import org.junit.jupiter.api.*;
 
 public class BotManagerTest {
     Bot bot;
