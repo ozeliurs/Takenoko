@@ -1,6 +1,5 @@
 package com.takenoko.objective;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.takenoko.Board;
@@ -63,7 +62,9 @@ class TwoAdjacentTilesObjectiveTest {
         @Test
         @DisplayName("When Objective is initialized return correct string")
         void toString_WhenObjectiveIsInitialized_ThenReturnsCorrectString() {
-            assertEquals("TwoAdjacentTilesObjective{state=NOT_ACHIEVED}", twoAdjacentTilesObjective.toString());
+            assertEquals(
+                    "TwoAdjacentTilesObjective{state=NOT_ACHIEVED}",
+                    twoAdjacentTilesObjective.toString());
         }
     }
 }
