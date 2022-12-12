@@ -4,7 +4,6 @@ import com.takenoko.tile.Pond;
 import com.takenoko.tile.Tile;
 import com.takenoko.tile.TileType;
 import com.takenoko.vector.Vector;
-
 import java.util.*;
 
 /** Board class. The board contains the tiles. */

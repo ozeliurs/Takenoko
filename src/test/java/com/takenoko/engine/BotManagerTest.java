@@ -76,7 +76,7 @@ public class BotManagerTest {
             Board board = new Board();
             botManager.setObjective(null);
             botManager.playBot(board);
-            assertThat(board.getTiles().size()-1).isEqualTo(10);
+            assertThat(board.getTiles().size() - 1).isEqualTo(10);
         }
     }
 }
