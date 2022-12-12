@@ -23,7 +23,7 @@ public class BotManager extends PlayableManager {
             displayMessage("The bot has placed a tile at " + botChoice.getLeft());
 
             verifyObjective(board);
-            if (objectiveIsAchieved()) {
+            if (isObjectiveAchieved()) {
                 return;
             }
         }

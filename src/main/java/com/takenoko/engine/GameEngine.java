@@ -64,7 +64,7 @@ public class GameEngine {
         consoleUserInterface.displayMessage(
                 "The bot objective is : " + botManager.getObjectiveDescription());
         botManager.playBot(board);
-        if (botManager.objectiveIsAchieved()) {
+        if (botManager.isObjectiveAchieved()) {
             consoleUserInterface.displayMessage(
                     "Bot has achieved the objective "
                             + botManager.getObjectiveDescription()

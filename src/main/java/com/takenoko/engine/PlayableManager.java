@@ -38,7 +38,7 @@ public abstract class PlayableManager {
         consoleUserInterface.displayMessage(message);
     }
 
-    public boolean objectiveIsAchieved() {
+    public boolean isObjectiveAchieved() {
         return placeTileObjective.isAchieved();
     }
 

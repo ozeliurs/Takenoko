@@ -53,7 +53,7 @@ public class BotManagerTest {
         void verifyObjective_ThenReturnsFalse() {
             Board board = new Board();
             botManager.verifyObjective(board);
-            assertThat(botManager.objectiveIsAchieved()).isFalse();
+            assertThat(botManager.isObjectiveAchieved()).isFalse();
         }
 
         @Test
@@ -63,7 +63,7 @@ public class BotManagerTest {
             board.placeTile(board.getAvailableTiles().get(0), new Vector(1, -1, 0));
             board.placeTile(board.getAvailableTiles().get(0), new Vector(-1, 1, 0));
             botManager.verifyObjective(board);
-            assertThat(botManager.objectiveIsAchieved()).isTrue();
+            assertThat(botManager.isObjectiveAchieved()).isTrue();
         }
     }
 }
