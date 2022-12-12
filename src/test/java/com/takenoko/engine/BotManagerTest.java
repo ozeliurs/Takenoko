@@ -6,11 +6,9 @@ import com.takenoko.Board;
 import com.takenoko.objective.PlaceTileObjective;
 import com.takenoko.player.Bot;
 import com.takenoko.vector.Vector;
-import org.junit.jupiter.api.*;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
+import org.junit.jupiter.api.*;
 
 public class BotManagerTest {
     Bot bot;
@@ -36,6 +34,13 @@ public class BotManagerTest {
         void getObjectiveDescription_WhenObjectiveIsToPlace2Tiles_ThenReturnsCorrectDescription() {
             assertThat(botManager.getObjectiveDescription())
                     .isEqualTo(new PlaceTileObjective(2).toString());
+        }
+
+        @Test
+        @DisplayName("When there is no objective, returns correctly")
+        void getObjectiveDescription_WhenThereIsNoObjective_ThenReturnsCorrectly() {
+            botManager.setObjective(null);
+            assertThat(botManager.getObjectiveDescription()).isEqualTo("No current objective");
         }
     }
 
