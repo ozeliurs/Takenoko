@@ -66,4 +66,17 @@ public class BotManagerTest {
             assertThat(botManager.isObjectiveAchieved()).isTrue();
         }
     }
+
+    @Nested
+    @DisplayName("Method playBot")
+    class playBot {
+        @Test
+        @DisplayName("when bot has no goals, should place ten tiles")
+        void playBot_WhenBotHasNoGoals_ThenPlacesTenTiles() {
+            Board board = new Board();
+            botManager.setObjective(null);
+            botManager.playBot(board);
+            assertThat(board.getTiles().size()-1).isEqualTo(10);
+        }
+    }
 }
