@@ -60,30 +60,11 @@ class BoardTest {
         }
 
         @Test
-        @DisplayName("should remove the tile from the available tiles when placed")
-        void placeTile_WhenCalled_RemovesTileFromAvailableTiles() {
-            int availableTilesSize = board.getAvailableTiles().size();
-            board.placeTile(new Tile(), board.getAvailableTilePositions().get(0));
-            assertThat(board.getAvailableTiles()).hasSizeLessThan(availableTilesSize);
-        }
-
-        @Test
         @DisplayName("should remove the vector from the available tiles positions when placed")
         void placeTile_WhenCalled_RemovesVectorFromAvailablePositions() {
             Vector vector = board.getAvailableTilePositions().get(0);
             board.placeTile(new Tile(), vector);
             assertThat(board.getAvailableTilePositions()).doesNotContain(vector);
-        }
-
-        @Test
-        @DisplayName("should throw an exception when there is no more available tile")
-        void placeTile_WhenNoAvailableTile_ThrowsException() {
-            board.getAvailableTiles().clear();
-            assertThatThrownBy(
-                            () ->
-                                    board.placeTile(
-                                            new Tile(), board.getAvailableTilePositions().get(0)))
-                    .isInstanceOf(IllegalArgumentException.class);
         }
 
         @Test
