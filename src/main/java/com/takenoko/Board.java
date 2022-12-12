@@ -106,6 +106,7 @@ public class Board {
 
     /**
      * Get the tile placed on the board but without the pond.
+     *
      * @return the tile placed on the board but without the pond.
      */
     public Map<Vector, Tile> getTilesWithoutPond() {

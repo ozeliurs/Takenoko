@@ -3,7 +3,6 @@ package com.takenoko.engine;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.takenoko.Board;
-import com.takenoko.objective.PlaceTileObjective;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.player.Bot;
 import com.takenoko.vector.Vector;
@@ -32,7 +31,8 @@ public class BotManagerTest {
     class TestGetObjectiveDescription {
         @Test
         @DisplayName("The objective is to have two adjacent tiles, returns the correct description")
-        void getObjectiveDescription_WhenObjectiveIsToHaveTwoAdjacentTiles_ThenReturnsCorrectDescription() {
+        void
+                getObjectiveDescription_WhenObjectiveIsToHaveTwoAdjacentTiles_ThenReturnsCorrectDescription() {
             assertThat(botManager.getObjectiveDescription())
                     .isEqualTo(new TwoAdjacentTilesObjective().toString());
         }
