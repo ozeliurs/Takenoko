@@ -1,0 +1,23 @@
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: 'maven'
+      - run: mvn --batch-mode --update-snapshots compile
+      - name: Check if files have been modified and fail if so
+        run: |
+          git diff --exit-code
+          if [ $? -ne 0 ]; then
+            echo "Files have been modified by the build process. Please run 'mvn compile' locally and commit the changes."
+            exit 1
+          fi
