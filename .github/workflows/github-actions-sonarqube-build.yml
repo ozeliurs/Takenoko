@@ -19,6 +19,13 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
           cache: 'maven'
+      - name: Check if files have been modified and fail if so
+        run: |
+          git diff --exit-code
+          if [ $? -ne 0 ]; then
+            echo "Files have been modified by the build process. Please run 'mvn compile' locally and commit the changes."
+            exit 1
+          fi
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
