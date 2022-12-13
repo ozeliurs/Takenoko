@@ -33,7 +33,7 @@ jobs:
       - name: Build
         run: mvn --batch-mode --update-snapshots verify
       - name: make artifact
-        run: mkdir staging && cp target/* staging
+        run: mkdir staging && cp -r target/* staging
       - uses: actions/upload-artifact@v3
         with:
           name: Package
