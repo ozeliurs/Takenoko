@@ -15,10 +15,12 @@ public class Board {
 
     /** Constructor for the Board class. Instantiate the tiles and the available tile positions. */
     public Board() {
+        // TILE RELATED
         this.tiles = new HashMap<>();
         this.tiles.put(new Vector(0, 0, 0), new Pond());
         this.availableTilePositions = new HashSet<>();
         updateAvailableTilePositions(new Vector(0, 0, 0));
+        // PANDA RELATED
         this.panda = new Panda();
     }
 

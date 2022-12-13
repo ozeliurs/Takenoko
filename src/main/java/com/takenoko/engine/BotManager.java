@@ -16,6 +16,7 @@ public class BotManager extends PlayableManager {
 
     public void playBot(Board board) {
         for (int i = 0; i < this.getNumberOfRounds(); i++) {
+            displayMessage(board.getPanda().positionMessage());
             Pair<Vector, Tile> botChoice =
                     bot.chooseTileToPlace(
                             board.getAvailableTiles(), board.getAvailableTilePositions());
