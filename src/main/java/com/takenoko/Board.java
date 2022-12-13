@@ -1,5 +1,6 @@
 package com.takenoko;
 
+import com.takenoko.actors.Panda;
 import com.takenoko.tile.Pond;
 import com.takenoko.tile.Tile;
 import com.takenoko.tile.TileType;
@@ -10,6 +11,7 @@ import java.util.*;
 public class Board {
     private final HashMap<Vector, Tile> tiles;
     private final HashSet<Vector> availableTilePositions;
+    private final Panda panda;
 
     /** Constructor for the Board class. Instantiate the tiles and the available tile positions. */
     public Board() {
@@ -17,6 +19,7 @@ public class Board {
         this.tiles.put(new Vector(0, 0, 0), new Pond());
         this.availableTilePositions = new HashSet<>();
         updateAvailableTilePositions(new Vector(0, 0, 0));
+        this.panda = new Panda();
     }
 
     /**
@@ -113,5 +116,13 @@ public class Board {
         Map<Vector, Tile> filteredMap = new HashMap<>(tiles);
         filteredMap.remove(new Vector(0, 0, 0));
         return filteredMap;
+    }
+
+    /**
+     * Get the panda
+     * @return Panda
+     */
+    public Panda getPanda() {
+        return panda;
     }
 }
