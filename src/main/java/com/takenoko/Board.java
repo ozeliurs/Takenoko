@@ -122,6 +122,7 @@ public class Board {
 
     /**
      * Get the panda
+     *
      * @return Panda
      */
     public Panda getPanda() {

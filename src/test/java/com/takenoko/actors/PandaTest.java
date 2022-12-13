@@ -1,11 +1,11 @@
 package com.takenoko.actors;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.takenoko.vector.Vector;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PandaTest {
 
