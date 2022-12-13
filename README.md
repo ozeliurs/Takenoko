@@ -5,7 +5,7 @@
 ![Github Release][github-release-shield]
 <p align="center">
     <a href="https://sonarqube.ozeliurs.com/dashboard?id=PS5-Takenoko">
-        <img src="https://sonarqube.ozeliurs.com/api/project_badges/quality_gate?project=PS5-Takenoko&token=5760b908e6ccb30c1d5d048977df1419adc9db2b" alt="Quality Gate Status">
+        <img src="https://sonarqube.ozeliurs.com/api/project_badges/quality_gate?project=PS5-Takenoko&token=2b62b9f86028dfd6a362d54ee98e0404c4e335b4" alt="Quality Gate Status">
     </a>
 </p>
 
