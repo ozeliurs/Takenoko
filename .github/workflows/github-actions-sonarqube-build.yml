@@ -1,6 +1,6 @@
 name: SonarQube Build
 
-on: 
+on:
   push:
     branches:
       - "*"
@@ -30,9 +30,17 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Build and analyze
+      - name: Build
+        run: mvn --batch-mode --update-snapshots verify
+      - name: make artifact
+        run: mkdir staging && cp target/* staging
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Package
+          path: staging
+      - name: SonarQube Scan
+        run: mvn --batch-mode --update-snapshots org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=PS5-Takenoko
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B -X clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=PS5-Takenoko
