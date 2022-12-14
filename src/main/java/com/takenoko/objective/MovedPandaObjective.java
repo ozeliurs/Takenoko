@@ -7,14 +7,13 @@ import com.takenoko.vector.PositionVector;
 public class MovedPandaObjective implements Objective {
     private ObjectiveState state;
 
-    /** Constructor for the class 🤯*/
+    /** Constructor for the class 🤯 */
     public MovedPandaObjective() {
         state = ObjectiveState.NOT_ACHIEVED;
     }
 
     /**
-     * This will check if the panda has moved from
-     * its initial position (0, 0, 0).
+     * This will check if the panda has moved from its initial position (0, 0, 0).
      *
      * @param board the current board of the game
      */
