@@ -80,6 +80,18 @@ class PandaTest {
                 "should throw an IllegalArgumentException if the panda is not moving on a tile")
         void shouldThrowAnIllegalArgumentExceptionIfThePandaIsNotMovingOnATile() {
             Panda panda = new Panda();
+            PositionVector vector = new PositionVector(-1, 0, 1);
+            assertThatThrownBy(() -> panda.move(vector, board))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("The panda must move on a tile");
+        }
+
+        @Test
+        @DisplayName(
+                "should throw an IllegalArgumentException if the panda is moving to a tile wthout a"
+                        + " straight path")
+        void shouldThrowAnIllegalArgumentExceptionIfThePandaIsMovingToATileWthoutAStraightPath() {
+            Panda panda = new Panda();
             PositionVector vector = new PositionVector(0, -2, 2);
             assertThatThrownBy(() -> panda.move(vector, board))
                     .isInstanceOf(IllegalArgumentException.class)
