@@ -4,22 +4,23 @@ import com.takenoko.actors.Panda;
 import com.takenoko.tile.Pond;
 import com.takenoko.tile.Tile;
 import com.takenoko.tile.TileType;
+import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.*;
 
 /** Board class. The board contains the tiles. */
 public class Board {
-    private final HashMap<Vector, Tile> tiles;
-    private final HashSet<Vector> availableTilePositions;
+    private final HashMap<PositionVector, Tile> tiles;
+    private final HashSet<PositionVector> availableTilePositions;
     private final Panda panda;
 
     /** Constructor for the Board class. Instantiate the tiles and the available tile positions. */
     public Board() {
         // TILE RELATED
         this.tiles = new HashMap<>();
-        this.tiles.put(new Vector(0, 0, 0), new Pond());
+        this.tiles.put(new PositionVector(0, 0, 0), new Pond());
         this.availableTilePositions = new HashSet<>();
-        updateAvailableTilePositions(new Vector(0, 0, 0));
+        updateAvailableTilePositions(new PositionVector(0, 0, 0));
         // PANDA RELATED
         this.panda = new Panda();
     }
@@ -30,7 +31,7 @@ public class Board {
      * @param tile the tile to add to the board
      * @param position the position of the tile
      */
-    public void placeTile(Tile tile, Vector position) {
+    public void placeTile(Tile tile, PositionVector position) {
         if (tiles.containsKey(position)) {
             throw new IllegalArgumentException("Tile already present at this position");
         }
@@ -46,11 +47,11 @@ public class Board {
      *
      * @param position the position of the tile to remove
      */
-    private void updateAvailableTilePositions(Vector position) {
+    private void updateAvailableTilePositions(PositionVector position) {
         availableTilePositions.remove(position);
         for (Vector neighbor : position.getNeighbors()) {
-            if (isPositionAvailable(neighbor)) {
-                availableTilePositions.add(neighbor);
+            if (isPositionAvailable(neighbor.toPositionVector())) {
+                availableTilePositions.add(neighbor.toPositionVector());
             }
         }
     }
@@ -61,15 +62,15 @@ public class Board {
      *
      * @param position the position to check
      */
-    private boolean isPositionAvailable(Vector position) {
-        if (tiles.containsKey(position)) {
+    private boolean isPositionAvailable(PositionVector position) {
+        if (isTile(position)) {
             return false;
         }
         int nbNeighbors = 0;
         for (Vector neighbor : position.getNeighbors()) {
 
-            if (tiles.containsKey(neighbor)) {
-                if (tiles.get(neighbor).getType() == TileType.POND) {
+            if (isTile(neighbor.toPositionVector())) {
+                if (tiles.get(neighbor.toPositionVector()).getType() == TileType.POND) {
                     return true;
                 }
                 nbNeighbors++;
@@ -83,7 +84,7 @@ public class Board {
      *
      * @return the tiles on the board
      */
-    public Map<Vector, Tile> getTiles() {
+    public Map<PositionVector, Tile> getTiles() {
         return tiles;
     }
 
@@ -92,7 +93,7 @@ public class Board {
      *
      * @return the available tiles
      */
-    public List<Vector> getAvailableTilePositions() {
+    public List<PositionVector> getAvailableTilePositions() {
         return availableTilePositions.stream().toList();
     }
 
@@ -114,9 +115,9 @@ public class Board {
      *
      * @return the tile placed on the board but without the pond.
      */
-    public Map<Vector, Tile> getTilesWithoutPond() {
-        Map<Vector, Tile> filteredMap = new HashMap<>(tiles);
-        filteredMap.remove(new Vector(0, 0, 0));
+    public Map<PositionVector, Tile> getTilesWithoutPond() {
+        Map<PositionVector, Tile> filteredMap = new HashMap<>(tiles);
+        filteredMap.remove(new PositionVector(0, 0, 0));
         return filteredMap;
     }
 
@@ -127,5 +128,15 @@ public class Board {
      */
     public Panda getPanda() {
         return panda;
+    }
+
+    /**
+     * Check if there is a tile at the given position.
+     *
+     * @param position the position of the tile
+     * @return if there is a tile at the position
+     */
+    public boolean isTile(PositionVector position) {
+        return tiles.containsKey(position);
     }
 }

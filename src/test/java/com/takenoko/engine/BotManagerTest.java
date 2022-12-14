@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.takenoko.Board;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.player.Bot;
-import com.takenoko.vector.Vector;
+import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.*;
 
 public class BotManagerTest {
@@ -68,8 +68,8 @@ public class BotManagerTest {
         @DisplayName("When board satisfies objective, objective is achieved")
         void verifyObjective_ThenReturnsTrue() {
             Board board = new Board();
-            board.placeTile(board.getAvailableTiles().get(0), new Vector(1, -1, 0));
-            board.placeTile(board.getAvailableTiles().get(0), new Vector(0, -1, 1));
+            board.placeTile(board.getAvailableTiles().get(0), new PositionVector(1, -1, 0));
+            board.placeTile(board.getAvailableTiles().get(0), new PositionVector(0, -1, 1));
             botManager.verifyObjective(board);
             assertThat(botManager.isObjectiveAchieved()).isTrue();
         }

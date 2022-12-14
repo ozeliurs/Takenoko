@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.takenoko.Board;
 import com.takenoko.tile.Tile;
-import com.takenoko.vector.Vector;
+import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.*;
 
 class TwoAdjacentTilesObjectiveTest {
@@ -30,8 +30,8 @@ class TwoAdjacentTilesObjectiveTest {
         @Test
         @DisplayName("When board has two tiles placed, state is ACHIEVED")
         void verify_WhenBoardHasTwoTilesNextToEachOther_ThenObjectiveStateIsACHIEVED() {
-            board.placeTile(new Tile(), new Vector(0, -1, 1));
-            board.placeTile(new Tile(), new Vector(1, -1, 0));
+            board.placeTile(new Tile(), new PositionVector(0, -1, 1));
+            board.placeTile(new Tile(), new PositionVector(1, -1, 0));
             twoAdjacentTilesObjective.verify(board);
             assertEquals(ObjectiveState.ACHIEVED, twoAdjacentTilesObjective.getState());
         }
@@ -49,8 +49,8 @@ class TwoAdjacentTilesObjectiveTest {
         @Test
         @DisplayName("When Objective is achieved return true")
         void isAchieved_WhenObjectiveIsAchieved_ThenReturnsTrue() {
-            board.placeTile(new Tile(), new Vector(0, -1, 1));
-            board.placeTile(new Tile(), new Vector(1, -1, 0));
+            board.placeTile(new Tile(), new PositionVector(0, -1, 1));
+            board.placeTile(new Tile(), new PositionVector(1, -1, 0));
             twoAdjacentTilesObjective.verify(board);
             assertTrue(twoAdjacentTilesObjective.isAchieved());
         }

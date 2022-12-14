@@ -1,7 +1,7 @@
 package com.takenoko.player;
 
 import com.takenoko.tile.Tile;
-import com.takenoko.vector.Vector;
+import com.takenoko.vector.PositionVector;
 import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -17,6 +17,6 @@ public interface Playable {
      * @param availableTilePositions The list of available tile positions.
      * @return A pair containing the position and the tile to place.
      */
-    Pair<Vector, Tile> chooseTileToPlace(
-            List<Tile> possibleTiles, List<Vector> availableTilePositions);
+    Pair<PositionVector, Tile> chooseTileToPlace(
+            List<Tile> possibleTiles, List<PositionVector> availableTilePositions);
 }

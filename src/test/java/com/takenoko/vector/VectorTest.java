@@ -148,4 +148,42 @@ class VectorTest {
             assertThat(vector1).doesNotHaveSameHashCodeAs(vector2);
         }
     }
+
+    @Nested
+    @DisplayName("Method Multiply")
+    class TestMultiply {
+        @Test
+        @DisplayName("should multiply the vector by the given factor")
+        void multiply_shouldMultiplyTheVectorByTheGivenFactor() {
+            Vector vector = new Vector(1, 2, -3);
+            Vector expected = new Vector(3, 6, -9);
+            assertThat(vector.multiply(3)).isEqualTo(expected);
+        }
+
+        @Test
+        @DisplayName("should return the same vector if the factor is 1")
+        void multiply_shouldReturnTheSameVectorIfTheFactorIs1() {
+            Vector vector = new Vector(1, 2, -3);
+            assertThat(vector.multiply(1)).isEqualTo(vector);
+        }
+
+        @Test
+        @DisplayName("should return the zero vector if the factor is 0")
+        void multiply_shouldReturnTheZeroVectorIfTheFactorIs0() {
+            Vector vector = new Vector(1, 2, -3);
+            assertThat(vector.multiply(0)).isEqualTo(new Vector(0, 0, 0));
+        }
+    }
+
+    @Nested
+    @DisplayName("Method normalize")
+    class TestNormalize {
+        @Test
+        @DisplayName("should return the normalized vector")
+        void normalize_shouldReturnTheNormalizedVector() {
+            Vector vector = new Vector(1, 2, -3);
+            Vector expected = new Vector(1.0 / 3, 2.0 / 3, -1.0);
+            assertThat(vector.normalize()).isEqualTo(expected);
+        }
+    }
 }
