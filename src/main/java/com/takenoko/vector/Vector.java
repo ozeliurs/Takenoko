@@ -137,4 +137,12 @@ public class Vector {
     public String toString() {
         return "Vector[" + "q=" + q + ", " + "r=" + r + ", " + "s=" + s + ']';
     }
+
+    public PositionVector toPositionVector() {
+        return new PositionVector(this);
+    }
+
+    public static Vector fromPositionVector(PositionVector positionVector) {
+        return new Vector(positionVector.q(), positionVector.r(), positionVector.s());
+    }
 }

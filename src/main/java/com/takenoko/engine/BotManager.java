@@ -3,7 +3,7 @@ package com.takenoko.engine;
 import com.takenoko.Board;
 import com.takenoko.player.Bot;
 import com.takenoko.tile.Tile;
-import com.takenoko.vector.Vector;
+import com.takenoko.vector.PositionVector;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class BotManager extends PlayableManager {
@@ -17,7 +17,7 @@ public class BotManager extends PlayableManager {
     public void playBot(Board board) {
         for (int i = 0; i < this.getNumberOfRounds(); i++) {
             displayMessage(board.getPanda().positionMessage());
-            Pair<Vector, Tile> botChoice =
+            Pair<PositionVector, Tile> botChoice =
                     bot.chooseTileToPlace(
                             board.getAvailableTiles(), board.getAvailableTilePositions());
             board.placeTile(botChoice.getRight(), botChoice.getLeft());
