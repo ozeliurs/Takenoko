@@ -56,11 +56,17 @@ class PandaTest {
         }
 
         @Test
-        @DisplayName("should move the panda with a vector")
+        @DisplayName("should move the panda with a valid vector")
         void shouldMoveThePandaWithAVector() {
             Panda panda = new Panda();
             panda.move(new PositionVector(1, 0, -1), board);
             assertThat(panda.getPosition()).isEqualTo(new PositionVector(1, 0, -1));
+
+            panda.move(new PositionVector(0, -1, 1), board);
+            assertThat(panda.getPosition()).isEqualTo(new PositionVector(1, -1, 0));
+
+            panda.move(new PositionVector(1, -1, -0), board);
+            assertThat(panda.getPosition()).isEqualTo(new PositionVector(2, -2, 0));
         }
 
         @Test
