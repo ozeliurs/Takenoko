@@ -45,4 +45,9 @@ public class MovedPandaObjective implements Objective {
     public ObjectiveTypes getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return "MovedPandaObjective{state=" + state + '}';
+    }
 }
