@@ -118,6 +118,9 @@ public class Vector {
      */
     public Vector normalize() {
         double length = length();
+        if (length == 0) {
+            return new Vector(0, 0, 0);
+        }
         return new Vector(q() / length, r() / length, s() / length);
     }
 
