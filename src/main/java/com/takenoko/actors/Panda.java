@@ -26,4 +26,36 @@ public class Panda {
     public String positionMessage() {
         return "The panda is at " + position;
     }
+
+    /**
+     * Move the panda with a vector.
+     *
+     * @param vector the vector to move the panda
+     */
+    public void move(Vector vector, Board board) {
+        isMovePossible(vector, board);
+        position = position.add(vector).toPositionVector();
+    }
+
+    /**
+     * Check if the move is possible.
+     *
+     * @param vector the vector to move the panda
+     * @param board the board
+     */
+    private void isMovePossible(Vector vector, Board board) {
+        // check if the panda is moving in a straight line
+        if (!(vector.r() == 0 || vector.q() == 0 || vector.s() == 0)) {
+            throw new IllegalArgumentException("The panda must move in a straight line");
+        }
+
+        // check if the panda is moving on a tile
+        for (int i = 0; i < vector.length(); i++) {
+            PositionVector ray =
+                    this.position.add(vector.normalize().multiply(i)).toPositionVector();
+            if (!board.isTile(ray)) {
+                throw new IllegalArgumentException("The panda must move on a tile");
+            }
+        }
+    }
 }
