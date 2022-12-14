@@ -5,6 +5,7 @@ import com.takenoko.actors.Panda;
 import com.takenoko.vector.PositionVector;
 
 public class MovedPandaObjective implements Objective {
+    private static final ObjectiveTypes type = ObjectiveTypes.MOVED_PANDA;
     private ObjectiveState state;
 
     /** Constructor for the class 🤯 */
@@ -33,5 +34,15 @@ public class MovedPandaObjective implements Objective {
     @Override
     public boolean isAchieved() {
         return state == ObjectiveState.ACHIEVED;
+    }
+
+    @Override
+    public ObjectiveState getState() {
+        return state;
+    }
+
+    @Override
+    public ObjectiveTypes getType() {
+        return type;
     }
 }
