@@ -1,14 +1,16 @@
 package com.takenoko.actors;
 
+import com.takenoko.Board;
+import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 
 /** Panda class. The panda is an actor that can move on the board. */
 public class Panda {
-    Vector position;
+    PositionVector position;
 
     /** Constructor for the Panda class. Instantiate the panda at the origin. */
     public Panda() {
-        this.position = new Vector(0, 0, 0);
+        this.position = new PositionVector(0, 0, 0);
     }
 
     /**
