@@ -50,7 +50,7 @@ public class Panda {
         }
 
         // check if the panda is moving on a tile
-        for (int i = 0; i < vector.length(); i++) {
+        for (int i = 0; i < vector.length() + 1; i++) {
             PositionVector ray =
                     this.position.add(vector.normalize().multiply(i)).toPositionVector();
             if (!board.isTile(ray)) {
