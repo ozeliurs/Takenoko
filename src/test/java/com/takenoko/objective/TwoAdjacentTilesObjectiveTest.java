@@ -67,4 +67,14 @@ class TwoAdjacentTilesObjectiveTest {
                     twoAdjacentTilesObjective.toString());
         }
     }
+
+    @Nested
+    @DisplayName("Method getState")
+    class TestGetState {
+        @Test
+        @DisplayName("When Objective is initialized return correct state")
+        void getState_WhenObjectiveIsInitialized_ThenReturnsCorrectState() {
+            assertEquals(ObjectiveState.NOT_ACHIEVED, twoAdjacentTilesObjective.getState());
+        }
+    }
 }
