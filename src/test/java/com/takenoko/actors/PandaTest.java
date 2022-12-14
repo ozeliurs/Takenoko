@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.takenoko.layers.Board;
 import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
+import com.takenoko.vector.Vector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,7 +21,7 @@ class PandaTest {
         @Test
         @DisplayName("should return the position of the panda")
         void shouldReturnThePositionOfThePanda() {
-            Panda panda = new Panda();
+            Panda panda = new Panda(new Board());
             assertEquals(new PositionVector(0, 0, 0), panda.getPosition());
         }
     }
@@ -31,7 +32,7 @@ class PandaTest {
         @Test
         @DisplayName("should return a string explaining where the panda is on the board")
         void shouldReturnAStringExplainingWhereThePandaIsOnTheBoard() {
-            Panda panda = new Panda();
+            Panda panda = new Panda(new Board());
             assertEquals("The panda is at Vector[q=0.0, r=0.0, s=0.0]", panda.positionMessage());
         }
     }
@@ -58,50 +59,55 @@ class PandaTest {
         @Test
         @DisplayName("should move the panda with a valid vector")
         void shouldMoveThePandaWithAVector() {
-            Panda panda = new Panda();
-            panda.move(new PositionVector(1, 0, -1), board);
+            Panda panda = new Panda(board);
+            panda.move(new PositionVector(1, 0, -1));
             assertThat(panda.getPosition()).isEqualTo(new PositionVector(1, 0, -1));
 
-            panda.move(new PositionVector(0, -1, 1), board);
+            panda.move(new PositionVector(0, -1, 1));
             assertThat(panda.getPosition()).isEqualTo(new PositionVector(1, -1, 0));
 
-            panda.move(new PositionVector(1, -1, -0), board);
+            panda.move(new PositionVector(1, -1, -0));
             assertThat(panda.getPosition()).isEqualTo(new PositionVector(2, -2, 0));
         }
 
         @Test
-        @DisplayName(
-                "should throw an IllegalArgumentException if the panda is not moving in a straight"
-                        + " line")
-        void shouldThrowAnIllegalArgumentExceptionIfThePandaIsNotMovingInAStraightLine() {
-            Panda panda = new Panda();
-            PositionVector vector = new PositionVector(1, 1, -2);
-            assertThatThrownBy(() -> panda.move(vector, board))
+        @DisplayName("should throw an exception if the panda is not moving with a valid vector")
+        void shouldThrowAnExceptionIfThePandaIsNotMovingWithAValidVector() {
+            Panda panda = new Panda(board);
+            Vector vector = new PositionVector(1, 1, -2);
+            assertThatThrownBy(() -> panda.move(vector))
                     .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("The panda must move in a straight line");
+                    .hasMessage("This move is not possible");
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getPossibleMoves()")
+    class TestGetPossibleMoves {
+        private Board board;
+
+        @BeforeEach
+        void setUp() {
+            board = new Board();
+            board.placeTile(new Tile(), new PositionVector(1, 0, -1));
+            board.placeTile(new Tile(), new PositionVector(1, -1, 0));
+            board.placeTile(new Tile(), new PositionVector(2, -1, -1));
+            board.placeTile(new Tile(), new PositionVector(2, -2, 0));
+            board.placeTile(new Tile(), new PositionVector(1, -2, 1));
+            board.placeTile(new Tile(), new PositionVector(2, -3, 1));
+            board.placeTile(new Tile(), new PositionVector(1, -3, 2));
+            board.placeTile(new Tile(), new PositionVector(0, -2, 2));
         }
 
         @Test
-        @DisplayName(
-                "should throw an IllegalArgumentException if the panda is not moving on a tile")
-        void shouldThrowAnIllegalArgumentExceptionIfThePandaIsNotMovingOnATile() {
-            Panda panda = new Panda();
-            PositionVector vector = new PositionVector(-1, 0, 1);
-            assertThatThrownBy(() -> panda.move(vector, board))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("The panda must move on a tile");
-        }
-
-        @Test
-        @DisplayName(
-                "should throw an IllegalArgumentException if the panda is moving to a tile without"
-                        + " a straight path")
-        void shouldThrowAnIllegalArgumentExceptionIfThePandaIsMovingToATileWthoutAStraightPath() {
-            Panda panda = new Panda();
-            PositionVector vector = new PositionVector(0, -2, 2);
-            assertThatThrownBy(() -> panda.move(vector, board))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("The panda must move on a tile");
+        @DisplayName("should return a list of possible moves")
+        void shouldReturnAListOfPossibleMoves() {
+            Panda panda = new Panda(board);
+            assertThat(panda.getPossibleMoves())
+                    .containsExactlyInAnyOrder(
+                            new PositionVector(1, -1, 0),
+                            new PositionVector(2, -2, 0),
+                            new PositionVector(1, 0, -1));
         }
     }
 }

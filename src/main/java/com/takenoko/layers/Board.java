@@ -11,7 +11,7 @@ public class Board {
     public Board() {
 
         // PANDA RELATED
-        this.panda = new Panda();
+        this.panda = new Panda(this);
     }
 
     /**
