@@ -63,13 +63,13 @@ public class Board {
      * @param position the position to check
      */
     private boolean isPositionAvailable(PositionVector position) {
-        if (tiles.containsKey(position)) {
+        if (isTile(position)) {
             return false;
         }
         int nbNeighbors = 0;
         for (Vector neighbor : position.getNeighbors()) {
 
-            if (tiles.containsKey(neighbor.toPositionVector())) {
+            if (isTile(neighbor.toPositionVector())) {
                 if (tiles.get(neighbor.toPositionVector()).getType() == TileType.POND) {
                     return true;
                 }
@@ -128,5 +128,15 @@ public class Board {
      */
     public Panda getPanda() {
         return panda;
+    }
+
+    /**
+     * Check if there is a tile at the given position.
+     *
+     * @param position the position of the tile
+     * @return if there is a tile at the position
+     */
+    public boolean isTile(PositionVector position) {
+        return tiles.containsKey(position);
     }
 }
