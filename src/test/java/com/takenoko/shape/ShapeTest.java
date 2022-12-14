@@ -217,8 +217,9 @@ public class ShapeTest {
         void toString_shouldReturnStringRepresentationOfShape() {
             assertThat(shape.toString())
                     .hasToString(
-                            "Shape{pattern=[Vector[q=1, r=-1, s=0], Vector[q=0, r=0, s=0],"
-                                    + " Vector[q=1, r=0, s=-1]], origin=Vector[q=0, r=0, s=0]}");
+                            "Shape{pattern=[Vector[q=0.0, r=0.0, s=0.0], Vector[q=1.0, r=0.0,"
+                                + " s=-1.0], Vector[q=1.0, r=-1.0, s=0.0]], origin=Vector[q=0.0,"
+                                + " r=0.0, s=0.0]}");
         }
     }
 }

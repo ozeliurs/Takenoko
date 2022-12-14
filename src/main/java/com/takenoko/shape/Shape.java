@@ -43,9 +43,9 @@ public class Shape {
         return shape.stream()
                 .min(
                         (v1, v2) -> {
-                            float v1Distance = v1.distance(new Vector(0, 0, 0));
-                            float v2Distance = v2.distance(new Vector(0, 0, 0));
-                            return Float.compare(v1Distance, v2Distance);
+                            double v1Distance = v1.distance(new Vector(0, 0, 0));
+                            double v2Distance = v2.distance(new Vector(0, 0, 0));
+                            return Double.compare(v1Distance, v2Distance);
                         })
                 .orElse(new Vector(0, 0, 0));
     }
