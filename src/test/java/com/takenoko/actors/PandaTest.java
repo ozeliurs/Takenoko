@@ -94,8 +94,8 @@ class PandaTest {
 
         @Test
         @DisplayName(
-                "should throw an IllegalArgumentException if the panda is moving to a tile wthout a"
-                        + " straight path")
+                "should throw an IllegalArgumentException if the panda is moving to a tile without"
+                        + " a straight path")
         void shouldThrowAnIllegalArgumentExceptionIfThePandaIsMovingToATileWthoutAStraightPath() {
             Panda panda = new Panda();
             PositionVector vector = new PositionVector(0, -2, 2);
