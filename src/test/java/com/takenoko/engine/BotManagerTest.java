@@ -66,11 +66,10 @@ public class BotManagerTest {
 
         @Test
         @DisplayName("When board satisfies objective, objective is achieved")
-        @Disabled // TODO: fix this test for MovedPandaObjective
         void verifyObjective_ThenReturnsTrue() {
             Board board = new Board();
-            board.placeTile(board.getAvailableTiles().get(0), new PositionVector(1, -1, 0));
             board.placeTile(board.getAvailableTiles().get(0), new PositionVector(0, -1, 1));
+            board.getPanda().move(new PositionVector(0, -1, 1), board);
             botManager.verifyObjective(board);
             assertThat(botManager.isObjectiveAchieved()).isTrue();
         }
