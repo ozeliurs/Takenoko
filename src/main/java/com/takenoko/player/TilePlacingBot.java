@@ -4,7 +4,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.PlaceTileAction;
 
 /** Simple bot that places a tile on the board. */
-public class Bot implements Playable {
+public class TilePlacingBot implements Playable {
     @Override
     public Action chooseAction(Board board) {
         return new PlaceTileAction(

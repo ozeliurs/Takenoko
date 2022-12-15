@@ -1,20 +1,20 @@
 package com.takenoko.engine;
 
 import com.takenoko.player.Action;
-import com.takenoko.player.Bot;
+import com.takenoko.player.Playable;
 
 public class BotManager extends PlayableManager {
-    private final Bot bot;
+    private final Playable playable;
 
-    public BotManager(Bot bot) {
+    public BotManager(Playable playable) {
         super();
-        this.bot = bot;
+        this.playable = playable;
     }
 
     public void playBot(Board board) {
         for (int i = 0; i < this.getNumberOfRounds(); i++) {
             displayMessage(board.getActorsManager().getPanda().positionMessage());
-            Action action = bot.chooseAction(board);
+            Action action = playable.chooseAction(board);
             action.execute(board, this);
             verifyObjective(board);
             if (isObjectiveAchieved()) {

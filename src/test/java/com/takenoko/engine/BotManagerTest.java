@@ -6,22 +6,22 @@ import static org.mockito.Mockito.when;
 
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
-import com.takenoko.player.Bot;
+import com.takenoko.player.TilePlacingBot;
 import org.junit.jupiter.api.*;
 
 public class BotManagerTest {
-    Bot bot;
+    TilePlacingBot tilePlacingBot;
     BotManager botManager;
 
     @BeforeEach
     void setUp() {
-        bot = new Bot();
-        botManager = new BotManager(bot);
+        tilePlacingBot = new TilePlacingBot();
+        botManager = new BotManager(tilePlacingBot);
     }
 
     @AfterEach
     void tearDown() {
-        bot = null;
+        tilePlacingBot = null;
         botManager = null;
     }
 
@@ -78,7 +78,7 @@ public class BotManagerTest {
 
     @Nested
     @DisplayName("Method playBot")
-    class playBot {
+    class playTilePlacingBot {
         @Test
         @DisplayName("when bot has no goals, should place ten tiles")
         void playBot_WhenBotHasNoGoals_ThenPlacesTenTiles() {
@@ -92,7 +92,7 @@ public class BotManagerTest {
         @DisplayName("when bot has no goals, should display ten tile placement messages")
         void playBot_WhenBotHasNoGoals_ThenDisplaysTenTilePlacementMessages() {
             Board board = new Board();
-            BotManager botManager = new BotManager(bot);
+            BotManager botManager = new BotManager(tilePlacingBot);
             botManager.setObjective(null);
             botManager.playBot(board);
             assertThat(board.getLayerManager().getTileLayer().getTiles())
