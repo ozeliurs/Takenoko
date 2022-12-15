@@ -6,8 +6,12 @@ import com.takenoko.engine.Board;
 public class ActorsManager {
     private final Panda panda;
 
+    public ActorsManager(Panda panda) {
+        this.panda = panda;
+    }
+
     public ActorsManager(Board board) {
-        this.panda = new Panda(board);
+        this(new Panda(board));
     }
 
     public Panda getPanda() {
