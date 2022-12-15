@@ -1,7 +1,7 @@
 package com.takenoko.engine;
 
 import com.takenoko.player.Playable;
-import com.takenoko.player.TilePlacingBot;
+import com.takenoko.player.TilePlacingAndPandaMovingBot;
 import com.takenoko.ui.ConsoleUserInterface;
 
 /** The game engine is responsible for the gameplay throughout the game. */
@@ -19,7 +19,7 @@ public class GameEngine {
         board = new Board();
         consoleUserInterface = new ConsoleUserInterface();
         gameState = GameState.INITIALIZED;
-        playable = new TilePlacingBot();
+        playable = new TilePlacingAndPandaMovingBot();
     }
 
     /**
