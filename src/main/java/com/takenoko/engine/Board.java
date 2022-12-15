@@ -2,7 +2,7 @@ package com.takenoko.engine;
 
 import com.takenoko.actors.ActorsManager;
 import com.takenoko.layers.LayerManager;
-import com.takenoko.layers.TileLayer;
+import com.takenoko.layers.tile.TileLayer;
 
 /** Board class. The board contains the tiles. */
 public class Board {

@@ -1,4 +1,4 @@
-package com.takenoko.layers;
+package com.takenoko.layers.tile;
 
 import com.takenoko.tile.Pond;
 import com.takenoko.tile.Tile;
