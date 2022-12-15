@@ -1,9 +1,8 @@
-package com.takenoko.layers;
+package com.takenoko.layers.tile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.tile.Tile;
 import com.takenoko.tile.TileType;
 import com.takenoko.vector.PositionVector;

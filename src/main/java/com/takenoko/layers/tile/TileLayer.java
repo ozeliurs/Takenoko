@@ -24,7 +24,7 @@ public class TileLayer {
      * @param tile the tile to add to the board
      * @param position the position of the tile
      */
-    public void placeTile(Tile tile, PositionVector position) {
+    void placeTile(Tile tile, PositionVector position) {
         if (tiles.containsKey(position)) {
             throw new IllegalArgumentException("Tile already present at this position");
         }

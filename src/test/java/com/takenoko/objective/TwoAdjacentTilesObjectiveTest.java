@@ -1,11 +1,18 @@
 package com.takenoko.objective;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.LayerManager;
+import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
+import java.util.HashMap;
 import org.junit.jupiter.api.*;
+import org.springframework.test.util.ReflectionTestUtils;
 
 class TwoAdjacentTilesObjectiveTest {
 
@@ -30,12 +37,20 @@ class TwoAdjacentTilesObjectiveTest {
         @Test
         @DisplayName("When board has two tiles placed, state is ACHIEVED")
         void verify_WhenBoardHasTwoTilesNextToEachOther_ThenObjectiveStateIsACHIEVED() {
-            board.getLayerManager()
-                    .getTileLayer()
-                    .placeTile(new Tile(), new PositionVector(0, -1, 1));
-            board.getLayerManager()
-                    .getTileLayer()
-                    .placeTile(new Tile(), new PositionVector(1, -1, 0));
+            HashMap<PositionVector, Tile> tiles = new HashMap<>();
+            tiles.put(new PositionVector(0, -1, 1), new Tile());
+            tiles.put(new PositionVector(1, -1, 0), new Tile());
+
+            TileLayer tileLayer = mock(TileLayer.class);
+            when(tileLayer.getTilesWithoutPond()).thenReturn(tiles);
+            for (PositionVector position : tiles.keySet()) {
+                when(tileLayer.isTile(position)).thenReturn(true);
+            }
+
+            LayerManager layerManager = mock(LayerManager.class);
+            when(layerManager.getTileLayer()).thenReturn(tileLayer);
+            board = mock(Board.class);
+            when(board.getLayerManager()).thenReturn(layerManager);
             twoAdjacentTilesObjective.verify(board);
             assertEquals(ObjectiveState.ACHIEVED, twoAdjacentTilesObjective.getState());
         }
@@ -53,14 +68,11 @@ class TwoAdjacentTilesObjectiveTest {
         @Test
         @DisplayName("When Objective is achieved return true")
         void isAchieved_WhenObjectiveIsAchieved_ThenReturnsTrue() {
-            board.getLayerManager()
-                    .getTileLayer()
-                    .placeTile(new Tile(), new PositionVector(0, -1, 1));
-            board.getLayerManager()
-                    .getTileLayer()
-                    .placeTile(new Tile(), new PositionVector(1, -1, 0));
+            // use reflection to set the private field
+            ReflectionTestUtils.setField(
+                    twoAdjacentTilesObjective, "state", ObjectiveState.ACHIEVED);
             twoAdjacentTilesObjective.verify(board);
-            assertTrue(twoAdjacentTilesObjective.isAchieved());
+            assertThat(twoAdjacentTilesObjective.isAchieved()).isTrue();
         }
     }
 

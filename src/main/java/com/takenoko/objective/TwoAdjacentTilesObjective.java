@@ -27,7 +27,7 @@ public class TwoAdjacentTilesObjective implements Objective {
      * @return whether the objective has been achieved or not
      */
     public boolean isAchieved() {
-        return state == ObjectiveState.ACHIEVED;
+        return getState() == ObjectiveState.ACHIEVED;
     }
 
     /**
