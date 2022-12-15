@@ -59,7 +59,6 @@ public class MovePandaObjectiveTest {
 
         @Test
         @DisplayName("When the objective is achieved, returns ACHIEVED")
-        @Disabled
         void getState_WhenObjectiveIsAchieved_ThenReturnsACHIEVED() {
             board = mock(Board.class);
             when(board.getActorsManager()).thenReturn(mock(ActorsManager.class));
