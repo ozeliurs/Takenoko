@@ -1,4 +1,4 @@
-package com.takenoko.actors;
+package com.takenoko.actors.panda;
 
 import com.takenoko.engine.Board;
 import com.takenoko.vector.PositionVector;

@@ -1,5 +1,6 @@
 package com.takenoko.actors;
 
+import com.takenoko.actors.panda.Panda;
 import com.takenoko.engine.Board;
 
 public class ActorsManager {
