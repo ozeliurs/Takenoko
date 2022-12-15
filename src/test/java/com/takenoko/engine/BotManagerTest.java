@@ -1,26 +1,27 @@
 package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import com.takenoko.Board;
+import com.takenoko.objective.Objective;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
-import com.takenoko.player.Bot;
-import com.takenoko.vector.PositionVector;
+import com.takenoko.player.TilePlacingBot;
 import org.junit.jupiter.api.*;
 
 public class BotManagerTest {
-    Bot bot;
+    TilePlacingBot tilePlacingBot;
     BotManager botManager;
 
     @BeforeEach
     void setUp() {
-        bot = new Bot();
-        botManager = new BotManager(bot);
+        tilePlacingBot = new TilePlacingBot();
+        botManager = new BotManager(tilePlacingBot);
     }
 
     @AfterEach
     void tearDown() {
-        bot = null;
+        tilePlacingBot = null;
         botManager = null;
     }
 
@@ -67,34 +68,35 @@ public class BotManagerTest {
         @Test
         @DisplayName("When board satisfies objective, objective is achieved")
         void verifyObjective_ThenReturnsTrue() {
-            Board board = new Board();
-            board.placeTile(board.getAvailableTiles().get(0), new PositionVector(1, -1, 0));
-            board.placeTile(board.getAvailableTiles().get(0), new PositionVector(0, -1, 1));
-            botManager.verifyObjective(board);
+            Objective objective = mock(Objective.class);
+            when(objective.isAchieved()).thenReturn(true);
+            botManager.setObjective(objective);
+            botManager.verifyObjective(mock(Board.class));
             assertThat(botManager.isObjectiveAchieved()).isTrue();
         }
     }
 
     @Nested
     @DisplayName("Method playBot")
-    class playBot {
+    class playTilePlacingBot {
         @Test
         @DisplayName("when bot has no goals, should place ten tiles")
         void playBot_WhenBotHasNoGoals_ThenPlacesTenTiles() {
             Board board = new Board();
             botManager.setObjective(null);
             botManager.playBot(board);
-            assertThat(board.getTiles().size() - 1).isEqualTo(10);
+            assertThat(board.getLayerManager().getTileLayer().getTiles().size() - 1).isEqualTo(10);
         }
 
         @Test
         @DisplayName("when bot has no goals, should display ten tile placement messages")
         void playBot_WhenBotHasNoGoals_ThenDisplaysTenTilePlacementMessages() {
             Board board = new Board();
-            BotManager botManager = new BotManager(bot);
+            BotManager botManager = new BotManager(tilePlacingBot);
             botManager.setObjective(null);
             botManager.playBot(board);
-            assertThat(board.getTiles()).hasSize(10 + 1); // +1 because of the first empty string
+            assertThat(board.getLayerManager().getTileLayer().getTiles())
+                    .hasSize(10 + 1); // +1 because of the first empty string
         }
     }
 }

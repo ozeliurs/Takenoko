@@ -1,7 +1,7 @@
 package com.takenoko.engine;
 
-import com.takenoko.Board;
-import com.takenoko.player.Bot;
+import com.takenoko.player.Playable;
+import com.takenoko.player.TilePlacingAndPandaMovingBot;
 import com.takenoko.ui.ConsoleUserInterface;
 
 /** The game engine is responsible for the gameplay throughout the game. */
@@ -9,7 +9,7 @@ public class GameEngine {
     private final Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
-    private final Bot bot;
+    private final Playable playable;
 
     /**
      * Constructor for the GameEngine class. Instantiate the board and the console user interface
@@ -19,7 +19,7 @@ public class GameEngine {
         board = new Board();
         consoleUserInterface = new ConsoleUserInterface();
         gameState = GameState.INITIALIZED;
-        bot = new Bot();
+        playable = new TilePlacingAndPandaMovingBot();
     }
 
     /**
@@ -60,7 +60,7 @@ public class GameEngine {
     }
 
     public void playGame() {
-        BotManager botManager = new BotManager(bot);
+        BotManager botManager = new BotManager(playable);
         consoleUserInterface.displayMessage(
                 "The bot objective is : " + botManager.getObjectiveDescription());
         botManager.playBot(board);

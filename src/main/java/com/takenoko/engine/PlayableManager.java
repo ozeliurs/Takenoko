@@ -1,6 +1,5 @@
 package com.takenoko.engine;
 
-import com.takenoko.Board;
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.ui.ConsoleUserInterface;

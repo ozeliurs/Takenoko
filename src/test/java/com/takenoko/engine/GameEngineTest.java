@@ -110,7 +110,8 @@ class GameEngineTest {
             gameEngine.newGame();
             gameEngine.startGame();
             gameEngine.playGame();
-            assertThat(gameEngine.getBoard().getTiles()).hasSize(3);
+            assertThat(gameEngine.getBoard().getLayerManager().getTileLayer().getTiles())
+                    .hasSizeGreaterThan(1);
         }
     }
 

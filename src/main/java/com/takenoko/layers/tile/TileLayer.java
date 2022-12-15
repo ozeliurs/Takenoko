@@ -1,6 +1,5 @@
-package com.takenoko;
+package com.takenoko.layers.tile;
 
-import com.takenoko.actors.Panda;
 import com.takenoko.tile.Pond;
 import com.takenoko.tile.Tile;
 import com.takenoko.tile.TileType;
@@ -8,21 +7,17 @@ import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.*;
 
-/** Board class. The board contains the tiles. */
-public class Board {
-    private final HashMap<PositionVector, Tile> tiles;
-    private final HashSet<PositionVector> availableTilePositions;
-    private final Panda panda;
+/** The TileLayer class is used to manage the tiles on the board. */
+public class TileLayer {
+    final HashMap<PositionVector, Tile> tiles;
+    final HashSet<PositionVector> availableTilePositions;
 
-    /** Constructor for the Board class. Instantiate the tiles and the available tile positions. */
-    public Board() {
-        // TILE RELATED
-        this.tiles = new HashMap<>();
-        this.tiles.put(new PositionVector(0, 0, 0), new Pond());
-        this.availableTilePositions = new HashSet<>();
-        updateAvailableTilePositions(new PositionVector(0, 0, 0));
-        // PANDA RELATED
-        this.panda = new Panda();
+    /** Create a new TileLayer. */
+    public TileLayer() {
+        tiles = new HashMap<>();
+        availableTilePositions = new HashSet<>();
+        availableTilePositions.add(new PositionVector(0, 0, 0));
+        placeTile(new Pond(), new PositionVector(0, 0, 0));
     }
 
     /**
@@ -31,7 +26,7 @@ public class Board {
      * @param tile the tile to add to the board
      * @param position the position of the tile
      */
-    public void placeTile(Tile tile, PositionVector position) {
+    void placeTile(Tile tile, PositionVector position) {
         if (tiles.containsKey(position)) {
             throw new IllegalArgumentException("Tile already present at this position");
         }
@@ -47,7 +42,7 @@ public class Board {
      *
      * @param position the position of the tile to remove
      */
-    private void updateAvailableTilePositions(PositionVector position) {
+    void updateAvailableTilePositions(PositionVector position) {
         availableTilePositions.remove(position);
         for (Vector neighbor : position.getNeighbors()) {
             if (isPositionAvailable(neighbor.toPositionVector())) {
@@ -62,7 +57,7 @@ public class Board {
      *
      * @param position the position to check
      */
-    private boolean isPositionAvailable(PositionVector position) {
+    boolean isPositionAvailable(PositionVector position) {
         if (isTile(position)) {
             return false;
         }
@@ -122,21 +117,12 @@ public class Board {
     }
 
     /**
-     * Get the panda
-     *
-     * @return Panda
-     */
-    public Panda getPanda() {
-        return panda;
-    }
-
-    /**
      * Check if there is a tile at the given position.
      *
      * @param position the position of the tile
      * @return if there is a tile at the position
      */
     public boolean isTile(PositionVector position) {
-        return tiles.containsKey(position);
+        return getTiles().containsKey(position);
     }
 }
