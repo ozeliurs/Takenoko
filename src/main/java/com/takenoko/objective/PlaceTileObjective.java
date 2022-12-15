@@ -1,6 +1,6 @@
 package com.takenoko.objective;
 
-import com.takenoko.layers.Board;
+import com.takenoko.engine.Board;
 import java.util.Objects;
 
 public class PlaceTileObjective implements Objective {

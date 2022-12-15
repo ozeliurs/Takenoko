@@ -3,7 +3,7 @@ package com.takenoko.player;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.takenoko.layers.Board;
+import com.takenoko.engine.Board;
 import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import java.util.ArrayList;

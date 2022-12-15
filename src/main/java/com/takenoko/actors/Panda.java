@@ -1,6 +1,6 @@
 package com.takenoko.actors;
 
-import com.takenoko.layers.Board;
+import com.takenoko.engine.Board;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.List;

@@ -2,7 +2,6 @@ package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.takenoko.layers.Board;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.player.Bot;
 import com.takenoko.vector.PositionVector;

@@ -1,6 +1,6 @@
 package com.takenoko.objective;
 
-import com.takenoko.layers.Board;
+import com.takenoko.engine.Board;
 import com.takenoko.shape.Adjacent;
 import com.takenoko.shape.Shape;
 import com.takenoko.tile.Tile;

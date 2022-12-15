@@ -1,6 +1,5 @@
 package com.takenoko.engine;
 
-import com.takenoko.layers.Board;
 import com.takenoko.player.Bot;
 import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
@@ -16,7 +15,7 @@ public class BotManager extends PlayableManager {
 
     public void playBot(Board board) {
         for (int i = 0; i < this.getNumberOfRounds(); i++) {
-            displayMessage(board.getPanda().positionMessage());
+            displayMessage(board.getActorsManager().getPanda().positionMessage());
             Pair<PositionVector, Tile> botChoice =
                     bot.chooseTileToPlace(
                             board.getTileLayer().getAvailableTiles(),

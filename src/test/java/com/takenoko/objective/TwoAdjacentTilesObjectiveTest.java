@@ -2,7 +2,7 @@ package com.takenoko.objective;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.takenoko.layers.Board;
+import com.takenoko.engine.Board;
 import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.*;

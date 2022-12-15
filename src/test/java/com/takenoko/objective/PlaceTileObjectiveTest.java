@@ -2,7 +2,7 @@ package com.takenoko.objective;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.takenoko.layers.Board;
+import com.takenoko.engine.Board;
 import com.takenoko.tile.Tile;
 import org.junit.jupiter.api.*;
 
