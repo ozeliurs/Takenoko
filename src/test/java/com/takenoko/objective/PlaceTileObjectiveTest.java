@@ -36,11 +36,23 @@ class PlaceTileObjectiveTest {
         @Test
         @DisplayName("When board has two tiles placed, state is ACHIEVED")
         void verify_WhenBoardHasTwoTiles_ThenObjectiveStateIsACHIEVED() {
-            Tile tile = board.getTileLayer().getAvailableTiles().get(0);
-            board.getTileLayer()
-                    .placeTile(tile, board.getTileLayer().getAvailableTilePositions().get(0));
-            board.getTileLayer()
-                    .placeTile(tile, board.getTileLayer().getAvailableTilePositions().get(0));
+            Tile tile = board.getLayerManager().getTileLayer().getAvailableTiles().get(0);
+            board.getLayerManager()
+                    .getTileLayer()
+                    .placeTile(
+                            tile,
+                            board.getLayerManager()
+                                    .getTileLayer()
+                                    .getAvailableTilePositions()
+                                    .get(0));
+            board.getLayerManager()
+                    .getTileLayer()
+                    .placeTile(
+                            tile,
+                            board.getLayerManager()
+                                    .getTileLayer()
+                                    .getAvailableTilePositions()
+                                    .get(0));
             placeTileObjective.verify(board);
             assertThat(placeTileObjective.getState()).isEqualTo(ObjectiveState.ACHIEVED);
         }
@@ -58,11 +70,23 @@ class PlaceTileObjectiveTest {
         @Test
         @DisplayName("When Objective is achieved return true")
         void isAchieved_WhenObjectiveIsAchieved_ThenReturnsTrue() {
-            Tile tile = board.getTileLayer().getAvailableTiles().get(0);
-            board.getTileLayer()
-                    .placeTile(tile, board.getTileLayer().getAvailableTilePositions().get(0));
-            board.getTileLayer()
-                    .placeTile(tile, board.getTileLayer().getAvailableTilePositions().get(0));
+            Tile tile = board.getLayerManager().getTileLayer().getAvailableTiles().get(0);
+            board.getLayerManager()
+                    .getTileLayer()
+                    .placeTile(
+                            tile,
+                            board.getLayerManager()
+                                    .getTileLayer()
+                                    .getAvailableTilePositions()
+                                    .get(0));
+            board.getLayerManager()
+                    .getTileLayer()
+                    .placeTile(
+                            tile,
+                            board.getLayerManager()
+                                    .getTileLayer()
+                                    .getAvailableTilePositions()
+                                    .get(0));
             placeTileObjective.verify(board);
             assertThat(placeTileObjective.isAchieved()).isTrue();
         }

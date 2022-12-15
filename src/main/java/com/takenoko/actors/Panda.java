@@ -62,7 +62,7 @@ public class Panda {
             PositionVector ray =
                     this.position.add(vector.normalize().multiply(i)).toPositionVector();
 
-            if (!board.getTileLayer().isTile(ray)) {
+            if (!board.getLayerManager().getTileLayer().isTile(ray)) {
                 return false;
             }
         }
@@ -81,7 +81,7 @@ public class Panda {
     /** Calculate possible moves for the panda. */
     public void calculatePossibleMoves() {
         possibleMoves =
-                board.getTileLayer().getTiles().keySet().stream()
+                board.getLayerManager().getTileLayer().getTiles().keySet().stream()
                         .map(v -> v.sub(position))
                         .filter(this::isMovePossible)
                         .map(Vector::toPositionVector)

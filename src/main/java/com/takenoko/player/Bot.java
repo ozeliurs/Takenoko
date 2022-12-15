@@ -7,7 +7,7 @@ public class Bot implements Playable {
     @Override
     public Action chooseAction(Board board) {
         return new PlaceTileAction(
-                board.getTileLayer().getAvailableTiles().get(0),
-                board.getTileLayer().getAvailableTilePositions().get(0));
+                board.getLayerManager().getTileLayer().getAvailableTiles().get(0),
+                board.getLayerManager().getTileLayer().getAvailableTilePositions().get(0));
     }
 }

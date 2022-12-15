@@ -2,24 +2,28 @@ package com.takenoko.engine;
 
 import com.takenoko.actors.ActorsManager;
 import com.takenoko.layers.LayerManager;
-import com.takenoko.layers.tile.TileLayer;
 
 /** Board class. The board contains the tiles. */
 public class Board {
     private final ActorsManager actorsManager;
     private final LayerManager layerManager;
 
-    /** Constructor for the Board class. */
-    public Board() {
-        this.layerManager = new LayerManager();
-        this.actorsManager = new ActorsManager(this);
+    public Board(ActorsManager actorsManager, LayerManager layerManager) {
+        this.actorsManager = actorsManager;
+        this.layerManager = layerManager;
     }
 
-    public TileLayer getTileLayer() {
-        return layerManager.getTileLayer();
+    /** Constructor for the Board class. */
+    public Board() {
+        this.actorsManager = new ActorsManager(this);
+        this.layerManager = new LayerManager();
     }
 
     public ActorsManager getActorsManager() {
         return actorsManager;
+    }
+
+    public LayerManager getLayerManager() {
+        return layerManager;
     }
 }

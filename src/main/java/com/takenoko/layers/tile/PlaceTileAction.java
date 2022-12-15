@@ -17,7 +17,7 @@ public class PlaceTileAction implements Action {
 
     @Override
     public void execute(Board board, BotManager botManager) {
-        board.getTileLayer().placeTile(tile, positionVector);
+        board.getLayerManager().getTileLayer().placeTile(tile, positionVector);
         botManager.displayMessage("The bot has placed a tile at " + positionVector);
     }
 }

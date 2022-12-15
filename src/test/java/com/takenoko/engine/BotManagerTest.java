@@ -67,13 +67,15 @@ public class BotManagerTest {
         @DisplayName("When board satisfies objective, objective is achieved")
         void verifyObjective_ThenReturnsTrue() {
             Board board = new Board();
-            board.getTileLayer()
+            board.getLayerManager()
+                    .getTileLayer()
                     .placeTile(
-                            board.getTileLayer().getAvailableTiles().get(0),
+                            board.getLayerManager().getTileLayer().getAvailableTiles().get(0),
                             new PositionVector(1, -1, 0));
-            board.getTileLayer()
+            board.getLayerManager()
+                    .getTileLayer()
                     .placeTile(
-                            board.getTileLayer().getAvailableTiles().get(0),
+                            board.getLayerManager().getTileLayer().getAvailableTiles().get(0),
                             new PositionVector(0, -1, 1));
             botManager.verifyObjective(board);
             assertThat(botManager.isObjectiveAchieved()).isTrue();
@@ -89,7 +91,7 @@ public class BotManagerTest {
             Board board = new Board();
             botManager.setObjective(null);
             botManager.playBot(board);
-            assertThat(board.getTileLayer().getTiles().size() - 1).isEqualTo(10);
+            assertThat(board.getLayerManager().getTileLayer().getTiles().size() - 1).isEqualTo(10);
         }
 
         @Test
@@ -99,7 +101,7 @@ public class BotManagerTest {
             BotManager botManager = new BotManager(bot);
             botManager.setObjective(null);
             botManager.playBot(board);
-            assertThat(board.getTileLayer().getTiles())
+            assertThat(board.getLayerManager().getTileLayer().getTiles())
                     .hasSize(10 + 1); // +1 because of the first empty string
         }
     }

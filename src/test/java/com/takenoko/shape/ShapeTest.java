@@ -102,9 +102,10 @@ public class ShapeTest {
         @BeforeEach
         void setUp() {
             board = new Board();
-            board.getTileLayer()
+            board.getLayerManager()
+                    .getTileLayer()
                     .placeTile(
-                            board.getTileLayer().getAvailableTiles().get(0),
+                            board.getLayerManager().getTileLayer().getAvailableTiles().get(0),
                             new PositionVector(1, 0, -1));
         }
 
@@ -122,7 +123,8 @@ public class ShapeTest {
             expected.add(new Shape(new PositionVector(0, 0, 0)));
             expected.add(new Shape(new PositionVector(1, 0, -1)));
 
-            assertThat(shape.match(board.getTileLayer().getTiles())).isEqualTo(expected);
+            assertThat(shape.match(board.getLayerManager().getTileLayer().getTiles()))
+                    .isEqualTo(expected);
         }
 
         @Test
@@ -133,7 +135,8 @@ public class ShapeTest {
             ArrayList<Shape> expected = new ArrayList<>();
             expected.add(new Shape(new PositionVector(0, 0, 0), new PositionVector(1, 0, -1)));
 
-            assertThat(shape.match(board.getTileLayer().getTiles())).isEqualTo(expected);
+            assertThat(shape.match(board.getLayerManager().getTileLayer().getTiles()))
+                    .isEqualTo(expected);
         }
 
         @Test
@@ -144,7 +147,8 @@ public class ShapeTest {
             ArrayList<Shape> expected = new ArrayList<>();
             expected.add(new Shape(new PositionVector(0, 0, 0), new PositionVector(1, 0, -1)));
 
-            assertThat(shape.match(board.getTileLayer().getTiles())).isEqualTo(expected);
+            assertThat(shape.match(board.getLayerManager().getTileLayer().getTiles()))
+                    .isEqualTo(expected);
         }
 
         @Test
@@ -155,7 +159,7 @@ public class ShapeTest {
                             new PositionVector(0, 0, 0),
                             new PositionVector(1, 0, -1),
                             new PositionVector(2, 0, -2));
-            assertThat(shape.match(board.getTileLayer().getTiles())).isEmpty();
+            assertThat(shape.match(board.getLayerManager().getTileLayer().getTiles())).isEmpty();
         }
     }
 

@@ -57,7 +57,8 @@ public class TwoAdjacentTilesObjective implements Objective {
      */
     public void verify(Board board) {
         Shape adjacentShape = new Adjacent();
-        Map<PositionVector, Tile> boardTiles = board.getTileLayer().getTilesWithoutPond();
+        Map<PositionVector, Tile> boardTiles =
+                board.getLayerManager().getTileLayer().getTilesWithoutPond();
         List<Shape> matchingShapes = adjacentShape.match(boardTiles);
         if (!matchingShapes.isEmpty()) {
             state = ObjectiveState.ACHIEVED;

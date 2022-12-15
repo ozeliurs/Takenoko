@@ -30,8 +30,12 @@ class TwoAdjacentTilesObjectiveTest {
         @Test
         @DisplayName("When board has two tiles placed, state is ACHIEVED")
         void verify_WhenBoardHasTwoTilesNextToEachOther_ThenObjectiveStateIsACHIEVED() {
-            board.getTileLayer().placeTile(new Tile(), new PositionVector(0, -1, 1));
-            board.getTileLayer().placeTile(new Tile(), new PositionVector(1, -1, 0));
+            board.getLayerManager()
+                    .getTileLayer()
+                    .placeTile(new Tile(), new PositionVector(0, -1, 1));
+            board.getLayerManager()
+                    .getTileLayer()
+                    .placeTile(new Tile(), new PositionVector(1, -1, 0));
             twoAdjacentTilesObjective.verify(board);
             assertEquals(ObjectiveState.ACHIEVED, twoAdjacentTilesObjective.getState());
         }
@@ -49,8 +53,12 @@ class TwoAdjacentTilesObjectiveTest {
         @Test
         @DisplayName("When Objective is achieved return true")
         void isAchieved_WhenObjectiveIsAchieved_ThenReturnsTrue() {
-            board.getTileLayer().placeTile(new Tile(), new PositionVector(0, -1, 1));
-            board.getTileLayer().placeTile(new Tile(), new PositionVector(1, -1, 0));
+            board.getLayerManager()
+                    .getTileLayer()
+                    .placeTile(new Tile(), new PositionVector(0, -1, 1));
+            board.getLayerManager()
+                    .getTileLayer()
+                    .placeTile(new Tile(), new PositionVector(1, -1, 0));
             twoAdjacentTilesObjective.verify(board);
             assertTrue(twoAdjacentTilesObjective.isAchieved());
         }

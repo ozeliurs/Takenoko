@@ -121,6 +121,6 @@ public class TileLayer {
      * @return if there is a tile at the position
      */
     public boolean isTile(PositionVector position) {
-        return tiles.containsKey(position);
+        return getTiles().containsKey(position);
     }
 }
