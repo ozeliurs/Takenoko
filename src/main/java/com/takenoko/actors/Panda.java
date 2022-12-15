@@ -37,7 +37,7 @@ public class Panda {
      *
      * @param vector the vector to move the panda
      */
-    public void move(Vector vector) {
+    void move(Vector vector) {
         if (!possibleMoves.contains(vector.toPositionVector())) {
             throw new IllegalArgumentException("This move is not possible");
         }
