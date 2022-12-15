@@ -1,4 +1,4 @@
-package com.takenoko.layers;
+package com.takenoko.layers.tile;
 
 import com.takenoko.tile.Pond;
 import com.takenoko.tile.Tile;
@@ -7,10 +7,12 @@ import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.*;
 
+/** The TileLayer class is used to manage the tiles on the board. */
 public class TileLayer {
     final HashMap<PositionVector, Tile> tiles;
     final HashSet<PositionVector> availableTilePositions;
 
+    /** Create a new TileLayer. */
     public TileLayer() {
         tiles = new HashMap<>();
         availableTilePositions = new HashSet<>();
@@ -24,7 +26,7 @@ public class TileLayer {
      * @param tile the tile to add to the board
      * @param position the position of the tile
      */
-    public void placeTile(Tile tile, PositionVector position) {
+    void placeTile(Tile tile, PositionVector position) {
         if (tiles.containsKey(position)) {
             throw new IllegalArgumentException("Tile already present at this position");
         }
@@ -121,6 +123,6 @@ public class TileLayer {
      * @return if there is a tile at the position
      */
     public boolean isTile(PositionVector position) {
-        return tiles.containsKey(position);
+        return getTiles().containsKey(position);
     }
 }

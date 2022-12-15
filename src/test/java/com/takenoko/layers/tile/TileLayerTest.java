@@ -1,4 +1,4 @@
-package com.takenoko.layers;
+package com.takenoko.layers.tile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

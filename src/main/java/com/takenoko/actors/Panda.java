@@ -1,6 +1,6 @@
 package com.takenoko.actors;
 
-import com.takenoko.layers.Board;
+import com.takenoko.engine.Board;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.List;
@@ -37,7 +37,7 @@ public class Panda {
      *
      * @param vector the vector to move the panda
      */
-    public void move(Vector vector) {
+    void move(Vector vector) {
         if (!possibleMoves.contains(vector.toPositionVector())) {
             throw new IllegalArgumentException("This move is not possible");
         }
@@ -62,7 +62,7 @@ public class Panda {
             PositionVector ray =
                     this.position.add(vector.normalize().multiply(i)).toPositionVector();
 
-            if (!board.getTileLayer().isTile(ray)) {
+            if (!board.getLayerManager().getTileLayer().isTile(ray)) {
                 return false;
             }
         }
@@ -81,7 +81,7 @@ public class Panda {
     /** Calculate possible moves for the panda. */
     public void calculatePossibleMoves() {
         possibleMoves =
-                board.getTileLayer().getTiles().keySet().stream()
+                board.getLayerManager().getTileLayer().getTiles().keySet().stream()
                         .map(v -> v.sub(position))
                         .filter(this::isMovePossible)
                         .map(Vector::toPositionVector)

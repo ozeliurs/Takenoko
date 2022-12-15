@@ -1,11 +1,12 @@
 package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import com.takenoko.layers.Board;
+import com.takenoko.objective.Objective;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.player.Bot;
-import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.*;
 
 public class BotManagerTest {
@@ -67,16 +68,10 @@ public class BotManagerTest {
         @Test
         @DisplayName("When board satisfies objective, objective is achieved")
         void verifyObjective_ThenReturnsTrue() {
-            Board board = new Board();
-            board.getTileLayer()
-                    .placeTile(
-                            board.getTileLayer().getAvailableTiles().get(0),
-                            new PositionVector(1, -1, 0));
-            board.getTileLayer()
-                    .placeTile(
-                            board.getTileLayer().getAvailableTiles().get(0),
-                            new PositionVector(0, -1, 1));
-            botManager.verifyObjective(board);
+            Objective objective = mock(Objective.class);
+            when(objective.isAchieved()).thenReturn(true);
+            botManager.setObjective(objective);
+            botManager.verifyObjective(mock(Board.class));
             assertThat(botManager.isObjectiveAchieved()).isTrue();
         }
     }
@@ -90,7 +85,7 @@ public class BotManagerTest {
             Board board = new Board();
             botManager.setObjective(null);
             botManager.playBot(board);
-            assertThat(board.getTileLayer().getTiles().size() - 1).isEqualTo(10);
+            assertThat(board.getLayerManager().getTileLayer().getTiles().size() - 1).isEqualTo(10);
         }
 
         @Test
@@ -100,7 +95,7 @@ public class BotManagerTest {
             BotManager botManager = new BotManager(bot);
             botManager.setObjective(null);
             botManager.playBot(board);
-            assertThat(board.getTileLayer().getTiles())
+            assertThat(board.getLayerManager().getTileLayer().getTiles())
                     .hasSize(10 + 1); // +1 because of the first empty string
         }
     }
