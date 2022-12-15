@@ -1,6 +1,5 @@
-package com.takenoko;
+package com.takenoko.layers;
 
-import com.takenoko.actors.Panda;
 import com.takenoko.tile.Pond;
 import com.takenoko.tile.Tile;
 import com.takenoko.tile.TileType;
@@ -8,21 +7,15 @@ import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.*;
 
-/** Board class. The board contains the tiles. */
-public class Board {
-    private final HashMap<PositionVector, Tile> tiles;
-    private final HashSet<PositionVector> availableTilePositions;
-    private final Panda panda;
+public class TileLayer {
+    final HashMap<PositionVector, Tile> tiles;
+    final HashSet<PositionVector> availableTilePositions;
 
-    /** Constructor for the Board class. Instantiate the tiles and the available tile positions. */
-    public Board() {
-        // TILE RELATED
-        this.tiles = new HashMap<>();
-        this.tiles.put(new PositionVector(0, 0, 0), new Pond());
-        this.availableTilePositions = new HashSet<>();
-        updateAvailableTilePositions(new PositionVector(0, 0, 0));
-        // PANDA RELATED
-        this.panda = new Panda();
+    public TileLayer() {
+        tiles = new HashMap<>();
+        availableTilePositions = new HashSet<>();
+        availableTilePositions.add(new PositionVector(0, 0, 0));
+        placeTile(new Pond(), new PositionVector(0, 0, 0));
     }
 
     /**
@@ -47,7 +40,7 @@ public class Board {
      *
      * @param position the position of the tile to remove
      */
-    private void updateAvailableTilePositions(PositionVector position) {
+    void updateAvailableTilePositions(PositionVector position) {
         availableTilePositions.remove(position);
         for (Vector neighbor : position.getNeighbors()) {
             if (isPositionAvailable(neighbor.toPositionVector())) {
@@ -62,7 +55,7 @@ public class Board {
      *
      * @param position the position to check
      */
-    private boolean isPositionAvailable(PositionVector position) {
+    boolean isPositionAvailable(PositionVector position) {
         if (isTile(position)) {
             return false;
         }
@@ -119,15 +112,6 @@ public class Board {
         Map<PositionVector, Tile> filteredMap = new HashMap<>(tiles);
         filteredMap.remove(new PositionVector(0, 0, 0));
         return filteredMap;
-    }
-
-    /**
-     * Get the panda
-     *
-     * @return Panda
-     */
-    public Panda getPanda() {
-        return panda;
     }
 
     /**

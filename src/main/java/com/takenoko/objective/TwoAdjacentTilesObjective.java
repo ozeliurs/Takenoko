@@ -1,6 +1,6 @@
 package com.takenoko.objective;
 
-import com.takenoko.Board;
+import com.takenoko.layers.Board;
 import com.takenoko.shape.Adjacent;
 import com.takenoko.shape.Shape;
 import com.takenoko.tile.Tile;
@@ -57,7 +57,7 @@ public class TwoAdjacentTilesObjective implements Objective {
      */
     public void verify(Board board) {
         Shape adjacentShape = new Adjacent();
-        Map<PositionVector, Tile> boardTiles = board.getTilesWithoutPond();
+        Map<PositionVector, Tile> boardTiles = board.getTileLayer().getTilesWithoutPond();
         List<Shape> matchingShapes = adjacentShape.match(boardTiles);
         if (!matchingShapes.isEmpty()) {
             state = ObjectiveState.ACHIEVED;

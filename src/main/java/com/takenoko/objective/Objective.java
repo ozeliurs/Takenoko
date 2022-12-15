@@ -1,6 +1,6 @@
 package com.takenoko.objective;
 
-import com.takenoko.Board;
+import com.takenoko.layers.Board;
 
 public interface Objective {
 

@@ -1,6 +1,6 @@
 package com.takenoko.actors;
 
-import com.takenoko.Board;
+import com.takenoko.layers.Board;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 
@@ -53,7 +53,7 @@ public class Panda {
         for (int i = 0; i < vector.length() + 1; i++) {
             PositionVector ray =
                     this.position.add(vector.normalize().multiply(i)).toPositionVector();
-            if (!board.isTile(ray)) {
+            if (!board.getTileLayer().isTile(ray)) {
                 throw new IllegalArgumentException("The panda must move on a tile");
             }
         }

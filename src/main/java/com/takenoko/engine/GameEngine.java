@@ -1,6 +1,6 @@
 package com.takenoko.engine;
 
-import com.takenoko.Board;
+import com.takenoko.layers.Board;
 import com.takenoko.player.Bot;
 import com.takenoko.ui.ConsoleUserInterface;
 

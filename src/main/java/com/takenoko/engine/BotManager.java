@@ -1,6 +1,6 @@
 package com.takenoko.engine;
 
-import com.takenoko.Board;
+import com.takenoko.layers.Board;
 import com.takenoko.player.Bot;
 import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
@@ -19,8 +19,9 @@ public class BotManager extends PlayableManager {
             displayMessage(board.getPanda().positionMessage());
             Pair<PositionVector, Tile> botChoice =
                     bot.chooseTileToPlace(
-                            board.getAvailableTiles(), board.getAvailableTilePositions());
-            board.placeTile(botChoice.getRight(), botChoice.getLeft());
+                            board.getTileLayer().getAvailableTiles(),
+                            board.getTileLayer().getAvailableTilePositions());
+            board.getTileLayer().placeTile(botChoice.getRight(), botChoice.getLeft());
             displayMessage("The bot has placed a tile at " + botChoice.getLeft());
 
             verifyObjective(board);

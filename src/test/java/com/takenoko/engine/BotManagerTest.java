@@ -2,7 +2,7 @@ package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.takenoko.Board;
+import com.takenoko.layers.Board;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.player.Bot;
 import com.takenoko.vector.PositionVector;
@@ -68,8 +68,14 @@ public class BotManagerTest {
         @DisplayName("When board satisfies objective, objective is achieved")
         void verifyObjective_ThenReturnsTrue() {
             Board board = new Board();
-            board.placeTile(board.getAvailableTiles().get(0), new PositionVector(1, -1, 0));
-            board.placeTile(board.getAvailableTiles().get(0), new PositionVector(0, -1, 1));
+            board.getTileLayer()
+                    .placeTile(
+                            board.getTileLayer().getAvailableTiles().get(0),
+                            new PositionVector(1, -1, 0));
+            board.getTileLayer()
+                    .placeTile(
+                            board.getTileLayer().getAvailableTiles().get(0),
+                            new PositionVector(0, -1, 1));
             botManager.verifyObjective(board);
             assertThat(botManager.isObjectiveAchieved()).isTrue();
         }
@@ -84,7 +90,7 @@ public class BotManagerTest {
             Board board = new Board();
             botManager.setObjective(null);
             botManager.playBot(board);
-            assertThat(board.getTiles().size() - 1).isEqualTo(10);
+            assertThat(board.getTileLayer().getTiles().size() - 1).isEqualTo(10);
         }
 
         @Test
@@ -94,7 +100,8 @@ public class BotManagerTest {
             BotManager botManager = new BotManager(bot);
             botManager.setObjective(null);
             botManager.playBot(board);
-            assertThat(board.getTiles()).hasSize(10 + 1); // +1 because of the first empty string
+            assertThat(board.getTileLayer().getTiles())
+                    .hasSize(10 + 1); // +1 because of the first empty string
         }
     }
 }

@@ -2,7 +2,7 @@ package com.takenoko.objective;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.takenoko.Board;
+import com.takenoko.layers.Board;
 import com.takenoko.tile.Tile;
 import org.junit.jupiter.api.*;
 
@@ -36,9 +36,11 @@ class PlaceTileObjectiveTest {
         @Test
         @DisplayName("When board has two tiles placed, state is ACHIEVED")
         void verify_WhenBoardHasTwoTiles_ThenObjectiveStateIsACHIEVED() {
-            Tile tile = board.getAvailableTiles().get(0);
-            board.placeTile(tile, board.getAvailableTilePositions().get(0));
-            board.placeTile(tile, board.getAvailableTilePositions().get(0));
+            Tile tile = board.getTileLayer().getAvailableTiles().get(0);
+            board.getTileLayer()
+                    .placeTile(tile, board.getTileLayer().getAvailableTilePositions().get(0));
+            board.getTileLayer()
+                    .placeTile(tile, board.getTileLayer().getAvailableTilePositions().get(0));
             placeTileObjective.verify(board);
             assertThat(placeTileObjective.getState()).isEqualTo(ObjectiveState.ACHIEVED);
         }
@@ -56,9 +58,11 @@ class PlaceTileObjectiveTest {
         @Test
         @DisplayName("When Objective is achieved return true")
         void isAchieved_WhenObjectiveIsAchieved_ThenReturnsTrue() {
-            Tile tile = board.getAvailableTiles().get(0);
-            board.placeTile(tile, board.getAvailableTilePositions().get(0));
-            board.placeTile(tile, board.getAvailableTilePositions().get(0));
+            Tile tile = board.getTileLayer().getAvailableTiles().get(0);
+            board.getTileLayer()
+                    .placeTile(tile, board.getTileLayer().getAvailableTilePositions().get(0));
+            board.getTileLayer()
+                    .placeTile(tile, board.getTileLayer().getAvailableTilePositions().get(0));
             placeTileObjective.verify(board);
             assertThat(placeTileObjective.isAchieved()).isTrue();
         }
