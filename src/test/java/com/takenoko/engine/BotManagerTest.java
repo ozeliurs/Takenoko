@@ -4,13 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.takenoko.layers.LayerManager;
-import com.takenoko.layers.tile.TileLayer;
+import com.takenoko.objective.Objective;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.player.Bot;
-import com.takenoko.tile.Tile;
-import com.takenoko.vector.PositionVector;
-import java.util.HashMap;
 import org.junit.jupiter.api.*;
 
 public class BotManagerTest {
@@ -72,22 +68,10 @@ public class BotManagerTest {
         @Test
         @DisplayName("When board satisfies objective, objective is achieved")
         void verifyObjective_ThenReturnsTrue() {
-            HashMap<PositionVector, Tile> tiles = new HashMap<>();
-            tiles.put(new PositionVector(0, -1, 1), new Tile());
-            tiles.put(new PositionVector(1, -1, 0), new Tile());
-
-            TileLayer tileLayer = mock(TileLayer.class);
-            when(tileLayer.getTilesWithoutPond()).thenReturn(tiles);
-            for (PositionVector position : tiles.keySet()) {
-                when(tileLayer.isTile(position)).thenReturn(true);
-            }
-            when(tileLayer.isTile(new PositionVector(0, 0, 0))).thenReturn(true);
-
-            LayerManager layerManager = mock(LayerManager.class);
-            when(layerManager.getTileLayer()).thenReturn(tileLayer);
-            Board boardMock = mock(Board.class);
-            when(boardMock.getLayerManager()).thenReturn(layerManager);
-            botManager.verifyObjective(boardMock);
+            Objective objective = mock(Objective.class);
+            when(objective.isAchieved()).thenReturn(true);
+            botManager.setObjective(objective);
+            botManager.verifyObjective(mock(Board.class));
             assertThat(botManager.isObjectiveAchieved()).isTrue();
         }
     }
