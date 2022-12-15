@@ -7,10 +7,12 @@ import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.*;
 
+/** The TileLayer class is used to manage the tiles on the board. */
 public class TileLayer {
     final HashMap<PositionVector, Tile> tiles;
     final HashSet<PositionVector> availableTilePositions;
 
+    /** Create a new TileLayer. */
     public TileLayer() {
         tiles = new HashMap<>();
         availableTilePositions = new HashSet<>();
