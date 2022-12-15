@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import com.takenoko.engine.Board;
 import com.takenoko.layers.LayerManager;
 import com.takenoko.layers.tile.TileLayer;
+import com.takenoko.tile.Pond;
 import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
@@ -24,6 +25,7 @@ class PandaTest {
     @BeforeEach
     void setUp() {
         HashMap<PositionVector, Tile> tiles = new HashMap<>();
+        tiles.put(new PositionVector(0, 0, 0), new Pond());
         tiles.put(new PositionVector(1, 0, -1), new Tile());
         tiles.put(new PositionVector(1, -1, 0), new Tile());
         tiles.put(new PositionVector(2, -1, -1), new Tile());
@@ -38,7 +40,6 @@ class PandaTest {
         for (PositionVector position : tiles.keySet()) {
             when(tileLayer.isTile(position)).thenReturn(true);
         }
-        when(tileLayer.isTile(new PositionVector(0, 0, 0))).thenReturn(true);
 
         LayerManager layerManager = mock(LayerManager.class);
         when(layerManager.getTileLayer()).thenReturn(tileLayer);
