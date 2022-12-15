@@ -89,14 +89,14 @@ class PandaTest {
         @BeforeEach
         void setUp() {
             board = new Board();
-            board.placeTile(new Tile(), new PositionVector(1, 0, -1));
-            board.placeTile(new Tile(), new PositionVector(1, -1, 0));
-            board.placeTile(new Tile(), new PositionVector(2, -1, -1));
-            board.placeTile(new Tile(), new PositionVector(2, -2, 0));
-            board.placeTile(new Tile(), new PositionVector(1, -2, 1));
-            board.placeTile(new Tile(), new PositionVector(2, -3, 1));
-            board.placeTile(new Tile(), new PositionVector(1, -3, 2));
-            board.placeTile(new Tile(), new PositionVector(0, -2, 2));
+            board.getTileLayer().placeTile(new Tile(), new PositionVector(1, 0, -1));
+            board.getTileLayer().placeTile(new Tile(), new PositionVector(1, -1, 0));
+            board.getTileLayer().placeTile(new Tile(), new PositionVector(2, -1, -1));
+            board.getTileLayer().placeTile(new Tile(), new PositionVector(2, -2, 0));
+            board.getTileLayer().placeTile(new Tile(), new PositionVector(1, -2, 1));
+            board.getTileLayer().placeTile(new Tile(), new PositionVector(2, -3, 1));
+            board.getTileLayer().placeTile(new Tile(), new PositionVector(1, -3, 2));
+            board.getTileLayer().placeTile(new Tile(), new PositionVector(0, -2, 2));
         }
 
         @Test
