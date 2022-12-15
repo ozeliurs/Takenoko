@@ -1,10 +1,10 @@
 package com.takenoko.player;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.PlaceTileAction;
 import org.junit.jupiter.api.*;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class TilePlacingBotTest {
     private TilePlacingBot tilePlacingBot;
