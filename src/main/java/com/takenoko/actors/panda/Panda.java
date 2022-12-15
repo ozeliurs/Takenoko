@@ -75,6 +75,7 @@ public class Panda {
      * @return the possible moves
      */
     public List<PositionVector> getPossibleMoves() {
+        calculatePossibleMoves();
         return possibleMoves;
     }
 
