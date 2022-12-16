@@ -28,7 +28,7 @@ public abstract class PlayableManager {
     protected PlayableManager() {
         this(
                 DEFAULT_NUMBER_OF_ACTIONS,
-                new EatBambooObjective(1),
+                new EatBambooObjective(2),
                 new ConsoleUserInterface(),
                 "Default Name");
     }

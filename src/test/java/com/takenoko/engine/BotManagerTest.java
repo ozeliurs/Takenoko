@@ -38,7 +38,7 @@ public class BotManagerTest {
         void
                 getObjectiveDescription_WhenObjectiveIsToHaveTwoAdjacentTiles_ThenReturnsCorrectDescription() {
             assertThat(botManager.getObjectiveDescription())
-                    .isEqualTo(new EatBambooObjective(1).toString());
+                    .isEqualTo(new EatBambooObjective(2).toString());
         }
 
         @Test
