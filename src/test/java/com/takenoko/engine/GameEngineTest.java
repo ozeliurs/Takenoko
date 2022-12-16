@@ -9,7 +9,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mock;
 
 /** Test class for the GameEngine class. */
 class GameEngineTest {
@@ -119,7 +118,6 @@ class GameEngineTest {
             gameEngine.playGame();
 
             verify(botManager, times(GameEngine.DEFAULT_NUMBER_OF_ROUNDS)).isObjectiveAchieved();
-
         }
     }
 

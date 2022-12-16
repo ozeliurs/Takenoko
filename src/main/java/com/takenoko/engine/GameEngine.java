@@ -1,6 +1,5 @@
 package com.takenoko.engine;
 
-import com.takenoko.player.Playable;
 import com.takenoko.player.TilePlacingAndPandaMovingBot;
 import com.takenoko.ui.ConsoleUserInterface;
 
@@ -36,8 +35,7 @@ public class GameEngine {
                 new Board(),
                 new ConsoleUserInterface(),
                 GameState.INITIALIZED,
-                new BotManager(new TilePlacingAndPandaMovingBot())
-        );
+                new BotManager(new TilePlacingAndPandaMovingBot()));
     }
 
     public GameEngine(BotManager botManager) {
@@ -46,8 +44,7 @@ public class GameEngine {
                 new Board(),
                 new ConsoleUserInterface(),
                 GameState.INITIALIZED,
-                botManager
-        );
+                botManager);
     }
 
     /**
