@@ -2,6 +2,7 @@ package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
@@ -105,13 +106,18 @@ class GameEngineTest {
     @DisplayName("Method playGame")
     class TestPlayGame {
         @Test
-        @DisplayName("When called, a tile is placed on the board")
-        void playGame_whenCalled_aTileIsPlacedOnTheBoard() {
+        @DisplayName("when bot has no objective should play all the rounds")
+        void playGame_whenBotHasNoObjective_shouldPlayAllTheRounds() {
+            BotManager botManager = mock(BotManager.class);
+            GameEngine gameEngine = new GameEngine(botManager);
+
+            when(botManager.isObjectiveAchieved()).thenReturn(false);
+
             gameEngine.newGame();
             gameEngine.startGame();
             gameEngine.playGame();
-            assertThat(gameEngine.getBoard().getLayerManager().getTileLayer().getTiles())
-                    .hasSizeGreaterThan(1);
+
+            verify(botManager, times(GameEngine.DEFAULT_NUMBER_OF_ROUNDS)).isObjectiveAchieved();
         }
     }
 

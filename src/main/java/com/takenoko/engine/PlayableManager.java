@@ -7,16 +7,13 @@ import com.takenoko.ui.ConsoleUserInterface;
 public abstract class PlayableManager {
     // CONSTANTS
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
-    private static final int DEFAULT_NUMBER_OF_ROUNDS = 10;
     // ATTRIBUTES
     private final int numberOfActions;
-    private final int numberOfRounds;
     private Objective objective;
     private final ConsoleUserInterface consoleUserInterface;
 
     protected PlayableManager() {
         numberOfActions = DEFAULT_NUMBER_OF_ACTIONS;
-        numberOfRounds = DEFAULT_NUMBER_OF_ROUNDS;
         objective = new MovePandaObjective();
         consoleUserInterface = new ConsoleUserInterface();
     }
@@ -30,10 +27,6 @@ public abstract class PlayableManager {
 
     protected int getNumberOfActions() {
         return numberOfActions;
-    }
-
-    protected int getNumberOfRounds() {
-        return numberOfRounds;
     }
 
     public void displayMessage(String message) {

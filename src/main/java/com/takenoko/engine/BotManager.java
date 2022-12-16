@@ -12,8 +12,7 @@ public class BotManager extends PlayableManager {
     }
 
     public void playBot(Board board) {
-        for (int i = 0; i < this.getNumberOfRounds(); i++) {
-            displayMessage(board.getActorsManager().getPanda().positionMessage());
+        for (int i = 0; i < this.getNumberOfActions(); i++) {
             Action action = playable.chooseAction(board);
             action.execute(board, this);
             verifyObjective(board);

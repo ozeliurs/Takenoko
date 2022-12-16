@@ -78,25 +78,5 @@ public class BotManagerTest {
 
     @Nested
     @DisplayName("Method playBot")
-    class playTilePlacingBot {
-        @Test
-        @DisplayName("when bot has no goals, should place ten tiles")
-        void playBot_WhenBotHasNoGoals_ThenPlacesTenTiles() {
-            Board board = new Board();
-            botManager.setObjective(null);
-            botManager.playBot(board);
-            assertThat(board.getLayerManager().getTileLayer().getTiles().size() - 1).isEqualTo(10);
-        }
-
-        @Test
-        @DisplayName("when bot has no goals, should display ten tile placement messages")
-        void playBot_WhenBotHasNoGoals_ThenDisplaysTenTilePlacementMessages() {
-            Board board = new Board();
-            BotManager botManager = new BotManager(tilePlacingBot);
-            botManager.setObjective(null);
-            botManager.playBot(board);
-            assertThat(board.getLayerManager().getTileLayer().getTiles())
-                    .hasSize(10 + 1); // +1 because of the first empty string
-        }
-    }
+    class playTilePlacingBot {}
 }
