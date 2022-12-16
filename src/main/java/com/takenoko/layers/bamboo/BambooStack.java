@@ -3,10 +3,10 @@ package com.takenoko.layers.bamboo;
 import java.util.Objects;
 
 public class BambooStack {
-    private int bamboo;
+    private int bambooCount;
 
     public BambooStack(int startingBamboo) {
-        bamboo = startingBamboo;
+        bambooCount = startingBamboo;
     }
 
     public BambooStack() {
@@ -14,11 +14,18 @@ public class BambooStack {
     }
 
     void addBamboo() {
-        bamboo++;
+        bambooCount++;
     }
 
-    public int getBamboo() {
-        return bamboo;
+    void subBamboo() {
+        if (bambooCount == 0) {
+            throw new IllegalArgumentException("There is no bamboo to remove");
+        }
+        bambooCount--;
+    }
+
+    public int getBambooCount() {
+        return bambooCount;
     }
 
     @Override
@@ -26,11 +33,11 @@ public class BambooStack {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BambooStack that = (BambooStack) o;
-        return getBamboo() == that.getBamboo();
+        return getBambooCount() == that.getBambooCount();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getBamboo());
+        return Objects.hash(getBambooCount());
     }
 }

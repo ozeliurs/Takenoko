@@ -63,4 +63,17 @@ public class BambooLayer {
     public Map<PositionVector, BambooStack> getBamboo() {
         return new HashMap<>(bamboo);
     }
+
+    /**
+     * Remove bamboo from a tile.
+     *
+     * @param positionVector the position of the tile
+     */
+    public void removeBamboo(PositionVector positionVector) {
+        if (getBambooAt(positionVector).getBambooCount() > 0) {
+            bamboo.get(positionVector).subBamboo();
+        } else {
+            throw new IllegalArgumentException("There is no bamboo on this tile");
+        }
+    }
 }

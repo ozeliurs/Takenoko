@@ -5,6 +5,8 @@ import static org.mockito.Mockito.*;
 import com.takenoko.actors.ActorsManager;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.layers.LayerManager;
+import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.player.Playable;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +31,10 @@ class MovePandaActionTest {
         when(actorsManager.getPanda()).thenReturn(panda);
         board = mock(Board.class);
         when(board.getActorsManager()).thenReturn(actorsManager);
+        LayerManager layerManager = mock(LayerManager.class);
+        BambooLayer bambooLayer = mock(BambooLayer.class);
+        when(layerManager.getBambooLayer()).thenReturn(bambooLayer);
+        when(board.getLayerManager()).thenReturn(layerManager);
     }
 
     @Nested
