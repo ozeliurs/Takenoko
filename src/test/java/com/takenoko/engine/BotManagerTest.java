@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.takenoko.objective.MovePandaObjective;
 import com.takenoko.objective.Objective;
-import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.player.TilePlacingBot;
 import org.junit.jupiter.api.*;
 
@@ -33,7 +33,7 @@ public class BotManagerTest {
         void
                 getObjectiveDescription_WhenObjectiveIsToHaveTwoAdjacentTiles_ThenReturnsCorrectDescription() {
             assertThat(botManager.getObjectiveDescription())
-                    .isEqualTo(new TwoAdjacentTilesObjective().toString());
+                    .isEqualTo(new MovePandaObjective().toString());
         }
 
         @Test
