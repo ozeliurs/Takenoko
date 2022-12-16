@@ -33,8 +33,7 @@ public class MovePandaObjectiveTest {
         @Test
         @DisplayName("Returns the correct string")
         void toString_ThenReturnsCorrectString() {
-            assertThat(movePandaObjective.toString())
-                    .isEqualTo("MovePandaObjective{state=NOT_ACHIEVED}");
+            assertThat(movePandaObjective).hasToString("MovePandaObjective{state=NOT_ACHIEVED}");
         }
     }
 
@@ -116,7 +115,7 @@ public class MovePandaObjectiveTest {
         @Test
         @DisplayName("When the objective is compared to itself, returns the same hash code")
         void hashCode_WhenObjectiveIsComparedToItself_ThenReturnsSameHashCode() {
-            assertThat(movePandaObjective.hashCode()).isEqualTo(movePandaObjective.hashCode());
+            assertThat(movePandaObjective).hasSameHashCodeAs(movePandaObjective);
         }
 
         @Test
@@ -124,8 +123,7 @@ public class MovePandaObjectiveTest {
                 "When the objective is compared to an objective of the same type, returns the same"
                         + " hash code")
         void hashCode_WhenObjectiveIsComparedToSameType_ThenReturnsSameHashCode() {
-            assertThat(movePandaObjective.hashCode())
-                    .isEqualTo(new MovePandaObjective().hashCode());
+            assertThat(movePandaObjective).hasSameHashCodeAs(new MovePandaObjective());
         }
 
         @Test
