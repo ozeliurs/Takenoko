@@ -70,7 +70,7 @@ public class BambooLayer {
      * @param positionVector the position of the tile
      */
     public void removeBamboo(PositionVector positionVector) {
-        if (bamboo.containsKey(positionVector) && bamboo.get(positionVector).getBamboo() > 0) {
+        if (getBambooAt(positionVector).getBamboo() > 0) {
             bamboo.get(positionVector).subBamboo();
         } else {
             throw new IllegalArgumentException("There is no bamboo on this tile");
