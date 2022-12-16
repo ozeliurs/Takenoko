@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.LayerManager;
+import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.player.Playable;
 import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
@@ -36,6 +37,7 @@ class PlaceTileActionTest {
         @Test
         @DisplayName("should place the tile on the board")
         void shouldMoveThePanda() {
+            when(board.getLayerManager().getBambooLayer()).thenReturn(mock(BambooLayer.class));
             placeTileAction.execute(board, botManager);
             verify(tileLayer).placeTile(new Tile(), new PositionVector(-1, 0, 1));
         }
