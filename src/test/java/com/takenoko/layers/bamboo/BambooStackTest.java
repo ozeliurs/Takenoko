@@ -15,7 +15,7 @@ class BambooStackTest {
         @DisplayName("should return the number of bamboo")
         void shouldReturnTheNumberOfBamboo() {
             BambooStack bambooStack = new BambooStack(5);
-            assertEquals(5, bambooStack.getBamboo());
+            assertEquals(5, bambooStack.getBambooCount());
         }
     }
 
@@ -27,7 +27,7 @@ class BambooStackTest {
         void shouldAddABamboo() {
             BambooStack bambooStack = new BambooStack(5);
             bambooStack.addBamboo();
-            assertEquals(6, bambooStack.getBamboo());
+            assertEquals(6, bambooStack.getBambooCount());
         }
     }
 
@@ -39,7 +39,7 @@ class BambooStackTest {
         void shouldRemoveABamboo() {
             BambooStack bambooStack = new BambooStack(5);
             bambooStack.subBamboo();
-            assertEquals(4, bambooStack.getBamboo());
+            assertEquals(4, bambooStack.getBambooCount());
         }
 
         @Test
