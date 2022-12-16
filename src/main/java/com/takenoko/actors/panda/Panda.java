@@ -38,11 +38,11 @@ public class Panda {
      * @param vector the vector to move the panda
      */
     void move(Vector vector) {
+        calculatePossibleMoves();
         if (!possibleMoves.contains(vector.toPositionVector())) {
             throw new IllegalArgumentException("This move is not possible");
         }
         position = position.add(vector).toPositionVector();
-        calculatePossibleMoves();
     }
 
     /**

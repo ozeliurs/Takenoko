@@ -66,6 +66,6 @@ public class PlaceTileObjective implements Objective {
 
     @Override
     public int hashCode() {
-        return Objects.hash(numberOfTileToPlace, state);
+        return Objects.hash(numberOfTileToPlace, type, state);
     }
 }

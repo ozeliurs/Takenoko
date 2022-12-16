@@ -52,6 +52,6 @@ public class EatBambooObjective implements Objective {
 
     @Override
     public int hashCode() {
-        return Objects.hash(numberOfBamboosToEat, state);
+        return Objects.hash(numberOfBamboosToEat, type, state);
     }
 }
