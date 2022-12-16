@@ -15,7 +15,7 @@ public class Board {
 
     /** Constructor for the Board class. */
     public Board() {
-        this.layerManager = new LayerManager();
+        this.layerManager = new LayerManager(this);
         this.actorsManager = new ActorsManager(this);
     }
 
