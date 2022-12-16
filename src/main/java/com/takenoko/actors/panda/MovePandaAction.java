@@ -30,5 +30,8 @@ public class MovePandaAction implements Action {
         board.getActorsManager().getPanda().move(positionVector);
         botManager.displayMessage(botManager + " moved the panda to " + positionVector);
         new RemoveBambooAction(positionVector).execute(board, botManager);
+        botManager.incrementBambooCounter();
+        botManager.displayMessage(
+                "The panda has eaten one bamboo on the tile at " + positionVector);
     }
 }

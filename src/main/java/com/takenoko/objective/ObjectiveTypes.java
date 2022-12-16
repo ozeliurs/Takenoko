@@ -4,4 +4,5 @@ public enum ObjectiveTypes {
     NUMBER_OF_TILES_PLACED,
     TWO_ADJACENT_TILES,
     MOVED_PANDA,
+    NUMBER_OF_BAMBOOS_EATEN
 }
