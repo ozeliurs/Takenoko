@@ -1,27 +1,21 @@
 package com.takenoko.engine;
 
-import com.takenoko.Board;
-import com.takenoko.player.Bot;
-import com.takenoko.tile.Tile;
-import com.takenoko.vector.Vector;
-import org.apache.commons.lang3.tuple.Pair;
+import com.takenoko.player.Action;
+import com.takenoko.player.Playable;
 
 public class BotManager extends PlayableManager {
-    private final Bot bot;
+    private final Playable playable;
 
-    public BotManager(Bot bot) {
+    public BotManager(Playable playable) {
         super();
-        this.bot = bot;
+        this.playable = playable;
     }
 
     public void playBot(Board board) {
         for (int i = 0; i < this.getNumberOfRounds(); i++) {
-            Pair<Vector, Tile> botChoice =
-                    bot.chooseTileToPlace(
-                            board.getAvailableTiles(), board.getAvailableTilePositions());
-            board.placeTile(botChoice.getRight(), botChoice.getLeft());
-            displayMessage("The bot has placed a tile at " + botChoice.getLeft());
-
+            displayMessage(board.getActorsManager().getPanda().positionMessage());
+            Action action = playable.chooseAction(board);
+            action.execute(board, this);
             verifyObjective(board);
             if (isObjectiveAchieved()) {
                 return;

@@ -1,9 +1,9 @@
 package com.takenoko.shape;
 
-import com.takenoko.vector.Vector;
+import com.takenoko.vector.PositionVector;
 
 public class Adjacent extends Shape {
     public Adjacent() {
-        super(new Vector(0, 0, 0), new Vector(1, 0, -1));
+        super(new PositionVector(0, 0, 0), new PositionVector(1, 0, -1));
     }
 }

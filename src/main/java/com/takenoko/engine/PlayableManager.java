@@ -1,8 +1,7 @@
 package com.takenoko.engine;
 
-import com.takenoko.Board;
+import com.takenoko.objective.MovePandaObjective;
 import com.takenoko.objective.Objective;
-import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.ui.ConsoleUserInterface;
 
 public abstract class PlayableManager {
@@ -18,7 +17,7 @@ public abstract class PlayableManager {
     protected PlayableManager() {
         numberOfActions = DEFAULT_NUMBER_OF_ACTIONS;
         numberOfRounds = DEFAULT_NUMBER_OF_ROUNDS;
-        objective = new TwoAdjacentTilesObjective();
+        objective = new MovePandaObjective();
         consoleUserInterface = new ConsoleUserInterface();
     }
 

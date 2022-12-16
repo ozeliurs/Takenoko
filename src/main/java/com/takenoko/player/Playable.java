@@ -1,22 +1,16 @@
 package com.takenoko.player;
 
-import com.takenoko.tile.Tile;
-import com.takenoko.vector.Vector;
-import java.util.List;
-import org.apache.commons.lang3.tuple.Pair;
+import com.takenoko.engine.Board;
 
 /**
  * The Playable interface will allow the class implementing it to interact with the game and play.
  */
 public interface Playable {
-
     /**
-     * This method chooses the tile to place on the board from the list of possible tiles.
+     * This method will allow the player to choose an action to execute.
      *
-     * @param possibleTiles The list of possible tiles to place.
-     * @param availableTilePositions The list of available tile positions.
-     * @return A pair containing the position and the tile to place.
+     * @param board The board of the game.
+     * @return The action chosen by the player.
      */
-    Pair<Vector, Tile> chooseTileToPlace(
-            List<Tile> possibleTiles, List<Vector> availableTilePositions);
+    Action chooseAction(Board board);
 }

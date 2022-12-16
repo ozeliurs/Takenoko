@@ -2,7 +2,7 @@ package com.takenoko.shape;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.takenoko.vector.Vector;
+import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,14 +22,14 @@ public class ShapeFactoryTest {
         @DisplayName("When the shape is ADJACENT should contain the origin")
         void createShape_shouldReturnAdjacentContainingOrigin() {
             assertThat(ShapeFactory.ADJACENT.createShape().getPattern())
-                    .contains(new Vector(0, 0, 0));
+                    .contains(new PositionVector(0, 0, 0));
         }
 
         @Test
         @DisplayName("When the shape is ADJACENT should contain the adjacent tile")
         void createShape_shouldReturnAdjacentContainingAdjacentTile() {
             assertThat(ShapeFactory.ADJACENT.createShape().getPattern())
-                    .contains(new Vector(1, 0, -1));
+                    .contains(new PositionVector(1, 0, -1));
         }
     }
 
@@ -46,19 +46,22 @@ public class ShapeFactoryTest {
         @Test
         @DisplayName("When the shape is LINE should contain the origin")
         void createShape_shouldReturnLineContainingOrigin() {
-            assertThat(ShapeFactory.LINE.createShape().getPattern()).contains(new Vector(0, 0, 0));
+            assertThat(ShapeFactory.LINE.createShape().getPattern())
+                    .contains(new PositionVector(0, 0, 0));
         }
 
         @Test
         @DisplayName("When the shape is LINE should contain the adjacent tile")
         void createShape_shouldReturnLineContainingAdjacentTile() {
-            assertThat(ShapeFactory.LINE.createShape().getPattern()).contains(new Vector(1, 0, -1));
+            assertThat(ShapeFactory.LINE.createShape().getPattern())
+                    .contains(new PositionVector(1, 0, -1));
         }
 
         @Test
         @DisplayName("When the shape is LINE should contain the second adjacent tile")
         void createShape_shouldReturnLineContainingSecondAdjacentTile() {
-            assertThat(ShapeFactory.LINE.createShape().getPattern()).contains(new Vector(2, 0, -2));
+            assertThat(ShapeFactory.LINE.createShape().getPattern())
+                    .contains(new PositionVector(2, 0, -2));
         }
     }
 }
