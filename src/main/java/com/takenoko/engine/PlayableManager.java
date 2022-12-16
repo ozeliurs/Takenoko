@@ -1,6 +1,6 @@
 package com.takenoko.engine;
 
-import com.takenoko.objective.MovePandaObjective;
+import com.takenoko.objective.EatBambooObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
 
@@ -11,10 +11,11 @@ public abstract class PlayableManager {
     private final int numberOfActions;
     private Objective objective;
     private final ConsoleUserInterface consoleUserInterface;
+    private int eatenBambooCounter = 0;
 
     protected PlayableManager() {
         numberOfActions = DEFAULT_NUMBER_OF_ACTIONS;
-        objective = new MovePandaObjective();
+        objective = new EatBambooObjective(1);
         consoleUserInterface = new ConsoleUserInterface();
     }
 
@@ -42,11 +43,19 @@ public abstract class PlayableManager {
 
     public void verifyObjective(Board board) {
         if (objective != null) {
-            objective.verify(board);
+            objective.verify(board, this);
         }
     }
 
     public void setObjective(Objective objective) {
         this.objective = objective;
+    }
+
+    public int getEatenBambooCounter() {
+        return eatenBambooCounter;
+    }
+
+    public void incrementBambooCounter() {
+        eatenBambooCounter++;
     }
 }

@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import com.takenoko.actors.ActorsManager;
 import com.takenoko.actors.panda.Panda;
 import com.takenoko.engine.Board;
+import com.takenoko.engine.BotManager;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.*;
 
@@ -14,17 +15,20 @@ public class MovePandaObjectiveTest {
 
     private Board board;
     private MovePandaObjective movePandaObjective;
+    private BotManager botManager;
 
     @BeforeEach
     public void setUp() {
         board = new Board();
         movePandaObjective = new MovePandaObjective();
+        botManager = mock(BotManager.class);
     }
 
     @AfterEach
     public void tearDown() {
         board = null;
         movePandaObjective = null;
+        botManager = null;
     }
 
     @Nested
@@ -65,7 +69,9 @@ public class MovePandaObjectiveTest {
             when(board.getActorsManager().getPanda().getPosition())
                     .thenReturn(new PositionVector(-1, 0, 1));
 
-            movePandaObjective.verify(board);
+            BotManager botManager = mock(BotManager.class);
+
+            movePandaObjective.verify(board, botManager);
             assertThat(movePandaObjective.getState()).isEqualTo(ObjectiveState.ACHIEVED);
         }
     }

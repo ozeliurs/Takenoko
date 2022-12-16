@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.takenoko.engine.Board;
+import com.takenoko.engine.BotManager;
 import com.takenoko.layers.LayerManager;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.tile.Tile;
@@ -18,17 +19,20 @@ class TwoAdjacentTilesObjectiveTest {
 
     private TwoAdjacentTilesObjective twoAdjacentTilesObjective;
     private Board board;
+    private BotManager botManager;
 
     @BeforeEach
     void setUp() {
         twoAdjacentTilesObjective = new TwoAdjacentTilesObjective();
         board = new Board();
+        botManager = mock(BotManager.class);
     }
 
     @AfterEach
     void tearDown() {
         twoAdjacentTilesObjective = null;
         board = null;
+        botManager = null;
     }
 
     @Nested
@@ -51,7 +55,7 @@ class TwoAdjacentTilesObjectiveTest {
             when(layerManager.getTileLayer()).thenReturn(tileLayer);
             board = mock(Board.class);
             when(board.getLayerManager()).thenReturn(layerManager);
-            twoAdjacentTilesObjective.verify(board);
+            twoAdjacentTilesObjective.verify(board, botManager);
             assertEquals(ObjectiveState.ACHIEVED, twoAdjacentTilesObjective.getState());
         }
     }
@@ -71,7 +75,7 @@ class TwoAdjacentTilesObjectiveTest {
             // use reflection to set the private field
             ReflectionTestUtils.setField(
                     twoAdjacentTilesObjective, "state", ObjectiveState.ACHIEVED);
-            twoAdjacentTilesObjective.verify(board);
+            twoAdjacentTilesObjective.verify(board, botManager);
             assertThat(twoAdjacentTilesObjective.isAchieved()).isTrue();
         }
     }

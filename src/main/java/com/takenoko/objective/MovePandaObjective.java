@@ -1,6 +1,7 @@
 package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
+import com.takenoko.engine.PlayableManager;
 import com.takenoko.vector.PositionVector;
 import java.util.Objects;
 
@@ -17,8 +18,9 @@ public class MovePandaObjective implements Objective {
      * This method will be used to check whether the objective has been achieved yet
      *
      * @param board the board on which the objective is checked
+     * @param playableManager
      */
-    public void verify(Board board) {
+    public void verify(Board board, PlayableManager playableManager) {
         if (!board.getActorsManager()
                 .getPanda()
                 .getPosition()
