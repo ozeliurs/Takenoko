@@ -2,6 +2,7 @@ package com.takenoko.actors.panda;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.layers.bamboo.RemoveBambooAction;
 import com.takenoko.player.Action;
 import com.takenoko.vector.PositionVector;
 
@@ -28,5 +29,7 @@ public class MovePandaAction implements Action {
     public void execute(Board board, BotManager botManager) {
         board.getActorsManager().getPanda().move(positionVector);
         botManager.displayMessage(botManager + " moved the panda to " + positionVector);
+        RemoveBambooAction removeBambooAction = new RemoveBambooAction();
+        removeBambooAction.execute(board, botManager);
     }
 }

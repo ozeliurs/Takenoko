@@ -17,6 +17,10 @@ public class BambooStack {
         bamboo++;
     }
 
+    void subBamboo() {
+        bamboo--;
+    }
+
     public int getBamboo() {
         return bamboo;
     }
