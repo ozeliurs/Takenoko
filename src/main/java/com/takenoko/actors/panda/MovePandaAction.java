@@ -29,7 +29,6 @@ public class MovePandaAction implements Action {
     public void execute(Board board, BotManager botManager) {
         board.getActorsManager().getPanda().move(positionVector);
         botManager.displayMessage(botManager + " moved the panda to " + positionVector);
-        RemoveBambooAction removeBambooAction = new RemoveBambooAction();
-        removeBambooAction.execute(board, botManager);
+        new RemoveBambooAction(positionVector).execute(board, botManager);
     }
 }
