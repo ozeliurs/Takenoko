@@ -7,7 +7,7 @@ import java.util.Map;
 
 /** BambooLayer class. The bamboo layer contains the number of bamboo on each tile. */
 public class BambooLayer {
-    private final HashMap<PositionVector, Integer> bamboo;
+    private final HashMap<PositionVector, BambooStack> bamboo;
     private final Board board;
 
     /**
@@ -26,7 +26,18 @@ public class BambooLayer {
      * @param positionVector the position of the tile
      */
     void addBamboo(PositionVector positionVector) {
-        bamboo.put(positionVector, bamboo.getOrDefault(positionVector, 1) + 1);
+        if (positionVector.equals(new PositionVector(0, 0, 0))) {
+            throw new IllegalArgumentException("The bamboo cannot be placed on the pond");
+        }
+        if (!board.getLayerManager().getTileLayer().isTile(positionVector)) {
+            throw new IllegalArgumentException("The position is not on the board");
+        }
+
+        if (bamboo.containsKey(positionVector)) {
+            bamboo.get(positionVector).addBamboo();
+        } else {
+            bamboo.put(positionVector, new BambooStack(1));
+        }
     }
 
     /**
@@ -35,9 +46,10 @@ public class BambooLayer {
      * @param positionVector the position of the tile
      * @return the number of bamboo on the tile
      */
-    public int getBambooAt(PositionVector positionVector) {
+    public BambooStack getBambooAt(PositionVector positionVector) {
         if (board.getLayerManager().getTileLayer().isTile(positionVector)) {
-            return bamboo.getOrDefault(positionVector, 1);
+            bamboo.computeIfAbsent(positionVector, k -> new BambooStack(0));
+            return bamboo.get(positionVector);
         } else {
             throw new IllegalArgumentException("The position is not a tile");
         }
@@ -48,7 +60,7 @@ public class BambooLayer {
      *
      * @return the bamboo
      */
-    public Map<PositionVector, Integer> getBamboo() {
+    public Map<PositionVector, BambooStack> getBamboo() {
         return new HashMap<>(bamboo);
     }
 }
