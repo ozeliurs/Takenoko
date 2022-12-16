@@ -78,5 +78,5 @@ public class BotManagerTest {
 
     @Nested
     @DisplayName("Method playBot")
-    class playTilePlacingBot { }
+    class playTilePlacingBot {}
 }
