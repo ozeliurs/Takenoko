@@ -13,7 +13,11 @@ public abstract class PlayableManager {
     private final ConsoleUserInterface consoleUserInterface;
     private final String name;
 
-    protected PlayableManager(int numberOfActions, Objective objective, ConsoleUserInterface consoleUserInterface, String name) {
+    protected PlayableManager(
+            int numberOfActions,
+            Objective objective,
+            ConsoleUserInterface consoleUserInterface,
+            String name) {
         this.numberOfActions = numberOfActions;
         this.objective = objective;
         this.consoleUserInterface = consoleUserInterface;
@@ -21,7 +25,8 @@ public abstract class PlayableManager {
     }
 
     protected PlayableManager() {
-        this(DEFAULT_NUMBER_OF_ACTIONS,
+        this(
+                DEFAULT_NUMBER_OF_ACTIONS,
                 new MovePandaObjective(),
                 new ConsoleUserInterface(),
                 "Default Name");

@@ -3,13 +3,10 @@ package com.takenoko.engine;
 import com.takenoko.player.TilePlacingAndPandaMovingBot;
 import com.takenoko.player.TilePlacingBot;
 import com.takenoko.ui.ConsoleUserInterface;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The game engine is responsible for the gameplay throughout the game.
- */
+/** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
     public static final int DEFAULT_NUMBER_OF_ROUNDS = 10;
     private final Board board;
@@ -41,9 +38,10 @@ public class GameEngine {
                 new Board(),
                 new ConsoleUserInterface(),
                 GameState.INITIALIZED,
-                new ArrayList<>(List.of(
-                        new BotManager(new TilePlacingBot()),
-                        new BotManager(new TilePlacingAndPandaMovingBot()))));
+                new ArrayList<>(
+                        List.of(
+                                new BotManager(new TilePlacingBot()),
+                                new BotManager(new TilePlacingAndPandaMovingBot()))));
     }
 
     public GameEngine(List<BotManager> botManagers) {
@@ -77,9 +75,7 @@ public class GameEngine {
                 "The new game has been set up. You can start the game !");
     }
 
-    /**
-     * This method change the game state to playing and add the first tile to the board.
-     */
+    /** This method change the game state to playing and add the first tile to the board. */
     public void startGame() {
         if (gameState == GameState.INITIALIZED) {
             throw new IllegalStateException(
@@ -95,7 +91,9 @@ public class GameEngine {
 
         for (BotManager botManager : botManagers) {
             consoleUserInterface.displayMessage(
-                    botManager.getName() + " has the objective : " + botManager.getObjectiveDescription());
+                    botManager.getName()
+                            + " has the objective : "
+                            + botManager.getObjectiveDescription());
         }
     }
 
@@ -103,7 +101,8 @@ public class GameEngine {
         for (int i = 0; i < numberOfRounds; i++) {
             consoleUserInterface.displayMessage("===== Round " + (i + 1) + " =====");
             for (BotManager botManager : botManagers) {
-                consoleUserInterface.displayMessage("===== <" + botManager.getName() + "> is playing =====");
+                consoleUserInterface.displayMessage(
+                        "===== <" + botManager.getName() + "> is playing =====");
                 botManager.playBot(board);
                 if (botManager.isObjectiveAchieved()) {
                     consoleUserInterface.displayMessage(
@@ -117,9 +116,7 @@ public class GameEngine {
         }
     }
 
-    /**
-     * This method is used to end the game correctly.
-     */
+    /** This method is used to end the game correctly. */
     public void endGame() {
         if (gameState != GameState.PLAYING) {
             throw new IllegalStateException(
