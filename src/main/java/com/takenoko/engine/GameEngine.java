@@ -6,20 +6,48 @@ import com.takenoko.ui.ConsoleUserInterface;
 
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
+    public static final int DEFAULT_NUMBER_OF_ROUNDS = 10;
     private final Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
-    private final Playable playable;
+    private final int numberOfRounds;
+    BotManager botManager;
+
+    public GameEngine(
+            int numberOfRounds,
+            Board board,
+            ConsoleUserInterface consoleUserInterface,
+            GameState gameState,
+            BotManager botManager) {
+        this.numberOfRounds = numberOfRounds;
+        this.board = board;
+        this.consoleUserInterface = consoleUserInterface;
+        this.gameState = gameState;
+        this.botManager = botManager;
+    }
 
     /**
      * Constructor for the GameEngine class. Instantiate the board and the console user interface
      * used. It does not start the game ! It simply instantiates the objects needed for the game.
      */
     public GameEngine() {
-        board = new Board();
-        consoleUserInterface = new ConsoleUserInterface();
-        gameState = GameState.INITIALIZED;
-        playable = new TilePlacingAndPandaMovingBot();
+        this(
+                DEFAULT_NUMBER_OF_ROUNDS,
+                new Board(),
+                new ConsoleUserInterface(),
+                GameState.INITIALIZED,
+                new BotManager(new TilePlacingAndPandaMovingBot())
+        );
+    }
+
+    public GameEngine(BotManager botManager) {
+        this(
+                DEFAULT_NUMBER_OF_ROUNDS,
+                new Board(),
+                new ConsoleUserInterface(),
+                GameState.INITIALIZED,
+                botManager
+        );
     }
 
     /**
@@ -60,15 +88,19 @@ public class GameEngine {
     }
 
     public void playGame() {
-        BotManager botManager = new BotManager(playable);
         consoleUserInterface.displayMessage(
                 "The bot objective is : " + botManager.getObjectiveDescription());
-        botManager.playBot(board);
-        if (botManager.isObjectiveAchieved()) {
-            consoleUserInterface.displayMessage(
-                    "Bot has achieved the objective "
-                            + botManager.getObjectiveDescription()
-                            + ", it has won");
+
+        for (int i = 0; i < numberOfRounds; i++) {
+            consoleUserInterface.displayMessage("===== Round " + (i + 1) + " =====");
+            botManager.playBot(board);
+            if (botManager.isObjectiveAchieved()) {
+                consoleUserInterface.displayMessage(
+                        "Bot has achieved the objective "
+                                + botManager.getObjectiveDescription()
+                                + ", it has won");
+                return;
+            }
         }
     }
 
