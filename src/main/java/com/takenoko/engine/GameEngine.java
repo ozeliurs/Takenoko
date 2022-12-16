@@ -1,7 +1,10 @@
 package com.takenoko.engine;
 
 import com.takenoko.player.TilePlacingAndPandaMovingBot;
+import com.takenoko.player.TilePlacingBot;
 import com.takenoko.ui.ConsoleUserInterface;
+import java.util.ArrayList;
+import java.util.List;
 
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
@@ -10,19 +13,19 @@ public class GameEngine {
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
     private final int numberOfRounds;
-    BotManager botManager;
+    private final List<BotManager> botManagers;
 
     public GameEngine(
             int numberOfRounds,
             Board board,
             ConsoleUserInterface consoleUserInterface,
             GameState gameState,
-            BotManager botManager) {
+            List<BotManager> botManagerList) {
         this.numberOfRounds = numberOfRounds;
         this.board = board;
         this.consoleUserInterface = consoleUserInterface;
         this.gameState = gameState;
-        this.botManager = botManager;
+        this.botManagers = botManagerList;
     }
 
     /**
@@ -35,16 +38,19 @@ public class GameEngine {
                 new Board(),
                 new ConsoleUserInterface(),
                 GameState.INITIALIZED,
-                new BotManager(new TilePlacingAndPandaMovingBot()));
+                new ArrayList<>(
+                        List.of(
+                                new BotManager(new TilePlacingBot()),
+                                new BotManager(new TilePlacingAndPandaMovingBot()))));
     }
 
-    public GameEngine(BotManager botManager) {
+    public GameEngine(List<BotManager> botManagers) {
         this(
                 DEFAULT_NUMBER_OF_ROUNDS,
                 new Board(),
                 new ConsoleUserInterface(),
                 GameState.INITIALIZED,
-                botManager);
+                botManagers);
     }
 
     /**
@@ -82,21 +88,30 @@ public class GameEngine {
 
         gameState = GameState.PLAYING;
         consoleUserInterface.displayMessage("The game has started !");
+
+        for (BotManager botManager : botManagers) {
+            consoleUserInterface.displayMessage(
+                    botManager.getName()
+                            + " has the objective : "
+                            + botManager.getObjectiveDescription());
+        }
     }
 
     public void playGame() {
-        consoleUserInterface.displayMessage(
-                "The bot objective is : " + botManager.getObjectiveDescription());
-
         for (int i = 0; i < numberOfRounds; i++) {
             consoleUserInterface.displayMessage("===== Round " + (i + 1) + " =====");
-            botManager.playBot(board);
-            if (botManager.isObjectiveAchieved()) {
+            for (BotManager botManager : botManagers) {
                 consoleUserInterface.displayMessage(
-                        "Bot has achieved the objective "
-                                + botManager.getObjectiveDescription()
-                                + ", it has won");
-                return;
+                        "===== <" + botManager.getName() + "> is playing =====");
+                botManager.playBot(board);
+                if (botManager.isObjectiveAchieved()) {
+                    consoleUserInterface.displayMessage(
+                            botManager.getName()
+                                    + " has achieved the objective "
+                                    + botManager.getObjectiveDescription()
+                                    + ", it has won");
+                    return;
+                }
             }
         }
     }

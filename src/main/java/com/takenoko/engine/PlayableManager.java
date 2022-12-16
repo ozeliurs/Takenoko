@@ -12,11 +12,25 @@ public abstract class PlayableManager {
     private Objective objective;
     private final ConsoleUserInterface consoleUserInterface;
     private int eatenBambooCounter = 0;
+    private final String name;
+
+    protected PlayableManager(
+            int numberOfActions,
+            Objective objective,
+            ConsoleUserInterface consoleUserInterface,
+            String name) {
+        this.numberOfActions = numberOfActions;
+        this.objective = objective;
+        this.consoleUserInterface = consoleUserInterface;
+        this.name = name;
+    }
 
     protected PlayableManager() {
-        numberOfActions = DEFAULT_NUMBER_OF_ACTIONS;
-        objective = new EatBambooObjective(1);
-        consoleUserInterface = new ConsoleUserInterface();
+        this(
+                DEFAULT_NUMBER_OF_ACTIONS,
+                new EatBambooObjective(1),
+                new ConsoleUserInterface(),
+                "Default Name");
     }
 
     public String getObjectiveDescription() {
@@ -49,6 +63,10 @@ public abstract class PlayableManager {
 
     public void setObjective(Objective objective) {
         this.objective = objective;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getEatenBambooCounter() {
