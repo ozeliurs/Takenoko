@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+import com.takenoko.player.TilePlacingBot;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -106,18 +109,23 @@ class GameEngineTest {
     @DisplayName("Method playGame")
     class TestPlayGame {
         @Test
-        @DisplayName("when bot has no objective should play all the rounds")
-        void playGame_whenBotHasNoObjective_shouldPlayAllTheRounds() {
-            BotManager botManager = mock(BotManager.class);
-            GameEngine gameEngine = new GameEngine(botManager);
+        @DisplayName("when bots have no objective then they should play all the rounds")
+        void playGame_whenBotsHaveNoObjective_shouldPlayAllTheRounds() {
 
-            when(botManager.isObjectiveAchieved()).thenReturn(false);
+            BotManager botManager01 = spy(new BotManager(new TilePlacingBot()));
+            BotManager botManager02 = spy(new BotManager(new TilePlacingBot()));
+            when(botManager01.isObjectiveAchieved()).thenReturn(false);
+            when(botManager02.isObjectiveAchieved()).thenReturn(false);
+
+            GameEngine gameEngine =
+                    new GameEngine(new ArrayList<>(List.of(botManager01, botManager02)));
 
             gameEngine.newGame();
             gameEngine.startGame();
             gameEngine.playGame();
 
-            verify(botManager, times(GameEngine.DEFAULT_NUMBER_OF_ROUNDS)).isObjectiveAchieved();
+            verify(botManager01, times(GameEngine.DEFAULT_NUMBER_OF_ROUNDS)).playBot(any());
+            verify(botManager02, times(GameEngine.DEFAULT_NUMBER_OF_ROUNDS)).playBot(any());
         }
     }
 
