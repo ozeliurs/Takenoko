@@ -18,6 +18,9 @@ public class BambooStack {
     }
 
     void subBamboo() {
+        if (bamboo == 0) {
+            throw new IllegalArgumentException("There is no bamboo to remove");
+        }
         bamboo--;
     }
 
