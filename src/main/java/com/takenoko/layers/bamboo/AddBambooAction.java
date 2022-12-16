@@ -5,9 +5,7 @@ import com.takenoko.engine.BotManager;
 import com.takenoko.player.Action;
 import com.takenoko.vector.PositionVector;
 
-/**
- * This class represents the action of adding a bamboo on the board.
- */
+/** This class represents the action of adding a bamboo on the board. */
 public class AddBambooAction implements Action {
     private final PositionVector positionVector;
 
@@ -23,7 +21,7 @@ public class AddBambooAction implements Action {
     /**
      * Add a bamboo on the board and display a message.
      *
-     * @param board      the board to add a bamboo
+     * @param board the board to add a bamboo
      * @param botManager the bot manager to display a message
      */
     @Override
