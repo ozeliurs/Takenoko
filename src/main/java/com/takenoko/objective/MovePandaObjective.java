@@ -9,7 +9,6 @@ public class MovePandaObjective extends Objective {
 
     public MovePandaObjective() {
         super(ObjectiveTypes.MOVED_PANDA, ObjectiveState.NOT_ACHIEVED);
-        state = ObjectiveState.NOT_ACHIEVED;
     }
 
     /**
