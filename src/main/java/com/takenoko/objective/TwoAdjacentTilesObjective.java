@@ -13,36 +13,11 @@ import java.util.Map;
  * The objective is to have two tiles next to each other. Of course, the pond is not taken into
  * account as the bot would win when placing its first tile.
  */
-public class TwoAdjacentTilesObjective implements Objective {
-    private static final ObjectiveTypes type = ObjectiveTypes.TWO_ADJACENT_TILES;
-    private ObjectiveState state;
+public class TwoAdjacentTilesObjective extends Objective {
 
     /** Constructor for the class */
     public TwoAdjacentTilesObjective() {
-        state = ObjectiveState.NOT_ACHIEVED;
-    }
-
-    /**
-     * Allows checking if the objective has been achieved
-     *
-     * @return whether the objective has been achieved or not
-     */
-    public boolean isAchieved() {
-        return getState() == ObjectiveState.ACHIEVED;
-    }
-
-    /**
-     * @return ObjectiveTypes of the current objective
-     */
-    public ObjectiveTypes getType() {
-        return type;
-    }
-
-    /**
-     * @return ObjectiveState of the current objective
-     */
-    public ObjectiveState getState() {
-        return state;
+        super(ObjectiveTypes.TWO_ADJACENT_TILES, ObjectiveState.NOT_ACHIEVED);
     }
 
     @Override

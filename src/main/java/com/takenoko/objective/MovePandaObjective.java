@@ -5,12 +5,10 @@ import com.takenoko.engine.BotManager;
 import com.takenoko.vector.PositionVector;
 import java.util.Objects;
 
-public class MovePandaObjective implements Objective {
-    private static final ObjectiveTypes type = ObjectiveTypes.MOVED_PANDA;
-
-    private ObjectiveState state;
+public class MovePandaObjective extends Objective {
 
     public MovePandaObjective() {
+        super(ObjectiveTypes.MOVED_PANDA, ObjectiveState.NOT_ACHIEVED);
         state = ObjectiveState.NOT_ACHIEVED;
     }
 
@@ -29,26 +27,9 @@ public class MovePandaObjective implements Objective {
         }
     }
 
-    /**
-     * This method is used to check whether the objective has been achieved yet
-     *
-     * @return true if the objective has been achieved, false otherwise
-     */
-    public boolean isAchieved() {
-        return state == ObjectiveState.ACHIEVED;
-    }
-
     @Override
     public String toString() {
         return "MovePandaObjective{" + "state=" + state + '}';
-    }
-
-    public ObjectiveTypes getType() {
-        return type;
-    }
-
-    public ObjectiveState getState() {
-        return state;
     }
 
     @Override
@@ -61,6 +42,6 @@ public class MovePandaObjective implements Objective {
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, state);
+        return Objects.hash(getType(), getState());
     }
 }
