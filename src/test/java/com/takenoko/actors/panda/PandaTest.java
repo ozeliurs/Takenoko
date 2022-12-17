@@ -10,7 +10,6 @@ import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.Pond;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
-import com.takenoko.vector.Vector;
 import java.util.HashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -83,7 +82,7 @@ class PandaTest {
         @DisplayName("should throw an exception if the panda is not moving with a valid vector")
         void shouldThrowAnExceptionIfThePandaIsNotMovingWithAValidVector() {
             Panda panda = new Panda(board);
-            Vector vector = new PositionVector(1, 1, -2);
+            PositionVector vector = new PositionVector(1, 1, -2);
             assertThatThrownBy(() -> panda.move(vector))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("This move is not possible");
