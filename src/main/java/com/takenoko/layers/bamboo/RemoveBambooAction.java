@@ -5,6 +5,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.vector.PositionVector;
 
+/** This action will remove a bamboo from a tile. */
 public class RemoveBambooAction implements Action {
 
     private final PositionVector positionVector;
@@ -14,7 +15,7 @@ public class RemoveBambooAction implements Action {
     }
 
     /**
-     * Remove Bamboo on the location of the player
+     * Remove Bamboo on the given PositionVector.
      *
      * @param board the board
      * @param botManager the bot manager
