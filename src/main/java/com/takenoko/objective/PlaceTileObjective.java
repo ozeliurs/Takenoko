@@ -1,7 +1,7 @@
 package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.PlayableManager;
+import com.takenoko.engine.BotManager;
 import java.util.Objects;
 
 public class PlaceTileObjective implements Objective {
@@ -18,7 +18,7 @@ public class PlaceTileObjective implements Objective {
      * This method will be used each time the bot adds a tile, so we can track the progression
      * towards achieving the objective
      */
-    public void verify(Board board, PlayableManager playableManager) {
+    public void verify(Board board, BotManager botManager) {
         // The -1 is there to take into account the pond tile which is there by default
         if (board.getLayerManager().getTileLayer().getTiles().size() - 1 >= numberOfTileToPlace) {
             state = ObjectiveState.ACHIEVED;

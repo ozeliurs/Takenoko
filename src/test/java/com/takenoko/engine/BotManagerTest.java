@@ -34,9 +34,8 @@ public class BotManagerTest {
     @DisplayName("Method getObjectiveDescription")
     class TestGetObjectiveDescription {
         @Test
-        @DisplayName("The objective is to have two adjacent tiles, returns the correct description")
-        void
-                getObjectiveDescription_WhenObjectiveIsToHaveTwoAdjacentTiles_ThenReturnsCorrectDescription() {
+        @DisplayName("The objective is to have two eat one bamboo, returns the correct description")
+        void getObjectiveDescription_WhenObjectiveIsToHaveTwoAdjacentTiles_ThenReturnsCorrectDescription() {
             assertThat(botManager.getObjectiveDescription())
                     .isEqualTo(new EatBambooObjective(1).toString());
         }
