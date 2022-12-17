@@ -3,11 +3,11 @@ package com.takenoko.actors.panda;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.actors.ActorsManager;
+import com.takenoko.bot.Bot;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.LayerManager;
 import com.takenoko.layers.bamboo.BambooLayer;
-import com.takenoko.bot.Bot;
 import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;

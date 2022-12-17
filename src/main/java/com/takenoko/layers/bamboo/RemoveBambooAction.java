@@ -1,8 +1,8 @@
 package com.takenoko.layers.bamboo;
 
+import com.takenoko.bot.Action;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.bot.Action;
 import com.takenoko.vector.PositionVector;
 
 public class RemoveBambooAction implements Action {

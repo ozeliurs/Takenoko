@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.actors.panda.MovePandaAction;
+import com.takenoko.bot.TilePlacingAndPandaMovingBot;
+import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.layers.tile.PlaceTileAction;
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
-import com.takenoko.bot.TilePlacingAndPandaMovingBot;
-import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.*;

@@ -2,10 +2,10 @@ package com.takenoko.layers.bamboo;
 
 import static org.mockito.Mockito.*;
 
+import com.takenoko.bot.Bot;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.LayerManager;
-import com.takenoko.bot.Bot;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

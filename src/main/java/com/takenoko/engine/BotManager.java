@@ -1,20 +1,20 @@
 package com.takenoko.engine;
 
-import com.takenoko.objective.EatBambooObjective;
-import com.takenoko.objective.Objective;
 import com.takenoko.bot.Action;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
+import com.takenoko.objective.EatBambooObjective;
+import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
 
 /**
- * This class is used to manage one bot.
- * It is responsible for managing all of its attributes :
+ * This class is used to manage one bot. It is responsible for managing all of its attributes :
+ *
  * <ul>
- *     <li>name</li>
- *     <li>objective</li>
- *     <li>number of actions</li>
- *     <li>bamboos eaten counter</li>
+ *   <li>name
+ *   <li>objective
+ *   <li>number of actions
+ *   <li>bamboos eaten counter
  * </ul>
  */
 public class BotManager {
@@ -35,6 +35,7 @@ public class BotManager {
 
     /**
      * Constructor for the class
+     *
      * @param numberOfActions number of actions the bot can do in a turn
      * @param objective the bot must achieve the objective to win
      * @param consoleUserInterface the console user interface
@@ -54,9 +55,7 @@ public class BotManager {
         this.bot = bot;
     }
 
-    /**
-     * Default constructor for the class
-     */
+    /** Default constructor for the class */
     protected BotManager() {
         this(
                 DEFAULT_NUMBER_OF_ACTIONS,
@@ -68,6 +67,7 @@ public class BotManager {
 
     /**
      * Constructor for the class but this time specifying which bot algorithm must be used
+     *
      * @param bot the bot
      */
     public BotManager(Bot bot) {
@@ -80,8 +80,9 @@ public class BotManager {
     }
 
     /**
-     * Ask for the bot to choose an action based on his algorithm and then execute the returned action.
-     * Objectives are also verified in order to know if the bot has won.
+     * Ask for the bot to choose an action based on his algorithm and then execute the returned
+     * action. Objectives are also verified in order to know if the bot has won.
+     *
      * @param board
      */
     public void playBot(Board board) {
@@ -131,6 +132,7 @@ public class BotManager {
 
     /**
      * Verify the objective using the game board
+     *
      * @param board current board game
      */
     public void verifyObjective(Board board) {
@@ -141,6 +143,7 @@ public class BotManager {
 
     /**
      * Change or set the bot objective
+     *
      * @param objective the new objective
      */
     public void setObjective(Objective objective) {
@@ -161,9 +164,7 @@ public class BotManager {
         return eatenBambooCounter;
     }
 
-    /**
-     * Increment by one the number of bamboo eaten by the bot
-     */
+    /** Increment by one the number of bamboo eaten by the bot */
     public void incrementBambooCounter() {
         eatenBambooCounter++;
     }
