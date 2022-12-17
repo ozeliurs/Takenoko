@@ -4,18 +4,12 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import java.util.Objects;
 
-public class EatBambooObjective implements Objective {
-    private static final ObjectiveTypes type = ObjectiveTypes.NUMBER_OF_BAMBOOS_EATEN;
+public class EatBambooObjective extends Objective {
     private final int numberOfBamboosToEat;
-    private ObjectiveState state;
 
     public EatBambooObjective(int numberOfBamboosToEat) {
-        state = ObjectiveState.NOT_ACHIEVED;
+        super(ObjectiveTypes.NUMBER_OF_BAMBOOS_EATEN, ObjectiveState.NOT_ACHIEVED);
         this.numberOfBamboosToEat = numberOfBamboosToEat;
-    }
-
-    public boolean isAchieved() {
-        return state == ObjectiveState.ACHIEVED;
     }
 
     public void verify(Board board, BotManager botManager) {
@@ -34,14 +28,6 @@ public class EatBambooObjective implements Objective {
                 + '}';
     }
 
-    public ObjectiveTypes getType() {
-        return type;
-    }
-
-    public ObjectiveState getState() {
-        return state;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,6 +38,6 @@ public class EatBambooObjective implements Objective {
 
     @Override
     public int hashCode() {
-        return Objects.hash(numberOfBamboosToEat, type, state);
+        return Objects.hash(numberOfBamboosToEat, getType(), getState());
     }
 }

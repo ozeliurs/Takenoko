@@ -4,13 +4,11 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import java.util.Objects;
 
-public class PlaceTileObjective implements Objective {
-    private static final ObjectiveTypes type = ObjectiveTypes.NUMBER_OF_TILES_PLACED;
+public class PlaceTileObjective extends Objective {
     private final int numberOfTileToPlace;
-    private ObjectiveState state;
 
     public PlaceTileObjective(int numberOfTileToPlace) {
-        state = ObjectiveState.NOT_ACHIEVED;
+        super(ObjectiveTypes.NUMBER_OF_TILES_PLACED, ObjectiveState.NOT_ACHIEVED);
         this.numberOfTileToPlace = numberOfTileToPlace;
     }
 
@@ -25,15 +23,6 @@ public class PlaceTileObjective implements Objective {
         }
     }
 
-    /**
-     * This method is used to check whether the objective has been achieved yet
-     *
-     * @return true if the objective has been achieved, false otherwise
-     */
-    public boolean isAchieved() {
-        return state == ObjectiveState.ACHIEVED;
-    }
-
     @Override
     public String toString() {
         return "PlaceTileObjective{"
@@ -42,14 +31,6 @@ public class PlaceTileObjective implements Objective {
                 + ", state="
                 + state
                 + '}';
-    }
-
-    public ObjectiveTypes getType() {
-        return type;
-    }
-
-    public ObjectiveState getState() {
-        return state;
     }
 
     public int getNumberOfTileToPlace() {
@@ -66,6 +47,6 @@ public class PlaceTileObjective implements Objective {
 
     @Override
     public int hashCode() {
-        return Objects.hash(numberOfTileToPlace, type, state);
+        return Objects.hash(numberOfTileToPlace, getType(), getState());
     }
 }
