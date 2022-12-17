@@ -1,7 +1,7 @@
 package com.takenoko.engine;
 
-import com.takenoko.player.TilePlacingAndPandaMovingBot;
-import com.takenoko.player.TilePlacingBot;
+import com.takenoko.bot.TilePlacingAndPandaMovingBot;
+import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;

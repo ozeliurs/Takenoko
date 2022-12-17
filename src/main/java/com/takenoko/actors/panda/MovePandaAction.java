@@ -3,7 +3,7 @@ package com.takenoko.actors.panda;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.RemoveBambooAction;
-import com.takenoko.player.Action;
+import com.takenoko.bot.Action;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of moving the panda. */

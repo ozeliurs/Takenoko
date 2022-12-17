@@ -1,4 +1,4 @@
-package com.takenoko.player;
+package com.takenoko.bot;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

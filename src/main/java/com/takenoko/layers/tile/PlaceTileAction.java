@@ -3,7 +3,7 @@ package com.takenoko.layers.tile;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.AddBambooAction;
-import com.takenoko.player.Action;
+import com.takenoko.bot.Action;
 import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
 

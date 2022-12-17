@@ -2,7 +2,7 @@ package com.takenoko.layers.bamboo;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.player.Action;
+import com.takenoko.bot.Action;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of adding a bamboo on the board. */

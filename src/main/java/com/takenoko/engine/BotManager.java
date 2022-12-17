@@ -2,9 +2,9 @@ package com.takenoko.engine;
 
 import com.takenoko.objective.EatBambooObjective;
 import com.takenoko.objective.Objective;
-import com.takenoko.player.Action;
-import com.takenoko.player.Bot;
-import com.takenoko.player.TilePlacingBot;
+import com.takenoko.bot.Action;
+import com.takenoko.bot.Bot;
+import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.ui.ConsoleUserInterface;
 
 public class BotManager {
