@@ -6,8 +6,8 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.actors.panda.MovePandaAction;
 import com.takenoko.layers.tile.PlaceTileAction;
-import com.takenoko.objective.EatBambooObjective;
 import com.takenoko.objective.Objective;
+import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.player.TilePlacingAndPandaMovingBot;
 import com.takenoko.player.TilePlacingBot;
 import com.takenoko.tile.Tile;
@@ -34,10 +34,14 @@ public class BotManagerTest {
     @DisplayName("Method getObjectiveDescription")
     class TestGetObjectiveDescription {
         @Test
-        @DisplayName("The objective is to have two eat one bamboo, returns the correct description")
-        void getObjectiveDescription_WhenObjectiveIsToHaveTwoAdjacentTiles_ThenReturnsCorrectDescription() {
-            assertThat(botManager.getObjectiveDescription())
-                    .isEqualTo(new EatBambooObjective(1).toString());
+        @DisplayName(
+                "The objective is to have to have two adjacent tiles, returns the correct"
+                        + " description")
+        void
+                getObjectiveDescription_WhenObjectiveIsToHaveTwoAdjacentTiles_ThenReturnsCorrectDescription() {
+            Objective objective = new TwoAdjacentTilesObjective();
+            botManager.setObjective(objective);
+            assertThat(botManager.getObjectiveDescription()).isEqualTo(objective.toString());
         }
 
         @Test
@@ -63,15 +67,17 @@ public class BotManagerTest {
     class TestVerifyObjective {
         @Test
         @DisplayName("By default when board does not satisfy objective, objective is not achieved")
-        void verifyObjective_ThenReturnsFalse() {
-            Board board = new Board();
-            botManager.verifyObjective(board);
+        void verifyObjective_whenObjectiveIsNotAchieved_thenReturnFalse() {
+            Objective objective = mock(Objective.class);
+            when(objective.isAchieved()).thenReturn(false);
+            botManager.setObjective(objective);
+            botManager.verifyObjective(mock(Board.class));
             assertThat(botManager.isObjectiveAchieved()).isFalse();
         }
 
         @Test
         @DisplayName("When board satisfies objective, objective is achieved")
-        void verifyObjective_ThenReturnsTrue() {
+        void verifyObjective_whenObjectiveIsAchieved_thenReturnTrue() {
             Objective objective = mock(Objective.class);
             when(objective.isAchieved()).thenReturn(true);
             botManager.setObjective(objective);
