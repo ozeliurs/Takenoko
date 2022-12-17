@@ -28,16 +28,13 @@ public class MovePandaAction implements Action {
     @Override
     public void execute(Board board, BotManager botManager) {
         // move the panda
-        board.getActorsManager().getPanda().move(relativePositionVector);
+        board.getPanda().move(relativePositionVector);
         botManager.displayMessage(botManager + " moved the panda to " + relativePositionVector);
-        PositionVector pandaPosition =
-                board.getActorsManager().getPanda().getPosition().toPositionVector();
 
         // check if the panda can eat bamboo
-        if (board.getLayerManager().getBambooLayer().getBambooAt(pandaPosition).getBambooCount()
-                > 0) {
+        if (board.getBambooAt(board.getPandaPosition()).getBambooCount() > 0) {
             // eat bamboo
-            new RemoveBambooAction(pandaPosition).execute(board, botManager);
+            new RemoveBambooAction(board.getPandaPosition()).execute(board, botManager);
             botManager.incrementBambooCounter();
             botManager.displayMessage(
                     "The panda has eaten one bamboo on the tile at " + relativePositionVector);

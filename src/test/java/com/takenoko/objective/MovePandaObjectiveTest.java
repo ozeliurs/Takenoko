@@ -4,8 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.takenoko.actors.ActorsManager;
-import com.takenoko.actors.panda.Panda;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.vector.PositionVector;
@@ -15,20 +13,17 @@ public class MovePandaObjectiveTest {
 
     private Board board;
     private MovePandaObjective movePandaObjective;
-    private BotManager botManager;
 
     @BeforeEach
     public void setUp() {
         board = new Board();
         movePandaObjective = new MovePandaObjective();
-        botManager = mock(BotManager.class);
     }
 
     @AfterEach
     public void tearDown() {
         board = null;
         movePandaObjective = null;
-        botManager = null;
     }
 
     @Nested
@@ -64,10 +59,7 @@ public class MovePandaObjectiveTest {
         @DisplayName("When the objective is achieved, returns ACHIEVED")
         void getState_WhenObjectiveIsAchieved_ThenReturnsACHIEVED() {
             board = mock(Board.class);
-            when(board.getActorsManager()).thenReturn(mock(ActorsManager.class));
-            when(board.getActorsManager().getPanda()).thenReturn(mock(Panda.class));
-            when(board.getActorsManager().getPanda().getPosition())
-                    .thenReturn(new PositionVector(-1, 0, 1));
+            when(board.getPandaPosition()).thenReturn(new PositionVector(-1, 0, 1));
 
             BotManager botManager = mock(BotManager.class);
 
@@ -103,6 +95,7 @@ public class MovePandaObjectiveTest {
         @Test
         @DisplayName(
                 "When the objective is compared to an objective of a different type, returns false")
+        @SuppressWarnings({"EqualsBetweenInconvertibleTypes"})
         void equals_WhenObjectiveIsComparedToDifferentType_ThenReturnsFalse() {
             assertThat(movePandaObjective.equals(new PlaceTileObjective(1))).isFalse();
         }

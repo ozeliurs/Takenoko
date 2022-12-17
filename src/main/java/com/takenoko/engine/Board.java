@@ -99,13 +99,13 @@ public class Board {
         return layerManager.getBambooLayer().getBambooAt(positionVector);
     }
 
-    /** Get a copy of the hashmap of bamboo. */
-    public Map<PositionVector, BambooStack> getBamboo() {
-        return new HashMap<>(layerManager.getBambooLayer().getBamboo());
-    }
-
     /** Get the Panda */
     public Panda getPanda() {
         return actorsManager.getPanda();
+    }
+
+    /** Get the Position of the Panda */
+    public PositionVector getPandaPosition() {
+        return actorsManager.getPanda().getPosition().toPositionVector();
     }
 }

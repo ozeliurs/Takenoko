@@ -18,13 +18,10 @@ public class MovePandaObjective implements Objective {
      * This method will be used to check whether the objective has been achieved yet
      *
      * @param board the board on which the objective is checked
-     * @param botManager
+     * @param botManager the botManager on which the objective is checked
      */
     public void verify(Board board, BotManager botManager) {
-        if (!board.getActorsManager()
-                .getPanda()
-                .getPosition()
-                .equals(new PositionVector(0, 0, 0))) {
+        if (!board.getPandaPosition().equals(new PositionVector(0, 0, 0))) {
             state = ObjectiveState.ACHIEVED;
         }
     }

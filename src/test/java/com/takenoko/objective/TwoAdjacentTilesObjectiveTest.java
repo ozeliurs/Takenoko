@@ -7,9 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.layers.LayerManager;
 import com.takenoko.layers.tile.Tile;
-import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import org.junit.jupiter.api.*;
@@ -41,20 +39,14 @@ class TwoAdjacentTilesObjectiveTest {
         @Test
         @DisplayName("When board has two tiles placed, state is ACHIEVED")
         void verify_WhenBoardHasTwoTilesNextToEachOther_ThenObjectiveStateIsACHIEVED() {
+            board = mock(Board.class);
             HashMap<PositionVector, Tile> tiles = new HashMap<>();
             tiles.put(new PositionVector(0, -1, 1), new Tile());
             tiles.put(new PositionVector(1, -1, 0), new Tile());
-
-            TileLayer tileLayer = mock(TileLayer.class);
-            when(tileLayer.getTilesWithoutPond()).thenReturn(tiles);
+            when(board.getTilesWithoutPond()).thenReturn(tiles);
             for (PositionVector position : tiles.keySet()) {
-                when(tileLayer.isTile(position)).thenReturn(true);
+                when(board.isTile(position)).thenReturn(true);
             }
-
-            LayerManager layerManager = mock(LayerManager.class);
-            when(layerManager.getTileLayer()).thenReturn(tileLayer);
-            board = mock(Board.class);
-            when(board.getLayerManager()).thenReturn(layerManager);
             twoAdjacentTilesObjective.verify(board, botManager);
             assertEquals(ObjectiveState.ACHIEVED, twoAdjacentTilesObjective.getState());
         }

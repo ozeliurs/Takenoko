@@ -8,7 +8,6 @@ public class TilePlacingBot implements Bot {
     @Override
     public Action chooseAction(Board board) {
         return new PlaceTileAction(
-                board.getLayerManager().getTileLayer().getAvailableTiles().get(0),
-                board.getLayerManager().getTileLayer().getAvailableTilePositions().get(0));
+                board.getAvailableTiles().get(0), board.getAvailableTilePositions().get(0));
     }
 }
