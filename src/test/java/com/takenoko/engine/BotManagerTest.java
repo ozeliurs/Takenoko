@@ -33,9 +33,7 @@ public class BotManagerTest {
     @DisplayName("Method getObjectiveDescription")
     class TestGetObjectiveDescription {
         @Test
-        @DisplayName(
-                "The objective is to have to have two adjacent tiles, returns the correct"
-                        + " description")
+        @DisplayName("The objective is to have two adjacent tiles, returns the correct description")
         void
                 getObjectiveDescription_WhenObjectiveIsToHaveTwoAdjacentTiles_ThenReturnsCorrectDescription() {
             Objective objective = new TwoAdjacentTilesObjective();
