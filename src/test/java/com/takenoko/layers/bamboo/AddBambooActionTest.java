@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.LayerManager;
-import com.takenoko.player.Playable;
+import com.takenoko.player.Bot;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +20,7 @@ class AddBambooActionTest {
     @BeforeEach
     void setUp() {
         addBambooAction = new AddBambooAction(new PositionVector(-1, 0, 1));
-        botManager = new BotManager(mock(Playable.class));
+        botManager = new BotManager(mock(Bot.class));
         board = mock(Board.class);
         when(board.getLayerManager()).thenReturn(mock(LayerManager.class));
         when(board.getLayerManager().getBambooLayer()).thenReturn(mock(BambooLayer.class));

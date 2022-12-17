@@ -3,7 +3,7 @@ package com.takenoko.engine;
 import com.takenoko.objective.EatBambooObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.player.Action;
-import com.takenoko.player.Playable;
+import com.takenoko.player.Bot;
 import com.takenoko.player.TilePlacingBot;
 import com.takenoko.ui.ConsoleUserInterface;
 
@@ -14,26 +14,26 @@ public class BotManager {
     private static final ConsoleUserInterface DEFAULT_CONSOLE_USER_INTERFACE =
             new ConsoleUserInterface();
     private static final String DEFAULT_NAME = "Joe";
-    private static final Playable DEFAULT_PLAYABLE = new TilePlacingBot();
+    private static final Bot DEFAULT_BOT = new TilePlacingBot();
     // ATTRIBUTES
     private final int numberOfActions;
     private Objective objective;
     private final ConsoleUserInterface consoleUserInterface;
     private int eatenBambooCounter = 0;
     private final String name;
-    private final Playable playable;
+    private final Bot bot;
 
     protected BotManager(
             int numberOfActions,
             Objective objective,
             ConsoleUserInterface consoleUserInterface,
             String name,
-            Playable playable) {
+            Bot bot) {
         this.numberOfActions = numberOfActions;
         this.objective = objective;
         this.consoleUserInterface = consoleUserInterface;
         this.name = name;
-        this.playable = playable;
+        this.bot = bot;
     }
 
     protected BotManager() {
@@ -42,21 +42,21 @@ public class BotManager {
                 DEFAULT_OBJECTIVE,
                 DEFAULT_CONSOLE_USER_INTERFACE,
                 DEFAULT_NAME,
-                DEFAULT_PLAYABLE);
+                DEFAULT_BOT);
     }
 
-    public BotManager(Playable playable) {
+    public BotManager(Bot bot) {
         this(
                 DEFAULT_NUMBER_OF_ACTIONS,
                 DEFAULT_OBJECTIVE,
                 DEFAULT_CONSOLE_USER_INTERFACE,
                 DEFAULT_NAME,
-                playable);
+                bot);
     }
 
     public void playBot(Board board) {
         for (int i = 0; i < this.getNumberOfActions(); i++) {
-            Action action = playable.chooseAction(board);
+            Action action = bot.chooseAction(board);
             action.execute(board, this);
             verifyObjective(board);
             if (isObjectiveAchieved()) {
