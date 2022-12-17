@@ -31,7 +31,7 @@ class RemoveBambooActionTest {
     @DisplayName("Method execute()")
     class TestExecute {
         @Test
-        @DisplayName("should place the tile on the board")
+        @DisplayName("should remove bamboo")
         void shouldMoveThePanda() {
             removeBambooAction.execute(board, botManager);
             verify(board.getLayerManager().getBambooLayer())
