@@ -140,8 +140,7 @@ public class EatBambooObjectiveTest {
                         + " number of bamboos, returns different hash code")
         void
                 hashCode_WhenObjectiveIsComparedToSameTypeWithDifferentNumberOfBamboos_ThenReturnsDifferentHashCode() {
-            assertThat(eatBambooObjective.hashCode())
-                    .isNotEqualTo((new EatBambooObjective(2)).hashCode());
+            assertThat(eatBambooObjective).doesNotHaveSameHashCodeAs(new EatBambooObjective(2));
         }
 
         @Test
@@ -149,8 +148,7 @@ public class EatBambooObjectiveTest {
                 "When the objective is compared to an objective of a different type, returns a"
                         + " different hash code")
         void hashCode_WhenObjectiveIsComparedToDifferentType_ThenReturnsDifferentHashCode() {
-            assertThat(eatBambooObjective.hashCode())
-                    .isNotEqualTo(new PlaceTileObjective(1).hashCode());
+            assertThat(eatBambooObjective).doesNotHaveSameHashCodeAs(new PlaceTileObjective(1));
         }
     }
 }
