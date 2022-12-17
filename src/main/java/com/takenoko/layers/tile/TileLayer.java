@@ -122,4 +122,14 @@ public class TileLayer {
     public boolean isTile(PositionVector position) {
         return getTiles().containsKey(position);
     }
+
+    /**
+     * Return the tile at the given position.
+     *
+     * @param positionVector the position of the tile
+     * @return the tile at the given position
+     */
+    public Tile getTileAt(PositionVector positionVector) {
+        return tiles.get(positionVector);
+    }
 }

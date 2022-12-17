@@ -8,15 +8,13 @@ public class TilePlacingAndPandaMovingBot implements Bot {
     @Override
     public Action chooseAction(Board board) {
         // check if the panda can move
-        if (!board.getActorsManager().getPanda().getPossibleMoves().isEmpty()) {
+        if (!board.getPanda().getPossibleMoves().isEmpty()) {
             // move the panda
-            return new MovePandaAction(
-                    board.getActorsManager().getPanda().getPossibleMoves().get(0));
+            return new MovePandaAction(board.getPanda().getPossibleMoves().get(0));
         } else {
             // place a tile
             return new PlaceTileAction(
-                    board.getLayerManager().getTileLayer().getAvailableTiles().get(0),
-                    board.getLayerManager().getTileLayer().getAvailableTilePositions().get(0));
+                    board.getAvailableTiles().get(0), board.getAvailableTilePositions().get(0));
         }
     }
 }
