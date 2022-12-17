@@ -1,4 +1,4 @@
-package com.takenoko.player;
+package com.takenoko.bot;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;

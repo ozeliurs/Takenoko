@@ -1,7 +1,7 @@
 package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.PlayableManager;
+import com.takenoko.engine.BotManager;
 import java.util.Objects;
 
 public class EatBambooObjective implements Objective {
@@ -18,8 +18,8 @@ public class EatBambooObjective implements Objective {
         return state == ObjectiveState.ACHIEVED;
     }
 
-    public void verify(Board board, PlayableManager playableManager) {
-        if ((playableManager.getEatenBambooCounter()) >= numberOfBamboosToEat) {
+    public void verify(Board board, BotManager botManager) {
+        if ((botManager.getEatenBambooCounter()) >= numberOfBamboosToEat) {
             state = ObjectiveState.ACHIEVED;
         }
     }

@@ -3,12 +3,12 @@ package com.takenoko.actors.panda;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.actors.ActorsManager;
+import com.takenoko.bot.Bot;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.LayerManager;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.BambooStack;
-import com.takenoko.player.Playable;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +27,7 @@ class MovePandaActionTest {
     @BeforeEach
     void setUp() {
         movePandaAction = new MovePandaAction(new PositionVector(-1, 0, 1));
-        botManager = new BotManager(mock(Playable.class));
+        botManager = new BotManager(mock(Bot.class));
         panda = mock(Panda.class);
         ActorsManager actorsManager = mock(ActorsManager.class);
         board = mock(Board.class);

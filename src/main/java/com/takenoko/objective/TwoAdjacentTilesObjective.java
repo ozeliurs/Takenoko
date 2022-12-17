@@ -1,7 +1,7 @@
 package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.PlayableManager;
+import com.takenoko.engine.BotManager;
 import com.takenoko.shape.Adjacent;
 import com.takenoko.shape.Shape;
 import com.takenoko.tile.Tile;
@@ -55,9 +55,9 @@ public class TwoAdjacentTilesObjective implements Objective {
      * each other.
      *
      * @param board the current board of the game
-     * @param playableManager
+     * @param botManager
      */
-    public void verify(Board board, PlayableManager playableManager) {
+    public void verify(Board board, BotManager botManager) {
         Shape adjacentShape = new Adjacent();
         Map<PositionVector, Tile> boardTiles =
                 board.getLayerManager().getTileLayer().getTilesWithoutPond();

@@ -1,15 +1,14 @@
 package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.actors.panda.MovePandaAction;
+import com.takenoko.bot.TilePlacingAndPandaMovingBot;
+import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.layers.tile.PlaceTileAction;
-import com.takenoko.objective.EatBambooObjective;
 import com.takenoko.objective.Objective;
-import com.takenoko.player.TilePlacingAndPandaMovingBot;
-import com.takenoko.player.TilePlacingBot;
+import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.*;
@@ -37,8 +36,9 @@ public class BotManagerTest {
         @DisplayName("The objective is to have two adjacent tiles, returns the correct description")
         void
                 getObjectiveDescription_WhenObjectiveIsToHaveTwoAdjacentTiles_ThenReturnsCorrectDescription() {
-            assertThat(botManager.getObjectiveDescription())
-                    .isEqualTo(new EatBambooObjective(2).toString());
+            Objective objective = new TwoAdjacentTilesObjective();
+            botManager.setObjective(objective);
+            assertThat(botManager.getObjectiveDescription()).isEqualTo(objective.toString());
         }
 
         @Test
@@ -64,15 +64,17 @@ public class BotManagerTest {
     class TestVerifyObjective {
         @Test
         @DisplayName("By default when board does not satisfy objective, objective is not achieved")
-        void verifyObjective_ThenReturnsFalse() {
-            Board board = new Board();
-            botManager.verifyObjective(board);
+        void verifyObjective_whenObjectiveIsNotAchieved_thenReturnFalse() {
+            Objective objective = mock(Objective.class);
+            when(objective.isAchieved()).thenReturn(false);
+            botManager.setObjective(objective);
+            botManager.verifyObjective(mock(Board.class));
             assertThat(botManager.isObjectiveAchieved()).isFalse();
         }
 
         @Test
         @DisplayName("When board satisfies objective, objective is achieved")
-        void verifyObjective_ThenReturnsTrue() {
+        void verifyObjective_whenObjectiveIsAchieved_thenReturnTrue() {
             Objective objective = mock(Objective.class);
             when(objective.isAchieved()).thenReturn(true);
             botManager.setObjective(objective);
@@ -100,15 +102,13 @@ public class BotManagerTest {
                         + " one")
         void
                 getEatenBambooCounter_WhenTheBotManagerMakesThePandaEatABamboo_TheBambooCounterIsAtLeastOne() {
-            Board board = new Board();
+            Board board = spy(new Board());
             TilePlacingAndPandaMovingBot bot = mock(TilePlacingAndPandaMovingBot.class);
-            when(bot.chooseAction(any(Board.class)))
-                    .thenReturn(
-                            new PlaceTileAction(new Tile(), new PositionVector(0, 1, -1)),
-                            new MovePandaAction(new PositionVector(0, 1, -1)));
-            BotManager botManager = new BotManager(bot);
-            botManager.playBot(board);
-            assertThat(botManager.getEatenBambooCounter()).isPositive();
+            BotManager botManager = spy(new BotManager(bot));
+            new PlaceTileAction(new Tile(), new PositionVector(0, -1, 1))
+                    .execute(board, botManager);
+            new MovePandaAction(new PositionVector(0, -1, 1)).execute(board, botManager);
+            verify(botManager, atLeastOnce()).incrementBambooCounter();
         }
     }
 }
