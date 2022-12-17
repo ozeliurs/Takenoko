@@ -32,8 +32,10 @@ public class EatBambooObjective extends Objective {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EatBambooObjective objective = (EatBambooObjective) o;
-        return numberOfBamboosToEat == objective.numberOfBamboosToEat && state == objective.state;
+        EatBambooObjective that = (EatBambooObjective) o;
+        return numberOfBamboosToEat == that.numberOfBamboosToEat
+                && getType() == that.getType()
+                && getState() == that.getState();
     }
 
     @Override
