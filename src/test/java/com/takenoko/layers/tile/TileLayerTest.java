@@ -3,8 +3,6 @@ package com.takenoko.layers.tile;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.takenoko.tile.Tile;
-import com.takenoko.tile.TileType;
 import com.takenoko.vector.PositionVector;
 import java.util.Arrays;
 import org.junit.jupiter.api.*;

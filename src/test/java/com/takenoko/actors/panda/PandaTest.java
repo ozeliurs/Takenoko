@@ -8,9 +8,9 @@ import static org.mockito.Mockito.when;
 
 import com.takenoko.engine.Board;
 import com.takenoko.layers.LayerManager;
+import com.takenoko.layers.tile.Pond;
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
-import com.takenoko.tile.Pond;
-import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.HashMap;

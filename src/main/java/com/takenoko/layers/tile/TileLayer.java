@@ -1,8 +1,5 @@
 package com.takenoko.layers.tile;
 
-import com.takenoko.tile.Pond;
-import com.takenoko.tile.Tile;
-import com.takenoko.tile.TileType;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.*;

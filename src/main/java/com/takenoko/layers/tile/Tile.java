@@ -1,4 +1,4 @@
-package com.takenoko.tile;
+package com.takenoko.layers.tile;
 
 import java.util.Objects;
 

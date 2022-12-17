@@ -1,6 +1,6 @@
 package com.takenoko.shape;
 
-import com.takenoko.tile.Tile;
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.Direction;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;

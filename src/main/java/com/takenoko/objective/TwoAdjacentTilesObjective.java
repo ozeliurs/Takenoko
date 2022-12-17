@@ -2,9 +2,9 @@ package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.shape.Adjacent;
 import com.takenoko.shape.Shape;
-import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +55,7 @@ public class TwoAdjacentTilesObjective implements Objective {
      * each other.
      *
      * @param board the current board of the game
-     * @param botManager
+     * @param botManager the bot manager to display a message
      */
     public void verify(Board board, BotManager botManager) {
         Shape adjacentShape = new Adjacent();
