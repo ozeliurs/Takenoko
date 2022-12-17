@@ -106,6 +106,6 @@ public class Board {
 
     /** Get the Position of the Panda */
     public PositionVector getPandaPosition() {
-        return actorsManager.getPanda().getPosition().toPositionVector();
+        return actorsManager.getPanda().getPosition();
     }
 }
