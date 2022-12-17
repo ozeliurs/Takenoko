@@ -7,6 +7,16 @@ import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.ui.ConsoleUserInterface;
 
+/**
+ * This class is used to manage one bot.
+ * It is responsible for managing all of its attributes :
+ * <ul>
+ *     <li>name</li>
+ *     <li>objective</li>
+ *     <li>number of actions</li>
+ *     <li>bamboos eaten counter</li>
+ * </ul>
+ */
 public class BotManager {
     // DEFAULT VALUES
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
@@ -23,6 +33,14 @@ public class BotManager {
     private final String name;
     private final Bot bot;
 
+    /**
+     * Constructor for the class
+     * @param numberOfActions number of actions the bot can do in a turn
+     * @param objective the bot must achieve the objective to win
+     * @param consoleUserInterface the console user interface
+     * @param name the name of the bot
+     * @param bot the bot
+     */
     protected BotManager(
             int numberOfActions,
             Objective objective,
@@ -36,6 +54,9 @@ public class BotManager {
         this.bot = bot;
     }
 
+    /**
+     * Default constructor for the class
+     */
     protected BotManager() {
         this(
                 DEFAULT_NUMBER_OF_ACTIONS,
@@ -45,6 +66,10 @@ public class BotManager {
                 DEFAULT_BOT);
     }
 
+    /**
+     * Constructor for the class but this time specifying which bot algorithm must be used
+     * @param bot the bot
+     */
     public BotManager(Bot bot) {
         this(
                 DEFAULT_NUMBER_OF_ACTIONS,
@@ -54,6 +79,11 @@ public class BotManager {
                 bot);
     }
 
+    /**
+     * Ask for the bot to choose an action based on his algorithm and then execute the returned action.
+     * Objectives are also verified in order to know if the bot has won.
+     * @param board
+     */
     public void playBot(Board board) {
         for (int i = 0; i < this.getNumberOfActions(); i++) {
             Action action = bot.chooseAction(board);
@@ -65,6 +95,9 @@ public class BotManager {
         }
     }
 
+    /**
+     * @return the objective description or "No current objective" if there is no objective
+     */
     public String getObjectiveDescription() {
         if (objective != null) {
             return objective.toString();
@@ -72,14 +105,23 @@ public class BotManager {
         return "No current objective";
     }
 
+    /**
+     * @return number of actions the bot can do in a turn
+     */
     protected int getNumberOfActions() {
         return numberOfActions;
     }
 
+    /**
+     * @param message the message to display
+     */
     public void displayMessage(String message) {
         consoleUserInterface.displayMessage(message);
     }
 
+    /**
+     * @return boolean to know is the objective is achieved or not
+     */
     public boolean isObjectiveAchieved() {
         if (objective != null) {
             return objective.isAchieved();
@@ -87,24 +129,41 @@ public class BotManager {
         return false;
     }
 
+    /**
+     * Verify the objective using the game board
+     * @param board current board game
+     */
     public void verifyObjective(Board board) {
         if (objective != null) {
             objective.verify(board, this);
         }
     }
 
+    /**
+     * Change or set the bot objective
+     * @param objective the new objective
+     */
     public void setObjective(Objective objective) {
         this.objective = objective;
     }
 
+    /**
+     * @return the bot name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return the number of bamboo eaten by the bot
+     */
     public int getEatenBambooCounter() {
         return eatenBambooCounter;
     }
 
+    /**
+     * Increment by one the number of bamboo eaten by the bot
+     */
     public void incrementBambooCounter() {
         eatenBambooCounter++;
     }
