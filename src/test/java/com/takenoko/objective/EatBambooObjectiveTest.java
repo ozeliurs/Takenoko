@@ -12,20 +12,17 @@ public class EatBambooObjectiveTest {
 
     private Board board;
     private EatBambooObjective eatBambooObjective;
-    private BotManager botManager;
 
     @BeforeEach
     public void setUp() {
         board = new Board();
         eatBambooObjective = new EatBambooObjective(1);
-        botManager = mock(BotManager.class);
     }
 
     @AfterEach
     public void tearDown() {
         board = null;
         eatBambooObjective = null;
-        botManager = null;
     }
 
     @Nested
@@ -96,6 +93,7 @@ public class EatBambooObjectiveTest {
         @Test
         @DisplayName(
                 "When the objective is compared to an objective of a different type, returns false")
+        @SuppressWarnings("EqualsBetweenInconvertibleTypes")
         void equals_WhenObjectiveIsComparedToDifferentType_ThenReturnsFalse() {
             assertThat(eatBambooObjective.equals(new PlaceTileObjective(1))).isFalse();
         }
@@ -111,7 +109,7 @@ public class EatBambooObjectiveTest {
 
         @Test
         @DisplayName(
-                "When the objective is compared to an objective of the same type with same number"
+                "When the objective is compared to an objective of the same state with same number"
                         + " of bamboos, returns true")
         void equals_WhenObjectiveIsComparedToSameTypeWithSameNumberOfBamboos_ThenReturnsTrue() {
             assertThat(eatBambooObjective.equals(new EatBambooObjective(1))).isTrue();
