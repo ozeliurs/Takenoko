@@ -1,7 +1,6 @@
 package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.actors.panda.MovePandaAction;
@@ -105,15 +104,13 @@ public class BotManagerTest {
                         + " one")
         void
                 getEatenBambooCounter_WhenTheBotManagerMakesThePandaEatABamboo_TheBambooCounterIsAtLeastOne() {
-            Board board = new Board();
+            Board board = spy(new Board());
             TilePlacingAndPandaMovingBot bot = mock(TilePlacingAndPandaMovingBot.class);
-            when(bot.chooseAction(any(Board.class)))
-                    .thenReturn(
-                            new PlaceTileAction(new Tile(), new PositionVector(0, 1, -1)),
-                            new MovePandaAction(new PositionVector(0, 1, -1)));
-            BotManager botManager = new BotManager(bot);
-            botManager.playBot(board);
-            assertThat(botManager.getEatenBambooCounter()).isPositive();
+            BotManager botManager = spy(new BotManager(bot));
+            new PlaceTileAction(new Tile(), new PositionVector(0, -1, 1))
+                    .execute(board, botManager);
+            new MovePandaAction(new PositionVector(0, -1, 1)).execute(board, botManager);
+            verify(botManager, atLeastOnce()).incrementBambooCounter();
         }
     }
 }
