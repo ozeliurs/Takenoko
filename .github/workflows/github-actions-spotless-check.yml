@@ -1,7 +1,8 @@
 name: Spotless Check
 
 on:
-  [ push, pull_request ]
+  push:
+    branches: '*'
 
 jobs:
   name: Build
