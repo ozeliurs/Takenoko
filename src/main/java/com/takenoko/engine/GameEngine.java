@@ -3,7 +3,7 @@ package com.takenoko.engine;
 import com.takenoko.bot.TilePlacingAndPandaMovingBot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.objective.EatBambooObjective;
+import com.takenoko.objective.BambooInInventoryObjective;
 import com.takenoko.objective.PlaceTileObjective;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class GameEngine {
                                         new Inventory()),
                                 new BotManager(
                                         2,
-                                        new EatBambooObjective(10),
+                                        new BambooInInventoryObjective(10),
                                         new ConsoleUserInterface(),
                                         "Bob",
                                         new TilePlacingAndPandaMovingBot(),
