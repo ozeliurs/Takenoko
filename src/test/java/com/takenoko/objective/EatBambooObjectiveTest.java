@@ -6,24 +6,23 @@ import static org.mockito.Mockito.when;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.*;
 
-public class MovePandaObjectiveTest {
+public class EatBambooObjectiveTest {
 
     private Board board;
-    private MovePandaObjective movePandaObjective;
+    private EatBambooObjective eatBambooObjective;
 
     @BeforeEach
     public void setUp() {
         board = new Board();
-        movePandaObjective = new MovePandaObjective();
+        eatBambooObjective = new EatBambooObjective(1);
     }
 
     @AfterEach
     public void tearDown() {
         board = null;
-        movePandaObjective = null;
+        eatBambooObjective = null;
     }
 
     @Nested
@@ -32,7 +31,8 @@ public class MovePandaObjectiveTest {
         @Test
         @DisplayName("Returns the correct string")
         void toString_ThenReturnsCorrectString() {
-            assertThat(movePandaObjective).hasToString("MovePandaObjective{state=NOT_ACHIEVED}");
+            assertThat(eatBambooObjective)
+                    .hasToString("EatBambooObjective{numberOfBamboosToEat=1, state=NOT_ACHIEVED}");
         }
     }
 
@@ -42,7 +42,8 @@ public class MovePandaObjectiveTest {
         @Test
         @DisplayName("Returns the correct type")
         void getType_ThenReturnsCorrectType() {
-            assertThat(movePandaObjective.getType()).isEqualTo(ObjectiveTypes.MOVED_PANDA);
+            assertThat(eatBambooObjective.getType())
+                    .isEqualTo(ObjectiveTypes.NUMBER_OF_BAMBOOS_EATEN);
         }
     }
 
@@ -52,19 +53,16 @@ public class MovePandaObjectiveTest {
         @Test
         @DisplayName("When the objective is not achieved, returns NOT_ACHIEVED")
         void getState_WhenObjectiveIsNotAchieved_ThenReturnsNOT_ACHIEVED() {
-            assertThat(movePandaObjective.getState()).isEqualTo(ObjectiveState.NOT_ACHIEVED);
+            assertThat(eatBambooObjective.getState()).isEqualTo(ObjectiveState.NOT_ACHIEVED);
         }
 
         @Test
         @DisplayName("When the objective is achieved, returns ACHIEVED")
         void getState_WhenObjectiveIsAchieved_ThenReturnsACHIEVED() {
-            board = mock(Board.class);
-            when(board.getPandaPosition()).thenReturn(new PositionVector(-1, 0, 1));
-
             BotManager botManager = mock(BotManager.class);
-
-            movePandaObjective.verify(board, botManager);
-            assertThat(movePandaObjective.getState()).isEqualTo(ObjectiveState.ACHIEVED);
+            when(botManager.getEatenBambooCounter()).thenReturn(1);
+            eatBambooObjective.verify(board, botManager);
+            assertThat(eatBambooObjective.getState()).isEqualTo(ObjectiveState.ACHIEVED);
         }
     }
 
@@ -75,36 +73,46 @@ public class MovePandaObjectiveTest {
         @DisplayName("When the objective is compared to itself, returns true")
         @SuppressWarnings("EqualsWithItself")
         void equals_WhenObjectiveIsComparedToItself_ThenReturnsTrue() {
-            assertThat(movePandaObjective.equals(movePandaObjective)).isTrue();
+            assertThat(eatBambooObjective.equals(eatBambooObjective)).isTrue();
         }
 
         @Test
         @DisplayName("When the objective is compared to null, returns false")
         @SuppressWarnings("ConstantConditions")
         void equals_WhenObjectiveIsComparedToNull_ThenReturnsFalse() {
-            assertThat(movePandaObjective.equals(null)).isFalse();
+            assertThat(eatBambooObjective.equals(null)).isFalse();
         }
 
         @Test
         @DisplayName(
                 "When the objective is compared to an object of a different class, returns false")
         void equals_WhenObjectiveIsComparedToDifferentClass_ThenReturnsFalse() {
-            assertThat(movePandaObjective.equals(new Object())).isFalse();
+            assertThat(eatBambooObjective.equals(new Object())).isFalse();
         }
 
         @Test
         @DisplayName(
                 "When the objective is compared to an objective of a different type, returns false")
-        @SuppressWarnings({"EqualsBetweenInconvertibleTypes"})
+        @SuppressWarnings("EqualsBetweenInconvertibleTypes")
         void equals_WhenObjectiveIsComparedToDifferentType_ThenReturnsFalse() {
-            assertThat(movePandaObjective.equals(new PlaceTileObjective(1))).isFalse();
+            assertThat(eatBambooObjective.equals(new PlaceTileObjective(1))).isFalse();
         }
 
         @Test
         @DisplayName(
-                "When the objective is compared to an objective of the same type, returns true")
-        void equals_WhenObjectiveIsComparedToSameType_ThenReturnsTrue() {
-            assertThat(movePandaObjective.equals(new MovePandaObjective())).isTrue();
+                "When the objective is compared to an objective of the same type but different"
+                        + " number of bamboos, returns false")
+        void
+                equals_WhenObjectiveIsComparedToSameTypeWithDifferentNumberOfBamboos_ThenReturnsFalse() {
+            assertThat(eatBambooObjective.equals(new EatBambooObjective(2))).isFalse();
+        }
+
+        @Test
+        @DisplayName(
+                "When the objective is compared to an objective of the same state with same number"
+                        + " of bamboos, returns true")
+        void equals_WhenObjectiveIsComparedToSameTypeWithSameNumberOfBamboos_ThenReturnsTrue() {
+            assertThat(eatBambooObjective.equals(new EatBambooObjective(1))).isTrue();
         }
     }
 
@@ -114,15 +122,25 @@ public class MovePandaObjectiveTest {
         @Test
         @DisplayName("When the objective is compared to itself, returns the same hash code")
         void hashCode_WhenObjectiveIsComparedToItself_ThenReturnsSameHashCode() {
-            assertThat(movePandaObjective).hasSameHashCodeAs(movePandaObjective);
+            assertThat(eatBambooObjective).hasSameHashCodeAs(eatBambooObjective);
         }
 
         @Test
         @DisplayName(
-                "When the objective is compared to an objective of the same type, returns the same"
-                        + " hash code")
-        void hashCode_WhenObjectiveIsComparedToSameType_ThenReturnsSameHashCode() {
-            assertThat(movePandaObjective).hasSameHashCodeAs(new MovePandaObjective());
+                "When the objective is compared to an objective of the same type with same number"
+                        + " of bamboos, returns same hash code")
+        void
+                hashCode_WhenObjectiveIsComparedToSameTypeAndSameNumberOfBamboos_ThenReturnsSameHashCode() {
+            assertThat(eatBambooObjective).hasSameHashCodeAs(new EatBambooObjective(1));
+        }
+
+        @Test
+        @DisplayName(
+                "When the objective is compared to an objective of the same type but different"
+                        + " number of bamboos, returns different hash code")
+        void
+                hashCode_WhenObjectiveIsComparedToSameTypeWithDifferentNumberOfBamboos_ThenReturnsDifferentHashCode() {
+            assertThat(eatBambooObjective).doesNotHaveSameHashCodeAs(new EatBambooObjective(2));
         }
 
         @Test
@@ -130,8 +148,7 @@ public class MovePandaObjectiveTest {
                 "When the objective is compared to an objective of a different type, returns a"
                         + " different hash code")
         void hashCode_WhenObjectiveIsComparedToDifferentType_ThenReturnsDifferentHashCode() {
-            assertThat(movePandaObjective.hashCode())
-                    .isNotEqualTo(new PlaceTileObjective(1).hashCode());
+            assertThat(eatBambooObjective).doesNotHaveSameHashCodeAs(new PlaceTileObjective(1));
         }
     }
 }

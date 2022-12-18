@@ -1,25 +1,56 @@
 package com.takenoko.engine;
 
-import com.takenoko.player.Playable;
-import com.takenoko.player.TilePlacingAndPandaMovingBot;
+import com.takenoko.bot.TilePlacingAndPandaMovingBot;
+import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.ui.ConsoleUserInterface;
+import java.util.ArrayList;
+import java.util.List;
 
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
+    public static final int DEFAULT_NUMBER_OF_ROUNDS = 10;
     private final Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
-    private final Playable playable;
+    private final int numberOfRounds;
+    private final List<BotManager> botManagers;
+
+    public GameEngine(
+            int numberOfRounds,
+            Board board,
+            ConsoleUserInterface consoleUserInterface,
+            GameState gameState,
+            List<BotManager> botManagerList) {
+        this.numberOfRounds = numberOfRounds;
+        this.board = board;
+        this.consoleUserInterface = consoleUserInterface;
+        this.gameState = gameState;
+        this.botManagers = botManagerList;
+    }
 
     /**
      * Constructor for the GameEngine class. Instantiate the board and the console user interface
      * used. It does not start the game ! It simply instantiates the objects needed for the game.
      */
     public GameEngine() {
-        board = new Board();
-        consoleUserInterface = new ConsoleUserInterface();
-        gameState = GameState.INITIALIZED;
-        playable = new TilePlacingAndPandaMovingBot();
+        this(
+                DEFAULT_NUMBER_OF_ROUNDS,
+                new Board(),
+                new ConsoleUserInterface(),
+                GameState.INITIALIZED,
+                new ArrayList<>(
+                        List.of(
+                                new BotManager(new TilePlacingBot()),
+                                new BotManager(new TilePlacingAndPandaMovingBot()))));
+    }
+
+    public GameEngine(List<BotManager> botManagers) {
+        this(
+                DEFAULT_NUMBER_OF_ROUNDS,
+                new Board(),
+                new ConsoleUserInterface(),
+                GameState.INITIALIZED,
+                botManagers);
     }
 
     /**
@@ -57,18 +88,31 @@ public class GameEngine {
 
         gameState = GameState.PLAYING;
         consoleUserInterface.displayMessage("The game has started !");
+
+        for (BotManager botManager : botManagers) {
+            consoleUserInterface.displayMessage(
+                    botManager.getName()
+                            + " has the objective : "
+                            + botManager.getObjectiveDescription());
+        }
     }
 
     public void playGame() {
-        BotManager botManager = new BotManager(playable);
-        consoleUserInterface.displayMessage(
-                "The bot objective is : " + botManager.getObjectiveDescription());
-        botManager.playBot(board);
-        if (botManager.isObjectiveAchieved()) {
-            consoleUserInterface.displayMessage(
-                    "Bot has achieved the objective "
-                            + botManager.getObjectiveDescription()
-                            + ", it has won");
+        for (int i = 0; i < numberOfRounds; i++) {
+            consoleUserInterface.displayMessage("===== Round " + (i + 1) + " =====");
+            for (BotManager botManager : botManagers) {
+                consoleUserInterface.displayMessage(
+                        "===== <" + botManager.getName() + "> is playing =====");
+                botManager.playBot(board);
+                if (botManager.isObjectiveAchieved()) {
+                    consoleUserInterface.displayMessage(
+                            botManager.getName()
+                                    + " has achieved the objective "
+                                    + botManager.getObjectiveDescription()
+                                    + ", it has won");
+                    return;
+                }
+            }
         }
     }
 

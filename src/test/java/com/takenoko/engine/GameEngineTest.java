@@ -2,7 +2,11 @@ package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
 
+import com.takenoko.bot.TilePlacingBot;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -105,13 +109,23 @@ class GameEngineTest {
     @DisplayName("Method playGame")
     class TestPlayGame {
         @Test
-        @DisplayName("When called, a tile is placed on the board")
-        void playGame_whenCalled_aTileIsPlacedOnTheBoard() {
+        @DisplayName("when bots have no objective then they should play all the rounds")
+        void playGame_whenBotsHaveNoObjective_shouldPlayAllTheRounds() {
+
+            BotManager botManager01 = spy(new BotManager(new TilePlacingBot()));
+            BotManager botManager02 = spy(new BotManager(new TilePlacingBot()));
+            when(botManager01.isObjectiveAchieved()).thenReturn(false);
+            when(botManager02.isObjectiveAchieved()).thenReturn(false);
+
+            GameEngine gameEngine =
+                    new GameEngine(new ArrayList<>(List.of(botManager01, botManager02)));
+
             gameEngine.newGame();
             gameEngine.startGame();
             gameEngine.playGame();
-            assertThat(gameEngine.getBoard().getLayerManager().getTileLayer().getTiles())
-                    .hasSizeGreaterThan(1);
+
+            verify(botManager01, times(GameEngine.DEFAULT_NUMBER_OF_ROUNDS)).playBot(any());
+            verify(botManager02, times(GameEngine.DEFAULT_NUMBER_OF_ROUNDS)).playBot(any());
         }
     }
 

@@ -4,10 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
+import com.takenoko.engine.BotManager;
 import com.takenoko.layers.LayerManager;
+import com.takenoko.layers.tile.Pond;
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
-import com.takenoko.tile.Pond;
-import com.takenoko.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import org.junit.jupiter.api.*;
@@ -17,17 +18,20 @@ class PlaceTileObjectiveTest {
 
     private PlaceTileObjective placeTileObjective;
     private Board board;
+    private BotManager botManager;
 
     @BeforeEach
     void setup() {
         placeTileObjective = new PlaceTileObjective(2);
         board = new Board();
+        botManager = mock(BotManager.class);
     }
 
     @AfterEach
     void tearDown() {
         placeTileObjective = null;
         board = null;
+        botManager = null;
     }
 
     @Nested
@@ -36,7 +40,7 @@ class PlaceTileObjectiveTest {
         @Test
         @DisplayName("When board has no tiles placed, state is NOT_ACHIEVED")
         void verify_WhenBoardHasNoTiles_ThenObjectiveStateIsNOT_ACHIEVED() {
-            placeTileObjective.verify(board);
+            placeTileObjective.verify(board, botManager);
             assertThat(placeTileObjective.getState()).isEqualTo(ObjectiveState.NOT_ACHIEVED);
         }
 
@@ -58,7 +62,7 @@ class PlaceTileObjectiveTest {
             when(layerManager.getTileLayer()).thenReturn(tileLayer);
             board = mock(Board.class);
             when(board.getLayerManager()).thenReturn(layerManager);
-            placeTileObjective.verify(board);
+            placeTileObjective.verify(board, botManager);
             assertThat(placeTileObjective.getState()).isEqualTo(ObjectiveState.ACHIEVED);
         }
     }
@@ -77,7 +81,7 @@ class PlaceTileObjectiveTest {
         void isAchieved_WhenObjectiveIsAchieved_ThenReturnsTrue() {
             // use reflection to set the private field
             ReflectionTestUtils.setField(placeTileObjective, "state", ObjectiveState.ACHIEVED);
-            placeTileObjective.verify(board);
+            placeTileObjective.verify(board, botManager);
             assertThat(placeTileObjective.isAchieved()).isTrue();
         }
     }

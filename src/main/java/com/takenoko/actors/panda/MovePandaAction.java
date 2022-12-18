@@ -1,21 +1,22 @@
 package com.takenoko.actors.panda;
 
+import com.takenoko.bot.Action;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.player.Action;
+import com.takenoko.layers.bamboo.RemoveBambooAction;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of moving the panda. */
 public class MovePandaAction implements Action {
-    private final PositionVector positionVector;
+    private final PositionVector relativePositionVector;
 
     /**
      * Constructor for the MovePandaAction class.
      *
-     * @param positionVector the position vector to move the panda
+     * @param relativePositionVector the position vector to move the panda
      */
-    public MovePandaAction(PositionVector positionVector) {
-        this.positionVector = positionVector;
+    public MovePandaAction(PositionVector relativePositionVector) {
+        this.relativePositionVector = relativePositionVector;
     }
 
     /**
@@ -26,7 +27,17 @@ public class MovePandaAction implements Action {
      */
     @Override
     public void execute(Board board, BotManager botManager) {
-        board.getActorsManager().getPanda().move(positionVector);
-        botManager.displayMessage(botManager + " moved the panda to " + positionVector);
+        // move the panda
+        board.getPanda().move(relativePositionVector);
+        botManager.displayMessage(botManager + " moved the panda to " + relativePositionVector);
+
+        // check if the panda can eat bamboo
+        if (board.getBambooAt(board.getPandaPosition()).getBambooCount() > 0) {
+            // eat bamboo
+            new RemoveBambooAction(board.getPandaPosition()).execute(board, botManager);
+            botManager.incrementBambooCounter();
+            botManager.displayMessage(
+                    "The panda has eaten one bamboo on the tile at " + relativePositionVector);
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.takenoko.actors.panda;
 
 import com.takenoko.engine.Board;
 import com.takenoko.vector.PositionVector;
-import com.takenoko.vector.Vector;
 import java.util.List;
 
 /** Panda class. The panda is an actor that can move on the board. */
@@ -21,7 +20,7 @@ public class Panda {
     /**
      * @return the position of the panda
      */
-    public Vector getPosition() {
+    public PositionVector getPosition() {
         return position;
     }
 
@@ -37,8 +36,8 @@ public class Panda {
      *
      * @param vector the vector to move the panda
      */
-    void move(Vector vector) {
-        if (!possibleMoves.contains(vector.toPositionVector())) {
+    void move(PositionVector vector) {
+        if (!isMovePossible(vector)) {
             throw new IllegalArgumentException("This move is not possible");
         }
         position = position.add(vector).toPositionVector();
@@ -51,7 +50,7 @@ public class Panda {
      * @param vector the vector to move the panda
      * @return true if the move is possible, false otherwise
      */
-    private boolean isMovePossible(Vector vector) {
+    private boolean isMovePossible(PositionVector vector) {
         // check if the panda is moving in a straight line
         if (!(vector.r() == 0 || vector.q() == 0 || vector.s() == 0)) {
             return false;
@@ -62,7 +61,7 @@ public class Panda {
             PositionVector ray =
                     this.position.add(vector.normalize().multiply(i)).toPositionVector();
 
-            if (!board.getLayerManager().getTileLayer().isTile(ray)) {
+            if (!board.isTile(ray)) {
                 return false;
             }
         }
@@ -82,10 +81,9 @@ public class Panda {
     /** Calculate possible moves for the panda. */
     public void calculatePossibleMoves() {
         possibleMoves =
-                board.getLayerManager().getTileLayer().getTiles().keySet().stream()
-                        .map(v -> v.sub(position))
+                board.getTiles().keySet().stream()
+                        .map(v -> v.sub(position).toPositionVector())
                         .filter(this::isMovePossible)
-                        .map(Vector::toPositionVector)
                         .filter(v -> !v.equals(new PositionVector(0, 0, 0)))
                         .toList();
     }
