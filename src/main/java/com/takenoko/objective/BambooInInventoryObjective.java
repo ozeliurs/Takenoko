@@ -4,25 +4,25 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import java.util.Objects;
 
-public class EatBambooObjective extends Objective {
-    private final int numberOfBamboosToEat;
+public class BambooInInventoryObjective extends Objective {
+    private final int targetBambooInInventory;
 
-    public EatBambooObjective(int numberOfBamboosToEat) {
+    public BambooInInventoryObjective(int targetBambooInInventory) {
         super(ObjectiveTypes.NUMBER_OF_BAMBOOS_EATEN, ObjectiveState.NOT_ACHIEVED);
-        this.numberOfBamboosToEat = numberOfBamboosToEat;
+        this.targetBambooInInventory = targetBambooInInventory;
     }
 
     public void verify(Board board, BotManager botManager) {
-        if ((botManager.getEatenBambooCounter()) >= numberOfBamboosToEat) {
+        if ((botManager.getEatenBambooCounter()) >= targetBambooInInventory) {
             state = ObjectiveState.ACHIEVED;
         }
     }
 
     @Override
     public String toString() {
-        return "EatBambooObjective{"
-                + "numberOfBamboosToEat="
-                + numberOfBamboosToEat
+        return "BambooInInventoryObjective{"
+                + "targetBambooInInventory="
+                + targetBambooInInventory
                 + ", state="
                 + state
                 + '}';
@@ -32,14 +32,14 @@ public class EatBambooObjective extends Objective {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EatBambooObjective that = (EatBambooObjective) o;
-        return numberOfBamboosToEat == that.numberOfBamboosToEat
+        BambooInInventoryObjective that = (BambooInInventoryObjective) o;
+        return targetBambooInInventory == that.targetBambooInInventory
                 && getType() == that.getType()
                 && getState() == that.getState();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numberOfBamboosToEat, getType(), getState());
+        return Objects.hash(targetBambooInInventory, getType(), getState());
     }
 }
