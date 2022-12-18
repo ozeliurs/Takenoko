@@ -8,16 +8,7 @@ public class InventoryBambooStack extends BambooStack {
         super(startingBamboo);
     }
 
-    @Override
-    protected void growBamboo() {
-        bambooCount++;
-    }
-
-    @Override
-    protected void eatBamboo() {
-        if (bambooCount == 0) {
-            throw new IllegalArgumentException("There is no bamboo to remove");
-        }
-        bambooCount--;
+    protected void collectBamboo() {
+        growBamboo();
     }
 }
