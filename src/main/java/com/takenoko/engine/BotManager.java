@@ -21,7 +21,7 @@ import com.takenoko.ui.ConsoleUserInterface;
 public class BotManager {
     // DEFAULT VALUES
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
-    private static final Objective DEFAULT_OBJECTIVE = new EatBambooObjective(1);
+    private static final Objective DEFAULT_OBJECTIVE = new EatBambooObjective(2);
     private static final ConsoleUserInterface DEFAULT_CONSOLE_USER_INTERFACE =
             new ConsoleUserInterface();
     private static final String DEFAULT_NAME = "Joe";
