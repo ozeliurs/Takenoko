@@ -29,15 +29,17 @@ public class MovePandaAction implements Action {
     public void execute(Board board, BotManager botManager) {
         // move the panda
         board.getPanda().move(relativePositionVector);
-        botManager.displayMessage(botManager + " moved the panda to " + relativePositionVector);
+        botManager.displayMessage(
+                botManager.getName()
+                        + " moved the panda with "
+                        + relativePositionVector
+                        + " to position "
+                        + board.getPandaPosition());
 
         // check if the panda can eat bamboo
         if (board.getBambooAt(board.getPandaPosition()).getBambooCount() > 0) {
             // eat bamboo
             new EatBambooAction(board.getPandaPosition()).execute(board, botManager);
-
-            botManager.displayMessage(
-                    "The panda has eaten one bamboo on the tile at " + relativePositionVector);
         }
     }
 }

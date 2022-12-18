@@ -24,6 +24,7 @@ public class EatBambooAction implements Action {
     @Override
     public void execute(Board board, BotManager botManager) {
         board.getLayerManager().getBambooLayer().removeBamboo(positionVector);
+        botManager.displayMessage("Panda ate bamboo at " + positionVector);
         new CollectBambooAction().execute(board, botManager);
     }
 }

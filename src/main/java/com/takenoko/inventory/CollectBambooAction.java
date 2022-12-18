@@ -9,6 +9,6 @@ public class CollectBambooAction implements Action {
     @Override
     public void execute(Board board, BotManager botManager) {
         botManager.getInventory().getBambooStack().collectBamboo();
-        botManager.displayMessage(botManager + " collected one bamboo");
+        botManager.displayMessage(botManager.getName() + " collected one bamboo");
     }
 }
