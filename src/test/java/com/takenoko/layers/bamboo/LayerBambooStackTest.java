@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-class BambooStackTest {
+class LayerBambooStackTest {
 
     @Nested
     @DisplayName("Method getBamboo()")
@@ -14,8 +14,8 @@ class BambooStackTest {
         @Test
         @DisplayName("should return the number of bamboo")
         void shouldReturnTheNumberOfBamboo() {
-            BambooStack bambooStack = new BambooStack(5);
-            assertEquals(5, bambooStack.getBambooCount());
+            LayerBambooStack layerBambooStack = new LayerBambooStack(5);
+            assertEquals(5, layerBambooStack.getBambooCount());
         }
     }
 
@@ -25,9 +25,9 @@ class BambooStackTest {
         @Test
         @DisplayName("should add a bamboo")
         void shouldAddABamboo() {
-            BambooStack bambooStack = new BambooStack(5);
-            bambooStack.addBamboo();
-            assertEquals(6, bambooStack.getBambooCount());
+            LayerBambooStack layerBambooStack = new LayerBambooStack(5);
+            layerBambooStack.addBamboo();
+            assertEquals(6, layerBambooStack.getBambooCount());
         }
     }
 
@@ -37,16 +37,16 @@ class BambooStackTest {
         @Test
         @DisplayName("should remove a bamboo")
         void shouldRemoveABamboo() {
-            BambooStack bambooStack = new BambooStack(5);
-            bambooStack.subBamboo();
-            assertEquals(4, bambooStack.getBambooCount());
+            LayerBambooStack layerBambooStack = new LayerBambooStack(5);
+            layerBambooStack.subBamboo();
+            assertEquals(4, layerBambooStack.getBambooCount());
         }
 
         @Test
         @DisplayName("should throw an exception if there is no bamboo")
         void shouldThrowAnExceptionIfThereIsNoBamboo() {
-            BambooStack bambooStack = new BambooStack(0);
-            assertThrows(IllegalArgumentException.class, bambooStack::subBamboo);
+            LayerBambooStack layerBambooStack = new LayerBambooStack(0);
+            assertThrows(IllegalArgumentException.class, layerBambooStack::subBamboo);
         }
     }
 
@@ -56,17 +56,17 @@ class BambooStackTest {
         @Test
         @DisplayName("should return true if the bamboo stacks are equal")
         void shouldReturnTrueIfTheBambooStacksAreEqual() {
-            BambooStack bambooStack1 = new BambooStack(5);
-            BambooStack bambooStack2 = new BambooStack(5);
-            assertEquals(bambooStack1, bambooStack2);
+            LayerBambooStack layerBambooStack1 = new LayerBambooStack(5);
+            LayerBambooStack layerBambooStack2 = new LayerBambooStack(5);
+            assertEquals(layerBambooStack1, layerBambooStack2);
         }
 
         @Test
         @DisplayName("should return false if the bamboo stacks are not equal")
         void shouldReturnFalseIfTheBambooStacksAreNotEqual() {
-            BambooStack bambooStack1 = new BambooStack(5);
-            BambooStack bambooStack2 = new BambooStack(6);
-            assertNotEquals(bambooStack1, bambooStack2);
+            LayerBambooStack layerBambooStack1 = new LayerBambooStack(5);
+            LayerBambooStack layerBambooStack2 = new LayerBambooStack(6);
+            assertNotEquals(layerBambooStack1, layerBambooStack2);
         }
     }
 
@@ -76,17 +76,17 @@ class BambooStackTest {
         @Test
         @DisplayName("should return the same hash code if the bamboo stacks are equal")
         void shouldReturnTheSameHashCodeIfTheBambooStacksAreEqual() {
-            BambooStack bambooStack1 = new BambooStack(5);
-            BambooStack bambooStack2 = new BambooStack(5);
-            assertEquals(bambooStack1.hashCode(), bambooStack2.hashCode());
+            LayerBambooStack layerBambooStack1 = new LayerBambooStack(5);
+            LayerBambooStack layerBambooStack2 = new LayerBambooStack(5);
+            assertEquals(layerBambooStack1.hashCode(), layerBambooStack2.hashCode());
         }
 
         @Test
         @DisplayName("should return a different hash code if the bamboo stacks are not equal")
         void shouldReturnADifferentHashCodeIfTheBambooStacksAreNotEqual() {
-            BambooStack bambooStack1 = new BambooStack(5);
-            BambooStack bambooStack2 = new BambooStack(6);
-            assertNotEquals(bambooStack1.hashCode(), bambooStack2.hashCode());
+            LayerBambooStack layerBambooStack1 = new LayerBambooStack(5);
+            LayerBambooStack layerBambooStack2 = new LayerBambooStack(6);
+            assertNotEquals(layerBambooStack1.hashCode(), layerBambooStack2.hashCode());
         }
     }
 }

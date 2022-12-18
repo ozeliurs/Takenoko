@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 /** BambooLayer class. The bamboo layer contains the number of bamboo on each tile. */
 public class BambooLayer {
-    private final HashMap<PositionVector, BambooStack> bamboo;
+    private final HashMap<PositionVector, LayerBambooStack> bamboo;
     private final Board board;
 
     /**
@@ -35,7 +35,7 @@ public class BambooLayer {
         if (bamboo.containsKey(positionVector)) {
             bamboo.get(positionVector).addBamboo();
         } else {
-            bamboo.put(positionVector, new BambooStack(1));
+            bamboo.put(positionVector, new LayerBambooStack(1));
         }
     }
 
@@ -45,9 +45,9 @@ public class BambooLayer {
      * @param positionVector the position of the tile
      * @return the number of bamboo on the tile
      */
-    public BambooStack getBambooAt(PositionVector positionVector) {
+    public LayerBambooStack getBambooAt(PositionVector positionVector) {
         if (board.isTile(positionVector)) {
-            bamboo.computeIfAbsent(positionVector, k -> new BambooStack(0));
+            bamboo.computeIfAbsent(positionVector, k -> new LayerBambooStack(0));
             return bamboo.get(positionVector);
         } else {
             throw new IllegalArgumentException("The position is not a tile");

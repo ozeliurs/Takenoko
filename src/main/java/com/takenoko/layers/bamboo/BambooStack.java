@@ -3,21 +3,17 @@ package com.takenoko.layers.bamboo;
 import java.util.Objects;
 
 public class BambooStack {
-    private int bambooCount;
+    protected int bambooCount;
 
     public BambooStack(int startingBamboo) {
         bambooCount = startingBamboo;
     }
 
-    public BambooStack() {
-        this(0);
-    }
-
-    void addBamboo() {
+    protected void addBamboo() {
         bambooCount++;
     }
 
-    void subBamboo() {
+    protected void subBamboo() {
         if (bambooCount == 0) {
             throw new IllegalArgumentException("There is no bamboo to remove");
         }
@@ -32,7 +28,7 @@ public class BambooStack {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BambooStack that = (BambooStack) o;
+        LayerBambooStack that = (LayerBambooStack) o;
         return getBambooCount() == that.getBambooCount();
     }
 
