@@ -3,6 +3,7 @@ package com.takenoko.engine;
 import com.takenoko.bot.Action;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
+import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.EatBambooObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
@@ -32,6 +33,7 @@ public class BotManager {
     private int eatenBambooCounter = 0;
     private final String name;
     private final Bot bot;
+    private final Inventory inventory;
 
     /**
      * Constructor for the class
@@ -47,12 +49,14 @@ public class BotManager {
             Objective objective,
             ConsoleUserInterface consoleUserInterface,
             String name,
-            Bot bot) {
+            Bot bot,
+            Inventory inventory) {
         this.numberOfActions = numberOfActions;
         this.objective = objective;
         this.consoleUserInterface = consoleUserInterface;
         this.name = name;
         this.bot = bot;
+        this.inventory = inventory;
     }
 
     /** Default constructor for the class */
@@ -62,7 +66,8 @@ public class BotManager {
                 DEFAULT_OBJECTIVE,
                 DEFAULT_CONSOLE_USER_INTERFACE,
                 DEFAULT_NAME,
-                DEFAULT_BOT);
+                DEFAULT_BOT,
+                new Inventory());
     }
 
     /**
@@ -76,7 +81,8 @@ public class BotManager {
                 DEFAULT_OBJECTIVE,
                 DEFAULT_CONSOLE_USER_INTERFACE,
                 DEFAULT_NAME,
-                bot);
+                bot,
+                new Inventory());
     }
 
     /**
@@ -167,5 +173,9 @@ public class BotManager {
     /** Increment by one the number of bamboo eaten by the bot */
     public void incrementBambooCounter() {
         eatenBambooCounter++;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }

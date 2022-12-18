@@ -3,7 +3,7 @@ package com.takenoko.engine;
 import com.takenoko.actors.ActorsManager;
 import com.takenoko.actors.panda.Panda;
 import com.takenoko.layers.LayerManager;
-import com.takenoko.layers.bamboo.BambooStack;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
@@ -95,7 +95,7 @@ public class Board {
      *
      * @param positionVector the position of the tile
      */
-    public BambooStack getBambooAt(PositionVector positionVector) {
+    public LayerBambooStack getBambooAt(PositionVector positionVector) {
         return layerManager.getBambooLayer().getBambooAt(positionVector);
     }
 
