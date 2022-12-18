@@ -9,11 +9,11 @@ public class BambooStack {
         bambooCount = startingBamboo;
     }
 
-    protected void addBamboo() {
+    protected void growBamboo() {
         bambooCount++;
     }
 
-    protected void subBamboo() {
+    protected void eatBamboo() {
         if (bambooCount == 0) {
             throw new IllegalArgumentException("There is no bamboo to remove");
         }

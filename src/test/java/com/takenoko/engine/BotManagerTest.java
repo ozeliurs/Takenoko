@@ -111,7 +111,7 @@ public class BotManagerTest {
             new PlaceTileAction(new Tile(), new PositionVector(0, -1, 1))
                     .execute(board, botManager);
             new MovePandaAction(new PositionVector(0, -1, 1)).execute(board, botManager);
-            verify(botManager, atLeastOnce()).incrementBambooCounter();
+            assertThat(botManager.getEatenBambooCounter()).isPositive();
         }
     }
 

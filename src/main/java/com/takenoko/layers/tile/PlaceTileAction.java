@@ -3,7 +3,7 @@ package com.takenoko.layers.tile;
 import com.takenoko.bot.Action;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.layers.bamboo.AddBambooAction;
+import com.takenoko.layers.bamboo.GrowBambooAction;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of placing a tile on the board. */
@@ -32,6 +32,6 @@ public class PlaceTileAction implements Action {
     public void execute(Board board, BotManager botManager) {
         board.getLayerManager().getTileLayer().placeTile(tile, positionVector);
         botManager.displayMessage("The bot has placed a tile at " + positionVector);
-        new AddBambooAction(positionVector).execute(board, botManager);
+        new GrowBambooAction(positionVector).execute(board, botManager);
     }
 }

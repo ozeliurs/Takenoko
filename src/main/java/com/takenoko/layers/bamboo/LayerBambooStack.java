@@ -8,7 +8,7 @@ public class LayerBambooStack extends BambooStack {
     }
 
     @Override
-    protected void addBamboo() {
+    protected void growBamboo() {
         if (bambooCount == MAX_BAMBOO) {
             throw new IllegalArgumentException("There is no more room for bamboo");
         }
@@ -16,7 +16,7 @@ public class LayerBambooStack extends BambooStack {
     }
 
     @Override
-    protected void subBamboo() {
+    protected void eatBamboo() {
         if (bambooCount == 0) {
             throw new IllegalArgumentException("There is no bamboo to remove");
         }

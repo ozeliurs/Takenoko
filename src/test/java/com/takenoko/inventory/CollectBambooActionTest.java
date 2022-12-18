@@ -20,7 +20,7 @@ class CollectBambooActionTest {
             when(botManager.getInventory().getBambooStack())
                     .thenReturn(mock(InventoryBambooStack.class));
             (new CollectBambooAction()).execute(null, botManager);
-            verify(botManager.getInventory().getBambooStack()).addBamboo();
+            verify(botManager.getInventory().getBambooStack()).collectBamboo();
         }
     }
 }
