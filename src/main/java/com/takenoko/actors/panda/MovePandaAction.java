@@ -3,7 +3,7 @@ package com.takenoko.actors.panda;
 import com.takenoko.bot.Action;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.layers.bamboo.RemoveBambooAction;
+import com.takenoko.layers.bamboo.EatBambooAction;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of moving the panda. */
@@ -34,7 +34,7 @@ public class MovePandaAction implements Action {
         // check if the panda can eat bamboo
         if (board.getBambooAt(board.getPandaPosition()).getBambooCount() > 0) {
             // eat bamboo
-            new RemoveBambooAction(board.getPandaPosition()).execute(board, botManager);
+            new EatBambooAction(board.getPandaPosition()).execute(board, botManager);
 
             botManager.displayMessage(
                     "The panda has eaten one bamboo on the tile at " + relativePositionVector);

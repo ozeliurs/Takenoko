@@ -7,11 +7,11 @@ import com.takenoko.inventory.CollectBambooAction;
 import com.takenoko.vector.PositionVector;
 
 /** This action will remove a bamboo from a tile. */
-public class RemoveBambooAction implements Action {
+public class EatBambooAction implements Action {
 
     private final PositionVector positionVector;
 
-    public RemoveBambooAction(PositionVector positionVector) {
+    public EatBambooAction(PositionVector positionVector) {
         this.positionVector = positionVector;
     }
 

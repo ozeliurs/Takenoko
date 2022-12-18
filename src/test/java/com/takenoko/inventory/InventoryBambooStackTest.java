@@ -15,7 +15,7 @@ class InventoryBambooStackTest {
         @DisplayName("should add a bamboo")
         void shouldAddABamboo() {
             InventoryBambooStack layerBambooStack = new InventoryBambooStack(5);
-            layerBambooStack.addBamboo();
+            layerBambooStack.growBamboo();
             assertEquals(6, layerBambooStack.getBambooCount());
         }
     }
@@ -27,7 +27,7 @@ class InventoryBambooStackTest {
         @DisplayName("should remove a bamboo")
         void shouldRemoveABamboo() {
             InventoryBambooStack layerBambooStack = new InventoryBambooStack(5);
-            layerBambooStack.subBamboo();
+            layerBambooStack.eatBamboo();
             assertEquals(4, layerBambooStack.getBambooCount());
         }
 
@@ -35,7 +35,7 @@ class InventoryBambooStackTest {
         @DisplayName("should throw an exception if there is no bamboo")
         void shouldThrowAnExceptionIfThereIsNoBamboo() {
             InventoryBambooStack layerBambooStack = new InventoryBambooStack(0);
-            assertThrows(IllegalArgumentException.class, layerBambooStack::subBamboo);
+            assertThrows(IllegalArgumentException.class, layerBambooStack::eatBamboo);
         }
     }
 }

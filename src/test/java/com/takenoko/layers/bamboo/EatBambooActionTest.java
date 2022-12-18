@@ -5,6 +5,8 @@ import static org.mockito.Mockito.*;
 import com.takenoko.bot.Bot;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.inventory.Inventory;
+import com.takenoko.inventory.InventoryBambooStack;
 import com.takenoko.layers.LayerManager;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,15 +14,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-class AddBambooActionTest {
-    private AddBambooAction addBambooAction;
+class EatBambooActionTest {
+
+    private EatBambooAction eatBambooAction;
     private BotManager botManager;
     private Board board;
 
     @BeforeEach
     void setUp() {
-        addBambooAction = new AddBambooAction(new PositionVector(-1, 0, 1));
-        botManager = new BotManager(mock(Bot.class));
+        eatBambooAction = new EatBambooAction(new PositionVector(-1, 0, 1));
+        botManager = spy(new BotManager(mock(Bot.class)));
         board = mock(Board.class);
         when(board.getLayerManager()).thenReturn(mock(LayerManager.class));
         when(board.getLayerManager().getBambooLayer()).thenReturn(mock(BambooLayer.class));
@@ -30,11 +33,21 @@ class AddBambooActionTest {
     @DisplayName("Method execute()")
     class TestExecute {
         @Test
-        @DisplayName("should place the tile on the board")
+        @DisplayName("should remove bamboo")
         void shouldMoveThePanda() {
-            addBambooAction.execute(board, botManager);
+            eatBambooAction.execute(board, botManager);
             verify(board.getLayerManager().getBambooLayer())
-                    .addBamboo(new PositionVector(-1, 0, 1));
+                    .removeBamboo(new PositionVector(-1, 0, 1));
+        }
+
+        @Test
+        @DisplayName("should collect bamboo")
+        void shouldCollectBamboo() {
+            when(botManager.getInventory()).thenReturn(mock(Inventory.class));
+            when(botManager.getInventory().getBambooStack())
+                    .thenReturn(mock(InventoryBambooStack.class));
+            eatBambooAction.execute(board, botManager);
+            verify(botManager.getInventory()).getBambooStack();
         }
     }
 }

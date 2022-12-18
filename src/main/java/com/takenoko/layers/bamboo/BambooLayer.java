@@ -33,7 +33,7 @@ public class BambooLayer {
         }
 
         if (bamboo.containsKey(positionVector)) {
-            bamboo.get(positionVector).addBamboo();
+            bamboo.get(positionVector).growBamboo();
         } else {
             bamboo.put(positionVector, new LayerBambooStack(1));
         }
@@ -61,7 +61,7 @@ public class BambooLayer {
      */
     public void removeBamboo(PositionVector positionVector) {
         if (getBambooAt(positionVector).getBambooCount() > 0) {
-            bamboo.get(positionVector).subBamboo();
+            bamboo.get(positionVector).eatBamboo();
         } else {
             throw new IllegalArgumentException("There is no bamboo on this tile");
         }
