@@ -2,6 +2,9 @@ package com.takenoko.engine;
 
 import com.takenoko.bot.TilePlacingAndPandaMovingBot;
 import com.takenoko.bot.TilePlacingBot;
+import com.takenoko.inventory.Inventory;
+import com.takenoko.objective.EatBambooObjective;
+import com.takenoko.objective.PlaceTileObjective;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +43,20 @@ public class GameEngine {
                 GameState.INITIALIZED,
                 new ArrayList<>(
                         List.of(
-                                new BotManager(new TilePlacingBot()),
-                                new BotManager(new TilePlacingAndPandaMovingBot()))));
+                                new BotManager(
+                                        2,
+                                        new PlaceTileObjective(10),
+                                        new ConsoleUserInterface(),
+                                        "Joe",
+                                        new TilePlacingBot(),
+                                        new Inventory()),
+                                new BotManager(
+                                        2,
+                                        new EatBambooObjective(10),
+                                        new ConsoleUserInterface(),
+                                        "Bob",
+                                        new TilePlacingAndPandaMovingBot(),
+                                        new Inventory()))));
     }
 
     public GameEngine(List<BotManager> botManagers) {
