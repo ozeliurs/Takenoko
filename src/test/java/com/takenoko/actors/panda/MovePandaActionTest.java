@@ -31,13 +31,18 @@ class MovePandaActionTest {
     @DisplayName("Method execute()")
     class TestExecute {
         @Test
-        @DisplayName("should move the panda")
+        @DisplayName("should move the panda and not collect bamboo")
         void shouldMoveThePanda() {
             when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
             when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
             when(board.getPanda()).thenReturn(mock(Panda.class));
+            when(board.getLayerManager()).thenReturn(mock(LayerManager.class));
+            BambooLayer bambooLayer = mock(BambooLayer.class);
+            when(board.getLayerManager().getBambooLayer()).thenReturn(bambooLayer);
             movePandaAction.execute(board, botManager);
             verify(board.getPanda()).move(new PositionVector(-1, 0, 1));
+            // verify not called
+            verify(bambooLayer, never()).removeBamboo(any());
         }
 
         @Test

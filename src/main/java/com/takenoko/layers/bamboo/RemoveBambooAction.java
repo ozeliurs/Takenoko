@@ -3,6 +3,7 @@ package com.takenoko.layers.bamboo;
 import com.takenoko.bot.Action;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.inventory.CollectBambooAction;
 import com.takenoko.vector.PositionVector;
 
 /** This action will remove a bamboo from a tile. */
@@ -23,5 +24,6 @@ public class RemoveBambooAction implements Action {
     @Override
     public void execute(Board board, BotManager botManager) {
         board.getLayerManager().getBambooLayer().removeBamboo(positionVector);
+        new CollectBambooAction().execute(board, botManager);
     }
 }

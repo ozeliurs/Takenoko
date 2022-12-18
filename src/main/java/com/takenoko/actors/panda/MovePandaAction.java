@@ -35,7 +35,7 @@ public class MovePandaAction implements Action {
         if (board.getBambooAt(board.getPandaPosition()).getBambooCount() > 0) {
             // eat bamboo
             new RemoveBambooAction(board.getPandaPosition()).execute(board, botManager);
-            botManager.incrementBambooCounter();
+
             botManager.displayMessage(
                     "The panda has eaten one bamboo on the tile at " + relativePositionVector);
         }

@@ -30,7 +30,6 @@ public class BotManager {
     private final int numberOfActions;
     private Objective objective;
     private final ConsoleUserInterface consoleUserInterface;
-    private int eatenBambooCounter = 0;
     private final String name;
     private final Bot bot;
     private final Inventory inventory;
@@ -167,14 +166,14 @@ public class BotManager {
      * @return the number of bamboo eaten by the bot
      */
     public int getEatenBambooCounter() {
-        return eatenBambooCounter;
+        return inventory.getBambooStack().getBambooCount();
     }
 
-    /** Increment by one the number of bamboo eaten by the bot */
-    public void incrementBambooCounter() {
-        eatenBambooCounter++;
-    }
-
+    /**
+     * Return the bot inventory
+     *
+     * @return the bot inventory
+     */
     public Inventory getInventory() {
         return inventory;
     }
