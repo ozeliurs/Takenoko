@@ -27,6 +27,6 @@ public class GrowBambooAction implements Action {
     @Override
     public void execute(Board board, BotManager botManager) {
         board.getLayerManager().getBambooLayer().addBamboo(positionVector);
-        botManager.displayMessage("Added bamboo to " + positionVector);
+        botManager.displayMessage("Bamboo grew at " + positionVector);
     }
 }
