@@ -1,0 +1,20 @@
+name: Spotless Check
+
+on:
+  push:
+
+jobs:
+  format:
+    name: Format Check
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: 'maven'
+      - name: Check spotless
+        run: mvn spotless:check

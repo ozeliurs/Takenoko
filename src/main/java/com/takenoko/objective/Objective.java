@@ -1,16 +1,35 @@
 package com.takenoko.objective;
 
-import com.takenoko.Board;
+import com.takenoko.engine.Board;
+import com.takenoko.engine.BotManager;
 
-public interface Objective {
+public abstract class Objective {
+
+    private final ObjectiveTypes type;
+    ObjectiveState state;
+
+    protected Objective(ObjectiveTypes type, ObjectiveState state) {
+        this.type = type;
+        this.state = state;
+    }
 
     /** Verify state of the objective. */
-    void verify(Board board);
+    public abstract void verify(Board board, BotManager botManager);
 
     /**
      * Whether the objective has been achieved.
      *
      * @return if the objective is achieved.
      */
-    boolean isAchieved();
+    public boolean isAchieved() {
+        return state == ObjectiveState.ACHIEVED;
+    }
+
+    public ObjectiveTypes getType() {
+        return type;
+    }
+
+    public ObjectiveState getState() {
+        return state;
+    }
 }

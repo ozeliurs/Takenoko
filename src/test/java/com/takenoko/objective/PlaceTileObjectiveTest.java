@@ -1,26 +1,37 @@
 package com.takenoko.objective;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
-import com.takenoko.Board;
-import com.takenoko.tile.Tile;
+import com.takenoko.engine.Board;
+import com.takenoko.engine.BotManager;
+import com.takenoko.layers.LayerManager;
+import com.takenoko.layers.tile.Pond;
+import com.takenoko.layers.tile.Tile;
+import com.takenoko.layers.tile.TileLayer;
+import com.takenoko.vector.PositionVector;
+import java.util.HashMap;
 import org.junit.jupiter.api.*;
+import org.springframework.test.util.ReflectionTestUtils;
 
 class PlaceTileObjectiveTest {
 
     private PlaceTileObjective placeTileObjective;
     private Board board;
+    private BotManager botManager;
 
     @BeforeEach
     void setup() {
         placeTileObjective = new PlaceTileObjective(2);
         board = new Board();
+        botManager = mock(BotManager.class);
     }
 
     @AfterEach
     void tearDown() {
         placeTileObjective = null;
         board = null;
+        botManager = null;
     }
 
     @Nested
@@ -29,17 +40,29 @@ class PlaceTileObjectiveTest {
         @Test
         @DisplayName("When board has no tiles placed, state is NOT_ACHIEVED")
         void verify_WhenBoardHasNoTiles_ThenObjectiveStateIsNOT_ACHIEVED() {
-            placeTileObjective.verify(board);
+            placeTileObjective.verify(board, botManager);
             assertThat(placeTileObjective.getState()).isEqualTo(ObjectiveState.NOT_ACHIEVED);
         }
 
         @Test
         @DisplayName("When board has two tiles placed, state is ACHIEVED")
         void verify_WhenBoardHasTwoTiles_ThenObjectiveStateIsACHIEVED() {
-            Tile tile = board.getAvailableTiles().get(0);
-            board.placeTile(tile, board.getAvailableTilePositions().get(0));
-            board.placeTile(tile, board.getAvailableTilePositions().get(0));
-            placeTileObjective.verify(board);
+            HashMap<PositionVector, Tile> tiles = new HashMap<>();
+            tiles.put(new PositionVector(0, 0, 0), new Pond());
+            tiles.put(new PositionVector(1, 0, -1), new Tile());
+            tiles.put(new PositionVector(1, -1, 0), new Tile());
+
+            TileLayer tileLayer = mock(TileLayer.class);
+            when(tileLayer.getTiles()).thenReturn(tiles);
+            for (PositionVector position : tiles.keySet()) {
+                when(tileLayer.isTile(position)).thenReturn(true);
+            }
+
+            LayerManager layerManager = mock(LayerManager.class);
+            when(layerManager.getTileLayer()).thenReturn(tileLayer);
+            board = mock(Board.class);
+            when(board.getLayerManager()).thenReturn(layerManager);
+            placeTileObjective.verify(board, botManager);
             assertThat(placeTileObjective.getState()).isEqualTo(ObjectiveState.ACHIEVED);
         }
     }
@@ -56,10 +79,9 @@ class PlaceTileObjectiveTest {
         @Test
         @DisplayName("When Objective is achieved return true")
         void isAchieved_WhenObjectiveIsAchieved_ThenReturnsTrue() {
-            Tile tile = board.getAvailableTiles().get(0);
-            board.placeTile(tile, board.getAvailableTilePositions().get(0));
-            board.placeTile(tile, board.getAvailableTilePositions().get(0));
-            placeTileObjective.verify(board);
+            // use reflection to set the private field
+            ReflectionTestUtils.setField(placeTileObjective, "state", ObjectiveState.ACHIEVED);
+            placeTileObjective.verify(board, botManager);
             assertThat(placeTileObjective.isAchieved()).isTrue();
         }
     }

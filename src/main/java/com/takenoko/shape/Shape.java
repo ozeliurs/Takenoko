@@ -1,13 +1,14 @@
 package com.takenoko.shape;
 
-import com.takenoko.tile.Tile;
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.Direction;
+import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.*;
 
 public class Shape {
-    private final Set<Vector> pattern;
-    private final Vector origin;
+    private final Set<PositionVector> pattern;
+    private final PositionVector origin;
 
     /**
      * Constructor for the Shape class.
@@ -15,7 +16,7 @@ public class Shape {
      * @param shape the pattern of the shape
      * @param origin the origin of the shape
      */
-    public Shape(Set<Vector> shape, Vector origin) {
+    public Shape(Set<PositionVector> shape, PositionVector origin) {
         if (shape.isEmpty()) {
             throw new IllegalArgumentException("The shape cannot be empty");
         }
@@ -29,7 +30,7 @@ public class Shape {
      *
      * @param shape the pattern of the shape
      */
-    public Shape(Set<Vector> shape) {
+    public Shape(Set<PositionVector> shape) {
         this(shape, findOrigin(shape));
     }
 
@@ -39,15 +40,15 @@ public class Shape {
      * @param shape the pattern of the shape
      * @return the origin of the shape
      */
-    private static Vector findOrigin(Set<Vector> shape) {
+    private static PositionVector findOrigin(Set<PositionVector> shape) {
         return shape.stream()
                 .min(
                         (v1, v2) -> {
-                            float v1Distance = v1.distance(new Vector(0, 0, 0));
-                            float v2Distance = v2.distance(new Vector(0, 0, 0));
-                            return Float.compare(v1Distance, v2Distance);
+                            double v1Distance = v1.distance(new PositionVector(0, 0, 0));
+                            double v2Distance = v2.distance(new PositionVector(0, 0, 0));
+                            return Double.compare(v1Distance, v2Distance);
                         })
-                .orElse(new Vector(0, 0, 0));
+                .orElse(new PositionVector(0, 0, 0));
     }
 
     /**
@@ -56,11 +57,11 @@ public class Shape {
      *
      * @param vectors the vectors of the shape
      */
-    public Shape(Vector... vectors) {
+    public Shape(PositionVector... vectors) {
         this(new HashSet<>(Arrays.asList(vectors)));
     }
 
-    public Set<Vector> getPattern() {
+    public Set<PositionVector> getPattern() {
         return new HashSet<>(this.pattern);
     }
 
@@ -72,10 +73,11 @@ public class Shape {
      * @param origin pivot point of the rotation
      * @return the rotated shape
      */
-    public Shape rotate60(Vector origin) {
+    public Shape rotate60(PositionVector origin) {
         return new Shape(
                 this.pattern.stream()
                         .map(v -> v.sub(origin).rotate60().add(origin))
+                        .map(PositionVector::new)
                         .collect(HashSet::new, HashSet::add, HashSet::addAll),
                 origin);
     }
@@ -96,12 +98,13 @@ public class Shape {
      * @param vector the vector to translate the shape by
      * @return a new shape with the same pattern but translated by the given vector
      */
-    public Shape translate(Vector vector) {
+    public Shape translate(PositionVector vector) {
         return new Shape(
                 this.pattern.stream()
                         .map(v -> v.add(vector))
+                        .map(Vector::toPositionVector)
                         .collect(HashSet::new, HashSet::add, HashSet::addAll),
-                this.origin.add(vector));
+                this.origin.add(vector).toPositionVector());
     }
 
     /**
@@ -110,10 +113,10 @@ public class Shape {
      * @param tileMap the tileMap to match the shape on
      * @return the matching translated/rotated shapes
      */
-    public List<Shape> match(Map<Vector, Tile> tileMap) {
+    public List<Shape> match(Map<PositionVector, Tile> tileMap) {
         HashSet<Shape> matches = new HashSet<>();
 
-        for (Vector tilePosition : tileMap.keySet()) {
+        for (PositionVector tilePosition : tileMap.keySet()) {
             // For each tilePosition on the board translate the shape to the tilePosition
             Shape translatedShape = this.translate(tilePosition);
             for (int i = 0; i < Direction.values().length; i++) {

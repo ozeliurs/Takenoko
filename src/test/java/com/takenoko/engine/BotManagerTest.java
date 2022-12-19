@@ -1,28 +1,34 @@
 package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
-import com.takenoko.Board;
+import com.takenoko.actors.panda.MovePandaAction;
+import com.takenoko.bot.Bot;
+import com.takenoko.bot.TilePlacingAndPandaMovingBot;
+import com.takenoko.bot.TilePlacingBot;
+import com.takenoko.inventory.Inventory;
+import com.takenoko.layers.tile.PlaceTileAction;
+import com.takenoko.layers.tile.Tile;
+import com.takenoko.objective.Objective;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
-import com.takenoko.player.Bot;
-import com.takenoko.vector.Vector;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import com.takenoko.ui.ConsoleUserInterface;
+import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.*;
 
 public class BotManagerTest {
-    Bot bot;
+    TilePlacingBot tilePlacingBot;
     BotManager botManager;
 
     @BeforeEach
     void setUp() {
-        bot = new Bot();
-        botManager = new BotManager(bot);
+        tilePlacingBot = new TilePlacingBot();
+        botManager = new BotManager(tilePlacingBot);
     }
 
     @AfterEach
     void tearDown() {
-        bot = null;
+        tilePlacingBot = null;
         botManager = null;
     }
 
@@ -33,8 +39,9 @@ public class BotManagerTest {
         @DisplayName("The objective is to have two adjacent tiles, returns the correct description")
         void
                 getObjectiveDescription_WhenObjectiveIsToHaveTwoAdjacentTiles_ThenReturnsCorrectDescription() {
-            assertThat(botManager.getObjectiveDescription())
-                    .isEqualTo(new TwoAdjacentTilesObjective().toString());
+            Objective objective = new TwoAdjacentTilesObjective();
+            botManager.setObjective(objective);
+            assertThat(botManager.getObjectiveDescription()).isEqualTo(objective.toString());
         }
 
         @Test
@@ -60,49 +67,88 @@ public class BotManagerTest {
     class TestVerifyObjective {
         @Test
         @DisplayName("By default when board does not satisfy objective, objective is not achieved")
-        void verifyObjective_ThenReturnsFalse() {
-            Board board = new Board();
-            botManager.verifyObjective(board);
+        void verifyObjective_whenObjectiveIsNotAchieved_thenReturnFalse() {
+            Objective objective = mock(Objective.class);
+            when(objective.isAchieved()).thenReturn(false);
+            botManager.setObjective(objective);
+            botManager.verifyObjective(mock(Board.class));
             assertThat(botManager.isObjectiveAchieved()).isFalse();
         }
 
         @Test
         @DisplayName("When board satisfies objective, objective is achieved")
-        void verifyObjective_ThenReturnsTrue() {
-            Board board = new Board();
-            board.placeTile(board.getAvailableTiles().get(0), new Vector(1, -1, 0));
-            board.placeTile(board.getAvailableTiles().get(0), new Vector(0, -1, 1));
-            botManager.verifyObjective(board);
+        void verifyObjective_whenObjectiveIsAchieved_thenReturnTrue() {
+            Objective objective = mock(Objective.class);
+            when(objective.isAchieved()).thenReturn(true);
+            botManager.setObjective(objective);
+            botManager.verifyObjective(mock(Board.class));
             assertThat(botManager.isObjectiveAchieved()).isTrue();
         }
     }
 
     @Nested
     @DisplayName("Method playBot")
-    class playBot {
+    class playTilePlacingBot {}
+
+    @Nested
+    @DisplayName("Method getEatenBambooCounter")
+    class TestGetEatenBambooCounter {
         @Test
-        @DisplayName("when bot has no goals, should place ten tiles")
-        void playBot_WhenBotHasNoGoals_ThenPlacesTenTiles() {
-            Board board = new Board();
-            botManager.setObjective(null);
-            botManager.playBot(board);
-            assertThat(board.getTiles().size() - 1).isEqualTo(10);
+        @DisplayName("When initialized, a botManager's bamboo counter is equal to zero")
+        void getEatenBambooCounter_WhenInitialized_BambooCounterIsEqualToZero() {
+            assertThat(botManager.getEatenBambooCounter()).isZero();
         }
 
         @Test
-        @DisplayName("when bot has no goals, should display ten tile placement messages")
-        void playBot_WhenBotHasNoGoals_ThenDisplaysTenTilePlacementMessages() {
-            ByteArrayOutputStream testOut = new ByteArrayOutputStream();
-            System.setOut(new PrintStream(testOut));
+        @DisplayName(
+                "When the botManager makes the panda eat a bamboo, the bamboo counter is at least"
+                        + " one")
+        void
+                getEatenBambooCounter_WhenTheBotManagerMakesThePandaEatABamboo_TheBambooCounterIsAtLeastOne() {
+            Board board = spy(new Board());
+            TilePlacingAndPandaMovingBot bot = mock(TilePlacingAndPandaMovingBot.class);
+            BotManager botManager = spy(new BotManager(bot));
+            new PlaceTileAction(new Tile(), new PositionVector(0, -1, 1))
+                    .execute(board, botManager);
+            new MovePandaAction(new PositionVector(0, -1, 1)).execute(board, botManager);
+            assertThat(botManager.getEatenBambooCounter()).isPositive();
+        }
+    }
 
-            Board board = new Board();
-            BotManager botManager = new BotManager(bot);
-            botManager.setObjective(null);
-            botManager.playBot(board);
+    @Nested
+    @DisplayName("Method getInventory")
+    class TestGetInventory {
+        @Test
+        @DisplayName("When initialized, a botManager's inventory")
+        void getInventory_WhenInitialized_InventoryIsNotNull() {
+            Inventory inventory = new Inventory();
+            BotManager botManager =
+                    new BotManager(
+                            0,
+                            mock(Objective.class),
+                            mock(ConsoleUserInterface.class),
+                            "",
+                            mock(Bot.class),
+                            inventory);
+            assertThat(botManager.getInventory()).isEqualTo(inventory);
+        }
+    }
 
-            String message = testOut.toString();
-            String[] messages = message.split("The bot has placed a tile");
-            assertThat(messages).hasSize(10 + 1); // +1 because of the first empty string
+    @Nested
+    @DisplayName("Method getName")
+    class TestGetName {
+        @Test
+        @DisplayName("When initialized, a botManager's name is not null")
+        void getName_WhenInitialized_NameIsNotNull() {
+            BotManager botManager =
+                    new BotManager(
+                            0,
+                            mock(Objective.class),
+                            mock(ConsoleUserInterface.class),
+                            "name",
+                            mock(Bot.class),
+                            mock(Inventory.class));
+            assertThat(botManager.getName()).isEqualTo("name");
         }
     }
 }
