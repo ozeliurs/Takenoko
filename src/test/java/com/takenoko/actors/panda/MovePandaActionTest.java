@@ -7,7 +7,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.LayerManager;
 import com.takenoko.layers.bamboo.BambooLayer;
-import com.takenoko.layers.bamboo.BambooStack;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,13 +31,18 @@ class MovePandaActionTest {
     @DisplayName("Method execute()")
     class TestExecute {
         @Test
-        @DisplayName("should move the panda")
+        @DisplayName("should move the panda and not collect bamboo")
         void shouldMoveThePanda() {
             when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
-            when(board.getBambooAt(any())).thenReturn(new BambooStack(0));
+            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
             when(board.getPanda()).thenReturn(mock(Panda.class));
+            when(board.getLayerManager()).thenReturn(mock(LayerManager.class));
+            BambooLayer bambooLayer = mock(BambooLayer.class);
+            when(board.getLayerManager().getBambooLayer()).thenReturn(bambooLayer);
             movePandaAction.execute(board, botManager);
             verify(board.getPanda()).move(new PositionVector(-1, 0, 1));
+            // verify not called
+            verify(bambooLayer, never()).removeBamboo(any());
         }
 
         @Test
@@ -47,7 +52,7 @@ class MovePandaActionTest {
                     .thenReturn(
                             (new PositionVector(0, 0, 0).add(new PositionVector(-1, 0, 1)))
                                     .toPositionVector());
-            when(board.getBambooAt(any())).thenReturn(new BambooStack(1));
+            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(1));
             when(board.getPanda()).thenReturn(mock(Panda.class));
             when(board.getLayerManager()).thenReturn(mock(LayerManager.class));
             BambooLayer bambooLayer = mock(BambooLayer.class);

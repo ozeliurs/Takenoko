@@ -4,12 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.actors.panda.MovePandaAction;
+import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingAndPandaMovingBot;
 import com.takenoko.bot.TilePlacingBot;
+import com.takenoko.inventory.Inventory;
 import com.takenoko.layers.tile.PlaceTileAction;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
+import com.takenoko.ui.ConsoleUserInterface;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.*;
 
@@ -108,7 +111,44 @@ public class BotManagerTest {
             new PlaceTileAction(new Tile(), new PositionVector(0, -1, 1))
                     .execute(board, botManager);
             new MovePandaAction(new PositionVector(0, -1, 1)).execute(board, botManager);
-            verify(botManager, atLeastOnce()).incrementBambooCounter();
+            assertThat(botManager.getEatenBambooCounter()).isPositive();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getInventory")
+    class TestGetInventory {
+        @Test
+        @DisplayName("When initialized, a botManager's inventory")
+        void getInventory_WhenInitialized_InventoryIsNotNull() {
+            Inventory inventory = new Inventory();
+            BotManager botManager =
+                    new BotManager(
+                            0,
+                            mock(Objective.class),
+                            mock(ConsoleUserInterface.class),
+                            "",
+                            mock(Bot.class),
+                            inventory);
+            assertThat(botManager.getInventory()).isEqualTo(inventory);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getName")
+    class TestGetName {
+        @Test
+        @DisplayName("When initialized, a botManager's name is not null")
+        void getName_WhenInitialized_NameIsNotNull() {
+            BotManager botManager =
+                    new BotManager(
+                            0,
+                            mock(Objective.class),
+                            mock(ConsoleUserInterface.class),
+                            "name",
+                            mock(Bot.class),
+                            mock(Inventory.class));
+            assertThat(botManager.getName()).isEqualTo("name");
         }
     }
 }

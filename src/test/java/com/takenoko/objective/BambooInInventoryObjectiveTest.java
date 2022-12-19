@@ -8,21 +8,21 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import org.junit.jupiter.api.*;
 
-public class EatBambooObjectiveTest {
+public class BambooInInventoryObjectiveTest {
 
     private Board board;
-    private EatBambooObjective eatBambooObjective;
+    private BambooInInventoryObjective bambooInInventoryObjective;
 
     @BeforeEach
     public void setUp() {
         board = new Board();
-        eatBambooObjective = new EatBambooObjective(1);
+        bambooInInventoryObjective = new BambooInInventoryObjective(1);
     }
 
     @AfterEach
     public void tearDown() {
         board = null;
-        eatBambooObjective = null;
+        bambooInInventoryObjective = null;
     }
 
     @Nested
@@ -31,8 +31,10 @@ public class EatBambooObjectiveTest {
         @Test
         @DisplayName("Returns the correct string")
         void toString_ThenReturnsCorrectString() {
-            assertThat(eatBambooObjective)
-                    .hasToString("EatBambooObjective{numberOfBamboosToEat=1, state=NOT_ACHIEVED}");
+            assertThat(bambooInInventoryObjective)
+                    .hasToString(
+                            "BambooInInventoryObjective{targetBambooInInventory=1,"
+                                    + " state=NOT_ACHIEVED}");
         }
     }
 
@@ -42,7 +44,7 @@ public class EatBambooObjectiveTest {
         @Test
         @DisplayName("Returns the correct type")
         void getType_ThenReturnsCorrectType() {
-            assertThat(eatBambooObjective.getType())
+            assertThat(bambooInInventoryObjective.getType())
                     .isEqualTo(ObjectiveTypes.NUMBER_OF_BAMBOOS_EATEN);
         }
     }
@@ -53,7 +55,8 @@ public class EatBambooObjectiveTest {
         @Test
         @DisplayName("When the objective is not achieved, returns NOT_ACHIEVED")
         void getState_WhenObjectiveIsNotAchieved_ThenReturnsNOT_ACHIEVED() {
-            assertThat(eatBambooObjective.getState()).isEqualTo(ObjectiveState.NOT_ACHIEVED);
+            assertThat(bambooInInventoryObjective.getState())
+                    .isEqualTo(ObjectiveState.NOT_ACHIEVED);
         }
 
         @Test
@@ -61,8 +64,8 @@ public class EatBambooObjectiveTest {
         void getState_WhenObjectiveIsAchieved_ThenReturnsACHIEVED() {
             BotManager botManager = mock(BotManager.class);
             when(botManager.getEatenBambooCounter()).thenReturn(1);
-            eatBambooObjective.verify(board, botManager);
-            assertThat(eatBambooObjective.getState()).isEqualTo(ObjectiveState.ACHIEVED);
+            bambooInInventoryObjective.verify(board, botManager);
+            assertThat(bambooInInventoryObjective.getState()).isEqualTo(ObjectiveState.ACHIEVED);
         }
     }
 
@@ -73,21 +76,21 @@ public class EatBambooObjectiveTest {
         @DisplayName("When the objective is compared to itself, returns true")
         @SuppressWarnings("EqualsWithItself")
         void equals_WhenObjectiveIsComparedToItself_ThenReturnsTrue() {
-            assertThat(eatBambooObjective.equals(eatBambooObjective)).isTrue();
+            assertThat(bambooInInventoryObjective.equals(bambooInInventoryObjective)).isTrue();
         }
 
         @Test
         @DisplayName("When the objective is compared to null, returns false")
         @SuppressWarnings("ConstantConditions")
         void equals_WhenObjectiveIsComparedToNull_ThenReturnsFalse() {
-            assertThat(eatBambooObjective.equals(null)).isFalse();
+            assertThat(bambooInInventoryObjective.equals(null)).isFalse();
         }
 
         @Test
         @DisplayName(
                 "When the objective is compared to an object of a different class, returns false")
         void equals_WhenObjectiveIsComparedToDifferentClass_ThenReturnsFalse() {
-            assertThat(eatBambooObjective.equals(new Object())).isFalse();
+            assertThat(bambooInInventoryObjective.equals(new Object())).isFalse();
         }
 
         @Test
@@ -95,7 +98,7 @@ public class EatBambooObjectiveTest {
                 "When the objective is compared to an objective of a different type, returns false")
         @SuppressWarnings("EqualsBetweenInconvertibleTypes")
         void equals_WhenObjectiveIsComparedToDifferentType_ThenReturnsFalse() {
-            assertThat(eatBambooObjective.equals(new PlaceTileObjective(1))).isFalse();
+            assertThat(bambooInInventoryObjective.equals(new PlaceTileObjective(1))).isFalse();
         }
 
         @Test
@@ -104,7 +107,8 @@ public class EatBambooObjectiveTest {
                         + " number of bamboos, returns false")
         void
                 equals_WhenObjectiveIsComparedToSameTypeWithDifferentNumberOfBamboos_ThenReturnsFalse() {
-            assertThat(eatBambooObjective.equals(new EatBambooObjective(2))).isFalse();
+            assertThat(bambooInInventoryObjective.equals(new BambooInInventoryObjective(2)))
+                    .isFalse();
         }
 
         @Test
@@ -112,7 +116,8 @@ public class EatBambooObjectiveTest {
                 "When the objective is compared to an objective of the same state with same number"
                         + " of bamboos, returns true")
         void equals_WhenObjectiveIsComparedToSameTypeWithSameNumberOfBamboos_ThenReturnsTrue() {
-            assertThat(eatBambooObjective.equals(new EatBambooObjective(1))).isTrue();
+            assertThat(bambooInInventoryObjective.equals(new BambooInInventoryObjective(1)))
+                    .isTrue();
         }
     }
 
@@ -122,7 +127,7 @@ public class EatBambooObjectiveTest {
         @Test
         @DisplayName("When the objective is compared to itself, returns the same hash code")
         void hashCode_WhenObjectiveIsComparedToItself_ThenReturnsSameHashCode() {
-            assertThat(eatBambooObjective).hasSameHashCodeAs(eatBambooObjective);
+            assertThat(bambooInInventoryObjective).hasSameHashCodeAs(bambooInInventoryObjective);
         }
 
         @Test
@@ -131,7 +136,8 @@ public class EatBambooObjectiveTest {
                         + " of bamboos, returns same hash code")
         void
                 hashCode_WhenObjectiveIsComparedToSameTypeAndSameNumberOfBamboos_ThenReturnsSameHashCode() {
-            assertThat(eatBambooObjective).hasSameHashCodeAs(new EatBambooObjective(1));
+            assertThat(bambooInInventoryObjective)
+                    .hasSameHashCodeAs(new BambooInInventoryObjective(1));
         }
 
         @Test
@@ -140,7 +146,8 @@ public class EatBambooObjectiveTest {
                         + " number of bamboos, returns different hash code")
         void
                 hashCode_WhenObjectiveIsComparedToSameTypeWithDifferentNumberOfBamboos_ThenReturnsDifferentHashCode() {
-            assertThat(eatBambooObjective).doesNotHaveSameHashCodeAs(new EatBambooObjective(2));
+            assertThat(bambooInInventoryObjective)
+                    .doesNotHaveSameHashCodeAs(new BambooInInventoryObjective(2));
         }
 
         @Test
@@ -148,7 +155,8 @@ public class EatBambooObjectiveTest {
                 "When the objective is compared to an objective of a different type, returns a"
                         + " different hash code")
         void hashCode_WhenObjectiveIsComparedToDifferentType_ThenReturnsDifferentHashCode() {
-            assertThat(eatBambooObjective).doesNotHaveSameHashCodeAs(new PlaceTileObjective(1));
+            assertThat(bambooInInventoryObjective)
+                    .doesNotHaveSameHashCodeAs(new PlaceTileObjective(1));
         }
     }
 }

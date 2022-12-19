@@ -42,7 +42,7 @@ class BambooLayerTest {
             when(board.isTile(any())).thenReturn(true);
             bambooLayer.addBamboo(new PositionVector(-1, 0, 1));
             assertThat(bambooLayer.getBambooAt(new PositionVector(-1, 0, 1)))
-                    .isEqualTo(new BambooStack(1));
+                    .isEqualTo(new LayerBambooStack(1));
         }
     }
 
@@ -54,7 +54,7 @@ class BambooLayerTest {
         void shouldReturn0OnAnEmptyTile() {
             when(board.isTile(any())).thenReturn(true);
             assertThat(bambooLayer.getBambooAt(new PositionVector(-1, 0, 1)))
-                    .isEqualTo(new BambooStack(0));
+                    .isEqualTo(new LayerBambooStack(0));
         }
 
         @Test
@@ -72,7 +72,7 @@ class BambooLayerTest {
             when(board.isTile(any())).thenReturn(true);
             bambooLayer.addBamboo(new PositionVector(-1, 0, 1));
             assertThat(bambooLayer.getBambooAt(new PositionVector(-1, 0, 1)))
-                    .isEqualTo(new BambooStack(1));
+                    .isEqualTo(new LayerBambooStack(1));
         }
     }
 
@@ -86,7 +86,7 @@ class BambooLayerTest {
             bambooLayer.addBamboo(new PositionVector(-1, 0, 1));
             bambooLayer.removeBamboo(new PositionVector(-1, 0, 1));
             assertThat(bambooLayer.getBambooAt(new PositionVector(-1, 0, 1)))
-                    .isEqualTo(new BambooStack(0));
+                    .isEqualTo(new LayerBambooStack(0));
         }
 
         @Test
