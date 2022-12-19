@@ -195,6 +195,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <threads>8</threads>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
