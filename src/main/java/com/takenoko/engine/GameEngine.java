@@ -166,9 +166,7 @@ public class GameEngine {
         this.gameState = gameState;
     }
 
-    /**
-     * Run a whole game from initialization to end.
-     */
+    /** Run a whole game from initialization to end. */
     public void runGame() {
         newGame();
         startGame();

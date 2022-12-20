@@ -182,6 +182,5 @@ class GameEngineTest {
             verify(gameEngine).playGame();
             verify(gameEngine).endGame();
         }
-
     }
 }
