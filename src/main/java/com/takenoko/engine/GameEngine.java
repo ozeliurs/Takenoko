@@ -169,7 +169,7 @@ public class GameEngine {
     /**
      * Run a whole game from initialization to end.
      */
-    public void run() {
+    public void runGame() {
         newGame();
         startGame();
         playGame();

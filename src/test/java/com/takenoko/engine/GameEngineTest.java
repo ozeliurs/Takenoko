@@ -170,13 +170,13 @@ class GameEngineTest {
     }
 
     @Nested
-    @DisplayName("Method run")
-    class TestRun {
+    @DisplayName("Method runGame")
+    class TestRunGame {
         @Test
         @DisplayName("should run every steps of the game")
-        void run_shouldRunEveryStepsOfTheGame() {
+        void runGame_shouldRunEveryStepsOfTheGame() {
             GameEngine gameEngine = spy(new GameEngine());
-            gameEngine.run();
+            gameEngine.runGame();
             verify(gameEngine).newGame();
             verify(gameEngine).startGame();
             verify(gameEngine).playGame();
