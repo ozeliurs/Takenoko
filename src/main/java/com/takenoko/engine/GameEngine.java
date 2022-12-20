@@ -165,4 +165,14 @@ public class GameEngine {
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
+
+    /**
+     * Run a whole game from initialization to end.
+     */
+    public void run() {
+        newGame();
+        startGame();
+        playGame();
+        endGame();
+    }
 }
