@@ -86,8 +86,7 @@ public class GameEngine {
      * </ol>
      */
     public void newGame() {
-        consoleUserInterface.displayMessage(
-                "==================================================================");
+        consoleUserInterface.displayMessage("==================================================================");
 
         if (gameState != GameState.INITIALIZED && gameState != GameState.FINISHED) {
             throw new IllegalStateException(
@@ -143,9 +142,7 @@ public class GameEngine {
                             botManager.getName()
                                     + " has achieved the objective "
                                     + botManager.getObjectiveDescription()
-                                    + ", it has won with "
-                                    + botManager.getScore()
-                                    + " points");
+                                    + ", it has won with " + botManager.getScore() + " points");
                     gameState = GameState.FINISHED;
                     return;
                 }
@@ -159,6 +156,8 @@ public class GameEngine {
             throw new IllegalStateException(
                     "The game is not started yet. You must first start the game.");
         }
+
+        consoleUserInterface.displayMessage(scoreboard.toString());
 
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
