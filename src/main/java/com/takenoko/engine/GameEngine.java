@@ -11,24 +11,30 @@ import java.util.List;
 
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
+    // ATTRIBUTES
     public static final int DEFAULT_NUMBER_OF_ROUNDS = 10;
-    private final Board board;
+    private Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
     private final int numberOfRounds;
     private final List<BotManager> botManagers;
+    private final Scoreboard scoreboard;
 
     public GameEngine(
             int numberOfRounds,
             Board board,
             ConsoleUserInterface consoleUserInterface,
             GameState gameState,
-            List<BotManager> botManagerList) {
+            List<BotManager> botManagerList,
+            Scoreboard scoreboard) {
+        // Assign values to the attributes
         this.numberOfRounds = numberOfRounds;
         this.board = board;
         this.consoleUserInterface = consoleUserInterface;
         this.gameState = gameState;
         this.botManagers = botManagerList;
+        this.scoreboard = scoreboard;
+        scoreboard.addBotManager(botManagerList);
     }
 
     /**
@@ -56,7 +62,8 @@ public class GameEngine {
                                         new ConsoleUserInterface(),
                                         "Bob",
                                         new TilePlacingAndPandaMovingBot(),
-                                        new Inventory()))));
+                                        new Inventory()))),
+                new Scoreboard());
     }
 
     public GameEngine(List<BotManager> botManagers) {
@@ -65,7 +72,8 @@ public class GameEngine {
                 new Board(),
                 new ConsoleUserInterface(),
                 GameState.INITIALIZED,
-                botManagers);
+                botManagers,
+                new Scoreboard());
     }
 
     /**
@@ -78,14 +86,23 @@ public class GameEngine {
      * </ol>
      */
     public void newGame() {
-        if (gameState != GameState.INITIALIZED) {
+        consoleUserInterface.displayMessage("==================================================================");
+
+        if (gameState != GameState.INITIALIZED && gameState != GameState.FINISHED) {
             throw new IllegalStateException(
                     "The game is already started. You must end the game first.");
         }
 
         consoleUserInterface.displayMessage("Welcome to Takenoko!");
-        gameState = GameState.READY;
 
+        // Reset all the attributes that needs to be
+        this.board = new Board();
+        for (BotManager botManager : botManagers) {
+            botManager.reset();
+        }
+
+        // Game is now ready to be started
+        gameState = GameState.READY;
         consoleUserInterface.displayMessage(
                 "The new game has been set up. You can start the game !");
     }
@@ -120,11 +137,13 @@ public class GameEngine {
                         "===== <" + botManager.getName() + "> is playing =====");
                 botManager.playBot(board);
                 if (botManager.isObjectiveAchieved()) {
+                    botManager.incrementScore(1);
                     consoleUserInterface.displayMessage(
                             botManager.getName()
                                     + " has achieved the objective "
                                     + botManager.getObjectiveDescription()
-                                    + ", it has won");
+                                    + ", it has won with " + botManager.getScore() + " points");
+                    gameState = GameState.FINISHED;
                     return;
                 }
             }
@@ -133,10 +152,11 @@ public class GameEngine {
 
     /** This method is used to end the game correctly. */
     public void endGame() {
-        if (gameState != GameState.PLAYING) {
+        if (gameState != GameState.PLAYING && gameState != GameState.FINISHED) {
             throw new IllegalStateException(
                     "The game is not started yet. You must first start the game.");
         }
+
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
     }
@@ -172,5 +192,17 @@ public class GameEngine {
         startGame();
         playGame();
         endGame();
+        for (BotManager botManager : botManagers) {
+            scoreboard.addScore(botManager.getBotId(), botManager.getScore());
+        }
+        scoreboard.incrementNumberOfGamesPlayed();
     }
+
+    public void runGame(int numberOfGames) {
+        for (int i = 0; i < numberOfGames; i++) {
+            runGame();
+        }
+    }
+
+
 }
