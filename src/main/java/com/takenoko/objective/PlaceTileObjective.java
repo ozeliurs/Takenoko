@@ -49,4 +49,9 @@ public class PlaceTileObjective extends Objective {
     public int hashCode() {
         return Objects.hash(numberOfTileToPlace, getType(), getState());
     }
+
+    @Override
+    public void reset() {
+        state = ObjectiveState.NOT_ACHIEVED;
+    }
 }
