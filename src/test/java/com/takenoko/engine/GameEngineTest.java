@@ -168,4 +168,19 @@ class GameEngineTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("Method runGame")
+    class TestRunGame {
+        @Test
+        @DisplayName("should run every steps of the game")
+        void runGame_shouldRunEveryStepsOfTheGame() {
+            GameEngine gameEngine = spy(new GameEngine());
+            gameEngine.runGame();
+            verify(gameEngine).newGame();
+            verify(gameEngine).startGame();
+            verify(gameEngine).playGame();
+            verify(gameEngine).endGame();
+        }
+    }
 }
