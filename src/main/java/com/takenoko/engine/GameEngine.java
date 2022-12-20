@@ -86,7 +86,8 @@ public class GameEngine {
      * </ol>
      */
     public void newGame() {
-        consoleUserInterface.displayMessage("==================================================================");
+        consoleUserInterface.displayMessage(
+                "==================================================================");
 
         if (gameState != GameState.INITIALIZED && gameState != GameState.FINISHED) {
             throw new IllegalStateException(
@@ -142,7 +143,9 @@ public class GameEngine {
                             botManager.getName()
                                     + " has achieved the objective "
                                     + botManager.getObjectiveDescription()
-                                    + ", it has won with " + botManager.getScore() + " points");
+                                    + ", it has won with "
+                                    + botManager.getScore()
+                                    + " points");
                     gameState = GameState.FINISHED;
                     return;
                 }
@@ -203,6 +206,4 @@ public class GameEngine {
             runGame();
         }
     }
-
-
 }

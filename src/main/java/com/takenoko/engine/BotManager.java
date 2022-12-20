@@ -7,7 +7,6 @@ import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.BambooInInventoryObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
-
 import java.util.UUID;
 
 /**
