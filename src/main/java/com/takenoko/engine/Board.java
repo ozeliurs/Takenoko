@@ -23,7 +23,7 @@ public class Board {
     /** Constructor for the Board class. */
     public Board() {
         this.layerManager = new LayerManager();
-        this.actorsManager = new ActorsManager(this);
+        this.actorsManager = new ActorsManager();
     }
 
     public ActorsManager getActorsManager() {
@@ -107,5 +107,9 @@ public class Board {
     /** Get the Position of the Panda */
     public PositionVector getPandaPosition() {
         return actorsManager.getPanda().getPosition();
+    }
+
+    public List<PositionVector> getPandaPossibleMoves() {
+        return actorsManager.getPanda().getPossibleMoves(this);
     }
 }
