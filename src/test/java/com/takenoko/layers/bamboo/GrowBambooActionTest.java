@@ -34,7 +34,7 @@ class GrowBambooActionTest {
         void shouldMoveThePanda() {
             growBambooAction.execute(board, botManager);
             verify(board.getLayerManager().getBambooLayer())
-                    .addBamboo(new PositionVector(-1, 0, 1));
+                    .addBamboo(new PositionVector(-1, 0, 1), board);
         }
     }
 }

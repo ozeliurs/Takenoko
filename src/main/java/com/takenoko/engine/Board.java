@@ -22,7 +22,7 @@ public class Board {
 
     /** Constructor for the Board class. */
     public Board() {
-        this.layerManager = new LayerManager(this);
+        this.layerManager = new LayerManager();
         this.actorsManager = new ActorsManager(this);
     }
 
@@ -96,7 +96,7 @@ public class Board {
      * @param positionVector the position of the tile
      */
     public LayerBambooStack getBambooAt(PositionVector positionVector) {
-        return layerManager.getBambooLayer().getBambooAt(positionVector);
+        return layerManager.getBambooLayer().getBambooAt(positionVector, this);
     }
 
     /** Get the Panda */

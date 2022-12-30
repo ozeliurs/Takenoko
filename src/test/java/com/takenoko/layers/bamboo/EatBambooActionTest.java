@@ -37,7 +37,7 @@ class EatBambooActionTest {
         void shouldMoveThePanda() {
             eatBambooAction.execute(board, botManager);
             verify(board.getLayerManager().getBambooLayer())
-                    .removeBamboo(new PositionVector(-1, 0, 1));
+                    .removeBamboo(new PositionVector(-1, 0, 1), board);
         }
 
         @Test
