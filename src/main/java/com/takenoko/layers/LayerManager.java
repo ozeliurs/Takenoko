@@ -1,6 +1,5 @@
 package com.takenoko.layers;
 
-import com.takenoko.engine.Board;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.tile.TileLayer;
 
@@ -13,9 +12,8 @@ public class LayerManager {
         this.bambooLayer = bambooLayer;
     }
 
-    public LayerManager(Board board) {
-        this.tileLayer = new TileLayer();
-        this.bambooLayer = new BambooLayer(board);
+    public LayerManager() {
+        this(new TileLayer(), new BambooLayer());
     }
 
     public TileLayer getTileLayer() {

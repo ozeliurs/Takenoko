@@ -7,24 +7,19 @@ import java.util.HashMap;
 /** BambooLayer class. The bamboo layer contains the number of bamboo on each tile. */
 public class BambooLayer {
     private final HashMap<PositionVector, LayerBambooStack> bamboo;
-    private final Board board;
 
-    /**
-     * Constructor for the BambooLayer class.
-     *
-     * @param board the board
-     */
-    public BambooLayer(Board board) {
+    /** Constructor for the BambooLayer class. */
+    public BambooLayer() {
         bamboo = new HashMap<>();
-        this.board = board;
     }
 
     /**
      * Add bamboo to a tile. By default, the number of bamboo is 1 if the tile is irrigated.
      *
      * @param positionVector the position of the tile
+     * @param board the board
      */
-    void addBamboo(PositionVector positionVector) {
+    void addBamboo(PositionVector positionVector, Board board) {
         if (positionVector.equals(new PositionVector(0, 0, 0))) {
             throw new IllegalArgumentException("The bamboo cannot be placed on the pond");
         }
@@ -43,9 +38,10 @@ public class BambooLayer {
      * Get the number of bamboo on a tile.
      *
      * @param positionVector the position of the tile
+     * @param board the board
      * @return the number of bamboo on the tile
      */
-    public LayerBambooStack getBambooAt(PositionVector positionVector) {
+    public LayerBambooStack getBambooAt(PositionVector positionVector, Board board) {
         if (board.isTile(positionVector)) {
             bamboo.computeIfAbsent(positionVector, k -> new LayerBambooStack(0));
             return bamboo.get(positionVector);
@@ -58,9 +54,10 @@ public class BambooLayer {
      * Remove bamboo from a tile.
      *
      * @param positionVector the position of the tile
+     * @param board the board
      */
-    public void removeBamboo(PositionVector positionVector) {
-        if (getBambooAt(positionVector).getBambooCount() > 0) {
+    public void removeBamboo(PositionVector positionVector, Board board) {
+        if (board.getBambooAt(positionVector).getBambooCount() > 0) {
             bamboo.get(positionVector).eatBamboo();
         } else {
             throw new IllegalArgumentException("There is no bamboo on this tile");

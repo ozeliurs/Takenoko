@@ -42,7 +42,7 @@ class MovePandaActionTest {
             movePandaAction.execute(board, botManager);
             verify(board.getPanda()).move(new PositionVector(-1, 0, 1), board);
             // verify not called
-            verify(bambooLayer, never()).removeBamboo(any());
+            verify(bambooLayer, never()).removeBamboo(any(), any());
         }
 
         @Test
@@ -60,7 +60,7 @@ class MovePandaActionTest {
             movePandaAction.execute(board, botManager);
             verify(board.getPanda()).move(new PositionVector(-1, 0, 1), board);
             verify(board).getBambooAt(new PositionVector(-1, 0, 1));
-            verify(bambooLayer).removeBamboo(new PositionVector(-1, 0, 1));
+            verify(bambooLayer).removeBamboo(new PositionVector(-1, 0, 1), board);
         }
     }
 }
