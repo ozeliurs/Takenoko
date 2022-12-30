@@ -108,4 +108,8 @@ public class Board {
     public PositionVector getPandaPosition() {
         return actorsManager.getPanda().getPosition();
     }
+
+    public List<PositionVector> getPandaPossibleMoves() {
+        return actorsManager.getPanda().getPossibleMoves(this);
+    }
 }
