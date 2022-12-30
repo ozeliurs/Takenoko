@@ -7,7 +7,6 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.inventory.InventoryBambooStack;
-import com.takenoko.layers.LayerManager;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,8 +24,7 @@ class EatBambooActionTest {
         eatBambooAction = new EatBambooAction(new PositionVector(-1, 0, 1));
         botManager = spy(new BotManager(mock(Bot.class)));
         board = mock(Board.class);
-        when(board.getLayerManager()).thenReturn(mock(LayerManager.class));
-        when(board.getLayerManager().getBambooLayer()).thenReturn(mock(BambooLayer.class));
+        when(board.getBambooLayer()).thenReturn(mock(BambooLayer.class));
     }
 
     @Nested
@@ -36,8 +34,7 @@ class EatBambooActionTest {
         @DisplayName("should remove bamboo")
         void shouldMoveThePanda() {
             eatBambooAction.execute(board, botManager);
-            verify(board.getLayerManager().getBambooLayer())
-                    .removeBamboo(new PositionVector(-1, 0, 1), board);
+            verify(board.getBambooLayer()).removeBamboo(new PositionVector(-1, 0, 1), board);
         }
 
         @Test

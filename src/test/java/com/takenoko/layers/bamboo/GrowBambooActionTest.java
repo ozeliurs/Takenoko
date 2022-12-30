@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 import com.takenoko.bot.Bot;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.layers.LayerManager;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,8 +21,7 @@ class GrowBambooActionTest {
         growBambooAction = new GrowBambooAction(new PositionVector(-1, 0, 1));
         botManager = new BotManager(mock(Bot.class));
         board = mock(Board.class);
-        when(board.getLayerManager()).thenReturn(mock(LayerManager.class));
-        when(board.getLayerManager().getBambooLayer()).thenReturn(mock(BambooLayer.class));
+        when(board.getBambooLayer()).thenReturn(mock(BambooLayer.class));
     }
 
     @Nested
@@ -33,8 +31,7 @@ class GrowBambooActionTest {
         @DisplayName("should place the tile on the board")
         void shouldMoveThePanda() {
             growBambooAction.execute(board, botManager);
-            verify(board.getLayerManager().getBambooLayer())
-                    .addBamboo(new PositionVector(-1, 0, 1), board);
+            verify(board.getBambooLayer()).addBamboo(new PositionVector(-1, 0, 1), board);
         }
     }
 }
