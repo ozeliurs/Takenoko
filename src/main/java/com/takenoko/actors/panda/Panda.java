@@ -7,14 +7,19 @@ import java.util.List;
 /** Panda class. The panda is an actor that can move on the board. */
 public class Panda {
     PositionVector position;
-    List<PositionVector> possibleMoves;
-    private final Board board;
+
+    /**
+     * Constructor for the Panda class.
+     *
+     * @param position the position of the panda
+     */
+    public Panda(PositionVector position) {
+        this.position = position;
+    }
 
     /** Constructor for the Panda class. Instantiate the panda at the origin. */
-    public Panda(Board board) {
-        this.position = new PositionVector(0, 0, 0);
-        this.board = board;
-        calculatePossibleMoves();
+    public Panda() {
+        this(new PositionVector(0, 0, 0));
     }
 
     /**
@@ -36,21 +41,20 @@ public class Panda {
      *
      * @param vector the vector to move the panda
      */
-    void move(PositionVector vector) {
-        if (!isMovePossible(vector)) {
+    void move(PositionVector vector, Board board) {
+        if (!isMovePossible(vector, board)) {
             throw new IllegalArgumentException("This move is not possible");
         }
         position = position.add(vector).toPositionVector();
-        calculatePossibleMoves();
     }
 
     /**
-     * Check if the move is possible.
+     * Check if the move is possible. The panda can only move in a straight line on the board tiles.
      *
      * @param vector the vector to move the panda
      * @return true if the move is possible, false otherwise
      */
-    private boolean isMovePossible(PositionVector vector) {
+    private boolean isMovePossible(PositionVector vector, Board board) {
         // check if the panda is moving in a straight line
         if (!(vector.r() == 0 || vector.q() == 0 || vector.s() == 0)) {
             return false;
@@ -69,22 +73,15 @@ public class Panda {
     }
 
     /**
-     * Get possible moves for the panda.
+     * Returns possible moves for the panda.
      *
      * @return the possible moves
      */
-    public List<PositionVector> getPossibleMoves() {
-        calculatePossibleMoves();
-        return possibleMoves;
-    }
-
-    /** Calculate possible moves for the panda. */
-    public void calculatePossibleMoves() {
-        possibleMoves =
-                board.getTiles().keySet().stream()
-                        .map(v -> v.sub(position).toPositionVector())
-                        .filter(this::isMovePossible)
-                        .filter(v -> !v.equals(new PositionVector(0, 0, 0)))
-                        .toList();
+    public List<PositionVector> getPossibleMoves(Board board) {
+        return board.getTiles().keySet().stream()
+                .map(v -> v.sub(position).toPositionVector())
+                .filter(v -> isMovePossible(v, board))
+                .filter(v -> !v.equals(new PositionVector(0, 0, 0)))
+                .toList();
     }
 }

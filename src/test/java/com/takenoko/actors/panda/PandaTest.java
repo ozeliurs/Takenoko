@@ -44,7 +44,7 @@ class PandaTest {
         @Test
         @DisplayName("should return the position of the panda")
         void shouldReturnThePositionOfThePanda() {
-            Panda panda = new Panda(board);
+            Panda panda = new Panda();
             assertEquals(new PositionVector(0, 0, 0), panda.getPosition());
         }
     }
@@ -55,7 +55,7 @@ class PandaTest {
         @Test
         @DisplayName("should return a string explaining where the panda is on the board")
         void shouldReturnAStringExplainingWhereThePandaIsOnTheBoard() {
-            Panda panda = new Panda(board);
+            Panda panda = new Panda();
             assertEquals("The panda is at Vector[q=0.0, r=0.0, s=0.0]", panda.positionMessage());
         }
     }
@@ -67,23 +67,23 @@ class PandaTest {
         @Test
         @DisplayName("should move the panda with a valid vector")
         void shouldMoveThePandaWithAVector() {
-            Panda panda = new Panda(board);
-            panda.move(new PositionVector(1, 0, -1));
+            Panda panda = new Panda();
+            panda.move(new PositionVector(1, 0, -1), board);
             assertThat(panda.getPosition()).isEqualTo(new PositionVector(1, 0, -1));
 
-            panda.move(new PositionVector(0, -1, 1));
+            panda.move(new PositionVector(0, -1, 1), board);
             assertThat(panda.getPosition()).isEqualTo(new PositionVector(1, -1, 0));
 
-            panda.move(new PositionVector(1, -1, -0));
+            panda.move(new PositionVector(1, -1, -0), board);
             assertThat(panda.getPosition()).isEqualTo(new PositionVector(2, -2, 0));
         }
 
         @Test
         @DisplayName("should throw an exception if the panda is not moving with a valid vector")
         void shouldThrowAnExceptionIfThePandaIsNotMovingWithAValidVector() {
-            Panda panda = new Panda(board);
+            Panda panda = new Panda();
             PositionVector vector = new PositionVector(1, 1, -2);
-            assertThatThrownBy(() -> panda.move(vector))
+            assertThatThrownBy(() -> panda.move(vector, board))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("This move is not possible");
         }
@@ -95,8 +95,8 @@ class PandaTest {
         @Test
         @DisplayName("should return a list of possible moves")
         void shouldReturnAListOfPossibleMoves() {
-            Panda panda = new Panda(board);
-            assertThat(panda.getPossibleMoves())
+            Panda panda = new Panda();
+            assertThat(panda.getPossibleMoves(board))
                     .containsExactlyInAnyOrder(
                             new PositionVector(1, -1, 0),
                             new PositionVector(2, -2, 0),
