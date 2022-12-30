@@ -28,7 +28,7 @@ public class MovePandaAction implements Action {
     @Override
     public void execute(Board board, BotManager botManager) {
         // move the panda
-        board.getPanda().move(relativePositionVector);
+        board.getPanda().move(relativePositionVector, board);
         botManager.displayMessage(
                 botManager.getName()
                         + " moved the panda with "

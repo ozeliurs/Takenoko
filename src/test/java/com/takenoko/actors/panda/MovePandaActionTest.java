@@ -40,7 +40,7 @@ class MovePandaActionTest {
             BambooLayer bambooLayer = mock(BambooLayer.class);
             when(board.getLayerManager().getBambooLayer()).thenReturn(bambooLayer);
             movePandaAction.execute(board, botManager);
-            verify(board.getPanda()).move(new PositionVector(-1, 0, 1));
+            verify(board.getPanda()).move(new PositionVector(-1, 0, 1), board);
             // verify not called
             verify(bambooLayer, never()).removeBamboo(any());
         }
@@ -58,7 +58,7 @@ class MovePandaActionTest {
             BambooLayer bambooLayer = mock(BambooLayer.class);
             when(board.getLayerManager().getBambooLayer()).thenReturn(bambooLayer);
             movePandaAction.execute(board, botManager);
-            verify(board.getPanda()).move(new PositionVector(-1, 0, 1));
+            verify(board.getPanda()).move(new PositionVector(-1, 0, 1), board);
             verify(board).getBambooAt(new PositionVector(-1, 0, 1));
             verify(bambooLayer).removeBamboo(new PositionVector(-1, 0, 1));
         }
