@@ -13,6 +13,15 @@ public class BambooLayer {
         bamboo = new HashMap<>();
     }
 
+    public BambooLayer(BambooLayer bambooLayer) {
+        this();
+        for (PositionVector positionVector : bambooLayer.bamboo.keySet()) {
+            bamboo.put(
+                    positionVector,
+                    (LayerBambooStack) bambooLayer.bamboo.get(positionVector).copy());
+        }
+    }
+
     /**
      * Add bamboo to a tile. By default, the number of bamboo is 1 if the tile is irrigated.
      *
@@ -62,5 +71,9 @@ public class BambooLayer {
         } else {
             throw new IllegalArgumentException("There is no bamboo on this tile");
         }
+    }
+
+    public BambooLayer copy() {
+        return new BambooLayer(this);
     }
 }
