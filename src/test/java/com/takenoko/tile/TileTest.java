@@ -84,4 +84,20 @@ class TileTest {
             assertThat(pondTile).doesNotHaveSameHashCodeAs(tile);
         }
     }
+
+    @Nested
+    @DisplayName("Method copy")
+    class TestCopy {
+        @Test
+        @DisplayName("When tile is copied, returns a new tile")
+        void copy_WhenTileIsCopied_ThenReturnsNewTile() {
+            assertThat(tile.copy()).isNotSameAs(tile);
+        }
+
+        @Test
+        @DisplayName("When tile is copied, returns a tile with the same type")
+        void copy_WhenTileIsCopied_ThenReturnsTileWithSameType() {
+            assertThat(tile.copy().getType()).isEqualTo(tile.getType());
+        }
+    }
 }
