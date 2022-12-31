@@ -3,6 +3,7 @@ package com.takenoko.actors.panda;
 import com.takenoko.engine.Board;
 import com.takenoko.vector.PositionVector;
 import java.util.List;
+import java.util.Objects;
 
 /** Panda class. The panda is an actor that can move on the board. */
 public class Panda {
@@ -91,5 +92,18 @@ public class Panda {
 
     public Panda copy() {
         return new Panda(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Panda panda = (Panda) o;
+        return getPosition().equals(panda.getPosition());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPosition());
     }
 }
