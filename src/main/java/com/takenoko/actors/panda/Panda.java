@@ -22,6 +22,10 @@ public class Panda {
         this(new PositionVector(0, 0, 0));
     }
 
+    public Panda(Panda panda) {
+        this(panda.position.copy());
+    }
+
     /**
      * @return the position of the panda
      */
@@ -83,5 +87,9 @@ public class Panda {
                 .filter(v -> isMovePossible(v, board))
                 .filter(v -> !v.equals(new PositionVector(0, 0, 0)))
                 .toList();
+    }
+
+    public Panda copy() {
+        return new Panda(this);
     }
 }
