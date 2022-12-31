@@ -9,6 +9,7 @@ import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /** Board class. The board contains the tiles. */
 public class Board {
@@ -125,5 +126,24 @@ public class Board {
 
     public BambooLayer getBambooLayer() {
         return bambooLayer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Board board = (Board) o;
+        return getTileLayer().equals(board.getTileLayer())
+                && getBambooLayer().equals(board.getBambooLayer())
+                && getPanda().equals(board.getPanda());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTileLayer(), getBambooLayer(), getPanda());
+    }
+
+    public Board copy() {
+        return new Board(this);
     }
 }
