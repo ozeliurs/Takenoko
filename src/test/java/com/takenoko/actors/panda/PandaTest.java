@@ -103,4 +103,74 @@ class PandaTest {
                             new PositionVector(1, 0, -1));
         }
     }
+
+    @Nested
+    @DisplayName("Method equals()")
+    class TestEquals {
+        @Test
+        @DisplayName("should return true if the two objects are equal")
+        void shouldReturnTrueIfTheTwoObjectsAreEqual() {
+            Panda panda = new Panda();
+            Panda panda2 = new Panda();
+            assertThat(panda).isEqualTo(panda2);
+        }
+
+        @Test
+        @DisplayName("should return true if the two objects are the same")
+        void shouldReturnTrueIfTheTwoObjectsAreTheSame() {
+            Panda panda = new Panda();
+            Panda panda2 = panda;
+            assertEquals(panda, panda2);
+        }
+
+        @Test
+        @DisplayName("should return false if the two objects are of different classes")
+        void shouldReturnFalseIfTheTwoObjectsAreOfDifferentClasses() {
+            Panda panda = new Panda();
+            Object object = new Object();
+            assertThat(panda).isNotEqualTo(object);
+        }
+
+        @Test
+        @DisplayName("should return false if the two objects are not the same")
+        void shouldReturnFalseIfTheTwoObjectsAreNotTheSame() {
+            Panda panda = new Panda();
+            Panda panda2 = new Panda();
+            panda2.move(new PositionVector(1, 0, -1), board);
+            assertThat(panda).isNotEqualTo(panda2);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method hashCode()")
+    class TestHashCode {
+        @Test
+        @DisplayName("should return the same hashcode if the two objects are equal")
+        void shouldReturnTheSameHashcodeIfTheTwoObjectsAreEqual() {
+            Panda panda = new Panda();
+            Panda panda2 = new Panda();
+            assertThat(panda).hasSameHashCodeAs(panda2);
+        }
+
+        @Test
+        @DisplayName("should return a different hashcode if the two objects are not the same")
+        void shouldReturnADifferentHashcodeIfTheTwoObjectsAreNotTheSame() {
+            Panda panda = new Panda();
+            Panda panda2 = new Panda();
+            panda2.move(new PositionVector(1, 0, -1), board);
+            assertThat(panda).doesNotHaveSameHashCodeAs(panda2);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method copy()")
+    class TestCopy {
+        @Test
+        @DisplayName("should return a copy of the panda")
+        void shouldReturnACopyOfThePanda() {
+            Panda panda = new Panda();
+            Panda panda2 = panda.copy();
+            assertThat(panda).isEqualTo(panda2).isNotSameAs(panda2);
+        }
+    }
 }
