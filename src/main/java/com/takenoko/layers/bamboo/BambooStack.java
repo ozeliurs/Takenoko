@@ -9,6 +9,10 @@ public class BambooStack {
         bambooCount = startingBamboo;
     }
 
+    public BambooStack(BambooStack bambooStack) {
+        this(bambooStack.bambooCount);
+    }
+
     protected void growBamboo() {
         bambooCount++;
     }
@@ -35,5 +39,9 @@ public class BambooStack {
     @Override
     public int hashCode() {
         return Objects.hash(getBambooCount());
+    }
+
+    public BambooStack copy() {
+        return new BambooStack(this);
     }
 }
