@@ -160,4 +160,71 @@ class TileLayerTest {
                                     new PositionVector(0, -1, 1)));
         }
     }
+
+    @Nested
+    @DisplayName("Method equals")
+    class TestEquals {
+        @Test
+        @DisplayName("should return true when the two objects are the same")
+        void equals_shouldReturnTrueWhenSameObject() {
+            assertThat(tileLayer).isEqualTo(tileLayer);
+        }
+
+        @Test
+        @DisplayName("should return true when the two objects are equal")
+        void equals_shouldReturnTrueWhenEqual() {
+            TileLayer other = new TileLayer();
+            assertThat(tileLayer).isEqualTo(other);
+        }
+
+        @Test
+        @DisplayName("should return false when the two objects are not equal")
+        void equals_shouldReturnFalseWhenNotEqual() {
+            TileLayer other = new TileLayer();
+            other.placeTile(new Tile(), new PositionVector(1, -1, 0));
+            assertThat(tileLayer).isNotEqualTo(other);
+        }
+
+        @Test
+        @DisplayName("should return false when the other object is null")
+        void equals_shouldReturnFalseWhenOtherIsNull() {
+            assertThat(tileLayer).isNotEqualTo(null);
+        }
+
+        @Test
+        @DisplayName("should return false when the other object is not a TileLayer")
+        void equals_shouldReturnFalseWhenOtherIsNotTileLayer() {
+            assertThat(tileLayer).isNotEqualTo(new Object());
+        }
+    }
+
+    @Nested
+    @DisplayName("Method hashCode")
+    class TestHashCode {
+        @Test
+        @DisplayName("should return the same hash code when the two objects are equal")
+        void hashCode_shouldReturnSameHashCodeWhenEqual() {
+            TileLayer other = new TileLayer();
+            assertThat(tileLayer).hasSameHashCodeAs(other);
+        }
+
+        @Test
+        @DisplayName("should return a different hash code when the two objects are not equal")
+        void hashCode_shouldReturnDifferentHashCodeWhenNotEqual() {
+            TileLayer other = new TileLayer();
+            other.placeTile(new Tile(), new PositionVector(1, -1, 0));
+            assertThat(tileLayer).doesNotHaveSameHashCodeAs(other);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method copy()")
+    class TestCopy {
+        @Test
+        @DisplayName("should return a copy of the object")
+        void copy_shouldReturnCopyOfObject() {
+            TileLayer copy = tileLayer.copy();
+            assertThat(copy).isEqualTo(tileLayer).isNotSameAs(tileLayer);
+        }
+    }
 }
