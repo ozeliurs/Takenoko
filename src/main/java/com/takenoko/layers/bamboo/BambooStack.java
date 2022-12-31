@@ -32,7 +32,7 @@ public class BambooStack {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LayerBambooStack that = (LayerBambooStack) o;
+        BambooStack that = (BambooStack) o;
         return getBambooCount() == that.getBambooCount();
     }
 
