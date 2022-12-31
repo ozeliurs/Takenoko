@@ -144,4 +144,18 @@ public class TileLayer {
     public TileLayer copy() {
         return new TileLayer(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TileLayer tileLayer = (TileLayer) o;
+        return getTiles().equals(tileLayer.getTiles())
+                && getAvailableTilePositions().equals(tileLayer.getAvailableTilePositions());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTiles(), getAvailableTilePositions());
+    }
 }
