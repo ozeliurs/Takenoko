@@ -34,6 +34,12 @@ public class Board {
         this(new TileLayer(), new BambooLayer(), new Panda());
     }
 
+    public Board(Board board) {
+        this.tileLayer = board.tileLayer.copy();
+        this.bambooLayer = board.bambooLayer.copy();
+        this.panda = board.panda.copy();
+    }
+
     /**
      * Return the list of available tiles.
      *
