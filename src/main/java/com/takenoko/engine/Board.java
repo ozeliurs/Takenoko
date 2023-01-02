@@ -1,10 +1,10 @@
 package com.takenoko.engine;
 
-import com.takenoko.actors.ActorsManager;
 import com.takenoko.actors.panda.Panda;
-import com.takenoko.layers.LayerManager;
+import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
+import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import java.util.List;
@@ -12,26 +12,26 @@ import java.util.Map;
 
 /** Board class. The board contains the tiles. */
 public class Board {
-    private final ActorsManager actorsManager;
-    private final LayerManager layerManager;
+    private final TileLayer tileLayer;
+    private final BambooLayer bambooLayer;
+    private final Panda panda;
 
-    public Board(ActorsManager actorsManager, LayerManager layerManager) {
-        this.actorsManager = actorsManager;
-        this.layerManager = layerManager;
+    /**
+     * Constructor for the Board class.
+     *
+     * @param tileLayer the tile layer
+     * @param bambooLayer the bamboo layer
+     * @param panda the panda
+     */
+    public Board(TileLayer tileLayer, BambooLayer bambooLayer, Panda panda) {
+        this.tileLayer = tileLayer;
+        this.bambooLayer = bambooLayer;
+        this.panda = panda;
     }
 
     /** Constructor for the Board class. */
     public Board() {
-        this.layerManager = new LayerManager();
-        this.actorsManager = new ActorsManager();
-    }
-
-    public ActorsManager getActorsManager() {
-        return actorsManager;
-    }
-
-    public LayerManager getLayerManager() {
-        return layerManager;
+        this(new TileLayer(), new BambooLayer(), new Panda());
     }
 
     /**
@@ -40,7 +40,7 @@ public class Board {
      * @return the list of available tiles
      */
     public List<Tile> getAvailableTiles() {
-        return layerManager.getTileLayer().getAvailableTiles();
+        return tileLayer.getAvailableTiles();
     }
 
     /**
@@ -49,7 +49,7 @@ public class Board {
      * @return the map of tiles
      */
     public Map<PositionVector, Tile> getTiles() {
-        return new HashMap<>(layerManager.getTileLayer().getTiles());
+        return new HashMap<>(tileLayer.getTiles());
     }
 
     /**
@@ -58,7 +58,7 @@ public class Board {
      * @return the available tile positions
      */
     public List<PositionVector> getAvailableTilePositions() {
-        return layerManager.getTileLayer().getAvailableTilePositions();
+        return tileLayer.getAvailableTilePositions();
     }
 
     /**
@@ -67,7 +67,7 @@ public class Board {
      * @return the map of tiles without the pond
      */
     public Map<PositionVector, Tile> getTilesWithoutPond() {
-        return new HashMap<>(layerManager.getTileLayer().getTilesWithoutPond());
+        return new HashMap<>(tileLayer.getTilesWithoutPond());
     }
 
     /**
@@ -77,7 +77,7 @@ public class Board {
      * @return if there is a tile at the position
      */
     public boolean isTile(PositionVector positionVector) {
-        return layerManager.getTileLayer().isTile(positionVector);
+        return tileLayer.isTile(positionVector);
     }
 
     /**
@@ -87,7 +87,7 @@ public class Board {
      * @return the tile at the position
      */
     public Tile getTileAt(PositionVector positionVector) {
-        return layerManager.getTileLayer().getTileAt(positionVector);
+        return tileLayer.getTileAt(positionVector);
     }
 
     /**
@@ -96,20 +96,28 @@ public class Board {
      * @param positionVector the position of the tile
      */
     public LayerBambooStack getBambooAt(PositionVector positionVector) {
-        return layerManager.getBambooLayer().getBambooAt(positionVector, this);
+        return bambooLayer.getBambooAt(positionVector, this);
     }
 
     /** Get the Panda */
     public Panda getPanda() {
-        return actorsManager.getPanda();
+        return panda;
     }
 
     /** Get the Position of the Panda */
     public PositionVector getPandaPosition() {
-        return actorsManager.getPanda().getPosition();
+        return panda.getPosition();
     }
 
     public List<PositionVector> getPandaPossibleMoves() {
-        return actorsManager.getPanda().getPossibleMoves(this);
+        return panda.getPossibleMoves(this);
+    }
+
+    public TileLayer getTileLayer() {
+        return tileLayer;
+    }
+
+    public BambooLayer getBambooLayer() {
+        return bambooLayer;
     }
 }

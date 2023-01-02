@@ -30,7 +30,7 @@ public class PlaceTileAction implements Action {
      */
     @Override
     public void execute(Board board, BotManager botManager) {
-        board.getLayerManager().getTileLayer().placeTile(tile, positionVector);
+        board.getTileLayer().placeTile(tile, positionVector);
         botManager.displayMessage(botManager.getName() + " placed a tile at " + positionVector);
         new GrowBambooAction(positionVector).execute(board, botManager);
     }
