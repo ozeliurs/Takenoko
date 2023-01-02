@@ -1,5 +1,6 @@
 package com.takenoko.layers.bamboo;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
@@ -87,6 +88,20 @@ class LayerBambooStackTest {
             LayerBambooStack layerBambooStack1 = new LayerBambooStack(5);
             LayerBambooStack layerBambooStack2 = new LayerBambooStack(6);
             assertNotEquals(layerBambooStack1.hashCode(), layerBambooStack2.hashCode());
+        }
+    }
+
+    @Nested
+    @DisplayName("Method copy()")
+    class TestCopy {
+        @Test
+        @DisplayName("should return a copy of the bamboo stack")
+        void shouldReturnACopyOfTheBambooStack() {
+            LayerBambooStack layerBambooStack1 = new LayerBambooStack(5);
+            LayerBambooStack layerBambooStack2 = layerBambooStack1.copy();
+            assertThat(layerBambooStack1)
+                    .isEqualTo(layerBambooStack2)
+                    .isNotSameAs(layerBambooStack2);
         }
     }
 }

@@ -9,6 +9,10 @@ public class BambooStack {
         bambooCount = startingBamboo;
     }
 
+    public BambooStack(BambooStack bambooStack) {
+        this(bambooStack.bambooCount);
+    }
+
     protected void growBamboo() {
         bambooCount++;
     }
@@ -28,12 +32,16 @@ public class BambooStack {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LayerBambooStack that = (LayerBambooStack) o;
+        BambooStack that = (BambooStack) o;
         return getBambooCount() == that.getBambooCount();
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getBambooCount());
+    }
+
+    public BambooStack copy() {
+        return new BambooStack(this);
     }
 }

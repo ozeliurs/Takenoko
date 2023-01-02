@@ -17,6 +17,14 @@ public class TileLayer {
         placeTile(new Pond(), new PositionVector(0, 0, 0));
     }
 
+    public TileLayer(TileLayer tileLayer) {
+        this();
+        tiles.putAll(tileLayer.tiles);
+        for (PositionVector positionVector : tileLayer.availableTilePositions) {
+            availableTilePositions.add(positionVector.copy());
+        }
+    }
+
     /**
      * Place a tile on the board. and update the available tiles and the available tile positions.
      *
@@ -131,5 +139,23 @@ public class TileLayer {
      */
     public Tile getTileAt(PositionVector positionVector) {
         return tiles.get(positionVector);
+    }
+
+    public TileLayer copy() {
+        return new TileLayer(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TileLayer tileLayer = (TileLayer) o;
+        return getTiles().equals(tileLayer.getTiles())
+                && getAvailableTilePositions().equals(tileLayer.getAvailableTilePositions());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTiles(), getAvailableTilePositions());
     }
 }

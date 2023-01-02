@@ -3,6 +3,7 @@ package com.takenoko.layers.bamboo;
 import com.takenoko.engine.Board;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
+import java.util.Objects;
 
 /** BambooLayer class. The bamboo layer contains the number of bamboo on each tile. */
 public class BambooLayer {
@@ -11,6 +12,13 @@ public class BambooLayer {
     /** Constructor for the BambooLayer class. */
     public BambooLayer() {
         bamboo = new HashMap<>();
+    }
+
+    public BambooLayer(BambooLayer bambooLayer) {
+        this();
+        for (PositionVector positionVector : bambooLayer.bamboo.keySet()) {
+            bamboo.put(positionVector, bambooLayer.bamboo.get(positionVector).copy());
+        }
     }
 
     /**
@@ -62,5 +70,22 @@ public class BambooLayer {
         } else {
             throw new IllegalArgumentException("There is no bamboo on this tile");
         }
+    }
+
+    public BambooLayer copy() {
+        return new BambooLayer(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BambooLayer that = (BambooLayer) o;
+        return bamboo.equals(that.bamboo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bamboo);
     }
 }

@@ -111,4 +111,62 @@ class BambooLayerTest {
                     .hasMessage("There is no bamboo on this tile");
         }
     }
+
+    @Nested
+    @DisplayName("Method equals()")
+    class TestEquals {
+        @Test
+        @DisplayName("should return true if the bamboo layers are equal")
+        void shouldReturnTrueIfTheBambooLayersAreEqual() {
+            BambooLayer bambooLayer1 = new BambooLayer();
+            BambooLayer bambooLayer2 = new BambooLayer();
+            assertThat(bambooLayer1).isEqualTo(bambooLayer2);
+        }
+
+        @Test
+        @DisplayName("should return false if the bamboo layers are not equal")
+        void shouldReturnFalseIfTheBambooLayersAreNotEqual() {
+            BambooLayer bambooLayer1 = new BambooLayer();
+            BambooLayer bambooLayer2 = new BambooLayer();
+            when(board.isTile(any())).thenReturn(true);
+            bambooLayer1.addBamboo(new PositionVector(-1, 0, 1), board);
+            assertThat(bambooLayer1).isNotEqualTo(bambooLayer2);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method hashCode()")
+    class TestHashCode {
+        @Test
+        @DisplayName("should return the same hash code if the bamboo layers are equal")
+        void shouldReturnTheSameHashCodeIfTheBambooLayersAreEqual() {
+            BambooLayer bambooLayer1 = new BambooLayer();
+            BambooLayer bambooLayer2 = new BambooLayer();
+            assertThat(bambooLayer1).hasSameHashCodeAs(bambooLayer2);
+        }
+
+        @Test
+        @DisplayName("should return a different hash code if the bamboo layers are not equal")
+        void shouldReturnADifferentHashCodeIfTheBambooLayersAreNotEqual() {
+            BambooLayer bambooLayer1 = new BambooLayer();
+            BambooLayer bambooLayer2 = new BambooLayer();
+            when(board.isTile(any())).thenReturn(true);
+            bambooLayer1.addBamboo(new PositionVector(-1, 0, 1), board);
+            assertThat(bambooLayer1).doesNotHaveSameHashCodeAs(bambooLayer2);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method copy()")
+    class TestCopy {
+        @Test
+        @DisplayName("should return a copy of the bamboo layer")
+        void shouldReturnACopyOfTheBambooLayer() {
+            BambooLayer bambooLayer1 = new BambooLayer();
+            when(board.isTile(any())).thenReturn(true);
+            bambooLayer1.addBamboo(new PositionVector(-1, 0, 1), board);
+            BambooLayer bambooLayer2 = bambooLayer1.copy();
+            assertThat(bambooLayer1).isEqualTo(bambooLayer2);
+        }
+    }
 }

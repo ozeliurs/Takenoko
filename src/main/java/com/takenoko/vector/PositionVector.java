@@ -16,4 +16,8 @@ public class PositionVector extends Vector {
     public PositionVector(Vector vector) {
         super(vector.q(), vector.r(), vector.s());
     }
+
+    public PositionVector copy() {
+        return new PositionVector(this);
+    }
 }
