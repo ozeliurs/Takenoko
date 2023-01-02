@@ -18,11 +18,16 @@ public class TileLayer {
     }
 
     public TileLayer(TileLayer tileLayer) {
-        this();
-        tiles.putAll(tileLayer.tiles);
-        for (PositionVector positionVector : tileLayer.availableTilePositions) {
-            availableTilePositions.add(positionVector.copy());
-        }
+        tiles =
+                tileLayer.tiles.keySet().stream()
+                        .collect(
+                                HashMap::new,
+                                (m, k) -> m.put(k.copy(), tileLayer.tiles.get(k).copy()),
+                                HashMap::putAll);
+        availableTilePositions =
+                tileLayer.availableTilePositions.stream()
+                        .map(PositionVector::copy)
+                        .collect(HashSet::new, HashSet::add, HashSet::addAll);
     }
 
     /**
