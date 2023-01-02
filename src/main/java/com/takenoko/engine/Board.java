@@ -138,11 +138,20 @@ public class Board {
     public PositionVector getPandaPosition() {
         return panda.getPosition();
     }
-
+    /**
+     * Returns possible moves for the panda.
+     *
+     * @return the possible moves
+     */
     public List<PositionVector> getPandaPossibleMoves() {
         return panda.getPossibleMoves(this);
     }
 
+    /**
+     * Move the panda with a vector.
+     *
+     * @param vector the vector to move the panda
+     */
     public void movePanda(PositionVector vector) {
         panda.move(vector, this);
     }
