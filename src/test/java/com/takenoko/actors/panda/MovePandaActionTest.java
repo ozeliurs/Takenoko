@@ -34,11 +34,10 @@ class MovePandaActionTest {
         void shouldMoveThePanda() {
             when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
             when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
-            when(board.getPanda()).thenReturn(mock(Panda.class));
             BambooLayer bambooLayer = mock(BambooLayer.class);
             when(board.getBambooLayer()).thenReturn(bambooLayer);
             movePandaAction.execute(board, botManager);
-            verify(board.getPanda()).move(new PositionVector(-1, 0, 1), board);
+            verify(board).movePanda(new PositionVector(-1, 0, 1));
             // verify not called
             verify(bambooLayer, never()).removeBamboo(any(), any());
         }
@@ -51,11 +50,10 @@ class MovePandaActionTest {
                             (new PositionVector(0, 0, 0).add(new PositionVector(-1, 0, 1)))
                                     .toPositionVector());
             when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(1));
-            when(board.getPanda()).thenReturn(mock(Panda.class));
             BambooLayer bambooLayer = mock(BambooLayer.class);
             when(board.getBambooLayer()).thenReturn(bambooLayer);
             movePandaAction.execute(board, botManager);
-            verify(board.getPanda()).move(new PositionVector(-1, 0, 1), board);
+            verify(board).movePanda(new PositionVector(-1, 0, 1));
             verify(board).getBambooAt(new PositionVector(-1, 0, 1));
             verify(bambooLayer).removeBamboo(new PositionVector(-1, 0, 1), board);
         }

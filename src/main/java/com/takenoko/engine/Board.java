@@ -106,11 +106,6 @@ public class Board {
         return bambooLayer.getBambooAt(positionVector, this);
     }
 
-    /** Get the Panda */
-    public Panda getPanda() {
-        return panda;
-    }
-
     /** Get the Position of the Panda */
     public PositionVector getPandaPosition() {
         return panda.getPosition();
@@ -118,6 +113,10 @@ public class Board {
 
     public List<PositionVector> getPandaPossibleMoves() {
         return panda.getPossibleMoves(this);
+    }
+
+    public void movePanda(PositionVector vector) {
+        panda.move(vector, this);
     }
 
     public TileLayer getTileLayer() {
@@ -135,12 +134,12 @@ public class Board {
         Board board = (Board) o;
         return getTileLayer().equals(board.getTileLayer())
                 && getBambooLayer().equals(board.getBambooLayer())
-                && getPanda().equals(board.getPanda());
+                && panda.equals(board.panda);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTileLayer(), getBambooLayer(), getPanda());
+        return Objects.hash(getTileLayer(), getBambooLayer(), panda);
     }
 
     public Board copy() {

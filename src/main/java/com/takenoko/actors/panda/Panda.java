@@ -46,7 +46,7 @@ public class Panda {
      *
      * @param vector the vector to move the panda
      */
-    void move(PositionVector vector, Board board) {
+    public void move(PositionVector vector, Board board) {
         if (!isMovePossible(vector, board)) {
             throw new IllegalArgumentException("This move is not possible");
         }
