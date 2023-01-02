@@ -88,11 +88,11 @@ public class BotManager {
      * Ask for the bot to choose an action based on his algorithm and then execute the returned
      * action. Objectives are also verified in order to know if the bot has won.
      *
-     * @param board
+     * @param board the board of the game
      */
     public void playBot(Board board) {
         for (int i = 0; i < this.getNumberOfActions(); i++) {
-            Action action = bot.chooseAction(board);
+            Action action = bot.chooseAction(board.copy());
             action.execute(board, this);
             verifyObjective(board);
             if (isObjectiveAchieved()) {
