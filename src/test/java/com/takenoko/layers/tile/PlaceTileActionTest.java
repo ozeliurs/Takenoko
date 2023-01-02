@@ -1,11 +1,11 @@
 package com.takenoko.layers.tile;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import com.takenoko.bot.Bot;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +22,6 @@ class PlaceTileActionTest {
         placeTileAction = new PlaceTileAction(new Tile(), new PositionVector(-1, 0, 1));
         botManager = new BotManager(mock(Bot.class));
         board = mock(Board.class);
-        when(board.getBambooLayer()).thenReturn(mock(BambooLayer.class));
     }
 
     @Nested

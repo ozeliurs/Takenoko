@@ -106,6 +106,7 @@ public class Board {
     public void placeTile(Tile tile, PositionVector position) {
         tileLayer.placeTile(tile, position);
     }
+
     /**
      * Get the bamboo stack at the position.
      *
@@ -113,6 +114,24 @@ public class Board {
      */
     public LayerBambooStack getBambooAt(PositionVector positionVector) {
         return bambooLayer.getBambooAt(positionVector, this);
+    }
+
+    /**
+     * Grow bamboo on a tile. By default, the number of bamboo is 1 if the tile is irrigated.
+     *
+     * @param positionVector the position of the tile
+     */
+    public void growBamboo(PositionVector positionVector) {
+        bambooLayer.growBamboo(positionVector, this);
+    }
+
+    /**
+     * Eat a bamboo from a tile.
+     *
+     * @param positionVector the position of the tile
+     */
+    public void eatBamboo(PositionVector positionVector) {
+        bambooLayer.eatBamboo(positionVector, this);
     }
 
     /** Get the Position of the Panda */
@@ -128,27 +147,19 @@ public class Board {
         panda.move(vector, this);
     }
 
-    public TileLayer getTileLayer() {
-        return tileLayer;
-    }
-
-    public BambooLayer getBambooLayer() {
-        return bambooLayer;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Board board = (Board) o;
-        return getTileLayer().equals(board.getTileLayer())
-                && getBambooLayer().equals(board.getBambooLayer())
+        return tileLayer.equals(board.tileLayer)
+                && bambooLayer.equals(board.bambooLayer)
                 && panda.equals(board.panda);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTileLayer(), getBambooLayer(), panda);
+        return Objects.hash(tileLayer, bambooLayer, panda);
     }
 
     public Board copy() {

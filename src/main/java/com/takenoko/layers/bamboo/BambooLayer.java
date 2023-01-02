@@ -22,12 +22,12 @@ public class BambooLayer {
     }
 
     /**
-     * Add bamboo to a tile. By default, the number of bamboo is 1 if the tile is irrigated.
+     * Grow bamboo on a tile. By default, the number of bamboo is 1 if the tile is irrigated.
      *
      * @param positionVector the position of the tile
      * @param board the board
      */
-    void addBamboo(PositionVector positionVector, Board board) {
+    public void growBamboo(PositionVector positionVector, Board board) {
         if (positionVector.equals(new PositionVector(0, 0, 0))) {
             throw new IllegalArgumentException("The bamboo cannot be placed on the pond");
         }
@@ -59,12 +59,12 @@ public class BambooLayer {
     }
 
     /**
-     * Remove bamboo from a tile.
+     * Eat a bamboo from a tile.
      *
      * @param positionVector the position of the tile
      * @param board the board
      */
-    public void removeBamboo(PositionVector positionVector, Board board) {
+    public void eatBamboo(PositionVector positionVector, Board board) {
         if (board.getBambooAt(positionVector).getBambooCount() > 0) {
             bamboo.get(positionVector).eatBamboo();
         } else {

@@ -24,7 +24,6 @@ class EatBambooActionTest {
         eatBambooAction = new EatBambooAction(new PositionVector(-1, 0, 1));
         botManager = spy(new BotManager(mock(Bot.class)));
         board = mock(Board.class);
-        when(board.getBambooLayer()).thenReturn(mock(BambooLayer.class));
     }
 
     @Nested
@@ -34,7 +33,7 @@ class EatBambooActionTest {
         @DisplayName("should remove bamboo")
         void shouldMoveThePanda() {
             eatBambooAction.execute(board, botManager);
-            verify(board.getBambooLayer()).removeBamboo(new PositionVector(-1, 0, 1), board);
+            verify(board).eatBamboo(new PositionVector(-1, 0, 1));
         }
 
         @Test

@@ -30,7 +30,7 @@ class BambooLayerTest {
         @DisplayName("should throw an exception if the position is the same as the Pond")
         void shouldThrowAnExceptionIfThePositionIsTheSameAsThePond() {
             PositionVector pondPosition = new PositionVector(0, 0, 0);
-            assertThatThrownBy(() -> bambooLayer.addBamboo(pondPosition, board))
+            assertThatThrownBy(() -> bambooLayer.growBamboo(pondPosition, board))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("The bamboo cannot be placed on the pond");
         }
@@ -39,7 +39,7 @@ class BambooLayerTest {
         @DisplayName("should add bamboo to the bamboo layer")
         void shouldAddBambooToTheBambooLayer() {
             when(board.isTile(any())).thenReturn(true);
-            bambooLayer.addBamboo(new PositionVector(-1, 0, 1), board);
+            bambooLayer.growBamboo(new PositionVector(-1, 0, 1), board);
             assertThat(bambooLayer.getBambooAt(new PositionVector(-1, 0, 1), board))
                     .isEqualTo(new LayerBambooStack(1));
         }
@@ -69,7 +69,7 @@ class BambooLayerTest {
         @DisplayName("should return the bamboo stack at the position")
         void shouldReturnTheBambooStackAtThePosition() {
             when(board.isTile(any())).thenReturn(true);
-            bambooLayer.addBamboo(new PositionVector(-1, 0, 1), board);
+            bambooLayer.growBamboo(new PositionVector(-1, 0, 1), board);
             assertThat(bambooLayer.getBambooAt(new PositionVector(-1, 0, 1), board))
                     .isEqualTo(new LayerBambooStack(1));
         }
@@ -84,8 +84,8 @@ class BambooLayerTest {
             when(board.isTile(any())).thenReturn(true);
             LayerBambooStack bambooStack = new LayerBambooStack(1);
             when(board.getBambooAt(any())).thenReturn(bambooStack);
-            bambooLayer.addBamboo(new PositionVector(-1, 0, 1), board);
-            bambooLayer.removeBamboo(new PositionVector(-1, 0, 1), board);
+            bambooLayer.growBamboo(new PositionVector(-1, 0, 1), board);
+            bambooLayer.eatBamboo(new PositionVector(-1, 0, 1), board);
             assertThat(bambooLayer.getBambooAt(new PositionVector(-1, 0, 1), board))
                     .isEqualTo(new LayerBambooStack(0));
         }
@@ -96,7 +96,7 @@ class BambooLayerTest {
             when(board.isTile(any())).thenReturn(false);
             doThrow(IllegalArgumentException.class).when(board).getBambooAt(any());
             PositionVector position = new PositionVector(-10, 0, 10);
-            assertThatThrownBy(() -> bambooLayer.removeBamboo(position, board))
+            assertThatThrownBy(() -> bambooLayer.eatBamboo(position, board))
                     .isInstanceOf(IllegalArgumentException.class);
         }
 
@@ -106,7 +106,7 @@ class BambooLayerTest {
             when(board.isTile(any())).thenReturn(true);
             when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
             PositionVector position = new PositionVector(-1, 0, 1);
-            assertThatThrownBy(() -> bambooLayer.removeBamboo(position, board))
+            assertThatThrownBy(() -> bambooLayer.eatBamboo(position, board))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("There is no bamboo on this tile");
         }
@@ -129,7 +129,7 @@ class BambooLayerTest {
             BambooLayer bambooLayer1 = new BambooLayer();
             BambooLayer bambooLayer2 = new BambooLayer();
             when(board.isTile(any())).thenReturn(true);
-            bambooLayer1.addBamboo(new PositionVector(-1, 0, 1), board);
+            bambooLayer1.growBamboo(new PositionVector(-1, 0, 1), board);
             assertThat(bambooLayer1).isNotEqualTo(bambooLayer2);
         }
     }
@@ -151,7 +151,7 @@ class BambooLayerTest {
             BambooLayer bambooLayer1 = new BambooLayer();
             BambooLayer bambooLayer2 = new BambooLayer();
             when(board.isTile(any())).thenReturn(true);
-            bambooLayer1.addBamboo(new PositionVector(-1, 0, 1), board);
+            bambooLayer1.growBamboo(new PositionVector(-1, 0, 1), board);
             assertThat(bambooLayer1).doesNotHaveSameHashCodeAs(bambooLayer2);
         }
     }
@@ -164,7 +164,7 @@ class BambooLayerTest {
         void shouldReturnACopyOfTheBambooLayer() {
             BambooLayer bambooLayer1 = new BambooLayer();
             when(board.isTile(any())).thenReturn(true);
-            bambooLayer1.addBamboo(new PositionVector(-1, 0, 1), board);
+            bambooLayer1.growBamboo(new PositionVector(-1, 0, 1), board);
             BambooLayer bambooLayer2 = bambooLayer1.copy();
             assertThat(bambooLayer1).isEqualTo(bambooLayer2);
         }
