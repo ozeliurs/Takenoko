@@ -98,6 +98,16 @@ public class Board {
     }
 
     /**
+     * Place a tile on the board. and update the available tiles and the available tile positions.
+     *
+     * @param tile the tile to add to the board
+     * @param position the position of the tile
+     */
+    public void placeTile(Tile tile, PositionVector position) {
+        tileLayer.placeTile(tile, position);
+    }
+
+    /**
      * Get the bamboo stack at the position.
      *
      * @param positionVector the position of the tile
@@ -106,26 +116,44 @@ public class Board {
         return bambooLayer.getBambooAt(positionVector, this);
     }
 
-    /** Get the Panda */
-    public Panda getPanda() {
-        return panda;
+    /**
+     * Grow bamboo on a tile. By default, the number of bamboo is 1 if the tile is irrigated.
+     *
+     * @param positionVector the position of the tile
+     */
+    public void growBamboo(PositionVector positionVector) {
+        bambooLayer.growBamboo(positionVector, this);
+    }
+
+    /**
+     * Eat a bamboo from a tile.
+     *
+     * @param positionVector the position of the tile
+     */
+    public void eatBamboo(PositionVector positionVector) {
+        bambooLayer.eatBamboo(positionVector, this);
     }
 
     /** Get the Position of the Panda */
     public PositionVector getPandaPosition() {
         return panda.getPosition();
     }
-
+    /**
+     * Returns possible moves for the panda.
+     *
+     * @return the possible moves
+     */
     public List<PositionVector> getPandaPossibleMoves() {
         return panda.getPossibleMoves(this);
     }
 
-    public TileLayer getTileLayer() {
-        return tileLayer;
-    }
-
-    public BambooLayer getBambooLayer() {
-        return bambooLayer;
+    /**
+     * Move the panda with a vector.
+     *
+     * @param vector the vector to move the panda
+     */
+    public void movePanda(PositionVector vector) {
+        panda.move(vector, this);
     }
 
     @Override
@@ -133,14 +161,14 @@ public class Board {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Board board = (Board) o;
-        return getTileLayer().equals(board.getTileLayer())
-                && getBambooLayer().equals(board.getBambooLayer())
-                && getPanda().equals(board.getPanda());
+        return tileLayer.equals(board.tileLayer)
+                && bambooLayer.equals(board.bambooLayer)
+                && panda.equals(board.panda);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTileLayer(), getBambooLayer(), getPanda());
+        return Objects.hash(tileLayer, bambooLayer, panda);
     }
 
     public Board copy() {

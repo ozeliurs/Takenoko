@@ -21,7 +21,6 @@ class GrowBambooActionTest {
         growBambooAction = new GrowBambooAction(new PositionVector(-1, 0, 1));
         botManager = new BotManager(mock(Bot.class));
         board = mock(Board.class);
-        when(board.getBambooLayer()).thenReturn(mock(BambooLayer.class));
     }
 
     @Nested
@@ -31,7 +30,7 @@ class GrowBambooActionTest {
         @DisplayName("should place the tile on the board")
         void shouldMoveThePanda() {
             growBambooAction.execute(board, botManager);
-            verify(board.getBambooLayer()).addBamboo(new PositionVector(-1, 0, 1), board);
+            verify(board).growBamboo(new PositionVector(-1, 0, 1));
         }
     }
 }
