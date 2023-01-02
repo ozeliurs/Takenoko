@@ -98,6 +98,15 @@ public class Board {
     }
 
     /**
+     * Place a tile on the board. and update the available tiles and the available tile positions.
+     *
+     * @param tile the tile to add to the board
+     * @param position the position of the tile
+     */
+    public void placeTile(Tile tile, PositionVector position) {
+        tileLayer.placeTile(tile, position);
+    }
+    /**
      * Get the bamboo stack at the position.
      *
      * @param positionVector the position of the tile

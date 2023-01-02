@@ -36,7 +36,7 @@ public class TileLayer {
      * @param tile the tile to add to the board
      * @param position the position of the tile
      */
-    void placeTile(Tile tile, PositionVector position) {
+    public void placeTile(Tile tile, PositionVector position) {
         if (tiles.containsKey(position)) {
             throw new IllegalArgumentException("Tile already present at this position");
         }
@@ -52,7 +52,7 @@ public class TileLayer {
      *
      * @param position the position of the tile to remove
      */
-    void updateAvailableTilePositions(PositionVector position) {
+    private void updateAvailableTilePositions(PositionVector position) {
         availableTilePositions.remove(position);
         for (Vector neighbor : position.getNeighbors()) {
             if (isPositionAvailable(neighbor.toPositionVector())) {
@@ -67,7 +67,7 @@ public class TileLayer {
      *
      * @param position the position to check
      */
-    boolean isPositionAvailable(PositionVector position) {
+    private boolean isPositionAvailable(PositionVector position) {
         if (isTile(position)) {
             return false;
         }
