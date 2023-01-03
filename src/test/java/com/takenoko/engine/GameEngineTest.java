@@ -138,13 +138,12 @@ class GameEngineTest {
             private static Stream<Arguments> streamOfStatesThatAreNotPLAYING() {
                 return Stream.of(
                         Arguments.of(GameState.INITIALIZED),
-                        Arguments.of(GameState.READY),
-                        Arguments.of(GameState.FINISHED));
+                        Arguments.of(GameState.READY));
             }
 
             @ParameterizedTest(name = "i.e. : {0}")
             @MethodSource("streamOfStatesThatAreNotPLAYING")
-            @DisplayName("should throw an exception when the game state is not PLAYING")
+            @DisplayName("should throw an exception when the game state is not PLAYING or FINISHED")
             void endGame_shouldThrowException_WhenGameStateIsNotPLAYING(
                     GameState currentGameState) {
                 gameEngine.setGameState(currentGameState);
