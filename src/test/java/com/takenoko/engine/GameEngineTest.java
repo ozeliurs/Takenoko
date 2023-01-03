@@ -137,8 +137,7 @@ class GameEngineTest {
         class TestEndGame_WhenEndedIncorrectly {
             private static Stream<Arguments> streamOfStatesThatAreNotPLAYING() {
                 return Stream.of(
-                        Arguments.of(GameState.INITIALIZED),
-                        Arguments.of(GameState.READY));
+                        Arguments.of(GameState.INITIALIZED), Arguments.of(GameState.READY));
             }
 
             @ParameterizedTest(name = "i.e. : {0}")
