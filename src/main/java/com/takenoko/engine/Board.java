@@ -152,9 +152,10 @@ public class Board {
      * Move the panda with a vector.
      *
      * @param vector the vector to move the panda
+     * @return bamboo stack of one if the panda ate bamboo
      */
-    public void movePanda(PositionVector vector) {
-        panda.move(vector, this);
+    public LayerBambooStack movePanda(PositionVector vector) {
+        return panda.move(vector, this);
     }
 
     @Override
