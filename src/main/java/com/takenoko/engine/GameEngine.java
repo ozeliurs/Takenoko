@@ -86,8 +86,7 @@ public class GameEngine {
      * </ol>
      */
     public void newGame() {
-        consoleUserInterface.displayMessage(
-                "==================================================================");
+        consoleUserInterface.displayLineSeparator();
 
         if (gameState != GameState.INITIALIZED && gameState != GameState.FINISHED) {
             throw new IllegalStateException(
