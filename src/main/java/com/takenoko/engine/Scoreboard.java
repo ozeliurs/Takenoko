@@ -2,6 +2,7 @@ package com.takenoko.engine;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class Scoreboard {
@@ -42,10 +43,10 @@ public class Scoreboard {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Scoreboard:").append(System.lineSeparator());
-        for (UUID botId : botManagerHashMap.keySet()) {
-            stringBuilder.append(botManagerHashMap.get(botId).getName());
+        for (Map.Entry<UUID, BotManager> entry : botManagerHashMap.entrySet()) {
+            stringBuilder.append(entry.getValue().getName());
             stringBuilder.append(" : ");
-            stringBuilder.append(scoreHashMap.get(botId));
+            stringBuilder.append(entry.getValue().getScore());
             stringBuilder.append(" - ");
         }
         return stringBuilder.toString();
