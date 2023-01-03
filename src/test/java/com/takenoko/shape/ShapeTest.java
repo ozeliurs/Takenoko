@@ -6,10 +6,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.takenoko.engine.Board;
-import com.takenoko.layers.LayerManager;
 import com.takenoko.layers.tile.Pond;
 import com.takenoko.layers.tile.Tile;
-import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,17 +109,11 @@ public class ShapeTest {
             HashMap<PositionVector, Tile> tiles = new HashMap<>();
             tiles.put(new PositionVector(0, 0, 0), new Pond());
             tiles.put(new PositionVector(1, 0, -1), new Tile());
-
-            TileLayer tileLayer = mock(TileLayer.class);
-            when(tileLayer.getTiles()).thenReturn(tiles);
-            for (PositionVector position : tiles.keySet()) {
-                when(tileLayer.isTile(position)).thenReturn(true);
-            }
-
-            LayerManager layerManager = mock(LayerManager.class);
-            when(layerManager.getTileLayer()).thenReturn(tileLayer);
             board = mock(Board.class);
-            when(board.getLayerManager()).thenReturn(layerManager);
+            when(board.getTiles()).thenReturn(tiles);
+            for (PositionVector position : tiles.keySet()) {
+                when(board.isTile(position)).thenReturn(true);
+            }
         }
 
         @AfterEach
@@ -138,8 +130,7 @@ public class ShapeTest {
             expected.add(new Shape(new PositionVector(0, 0, 0)));
             expected.add(new Shape(new PositionVector(1, 0, -1)));
 
-            assertThat(shape.match(board.getLayerManager().getTileLayer().getTiles()))
-                    .isEqualTo(expected);
+            assertThat(shape.match(board.getTiles())).isEqualTo(expected);
         }
 
         @Test
@@ -150,8 +141,7 @@ public class ShapeTest {
             ArrayList<Shape> expected = new ArrayList<>();
             expected.add(new Shape(new PositionVector(0, 0, 0), new PositionVector(1, 0, -1)));
 
-            assertThat(shape.match(board.getLayerManager().getTileLayer().getTiles()))
-                    .isEqualTo(expected);
+            assertThat(shape.match(board.getTiles())).isEqualTo(expected);
         }
 
         @Test
@@ -162,8 +152,7 @@ public class ShapeTest {
             ArrayList<Shape> expected = new ArrayList<>();
             expected.add(new Shape(new PositionVector(0, 0, 0), new PositionVector(1, 0, -1)));
 
-            assertThat(shape.match(board.getLayerManager().getTileLayer().getTiles()))
-                    .isEqualTo(expected);
+            assertThat(shape.match(board.getTiles())).isEqualTo(expected);
         }
 
         @Test
@@ -174,7 +163,7 @@ public class ShapeTest {
                             new PositionVector(0, 0, 0),
                             new PositionVector(1, 0, -1),
                             new PositionVector(2, 0, -2));
-            assertThat(shape.match(board.getLayerManager().getTileLayer().getTiles())).isEmpty();
+            assertThat(shape.match(board.getTiles())).isEmpty();
         }
     }
 

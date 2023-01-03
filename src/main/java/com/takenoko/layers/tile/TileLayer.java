@@ -1,5 +1,7 @@
 package com.takenoko.layers.tile;
 
+import com.takenoko.engine.Board;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.*;
@@ -14,7 +16,21 @@ public class TileLayer {
         tiles = new HashMap<>();
         availableTilePositions = new HashSet<>();
         availableTilePositions.add(new PositionVector(0, 0, 0));
-        placeTile(new Pond(), new PositionVector(0, 0, 0));
+        tiles.put(new PositionVector(0, 0, 0), new Pond());
+        updateAvailableTilePositions(new PositionVector(0, 0, 0));
+    }
+
+    public TileLayer(TileLayer tileLayer) {
+        tiles =
+                tileLayer.tiles.keySet().stream()
+                        .collect(
+                                HashMap::new,
+                                (m, k) -> m.put(k.copy(), tileLayer.tiles.get(k).copy()),
+                                HashMap::putAll);
+        availableTilePositions =
+                tileLayer.availableTilePositions.stream()
+                        .map(PositionVector::copy)
+                        .collect(HashSet::new, HashSet::add, HashSet::addAll);
     }
 
     /**
@@ -22,8 +38,10 @@ public class TileLayer {
      *
      * @param tile the tile to add to the board
      * @param position the position of the tile
+     * @param board the board
+     * @return the LayerBambooStack at the position of the tile
      */
-    void placeTile(Tile tile, PositionVector position) {
+    public LayerBambooStack placeTile(Tile tile, PositionVector position, Board board) {
         if (tiles.containsKey(position)) {
             throw new IllegalArgumentException("Tile already present at this position");
         }
@@ -32,6 +50,9 @@ public class TileLayer {
         }
         tiles.put(position, tile);
         updateAvailableTilePositions(position);
+        // grow bamboo
+        board.growBamboo(position);
+        return board.getBambooAt(position);
     }
 
     /**
@@ -39,7 +60,7 @@ public class TileLayer {
      *
      * @param position the position of the tile to remove
      */
-    void updateAvailableTilePositions(PositionVector position) {
+    private void updateAvailableTilePositions(PositionVector position) {
         availableTilePositions.remove(position);
         for (Vector neighbor : position.getNeighbors()) {
             if (isPositionAvailable(neighbor.toPositionVector())) {
@@ -54,7 +75,7 @@ public class TileLayer {
      *
      * @param position the position to check
      */
-    boolean isPositionAvailable(PositionVector position) {
+    private boolean isPositionAvailable(PositionVector position) {
         if (isTile(position)) {
             return false;
         }
@@ -131,5 +152,23 @@ public class TileLayer {
      */
     public Tile getTileAt(PositionVector positionVector) {
         return tiles.get(positionVector);
+    }
+
+    public TileLayer copy() {
+        return new TileLayer(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TileLayer tileLayer = (TileLayer) o;
+        return getTiles().equals(tileLayer.getTiles())
+                && getAvailableTilePositions().equals(tileLayer.getAvailableTilePositions());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTiles(), getAvailableTilePositions());
     }
 }

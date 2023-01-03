@@ -22,4 +22,9 @@ public class LayerBambooStack extends BambooStack {
         }
         bambooCount--;
     }
+
+    @Override
+    public LayerBambooStack copy() {
+        return new LayerBambooStack(this.getBambooCount());
+    }
 }

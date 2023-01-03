@@ -42,4 +42,8 @@ public class ConsoleUserInterface implements UserInterface {
     public void displayError(String message) {
         logger.error(message);
     }
+
+    public void displayLineSeparator() {
+        logger.info("------------------------------------------------------------");
+    }
 }

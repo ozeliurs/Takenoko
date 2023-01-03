@@ -137,14 +137,12 @@ class GameEngineTest {
         class TestEndGame_WhenEndedIncorrectly {
             private static Stream<Arguments> streamOfStatesThatAreNotPLAYING() {
                 return Stream.of(
-                        Arguments.of(GameState.INITIALIZED),
-                        Arguments.of(GameState.READY),
-                        Arguments.of(GameState.FINISHED));
+                        Arguments.of(GameState.INITIALIZED), Arguments.of(GameState.READY));
             }
 
             @ParameterizedTest(name = "i.e. : {0}")
             @MethodSource("streamOfStatesThatAreNotPLAYING")
-            @DisplayName("should throw an exception when the game state is not PLAYING")
+            @DisplayName("should throw an exception when the game state is not PLAYING or FINISHED")
             void endGame_shouldThrowException_WhenGameStateIsNotPLAYING(
                     GameState currentGameState) {
                 gameEngine.setGameState(currentGameState);
@@ -166,6 +164,21 @@ class GameEngineTest {
                 gameEngine.endGame();
                 assertThat(gameEngine.getGameState()).isEqualTo(GameState.FINISHED);
             }
+        }
+    }
+
+    @Nested
+    @DisplayName("Method runGame")
+    class TestRunGame {
+        @Test
+        @DisplayName("should run every steps of the game")
+        void runGame_shouldRunEveryStepsOfTheGame() {
+            GameEngine gameEngine = spy(new GameEngine());
+            gameEngine.runGame();
+            verify(gameEngine).newGame();
+            verify(gameEngine).startGame();
+            verify(gameEngine).playGame();
+            verify(gameEngine).endGame();
         }
     }
 }

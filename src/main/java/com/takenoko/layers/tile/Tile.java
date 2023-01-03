@@ -44,4 +44,8 @@ public class Tile {
     public int hashCode() {
         return Objects.hash(getType());
     }
+
+    public Tile copy() {
+        return new Tile(this.getType());
+    }
 }

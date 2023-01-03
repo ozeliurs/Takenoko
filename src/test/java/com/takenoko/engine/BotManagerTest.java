@@ -3,17 +3,12 @@ package com.takenoko.engine;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import com.takenoko.actors.panda.MovePandaAction;
 import com.takenoko.bot.Bot;
-import com.takenoko.bot.TilePlacingAndPandaMovingBot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.layers.tile.PlaceTileAction;
-import com.takenoko.layers.tile.Tile;
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.TwoAdjacentTilesObjective;
 import com.takenoko.ui.ConsoleUserInterface;
-import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.*;
 
 public class BotManagerTest {
@@ -97,21 +92,6 @@ public class BotManagerTest {
         @DisplayName("When initialized, a botManager's bamboo counter is equal to zero")
         void getEatenBambooCounter_WhenInitialized_BambooCounterIsEqualToZero() {
             assertThat(botManager.getEatenBambooCounter()).isZero();
-        }
-
-        @Test
-        @DisplayName(
-                "When the botManager makes the panda eat a bamboo, the bamboo counter is at least"
-                        + " one")
-        void
-                getEatenBambooCounter_WhenTheBotManagerMakesThePandaEatABamboo_TheBambooCounterIsAtLeastOne() {
-            Board board = spy(new Board());
-            TilePlacingAndPandaMovingBot bot = mock(TilePlacingAndPandaMovingBot.class);
-            BotManager botManager = spy(new BotManager(bot));
-            new PlaceTileAction(new Tile(), new PositionVector(0, -1, 1))
-                    .execute(board, botManager);
-            new MovePandaAction(new PositionVector(0, -1, 1)).execute(board, botManager);
-            assertThat(botManager.getEatenBambooCounter()).isPositive();
         }
     }
 

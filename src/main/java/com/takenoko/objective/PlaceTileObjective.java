@@ -18,7 +18,7 @@ public class PlaceTileObjective extends Objective {
      */
     public void verify(Board board, BotManager botManager) {
         // The -1 is there to take into account the pond tile which is there by default
-        if (board.getLayerManager().getTileLayer().getTiles().size() - 1 >= numberOfTileToPlace) {
+        if (board.getTiles().size() - 1 >= numberOfTileToPlace) {
             state = ObjectiveState.ACHIEVED;
         }
     }
@@ -48,5 +48,10 @@ public class PlaceTileObjective extends Objective {
     @Override
     public int hashCode() {
         return Objects.hash(numberOfTileToPlace, getType(), getState());
+    }
+
+    @Override
+    public void reset() {
+        state = ObjectiveState.NOT_ACHIEVED;
     }
 }

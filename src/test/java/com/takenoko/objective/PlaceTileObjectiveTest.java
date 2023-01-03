@@ -5,10 +5,8 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.layers.LayerManager;
 import com.takenoko.layers.tile.Pond;
 import com.takenoko.layers.tile.Tile;
-import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import org.junit.jupiter.api.*;
@@ -23,7 +21,7 @@ class PlaceTileObjectiveTest {
     @BeforeEach
     void setup() {
         placeTileObjective = new PlaceTileObjective(2);
-        board = new Board();
+        board = mock(Board.class);
         botManager = mock(BotManager.class);
     }
 
@@ -52,16 +50,10 @@ class PlaceTileObjectiveTest {
             tiles.put(new PositionVector(1, 0, -1), new Tile());
             tiles.put(new PositionVector(1, -1, 0), new Tile());
 
-            TileLayer tileLayer = mock(TileLayer.class);
-            when(tileLayer.getTiles()).thenReturn(tiles);
+            when(board.getTiles()).thenReturn(tiles);
             for (PositionVector position : tiles.keySet()) {
-                when(tileLayer.isTile(position)).thenReturn(true);
+                when(board.isTile(position)).thenReturn(true);
             }
-
-            LayerManager layerManager = mock(LayerManager.class);
-            when(layerManager.getTileLayer()).thenReturn(tileLayer);
-            board = mock(Board.class);
-            when(board.getLayerManager()).thenReturn(layerManager);
             placeTileObjective.verify(board, botManager);
             assertThat(placeTileObjective.getState()).isEqualTo(ObjectiveState.ACHIEVED);
         }
