@@ -195,11 +195,11 @@ public class GameEngine {
         newGame();
         startGame();
         playGame();
-        endGame();
         for (BotManager botManager : botManagers) {
             scoreboard.addScore(botManager.getBotId(), botManager.getScore());
         }
         scoreboard.incrementNumberOfGamesPlayed();
+        endGame();
     }
 
     public void runGame(int numberOfGames) {
