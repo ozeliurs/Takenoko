@@ -1,5 +1,7 @@
 package com.takenoko.layers.tile;
 
+import com.takenoko.engine.Board;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.*;
@@ -14,7 +16,8 @@ public class TileLayer {
         tiles = new HashMap<>();
         availableTilePositions = new HashSet<>();
         availableTilePositions.add(new PositionVector(0, 0, 0));
-        placeTile(new Pond(), new PositionVector(0, 0, 0));
+        tiles.put(new PositionVector(0, 0, 0), new Pond());
+        updateAvailableTilePositions(new PositionVector(0, 0, 0));
     }
 
     public TileLayer(TileLayer tileLayer) {
@@ -35,8 +38,10 @@ public class TileLayer {
      *
      * @param tile the tile to add to the board
      * @param position the position of the tile
+     * @param board the board
+     * @return the LayerBambooStack at the position of the tile
      */
-    public void placeTile(Tile tile, PositionVector position) {
+    public LayerBambooStack placeTile(Tile tile, PositionVector position, Board board) {
         if (tiles.containsKey(position)) {
             throw new IllegalArgumentException("Tile already present at this position");
         }
@@ -45,6 +50,9 @@ public class TileLayer {
         }
         tiles.put(position, tile);
         updateAvailableTilePositions(position);
+        // grow bamboo
+        board.growBamboo(position);
+        return board.getBambooAt(position);
     }
 
     /**

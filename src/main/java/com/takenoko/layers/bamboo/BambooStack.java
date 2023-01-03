@@ -44,4 +44,8 @@ public class BambooStack {
     public BambooStack copy() {
         return new BambooStack(this);
     }
+
+    public boolean isEmpty() {
+        return bambooCount == 0;
+    }
 }

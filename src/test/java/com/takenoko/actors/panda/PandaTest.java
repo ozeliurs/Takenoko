@@ -3,10 +3,12 @@ package com.takenoko.actors.panda;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Pond;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
@@ -33,6 +35,8 @@ class PandaTest {
         tiles.put(new PositionVector(1, -3, 2), new Tile());
         tiles.put(new PositionVector(0, -2, 2), new Tile());
         when(board.getTiles()).thenReturn(tiles);
+        when(board.placeTile(any(), any())).thenReturn(new LayerBambooStack(1));
+        when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(1)); // Probably not right
         for (PositionVector position : tiles.keySet()) {
             when(board.isTile(position)).thenReturn(true);
         }
@@ -68,6 +72,10 @@ class PandaTest {
         @DisplayName("should move the panda with a valid vector")
         void shouldMoveThePandaWithAVector() {
             Panda panda = new Panda();
+            LayerBambooStack layerBambooStack = mock(LayerBambooStack.class);
+            when(layerBambooStack.isEmpty()).thenReturn(false);
+            when(board.getBambooAt(any())).thenReturn(layerBambooStack);
+
             panda.move(new PositionVector(1, 0, -1), board);
             assertThat(panda.getPosition()).isEqualTo(new PositionVector(1, 0, -1));
 
@@ -136,6 +144,9 @@ class PandaTest {
         void shouldReturnFalseIfTheTwoObjectsAreNotTheSame() {
             Panda panda = new Panda();
             Panda panda2 = new Panda();
+            LayerBambooStack layerBambooStack = mock(LayerBambooStack.class);
+            when(layerBambooStack.isEmpty()).thenReturn(false);
+            when(board.getBambooAt(any())).thenReturn(layerBambooStack);
             panda2.move(new PositionVector(1, 0, -1), board);
             assertThat(panda).isNotEqualTo(panda2);
         }
@@ -157,6 +168,9 @@ class PandaTest {
         void shouldReturnADifferentHashcodeIfTheTwoObjectsAreNotTheSame() {
             Panda panda = new Panda();
             Panda panda2 = new Panda();
+            LayerBambooStack layerBambooStack = mock(LayerBambooStack.class);
+            when(layerBambooStack.isEmpty()).thenReturn(false);
+            when(board.getBambooAt(any())).thenReturn(layerBambooStack);
             panda2.move(new PositionVector(1, 0, -1), board);
             assertThat(panda).doesNotHaveSameHashCodeAs(panda2);
         }

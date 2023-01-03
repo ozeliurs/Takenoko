@@ -42,7 +42,7 @@ public class Panda {
     }
 
     /**
-     * Move the panda with a vector.
+     * Move the panda with a vector and try to eat bamboo.
      *
      * @param vector the vector to move the panda
      */
@@ -51,6 +51,12 @@ public class Panda {
             throw new IllegalArgumentException("This move is not possible");
         }
         position = position.add(vector).toPositionVector();
+
+        // check if the panda can eat bamboo
+        if (!board.getBambooAt(position).isEmpty()) {
+            // eat bamboo
+            board.eatBamboo(position);
+        }
     }
 
     /**
