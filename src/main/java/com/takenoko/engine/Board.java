@@ -135,7 +135,7 @@ public class Board {
         bambooLayer.eatBamboo(positionVector, this);
     }
 
-    /** Get the Position of the Panda */
+    /** Get the Position of the Gardener */
     public PositionVector getPandaPosition() {
         return panda.getPosition();
     }

@@ -1,0 +1,91 @@
+package com.takenoko.actors;
+
+import com.takenoko.engine.Board;
+import com.takenoko.vector.PositionVector;
+import java.util.List;
+import java.util.Objects;
+
+public abstract class Actor {
+    PositionVector position;
+
+    public Actor(PositionVector position) {
+        this.position = position;
+    }
+
+    /**
+     * @return the position of the gardener
+     */
+    public PositionVector getPosition() {
+        return position;
+    }
+
+    /**
+     * Check if the move is possible. The gardener can only move in a straight line on the board
+     * tiles.
+     *
+     * @param vector the vector to move the gardener
+     * @return true if the move is possible, false otherwise
+     */
+    protected boolean isMovePossible(PositionVector vector, Board board) {
+        // check if the gardener is moving in a straight line
+        if (!(vector.r() == 0 || vector.q() == 0 || vector.s() == 0)) {
+            return false;
+        }
+
+        // check if the gardener is moving on a tile
+        for (int i = 0; i < vector.length() + 1; i++) {
+            PositionVector ray =
+                    this.position.add(vector.normalize().multiply(i)).toPositionVector();
+
+            if (!board.isTile(ray)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Returns possible moves for the gardener.
+     *
+     * @return the possible moves
+     */
+    public List<PositionVector> getPossibleMoves(Board board) {
+        return board.getTiles().keySet().stream()
+                .map(v -> v.sub(position).toPositionVector())
+                .filter(v -> isMovePossible(v, board))
+                .filter(v -> !v.equals(new PositionVector(0, 0, 0)))
+                .toList();
+    }
+
+    /**
+     * Move the panda with a vector and try to eat bamboo.
+     *
+     * @param vector the vector to move the panda
+     */
+    public void move(PositionVector vector, Board board) {
+        if (!isMovePossible(vector, board)) {
+            throw new IllegalArgumentException("This move is not possible");
+        }
+        position = position.add(vector).toPositionVector();
+        this.afterMove(board);
+    }
+
+    public abstract void afterMove(Board board);
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Actor actor = (Actor) o;
+        return getPosition().equals(actor.getPosition());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPosition());
+    }
+
+    public PositionVector getPositionVector() {
+        return position;
+    }
+}
