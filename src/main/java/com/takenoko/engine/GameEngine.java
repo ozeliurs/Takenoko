@@ -1,7 +1,7 @@
 package com.takenoko.engine;
 
+import com.takenoko.bot.FullRandomBot;
 import com.takenoko.bot.TilePlacingAndPandaMovingBot;
-import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.BambooInInventoryObjective;
 import com.takenoko.objective.PlaceTileObjective;
@@ -54,7 +54,7 @@ public class GameEngine {
                                         new PlaceTileObjective(10),
                                         new ConsoleUserInterface(),
                                         "Joe",
-                                        new TilePlacingBot(),
+                                        new FullRandomBot(),
                                         new Inventory()),
                                 new BotManager(
                                         2,
