@@ -7,6 +7,7 @@ import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.BambooInInventoryObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
+import java.util.UUID;
 
 /**
  * This class is used to manage one bot. It is responsible for managing all of its attributes :
@@ -32,7 +33,9 @@ public class BotManager {
     private final ConsoleUserInterface consoleUserInterface;
     private final String name;
     private final Bot bot;
-    private final Inventory inventory;
+    private Inventory inventory;
+    private final UUID botId;
+    private int score;
 
     /**
      * Constructor for the class
@@ -56,6 +59,8 @@ public class BotManager {
         this.name = name;
         this.bot = bot;
         this.inventory = inventory;
+        this.botId = UUID.randomUUID();
+        this.score = 0;
     }
 
     /** Default constructor for the class */
@@ -176,5 +181,26 @@ public class BotManager {
      */
     public Inventory getInventory() {
         return inventory;
+    }
+
+    /**
+     * @return the bot id
+     */
+    public UUID getBotId() {
+        return botId;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void incrementScore(int score) {
+        this.score += score;
+    }
+
+    public void reset() {
+        this.score = 0;
+        this.inventory = new Inventory();
+        objective.reset();
     }
 }

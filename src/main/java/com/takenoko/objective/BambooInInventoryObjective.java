@@ -42,4 +42,9 @@ public class BambooInInventoryObjective extends Objective {
     public int hashCode() {
         return Objects.hash(targetBambooInInventory, getType(), getState());
     }
+
+    @Override
+    public void reset() {
+        state = ObjectiveState.NOT_ACHIEVED;
+    }
 }
