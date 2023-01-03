@@ -1,5 +1,8 @@
 package com.takenoko.bot;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.spy;
+
 import com.takenoko.actors.panda.MovePandaAction;
 import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.PlaceTileAction;
@@ -7,9 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.spy;
 
 class FullRandomBotTest {
     private Bot bot;
@@ -38,4 +38,3 @@ class FullRandomBotTest {
         }
     }
 }
-
