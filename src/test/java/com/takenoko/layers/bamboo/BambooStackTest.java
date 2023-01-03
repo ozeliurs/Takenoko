@@ -107,4 +107,23 @@ class BambooStackTest {
             assertThat(bambooStack).isEqualTo(bambooStack2).isNotSameAs(bambooStack2);
         }
     }
+
+    @Nested
+    @DisplayName("Method isEmpty()")
+    class TestIsEmpty {
+        @Test
+        @DisplayName("should return true when it is empty")
+        void shouldReturnTrueWhenItIsEmpty() {
+            BambooStack bambooStack = new BambooStack(0);
+            assertThat(bambooStack.isEmpty()).isTrue();
+        }
+
+        @Test
+        @DisplayName("should return false when it is not empty")
+        void shouldReturnFalseWhenItIsNotEmpty() {
+            BambooStack bambooStack = new BambooStack(1);
+            assertThat(bambooStack.isEmpty()).isFalse();
+        }
+    }
+
 }
