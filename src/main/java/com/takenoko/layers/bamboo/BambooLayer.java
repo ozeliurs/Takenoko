@@ -65,7 +65,7 @@ public class BambooLayer {
      * @param board the board
      */
     public void eatBamboo(PositionVector positionVector, Board board) {
-        if (board.getBambooAt(positionVector).getBambooCount() > 0) {
+        if (!board.getBambooAt(positionVector).isEmpty()) {
             bamboo.get(positionVector).eatBamboo();
         } else {
             throw new IllegalArgumentException("There is no bamboo on this tile");
