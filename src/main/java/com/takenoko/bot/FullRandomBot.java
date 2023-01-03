@@ -5,16 +5,16 @@ import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.PlaceTileAction;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 public class FullRandomBot implements Bot {
-    Random random;
+    SecureRandom random;
 
     public FullRandomBot() {
-        random = new Random();
+        random = new SecureRandom();
     }
 
     @Override
