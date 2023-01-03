@@ -199,7 +199,6 @@ public class BotManager {
     }
 
     public void reset() {
-        this.score = 0;
         this.inventory = new Inventory();
         objective.reset();
     }
