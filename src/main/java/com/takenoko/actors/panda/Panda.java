@@ -1,6 +1,7 @@
 package com.takenoko.actors.panda;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import java.util.List;
 import java.util.Objects;
@@ -45,8 +46,9 @@ public class Panda {
      * Move the panda with a vector and try to eat bamboo.
      *
      * @param vector the vector to move the panda
+     * @return bamboo stack of one if the panda ate a bamboo
      */
-    public void move(PositionVector vector, Board board) {
+    public LayerBambooStack move(PositionVector vector, Board board) {
         if (!isMovePossible(vector, board)) {
             throw new IllegalArgumentException("This move is not possible");
         }
@@ -56,7 +58,10 @@ public class Panda {
         if (!board.getBambooAt(position).isEmpty()) {
             // eat bamboo
             board.eatBamboo(position);
+            return new LayerBambooStack(1);
         }
+
+        return new LayerBambooStack(0);
     }
 
     /**
