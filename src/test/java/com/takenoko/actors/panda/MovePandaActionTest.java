@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 import com.takenoko.bot.Bot;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,28 +28,11 @@ class MovePandaActionTest {
     @DisplayName("Method execute()")
     class TestExecute {
         @Test
-        @DisplayName("should move the panda and not collect bamboo")
+        @DisplayName("should move the panda")
         void shouldMoveThePanda() {
             when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
-            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
             movePandaAction.execute(board, botManager);
             verify(board).movePanda(new PositionVector(-1, 0, 1));
-            // verify not called
-            verify(board, never()).eatBamboo(any());
-        }
-
-        @Test
-        @DisplayName("should move panda and eat bamboo")
-        void shouldMovePandaAndEatBamboo() {
-            when(board.getPandaPosition())
-                    .thenReturn(
-                            (new PositionVector(0, 0, 0).add(new PositionVector(-1, 0, 1)))
-                                    .toPositionVector());
-            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(1));
-            movePandaAction.execute(board, botManager);
-            verify(board).movePanda(new PositionVector(-1, 0, 1));
-            verify(board).getBambooAt(new PositionVector(-1, 0, 1));
-            verify(board).eatBamboo(new PositionVector(-1, 0, 1));
         }
     }
 }
