@@ -102,9 +102,10 @@ public class Board {
      *
      * @param tile the tile to add to the board
      * @param position the position of the tile
+     * @return the LayerBambooStack at the position of the tile
      */
-    public void placeTile(Tile tile, PositionVector position) {
-        tileLayer.placeTile(tile, position);
+    public LayerBambooStack placeTile(Tile tile, PositionVector position) {
+        return tileLayer.placeTile(tile, position, this);
     }
 
     /**
