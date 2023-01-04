@@ -18,4 +18,8 @@ public class Inventory {
     public void clear() {
         bambooStack.clear();
     }
+
+    public Inventory copy() {
+        return new Inventory((InventoryBambooStack) bambooStack.copy());
+    }
 }

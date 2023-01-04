@@ -57,4 +57,14 @@ public class BotState { // DEFAULT VALUES
         this.objective.reset();
         this.inventory.clear();
     }
+
+    public BotState(BotState botState) {
+        this.numberOfActions = botState.numberOfActions;
+        this.objective = botState.objective.copy();
+        this.inventory = botState.getInventory().copy();
+    }
+
+    public BotState copy(){
+        return new BotState(this);
+    }
 }
