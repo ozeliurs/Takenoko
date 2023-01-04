@@ -4,7 +4,6 @@ import com.takenoko.bot.FullRandomBot;
 import com.takenoko.bot.TilePlacingAndPandaMovingBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.BambooInInventoryObjective;
-import com.takenoko.objective.PlaceTileObjective;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
     // ATTRIBUTES
-    public static final int DEFAULT_NUMBER_OF_ROUNDS = 10;
+    public static final int DEFAULT_NUMBER_OF_ROUNDS = 100;
     private Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
@@ -50,19 +49,21 @@ public class GameEngine {
                 new ArrayList<>(
                         List.of(
                                 new BotManager(
-                                        2,
-                                        new PlaceTileObjective(10),
                                         new ConsoleUserInterface(),
                                         "Joe",
                                         new FullRandomBot(),
-                                        new Inventory()),
+                                        new BotState(
+                                                2,
+                                                new BambooInInventoryObjective(10),
+                                                new Inventory())),
                                 new BotManager(
-                                        2,
-                                        new BambooInInventoryObjective(10),
                                         new ConsoleUserInterface(),
                                         "Bob",
                                         new TilePlacingAndPandaMovingBot(),
-                                        new Inventory()))),
+                                        new BotState(
+                                                2,
+                                                new BambooInInventoryObjective(10),
+                                                new Inventory())))),
                 new Scoreboard());
     }
 

@@ -48,4 +48,8 @@ public class BambooStack {
     public boolean isEmpty() {
         return bambooCount == 0;
     }
+
+    public void clear() {
+        bambooCount = 0;
+    }
 }
