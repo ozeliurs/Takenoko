@@ -8,7 +8,7 @@ public class InventoryBambooStack extends BambooStack {
         super(startingBamboo);
     }
 
-    protected void collectBamboo() {
+    public void collectBamboo() {
         growBamboo();
     }
 }
