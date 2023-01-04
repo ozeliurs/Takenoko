@@ -1,9 +1,11 @@
 package com.takenoko.actors.gardener;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.bamboo.BambooStack;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,14 +19,14 @@ class GardenerTest {
         @DisplayName("should instantiate the gardener at the origin")
         void shouldInstantiateTheGardenerAtTheOrigin() {
             Gardener gardener = new Gardener();
-            assertEquals(new PositionVector(0, 0, 0), gardener.getPositionVector());
+            assertThat(gardener.getPositionVector()).isEqualTo(new PositionVector(0, 0, 0));
         }
 
         @Test
         @DisplayName("should instantiate the gardener at the given position")
         void shouldInstantiateTheGardenerAtTheGivenPosition() {
             Gardener gardener = new Gardener(new PositionVector(1, 2, -3));
-            assertEquals(new PositionVector(1, 2, -3), gardener.getPositionVector());
+            assertThat(gardener.getPositionVector()).isEqualTo(new PositionVector(1, 2, -3));
         }
     }
 
@@ -35,8 +37,7 @@ class GardenerTest {
         @DisplayName("should return a string explaining where the gardener is on the board")
         void shouldReturnAStringExplainingWhereTheGardenerIsOnTheBoard() {
             Gardener gardener = new Gardener(new PositionVector(1, 2, -3));
-            assertEquals(
-                    "The gardener is at Vector[q=1.0, r=2.0, s=-3.0]", gardener.positionMessage());
+            assertThat(gardener.positionMessage()).isEqualTo("The gardener is at Vector[q=1.0, r=2.0, s=-3.0]");
         }
     }
 
@@ -48,23 +49,35 @@ class GardenerTest {
         void shouldMakeACopyOfTheGardener() {
             Gardener gardener = new Gardener(new PositionVector(1, 2, -3));
             Gardener gardenerCopy = gardener.copy();
-            assertEquals(gardener.getPositionVector(), gardenerCopy.getPositionVector());
+            assertThat(gardener.getPositionVector()).isEqualTo(gardenerCopy.getPositionVector());
         }
     }
 
     @Nested
     @DisplayName("Method afterMove()")
     class TestAfterMove {
+
         @Test
-        @DisplayName("should grow bamboo at the position of the gardener")
-        void shouldGrowBambooAtThePositionOfTheGardener() {
+        @DisplayName("should grow bamboo if the gardener can grow bamboo")
+        void shouldGrowBambooIfTheGardenerCanGrowBamboo() {
             Board board = spy(Board.class);
             when(board.isTile(any())).thenReturn(true);
-            // when(board.placeTile(any(), any())).thenReturn(new LayerBambooStack(1));
-            // board.placeTile(board.getAvailableTiles().get(0), new PositionVector(1, 0, -1));
             Gardener gardener = new Gardener(new PositionVector(1, 0, -1));
-            gardener.afterMove(board);
+            BambooStack bamb = gardener.afterMove(board);
             verify(board, times(1)).growBamboo(gardener.getPositionVector());
+            assertThat(bamb.getBambooCount()).isEqualTo(1);
+        }
+
+        @Test
+        @DisplayName("should not grow bamboo if the gardener cannot grow bamboo")
+        void shouldNotGrowBambooIfTheGardenerCannotGrowBamboo() {
+            Board board = spy(Board.class);
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(3));
+            Gardener gardener = new Gardener(new PositionVector(1, 0, -1));
+            BambooStack bamb = gardener.afterMove(board);
+            verify(board, times(0)).growBamboo(gardener.getPositionVector());
+            assertThat(bamb.getBambooCount()).isZero();
         }
     }
 }
