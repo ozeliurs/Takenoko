@@ -64,7 +64,7 @@ public class BotState { // DEFAULT VALUES
         this.inventory = botState.getInventory().copy();
     }
 
-    public BotState copy(){
+    public BotState copy() {
         return new BotState(this);
     }
 }
