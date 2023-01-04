@@ -9,7 +9,7 @@ import java.util.Objects;
 public abstract class Actor {
     PositionVector position;
 
-    public Actor(PositionVector position) {
+    protected Actor(PositionVector position) {
         this.position = position;
     }
 
