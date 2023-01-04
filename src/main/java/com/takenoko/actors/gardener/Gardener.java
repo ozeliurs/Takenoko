@@ -1,6 +1,5 @@
 package com.takenoko.actors.gardener;
 
-import com.takenoko.actors.Actor;
 import com.takenoko.engine.Board;
 import com.takenoko.vector.PositionVector;
 
@@ -21,10 +20,6 @@ public class Gardener extends com.takenoko.actors.Actor {
         this(new PositionVector(0, 0, 0));
     }
 
-    public Gardener(Gardener gardener) {
-        this(gardener.getPositionVector().copy());
-    }
-
     /**
      * @return a string explaining where the gardener is on the board
      */
@@ -37,7 +32,7 @@ public class Gardener extends com.takenoko.actors.Actor {
         board.growBamboo(this.getPositionVector());
     }
 
-    public Actor copy() {
-        return new com.takenoko.actors.gardener.Gardener(this);
+    public Gardener copy() {
+        return new Gardener(this.getPosition());
     }
 }
