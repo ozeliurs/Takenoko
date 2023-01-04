@@ -1,7 +1,7 @@
 package com.takenoko.actors.gardener;
 
-import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.layers.bamboo.BambooStack;
@@ -37,7 +37,8 @@ class GardenerTest {
         @DisplayName("should return a string explaining where the gardener is on the board")
         void shouldReturnAStringExplainingWhereTheGardenerIsOnTheBoard() {
             Gardener gardener = new Gardener(new PositionVector(1, 2, -3));
-            assertThat(gardener.positionMessage()).isEqualTo("The gardener is at Vector[q=1.0, r=2.0, s=-3.0]");
+            assertThat(gardener.positionMessage())
+                    .isEqualTo("The gardener is at Vector[q=1.0, r=2.0, s=-3.0]");
         }
     }
 
