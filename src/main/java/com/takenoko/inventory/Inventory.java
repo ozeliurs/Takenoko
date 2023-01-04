@@ -14,4 +14,8 @@ public class Inventory {
     public InventoryBambooStack getBambooStack() {
         return bambooStack;
     }
+
+    public void clear() {
+        bambooStack.clear();
+    }
 }
