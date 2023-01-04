@@ -1,7 +1,6 @@
 package com.takenoko.actors;
 
 import com.takenoko.engine.Board;
-import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import java.util.List;

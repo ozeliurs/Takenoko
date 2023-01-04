@@ -1,7 +1,6 @@
 package com.takenoko.actors.panda;
 
 import com.takenoko.engine.Board;
-import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 
@@ -31,7 +30,6 @@ public class Panda extends com.takenoko.actors.Actor {
     public String positionMessage() {
         return "The panda is at " + this.getPositionVector();
     }
-
 
     public LayerBambooStack afterMove(Board board) {
         // check if the panda can eat bamboo
