@@ -1,6 +1,8 @@
 package com.takenoko.actors;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.bamboo.BambooStack;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import java.util.List;
 import java.util.Objects;
@@ -62,15 +64,15 @@ public abstract class Actor {
      *
      * @param vector the vector to move the panda
      */
-    public void move(PositionVector vector, Board board) {
+    public LayerBambooStack move(PositionVector vector, Board board) {
         if (!isMovePossible(vector, board)) {
             throw new IllegalArgumentException("This move is not possible");
         }
         position = position.add(vector).toPositionVector();
-        this.afterMove(board);
+        return this.afterMove(board);
     }
 
-    public abstract void afterMove(Board board);
+    public abstract LayerBambooStack afterMove(Board board);
 
     @Override
     public boolean equals(Object o) {
