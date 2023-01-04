@@ -83,10 +83,6 @@ public class BotManagerTest {
     }
 
     @Nested
-    @DisplayName("Method playBot")
-    class playTilePlacingBot {}
-
-    @Nested
     @DisplayName("Method getEatenBambooCounter")
     class TestGetEatenBambooCounter {
         @Test
