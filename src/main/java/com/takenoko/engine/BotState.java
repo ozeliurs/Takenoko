@@ -3,6 +3,7 @@ package com.takenoko.engine;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.BambooInInventoryObjective;
 import com.takenoko.objective.Objective;
+import java.util.Objects;
 
 public class BotState { // DEFAULT VALUES
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
@@ -66,5 +67,20 @@ public class BotState { // DEFAULT VALUES
 
     public BotState copy() {
         return new BotState(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BotState botState = (BotState) o;
+        return getNumberOfActions() == botState.getNumberOfActions()
+                && getObjective().equals(botState.getObjective())
+                && getInventory().equals(botState.getInventory());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNumberOfActions(), getObjective(), getInventory());
     }
 }
