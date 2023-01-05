@@ -14,26 +14,25 @@ public abstract class Actor {
     }
 
     /**
-     * @return the position of the gardener
+     * @return the position of the actor
      */
     public PositionVector getPosition() {
         return position;
     }
 
     /**
-     * Check if the move is possible. The gardener can only move in a straight line on the board
-     * tiles.
+     * Check if the move is possible. The actor can only move in a straight line on the board tiles.
      *
-     * @param vector the vector to move the gardener
+     * @param vector the vector to move the actor
      * @return true if the move is possible, false otherwise
      */
     protected boolean isMovePossible(PositionVector vector, Board board) {
-        // check if the gardener is moving in a straight line
+        // check if the actor is moving in a straight line
         if (!(vector.r() == 0 || vector.q() == 0 || vector.s() == 0)) {
             return false;
         }
 
-        // check if the gardener is moving on a tile
+        // check if the actor is moving on a tile
         for (int i = 0; i < vector.length() + 1; i++) {
             PositionVector ray =
                     this.position.add(vector.normalize().multiply(i)).toPositionVector();
@@ -46,7 +45,7 @@ public abstract class Actor {
     }
 
     /**
-     * Returns possible moves for the gardener.
+     * Returns possible moves for the actor.
      *
      * @return the possible moves
      */
