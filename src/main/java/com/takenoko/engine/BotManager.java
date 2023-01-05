@@ -36,7 +36,6 @@ public class BotManager {
     private Inventory inventory;
     private final UUID botId;
     private int score;
-    private int plantedBambooCounter = 0;
 
     /**
      * Constructor for the class
@@ -173,18 +172,6 @@ public class BotManager {
      */
     public int getEatenBambooCounter() {
         return inventory.getBambooStack().getBambooCount();
-    }
-
-    /** increase number of bamboos planted by one */
-    public void incrementPlantedBambooCounter() {
-        plantedBambooCounter++;
-    }
-
-    /**
-     * @return the number of bamboo planted by the bot
-     */
-    public int getPlantedBambooCounter() {
-        return plantedBambooCounter;
     }
 
     /**
