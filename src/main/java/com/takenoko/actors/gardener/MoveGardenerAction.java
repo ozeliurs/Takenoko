@@ -39,7 +39,7 @@ public class MoveGardenerAction implements Action {
 
         if (!bambooStack.isEmpty()) {
             // grow bamboo
-            botManager.getInventory().getBambooStack().collectBamboo();
+            botManager.incrementPlantedBambooCounter();
             botManager.displayMessage(botManager.getName() + " planted one bamboo");
         }
     }
