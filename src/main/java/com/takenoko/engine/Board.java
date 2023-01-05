@@ -1,5 +1,6 @@
 package com.takenoko.engine;
 
+import com.takenoko.actors.gardener.Gardener;
 import com.takenoko.actors.panda.Panda;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
@@ -16,6 +17,7 @@ public class Board {
     private final TileLayer tileLayer;
     private final BambooLayer bambooLayer;
     private final Panda panda;
+    private Gardener gardener;
 
     /**
      * Constructor for the Board class.
@@ -23,22 +25,25 @@ public class Board {
      * @param tileLayer the tile layer
      * @param bambooLayer the bamboo layer
      * @param panda the panda
+     * @param gardener the gardener
      */
-    public Board(TileLayer tileLayer, BambooLayer bambooLayer, Panda panda) {
+    public Board(TileLayer tileLayer, BambooLayer bambooLayer, Panda panda, Gardener gardener) {
         this.tileLayer = tileLayer;
         this.bambooLayer = bambooLayer;
         this.panda = panda;
+        this.gardener = gardener;
     }
 
     /** Constructor for the Board class. */
     public Board() {
-        this(new TileLayer(), new BambooLayer(), new Panda());
+        this(new TileLayer(), new BambooLayer(), new Panda(), new Gardener());
     }
 
     public Board(Board board) {
         this.tileLayer = board.tileLayer.copy();
         this.bambooLayer = board.bambooLayer.copy();
         this.panda = board.panda.copy();
+        this.gardener = board.gardener.copy();
     }
 
     /**
@@ -139,6 +144,11 @@ public class Board {
     public PositionVector getPandaPosition() {
         return panda.getPosition();
     }
+
+    /** Get the Position of the Gardener */
+    public PositionVector getGardenerPosition() {
+        return gardener.getPosition();
+    }
     /**
      * Returns possible moves for the panda.
      *
@@ -146,6 +156,14 @@ public class Board {
      */
     public List<PositionVector> getPandaPossibleMoves() {
         return panda.getPossibleMoves(this);
+    }
+    /**
+     * Returns possible moves for the gardener.
+     *
+     * @return the possible moves
+     */
+    public List<PositionVector> getGardenerPossibleMoves() {
+        return gardener.getPossibleMoves(this);
     }
 
     /**
@@ -156,6 +174,15 @@ public class Board {
      */
     public LayerBambooStack movePanda(PositionVector vector) {
         return panda.move(vector, this);
+    }
+    /**
+     * Move the gardener with a vector.
+     *
+     * @param vector the vector to move the gardener
+     * @return bamboo stack of one if the gardener planted bamboo
+     */
+    public LayerBambooStack moveGardener(PositionVector vector) {
+        return gardener.move(vector, this);
     }
 
     @Override
