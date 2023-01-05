@@ -17,7 +17,7 @@ public class Board {
     private final TileLayer tileLayer;
     private final BambooLayer bambooLayer;
     private final Panda panda;
-    private Gardener gardener;
+    private final Gardener gardener;
 
     /**
      * Constructor for the Board class.
@@ -192,12 +192,13 @@ public class Board {
         Board board = (Board) o;
         return tileLayer.equals(board.tileLayer)
                 && bambooLayer.equals(board.bambooLayer)
-                && panda.equals(board.panda);
+                && panda.equals(board.panda)
+                && gardener.equals((board.gardener));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tileLayer, bambooLayer, panda);
+        return Objects.hash(tileLayer, bambooLayer, panda, gardener);
     }
 
     public Board copy() {
