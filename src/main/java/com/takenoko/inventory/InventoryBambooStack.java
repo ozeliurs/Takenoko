@@ -11,4 +11,13 @@ public class InventoryBambooStack extends BambooStack {
     public void collectBamboo() {
         growBamboo();
     }
+
+    public InventoryBambooStack(InventoryBambooStack bambooStack) {
+        super(bambooStack.getBambooCount());
+    }
+
+    @Override
+    public InventoryBambooStack copy() {
+        return new InventoryBambooStack(this);
+    }
 }

@@ -2,6 +2,7 @@ package com.takenoko.bot;
 
 import com.takenoko.actors.panda.MovePandaAction;
 import com.takenoko.engine.Board;
+import com.takenoko.engine.BotState;
 import com.takenoko.layers.tile.PlaceTileAction;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
@@ -18,7 +19,7 @@ public class FullRandomBot implements Bot {
     }
 
     @Override
-    public Action chooseAction(Board board) {
+    public Action chooseAction(Board board, BotState botState) {
         List<Action> actions = new ArrayList<>();
 
         // Add all possible random actions types

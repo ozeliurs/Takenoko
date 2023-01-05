@@ -1,7 +1,8 @@
 package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
@@ -82,10 +83,6 @@ public class BotManagerTest {
     }
 
     @Nested
-    @DisplayName("Method playBot")
-    class playTilePlacingBot {}
-
-    @Nested
     @DisplayName("Method getEatenBambooCounter")
     class TestGetEatenBambooCounter {
         @Test
@@ -104,12 +101,10 @@ public class BotManagerTest {
             Inventory inventory = new Inventory();
             BotManager botManager =
                     new BotManager(
-                            0,
-                            mock(Objective.class),
                             mock(ConsoleUserInterface.class),
                             "",
                             mock(Bot.class),
-                            inventory);
+                            new BotState(0, mock(Objective.class), inventory));
             assertThat(botManager.getInventory()).isEqualTo(inventory);
         }
     }
@@ -122,12 +117,10 @@ public class BotManagerTest {
         void getName_WhenInitialized_NameIsNotNull() {
             BotManager botManager =
                     new BotManager(
-                            0,
-                            mock(Objective.class),
                             mock(ConsoleUserInterface.class),
                             "name",
                             mock(Bot.class),
-                            mock(Inventory.class));
+                            mock(BotState.class));
             assertThat(botManager.getName()).isEqualTo("name");
         }
     }
