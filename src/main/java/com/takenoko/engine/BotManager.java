@@ -71,7 +71,7 @@ public class BotManager {
      */
     public void playBot(Board board) {
         for (int i = 0; i < botState.getNumberOfActions(); i++) {
-            Action action = bot.chooseAction(board.copy());
+            Action action = bot.chooseAction(board.copy(), botState.copy());
             action.execute(board, this);
             verifyObjective(board);
             if (isObjectiveAchieved()) {

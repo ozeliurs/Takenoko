@@ -1,8 +1,10 @@
 package com.takenoko.bot;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 import com.takenoko.engine.Board;
+import com.takenoko.engine.BotState;
 import com.takenoko.layers.tile.PlaceTileAction;
 import org.junit.jupiter.api.*;
 
@@ -28,13 +30,14 @@ class TilePlacingBotTest {
         @Test
         @DisplayName("should return an action")
         void shouldReturnAnAction() {
-            assertThat(tilePlacingBot.chooseAction(board)).isNotNull();
+            assertThat(tilePlacingBot.chooseAction(board, mock(BotState.class))).isNotNull();
         }
 
         @Test
         @DisplayName("should return an action of type PlaceTileAction")
         void shouldReturnAnActionOfTypePlaceTile() {
-            assertThat(tilePlacingBot.chooseAction(board)).isInstanceOf(PlaceTileAction.class);
+            assertThat(tilePlacingBot.chooseAction(board, mock(BotState.class)))
+                    .isInstanceOf(PlaceTileAction.class);
         }
     }
 }
