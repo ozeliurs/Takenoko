@@ -1,5 +1,6 @@
 package com.takenoko.bot;
 
+import com.takenoko.actors.gardener.MoveGardenerAction;
 import com.takenoko.actors.panda.MovePandaAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
@@ -18,6 +19,10 @@ public class FullRandomBot implements Bot {
         random = new SecureRandom();
     }
 
+    public FullRandomBot(SecureRandom random) {
+        this.random = random;
+    }
+
     @Override
     public Action chooseAction(Board board, BotState botState) {
         List<Action> actions = new ArrayList<>();
@@ -25,6 +30,7 @@ public class FullRandomBot implements Bot {
         // Add all possible random actions types
         actions.add(getRandomPlaceTileAction(board));
         actions.add(getRandomMovePandaAction(board));
+        actions.add(getRandomMoveGardenerAction(board));
         actions.removeIf(Objects::isNull);
         return actions.get(random.nextInt(actions.size()));
     }
@@ -47,5 +53,14 @@ public class FullRandomBot implements Bot {
         }
         return new MovePandaAction(
                 pandaPossibleMoves.get(random.nextInt(pandaPossibleMoves.size())));
+    }
+
+    private Action getRandomMoveGardenerAction(Board board) {
+        List<PositionVector> gardenerPossibleMoves = board.getGardenerPossibleMoves();
+        if (gardenerPossibleMoves.isEmpty()) {
+            return null;
+        }
+        return new MoveGardenerAction(
+                gardenerPossibleMoves.get(random.nextInt(gardenerPossibleMoves.size())));
     }
 }
