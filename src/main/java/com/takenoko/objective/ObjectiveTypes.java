@@ -5,5 +5,6 @@ public enum ObjectiveTypes {
     TWO_ADJACENT_TILES,
     MOVED_PANDA,
     BAMBOO_STACK,
+    SHAPE,
     NUMBER_OF_BAMBOOS_EATEN
 }
