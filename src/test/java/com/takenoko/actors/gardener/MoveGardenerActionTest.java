@@ -2,6 +2,7 @@ package com.takenoko.actors.gardener;
 
 import static org.mockito.Mockito.*;
 
+import com.takenoko.actions.MoveGardenerAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;

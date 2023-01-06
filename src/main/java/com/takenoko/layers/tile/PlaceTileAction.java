@@ -1,6 +1,6 @@
 package com.takenoko.layers.tile;
 
-import com.takenoko.bot.Action;
+import com.takenoko.actions.Action;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.vector.PositionVector;

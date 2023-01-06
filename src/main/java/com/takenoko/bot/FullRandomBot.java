@@ -1,7 +1,8 @@
 package com.takenoko.bot;
 
-import com.takenoko.actors.gardener.MoveGardenerAction;
-import com.takenoko.actors.panda.MovePandaAction;
+import com.takenoko.actions.Action;
+import com.takenoko.actions.MoveGardenerAction;
+import com.takenoko.actions.MovePandaAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.layers.tile.PlaceTileAction;

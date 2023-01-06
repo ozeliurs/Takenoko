@@ -3,6 +3,7 @@ package com.takenoko.actors.gardener;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+import com.takenoko.actors.Gardener;
 import com.takenoko.engine.Board;
 import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.layers.tile.Pond;

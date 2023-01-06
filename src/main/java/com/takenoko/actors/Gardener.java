@@ -1,4 +1,4 @@
-package com.takenoko.actors.gardener;
+package com.takenoko.actors;
 
 import com.takenoko.engine.Board;
 import com.takenoko.layers.bamboo.LayerBambooStack;

@@ -1,5 +1,6 @@
 package com.takenoko.bot;
 
+import com.takenoko.actions.Action;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 
