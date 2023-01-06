@@ -1,7 +1,7 @@
 package com.takenoko.engine;
 
-import com.takenoko.actors.gardener.Gardener;
-import com.takenoko.actors.panda.Panda;
+import com.takenoko.actors.Gardener;
+import com.takenoko.actors.Panda;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;

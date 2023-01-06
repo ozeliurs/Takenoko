@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
-import com.takenoko.actors.panda.MovePandaAction;
+import com.takenoko.actions.MovePandaAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.layers.tile.PlaceTileAction;

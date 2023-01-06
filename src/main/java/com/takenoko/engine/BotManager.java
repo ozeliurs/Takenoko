@@ -1,6 +1,6 @@
 package com.takenoko.engine;
 
-import com.takenoko.bot.Action;
+import com.takenoko.actions.Action;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
