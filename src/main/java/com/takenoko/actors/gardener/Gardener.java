@@ -2,6 +2,7 @@ package com.takenoko.actors.gardener;
 
 import com.takenoko.engine.Board;
 import com.takenoko.layers.bamboo.LayerBambooStack;
+import com.takenoko.layers.tile.TileType;
 import com.takenoko.vector.PositionVector;
 
 /** Gardener class. The gardener is an actor that can move on the board. */
@@ -29,8 +30,8 @@ public class Gardener extends com.takenoko.actors.Actor {
     }
 
     public LayerBambooStack afterMove(Board board) {
-        // check if the gardener can grow bamboo
-        if (board.getBambooAt(this.getPositionVector()).getBambooCount() < 3) {
+        // check if the gardener can grow bamboo (not pond)
+        if (board.getBambooAt(this.getPositionVector()).getBambooCount() < 3 && board.getTileAt(this.getPositionVector()).getType() != TileType.POND) {
             // grow bamboo
             board.growBamboo(this.getPositionVector());
             return new LayerBambooStack(1);

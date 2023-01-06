@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import com.takenoko.engine.Board;
 import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.layers.bamboo.LayerBambooStack;
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -63,6 +64,7 @@ class GardenerTest {
         void shouldGrowBambooIfTheGardenerCanGrowBamboo() {
             Board board = spy(Board.class);
             when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(new Tile());
             Gardener gardener = new Gardener(new PositionVector(1, 0, -1));
             BambooStack bamb = gardener.afterMove(board);
             verify(board, times(1)).growBamboo(gardener.getPositionVector());
