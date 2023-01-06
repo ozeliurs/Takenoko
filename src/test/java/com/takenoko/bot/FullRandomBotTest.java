@@ -13,14 +13,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-class TilePlacingAndPandaMovingBotTest {
-
-    private TilePlacingAndPandaMovingBot bot;
+class FullRandomBotTest {
+    private Bot bot;
     private Board board;
 
     @BeforeEach
     void setUp() {
-        this.bot = new TilePlacingAndPandaMovingBot();
+        this.bot = new FullRandomBot();
         this.board = spy(Board.class);
     }
 

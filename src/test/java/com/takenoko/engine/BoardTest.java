@@ -3,6 +3,7 @@ package com.takenoko.engine;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
+import com.takenoko.actors.gardener.Gardener;
 import com.takenoko.actors.panda.Panda;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.tile.TileLayer;
@@ -27,7 +28,11 @@ class BoardTest {
         void equals_WhenBoardsAreNotEqual_ThenReturnsFalse() {
             Board board = new Board();
             Board board2 =
-                    new Board(mock(TileLayer.class), mock(BambooLayer.class), mock(Panda.class));
+                    new Board(
+                            mock(TileLayer.class),
+                            mock(BambooLayer.class),
+                            mock(Panda.class),
+                            mock(Gardener.class));
             assertThat(board).isNotEqualTo(board2);
         }
 
@@ -55,7 +60,11 @@ class BoardTest {
         void hashCode_WhenBoardsAreNotEqual_ThenReturnsDifferentHashCode() {
             Board board = new Board();
             Board board2 =
-                    new Board(mock(TileLayer.class), mock(BambooLayer.class), mock(Panda.class));
+                    new Board(
+                            mock(TileLayer.class),
+                            mock(BambooLayer.class),
+                            mock(Panda.class),
+                            mock(Gardener.class));
             assertThat(board).doesNotHaveSameHashCodeAs(board2);
         }
     }

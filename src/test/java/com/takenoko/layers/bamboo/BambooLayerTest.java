@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,6 +53,7 @@ class BambooLayerTest {
         @DisplayName("should return 0 on an empty tile")
         void shouldReturn0OnAnEmptyTile() {
             when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(new Tile());
             assertThat(bambooLayer.getBambooAt(new PositionVector(-1, 0, 1), board))
                     .isEqualTo(new LayerBambooStack(0));
         }

@@ -1,4 +1,4 @@
-package com.takenoko.actors.panda;
+package com.takenoko.actors.gardener;
 
 import static org.mockito.Mockito.*;
 
@@ -12,29 +12,29 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-class MovePandaActionTest {
+public class MoveGardenerActionTest {
 
-    private MovePandaAction movePandaAction;
+    private MoveGardenerAction moveGardenerAction;
     private BotManager botManager;
     private Board board;
 
     @BeforeEach
     void setUp() {
-        movePandaAction = new MovePandaAction(new PositionVector(-1, 0, 1));
+        moveGardenerAction = new MoveGardenerAction(new PositionVector(-1, 0, 1));
         botManager = new BotManager(mock(Bot.class));
         board = mock(Board.class);
-        when(board.movePanda(any())).thenReturn(new LayerBambooStack(1));
+        when(board.moveGardener(any())).thenReturn(new LayerBambooStack(1));
     }
 
     @Nested
     @DisplayName("Method execute()")
     class TestExecute {
         @Test
-        @DisplayName("should move the panda")
-        void shouldMoveThePanda() {
-            when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
-            movePandaAction.execute(board, botManager);
-            verify(board).movePanda(new PositionVector(-1, 0, 1));
+        @DisplayName("should move the gardener")
+        void shouldMoveTheGardener() {
+            when(board.getGardenerPosition()).thenReturn(new PositionVector(0, 0, 0));
+            moveGardenerAction.execute(board, botManager);
+            verify(board).moveGardener(new PositionVector(-1, 0, 1));
         }
     }
 }

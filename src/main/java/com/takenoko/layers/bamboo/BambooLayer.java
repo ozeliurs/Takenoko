@@ -1,6 +1,7 @@
 package com.takenoko.layers.bamboo;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.tile.TileType;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import java.util.Objects;
@@ -51,7 +52,9 @@ public class BambooLayer {
      */
     public LayerBambooStack getBambooAt(PositionVector positionVector, Board board) {
         if (board.isTile(positionVector)) {
-            bamboo.computeIfAbsent(positionVector, k -> new LayerBambooStack(0));
+            bamboo.computeIfAbsent(
+                    positionVector,
+                    k -> new LayerBambooStack(0, board.getTileAt(k).getType() == TileType.POND));
             return bamboo.get(positionVector);
         } else {
             throw new IllegalArgumentException("The position is not a tile");
