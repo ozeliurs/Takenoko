@@ -2,6 +2,7 @@ package com.takenoko.actors.panda;
 
 import static org.mockito.Mockito.*;
 
+import com.takenoko.actions.MovePandaAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;

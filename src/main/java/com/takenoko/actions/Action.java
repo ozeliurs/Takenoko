@@ -1,4 +1,4 @@
-package com.takenoko.bot;
+package com.takenoko.actions;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;

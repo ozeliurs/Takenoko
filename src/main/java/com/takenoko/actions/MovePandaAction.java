@@ -1,6 +1,5 @@
-package com.takenoko.actors.panda;
+package com.takenoko.actions;
 
-import com.takenoko.bot.Action;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.BambooStack;
