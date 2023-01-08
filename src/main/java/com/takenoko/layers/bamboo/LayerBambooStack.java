@@ -17,7 +17,7 @@ public class LayerBambooStack extends BambooStack {
 
     @Override
     protected void growBamboo() {
-        if (bambooCount == MAX_BAMBOO) {
+        if (bambooCount >= MAX_BAMBOO) {
             throw new IllegalArgumentException("There is no more room for bamboo");
         }
         bambooCount++;

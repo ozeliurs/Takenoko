@@ -3,6 +3,7 @@ package com.takenoko.layers.tile;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import com.takenoko.engine.Board;
 import com.takenoko.vector.PositionVector;
@@ -42,6 +43,17 @@ class TileLayerTest {
     }
 
     @Nested
+    @DisplayName("Method getTilesWithoutPond")
+    class TestGetTilesWithoutPond {
+        @Test
+        @DisplayName("should return a list of size 1 when a tile is added")
+        void getTilesWithoutPond_shouldReturnOnlyOneItem() {
+            tileLayer.placeTile(new Tile(), new PositionVector(1, 0, -1), board);
+            assertThat(tileLayer.getTilesWithoutPond()).hasSize(1);
+        }
+    }
+
+    @Nested
     @DisplayName("Method getAvailableTiles")
     class TestGetAvailableTiles {
         @Test
@@ -56,10 +68,20 @@ class TileLayerTest {
     class TestPlaceTile {
         /** Test that a tile can be placed on the board. */
         @Test
+        @DisplayName("should place a tile on the board")
         void placeTile_WhenCalled_AddsTileToBoard() {
             Tile tile = new Tile();
             tileLayer.placeTile(tile, tileLayer.getAvailableTilePositions().get(0), board);
             assertThat(tileLayer.getTiles()).containsValue(tile);
+        }
+
+        @Test
+        @DisplayName("should grow a bamboo on the tile")
+        void placeTile_WhenCalled_GrowsBambooOnTile() {
+            Tile tile = new Tile();
+            PositionVector position = tileLayer.getAvailableTilePositions().get(0);
+            tileLayer.placeTile(tile, position, board);
+            verify(board).growBamboo(position);
         }
 
         @Test
