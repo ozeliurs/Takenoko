@@ -99,7 +99,7 @@ class LayerBambooStackTest {
     class TestEquals {
         @Test
         @DisplayName("should return true if the two objects are the same")
-        void shouldReturnTrueIfTheTwoObjectsAreTheSame() {
+        void shouldReturnTrueIfTheTwoObjectsEquals() {
             LayerBambooStack layerBambooStack = new LayerBambooStack(1);
             assertThat(layerBambooStack).isEqualTo(layerBambooStack);
         }

@@ -131,7 +131,7 @@ class BambooLayerTest {
 
         @Test
         @DisplayName("should return true if the bamboo layer is itself")
-        void shouldReturnTrueIfTheBambooLayerIsItself() {
+        void shouldReturnTrueIfTheBambooLayerEqualsItself() {
             assertThat(bambooLayer).isEqualTo(bambooLayer);
         }
 
