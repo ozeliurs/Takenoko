@@ -5,4 +5,9 @@ public class Pond extends Tile {
     public Pond() {
         super(TileType.POND);
     }
+
+    @Override
+    public Pond copy() {
+        return new Pond();
+    }
 }

@@ -1,12 +1,12 @@
 package com.takenoko.engine;
 
-import com.takenoko.bot.Action;
+import com.takenoko.actions.Action;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.objective.BambooInInventoryObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
+import java.util.UUID;
 
 /**
  * This class is used to manage one bot. It is responsible for managing all of its attributes :
@@ -19,54 +19,39 @@ import com.takenoko.ui.ConsoleUserInterface;
  * </ul>
  */
 public class BotManager {
-    // DEFAULT VALUES
-    private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
-    private static final Objective DEFAULT_OBJECTIVE = new BambooInInventoryObjective(2);
     private static final ConsoleUserInterface DEFAULT_CONSOLE_USER_INTERFACE =
             new ConsoleUserInterface();
     private static final String DEFAULT_NAME = "Joe";
     private static final Bot DEFAULT_BOT = new TilePlacingBot();
     // ATTRIBUTES
-    private final int numberOfActions;
-    private Objective objective;
     private final ConsoleUserInterface consoleUserInterface;
+    private final BotState botState;
     private final String name;
     private final Bot bot;
-    private final Inventory inventory;
+    private int score;
+    private final UUID botId;
 
     /**
      * Constructor for the class
      *
-     * @param numberOfActions number of actions the bot can do in a turn
-     * @param objective the bot must achieve the objective to win
      * @param consoleUserInterface the console user interface
      * @param name the name of the bot
      * @param bot the bot
+     * @param botState the bot state
      */
     protected BotManager(
-            int numberOfActions,
-            Objective objective,
-            ConsoleUserInterface consoleUserInterface,
-            String name,
-            Bot bot,
-            Inventory inventory) {
-        this.numberOfActions = numberOfActions;
-        this.objective = objective;
+            ConsoleUserInterface consoleUserInterface, String name, Bot bot, BotState botState) {
+        this.botState = botState;
         this.consoleUserInterface = consoleUserInterface;
         this.name = name;
         this.bot = bot;
-        this.inventory = inventory;
+        this.botId = UUID.randomUUID();
+        this.score = 0;
     }
 
     /** Default constructor for the class */
     protected BotManager() {
-        this(
-                DEFAULT_NUMBER_OF_ACTIONS,
-                DEFAULT_OBJECTIVE,
-                DEFAULT_CONSOLE_USER_INTERFACE,
-                DEFAULT_NAME,
-                DEFAULT_BOT,
-                new Inventory());
+        this(DEFAULT_CONSOLE_USER_INTERFACE, DEFAULT_NAME, DEFAULT_BOT, new BotState());
     }
 
     /**
@@ -75,24 +60,18 @@ public class BotManager {
      * @param bot the bot
      */
     public BotManager(Bot bot) {
-        this(
-                DEFAULT_NUMBER_OF_ACTIONS,
-                DEFAULT_OBJECTIVE,
-                DEFAULT_CONSOLE_USER_INTERFACE,
-                DEFAULT_NAME,
-                bot,
-                new Inventory());
+        this(DEFAULT_CONSOLE_USER_INTERFACE, DEFAULT_NAME, bot, new BotState());
     }
 
     /**
      * Ask for the bot to choose an action based on his algorithm and then execute the returned
      * action. Objectives are also verified in order to know if the bot has won.
      *
-     * @param board
+     * @param board the board of the game
      */
     public void playBot(Board board) {
-        for (int i = 0; i < this.getNumberOfActions(); i++) {
-            Action action = bot.chooseAction(board);
+        for (int i = 0; i < botState.getNumberOfActions(); i++) {
+            Action action = bot.chooseAction(board.copy(), botState.copy());
             action.execute(board, this);
             verifyObjective(board);
             if (isObjectiveAchieved()) {
@@ -105,8 +84,8 @@ public class BotManager {
      * @return the objective description or "No current objective" if there is no objective
      */
     public String getObjectiveDescription() {
-        if (objective != null) {
-            return objective.toString();
+        if (botState.getObjective() != null) {
+            return botState.getObjective().toString();
         }
         return "No current objective";
     }
@@ -115,7 +94,7 @@ public class BotManager {
      * @return number of actions the bot can do in a turn
      */
     protected int getNumberOfActions() {
-        return numberOfActions;
+        return botState.getNumberOfActions();
     }
 
     /**
@@ -129,8 +108,8 @@ public class BotManager {
      * @return boolean to know is the objective is achieved or not
      */
     public boolean isObjectiveAchieved() {
-        if (objective != null) {
-            return objective.isAchieved();
+        if (botState.getObjective() != null) {
+            return botState.getObjective().isAchieved();
         }
         return false;
     }
@@ -141,8 +120,8 @@ public class BotManager {
      * @param board current board game
      */
     public void verifyObjective(Board board) {
-        if (objective != null) {
-            objective.verify(board, this);
+        if (botState.getObjective() != null) {
+            botState.getObjective().verify(board, this);
         }
     }
 
@@ -152,7 +131,7 @@ public class BotManager {
      * @param objective the new objective
      */
     public void setObjective(Objective objective) {
-        this.objective = objective;
+        this.botState.setObjective(objective);
     }
 
     /**
@@ -166,7 +145,7 @@ public class BotManager {
      * @return the number of bamboo eaten by the bot
      */
     public int getEatenBambooCounter() {
-        return inventory.getBambooStack().getBambooCount();
+        return botState.getEatenBambooCounter();
     }
 
     /**
@@ -175,6 +154,25 @@ public class BotManager {
      * @return the bot inventory
      */
     public Inventory getInventory() {
-        return inventory;
+        return botState.getInventory();
+    }
+
+    /**
+     * @return the bot id
+     */
+    public UUID getBotId() {
+        return botId;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void incrementScore(int score) {
+        this.score += score;
+    }
+
+    public void reset() {
+        this.botState.reset();
     }
 }

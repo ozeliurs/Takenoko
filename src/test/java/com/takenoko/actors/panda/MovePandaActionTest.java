@@ -2,11 +2,11 @@ package com.takenoko.actors.panda;
 
 import static org.mockito.Mockito.*;
 
-import com.takenoko.bot.Bot;
+import com.takenoko.actions.MovePandaAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.layers.LayerManager;
-import com.takenoko.layers.bamboo.BambooLayer;
+import com.takenoko.inventory.Inventory;
+import com.takenoko.inventory.InventoryBambooStack;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,44 +23,31 @@ class MovePandaActionTest {
     @BeforeEach
     void setUp() {
         movePandaAction = new MovePandaAction(new PositionVector(-1, 0, 1));
-        botManager = new BotManager(mock(Bot.class));
+        botManager = mock(BotManager.class);
         board = mock(Board.class);
+        when(board.movePanda(any())).thenReturn(new LayerBambooStack(1));
     }
 
     @Nested
     @DisplayName("Method execute()")
     class TestExecute {
         @Test
-        @DisplayName("should move the panda and not collect bamboo")
-        void shouldMoveThePanda() {
+        @DisplayName("should move the panda collect bamboo and display messages")
+        void shouldMoveThePandaCollectBambooAndDisplayMessages() {
+            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
+            Inventory inventory = mock(Inventory.class);
             when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
-            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
-            when(board.getPanda()).thenReturn(mock(Panda.class));
-            when(board.getLayerManager()).thenReturn(mock(LayerManager.class));
-            BambooLayer bambooLayer = mock(BambooLayer.class);
-            when(board.getLayerManager().getBambooLayer()).thenReturn(bambooLayer);
+            when(botManager.getInventory()).thenReturn(inventory);
+            when(inventory.getBambooStack()).thenReturn(bambooStack);
+            when(botManager.getName()).thenReturn("Joe");
             movePandaAction.execute(board, botManager);
-            verify(board.getPanda()).move(new PositionVector(-1, 0, 1));
-            // verify not called
-            verify(bambooLayer, never()).removeBamboo(any());
-        }
-
-        @Test
-        @DisplayName("should move panda and eat bamboo")
-        void shouldMovePandaAndEatBamboo() {
-            when(board.getPandaPosition())
-                    .thenReturn(
-                            (new PositionVector(0, 0, 0).add(new PositionVector(-1, 0, 1)))
-                                    .toPositionVector());
-            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(1));
-            when(board.getPanda()).thenReturn(mock(Panda.class));
-            when(board.getLayerManager()).thenReturn(mock(LayerManager.class));
-            BambooLayer bambooLayer = mock(BambooLayer.class);
-            when(board.getLayerManager().getBambooLayer()).thenReturn(bambooLayer);
-            movePandaAction.execute(board, botManager);
-            verify(board.getPanda()).move(new PositionVector(-1, 0, 1));
-            verify(board).getBambooAt(new PositionVector(-1, 0, 1));
-            verify(bambooLayer).removeBamboo(new PositionVector(-1, 0, 1));
+            verify(board).movePanda(new PositionVector(-1, 0, 1));
+            verify(botManager, times(1))
+                    .displayMessage(
+                            "Joe moved the panda with Vector[q=-1.0, r=0.0, s=1.0] to position"
+                                    + " Vector[q=0.0, r=0.0, s=0.0]");
+            verify(botManager, times(1)).displayMessage("Joe collected one bamboo");
+            verify(bambooStack, times(1)).collectBamboo();
         }
     }
 }

@@ -32,4 +32,8 @@ public abstract class Objective {
     public ObjectiveState getState() {
         return state;
     }
+
+    public abstract void reset();
+
+    public abstract Objective copy();
 }

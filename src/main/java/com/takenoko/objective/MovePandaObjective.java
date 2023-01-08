@@ -40,4 +40,14 @@ public class MovePandaObjective extends Objective {
     public int hashCode() {
         return Objects.hash(getType(), getState());
     }
+
+    @Override
+    public void reset() {
+        state = ObjectiveState.NOT_ACHIEVED;
+    }
+
+    @Override
+    public Objective copy() {
+        return new MovePandaObjective();
+    }
 }

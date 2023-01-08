@@ -1,34 +1,39 @@
 package com.takenoko.engine;
 
-import com.takenoko.bot.TilePlacingAndPandaMovingBot;
-import com.takenoko.bot.TilePlacingBot;
+import com.takenoko.bot.FullRandomBot;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.objective.BambooInInventoryObjective;
-import com.takenoko.objective.PlaceTileObjective;
+import com.takenoko.objective.ShapeObjective;
+import com.takenoko.shape.ShapeFactory;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
 
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
-    public static final int DEFAULT_NUMBER_OF_ROUNDS = 10;
-    private final Board board;
+    // ATTRIBUTES
+    public static final int DEFAULT_NUMBER_OF_ROUNDS = 100;
+    private Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
     private final int numberOfRounds;
     private final List<BotManager> botManagers;
+    private final Scoreboard scoreboard;
 
     public GameEngine(
             int numberOfRounds,
             Board board,
             ConsoleUserInterface consoleUserInterface,
             GameState gameState,
-            List<BotManager> botManagerList) {
+            List<BotManager> botManagerList,
+            Scoreboard scoreboard) {
+        // Assign values to the attributes
         this.numberOfRounds = numberOfRounds;
         this.board = board;
         this.consoleUserInterface = consoleUserInterface;
         this.gameState = gameState;
         this.botManagers = botManagerList;
+        this.scoreboard = scoreboard;
+        scoreboard.addBotManager(botManagerList);
     }
 
     /**
@@ -44,19 +49,22 @@ public class GameEngine {
                 new ArrayList<>(
                         List.of(
                                 new BotManager(
-                                        2,
-                                        new PlaceTileObjective(10),
                                         new ConsoleUserInterface(),
                                         "Joe",
-                                        new TilePlacingBot(),
-                                        new Inventory()),
+                                        new FullRandomBot(),
+                                        new BotState(
+                                                2,
+                                                new ShapeObjective(ShapeFactory.LINE.createShape()),
+                                                new Inventory())),
                                 new BotManager(
-                                        2,
-                                        new BambooInInventoryObjective(10),
                                         new ConsoleUserInterface(),
                                         "Bob",
-                                        new TilePlacingAndPandaMovingBot(),
-                                        new Inventory()))));
+                                        new FullRandomBot(),
+                                        new BotState(
+                                                2,
+                                                new ShapeObjective(ShapeFactory.LINE.createShape()),
+                                                new Inventory())))),
+                new Scoreboard());
     }
 
     public GameEngine(List<BotManager> botManagers) {
@@ -65,7 +73,8 @@ public class GameEngine {
                 new Board(),
                 new ConsoleUserInterface(),
                 GameState.INITIALIZED,
-                botManagers);
+                botManagers,
+                new Scoreboard());
     }
 
     /**
@@ -78,14 +87,23 @@ public class GameEngine {
      * </ol>
      */
     public void newGame() {
-        if (gameState != GameState.INITIALIZED) {
+        consoleUserInterface.displayLineSeparator();
+
+        if (gameState != GameState.INITIALIZED && gameState != GameState.FINISHED) {
             throw new IllegalStateException(
                     "The game is already started. You must end the game first.");
         }
 
         consoleUserInterface.displayMessage("Welcome to Takenoko!");
-        gameState = GameState.READY;
 
+        // Reset all the attributes that needs to be
+        this.board = new Board();
+        for (BotManager botManager : botManagers) {
+            botManager.reset();
+        }
+
+        // Game is now ready to be started
+        gameState = GameState.READY;
         consoleUserInterface.displayMessage(
                 "The new game has been set up. You can start the game !");
     }
@@ -120,11 +138,15 @@ public class GameEngine {
                         "===== <" + botManager.getName() + "> is playing =====");
                 botManager.playBot(board);
                 if (botManager.isObjectiveAchieved()) {
+                    botManager.incrementScore(1);
                     consoleUserInterface.displayMessage(
                             botManager.getName()
                                     + " has achieved the objective "
                                     + botManager.getObjectiveDescription()
-                                    + ", it has won");
+                                    + ", it has won with "
+                                    + botManager.getScore()
+                                    + " points");
+                    gameState = GameState.FINISHED;
                     return;
                 }
             }
@@ -133,10 +155,13 @@ public class GameEngine {
 
     /** This method is used to end the game correctly. */
     public void endGame() {
-        if (gameState != GameState.PLAYING) {
+        if (gameState != GameState.PLAYING && gameState != GameState.FINISHED) {
             throw new IllegalStateException(
                     "The game is not started yet. You must first start the game.");
         }
+
+        consoleUserInterface.displayMessage(scoreboard.toString());
+
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
     }
@@ -164,5 +189,23 @@ public class GameEngine {
      */
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    /** Run a whole game from initialization to end. */
+    public void runGame() {
+        newGame();
+        startGame();
+        playGame();
+        for (BotManager botManager : botManagers) {
+            scoreboard.addScore(botManager.getBotId(), botManager.getScore());
+        }
+        scoreboard.incrementNumberOfGamesPlayed();
+        endGame();
+    }
+
+    public void runGame(int numberOfGames) {
+        for (int i = 0; i < numberOfGames; i++) {
+            runGame();
+        }
     }
 }

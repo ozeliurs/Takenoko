@@ -40,4 +40,14 @@ public class TwoAdjacentTilesObjective extends Objective {
             state = ObjectiveState.ACHIEVED;
         }
     }
+
+    @Override
+    public void reset() {
+        state = ObjectiveState.NOT_ACHIEVED;
+    }
+
+    @Override
+    public Objective copy() {
+        return new TwoAdjacentTilesObjective();
+    }
 }
