@@ -26,7 +26,7 @@ class BambooLayerTest {
 
     @Nested
     @DisplayName("Method addBamboo()")
-    class TestAddBamboo {
+    class TestGrowBamboo {
         @Test
         @DisplayName("should throw an exception if the position is the same as the Pond")
         void shouldThrowAnExceptionIfThePositionIsTheSameAsThePond() {
@@ -37,12 +37,23 @@ class BambooLayerTest {
         }
 
         @Test
-        @DisplayName("should add bamboo to the bamboo layer")
-        void shouldAddBambooToTheBambooLayer() {
+        @DisplayName("should throw an exception if the position is not on the board")
+        void shouldThrowAnExceptionIfThePositionIsNotOnTheBoard() {
+            PositionVector position = new PositionVector(1, 0, -1);
+            when(board.isTile(position)).thenReturn(false);
+            assertThatThrownBy(() -> bambooLayer.growBamboo(position, board))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("The position is not on the board");
+        }
+
+        @Test
+        @DisplayName("should add a bamboo to the bamboo layer")
+        void shouldAddABambooToTheBambooLayerIfTheKeyExists() {
             when(board.isTile(any())).thenReturn(true);
-            bambooLayer.growBamboo(new PositionVector(-1, 0, 1), board);
-            assertThat(bambooLayer.getBambooAt(new PositionVector(-1, 0, 1), board))
-                    .isEqualTo(new LayerBambooStack(1));
+            PositionVector position = new PositionVector(1, 0, -1);
+            bambooLayer.growBamboo(position, board);
+            bambooLayer.growBamboo(position, board);
+            assertThat(bambooLayer.getBambooAt(position, board).getBambooCount()).isEqualTo(2);
         }
     }
 
@@ -117,6 +128,19 @@ class BambooLayerTest {
     @Nested
     @DisplayName("Method equals()")
     class TestEquals {
+
+        @Test
+        @DisplayName("should return true if the bamboo layer is itself")
+        void shouldReturnTrueIfTheBambooLayerIsItself() {
+            assertThat(bambooLayer).isEqualTo(bambooLayer);
+        }
+
+        @Test
+        @DisplayName("should return false if it is not a bamboo layer")
+        void shouldReturnFalseIfItIsNotABambooLayer() {
+            assertThat(bambooLayer).isNotEqualTo(new Object());
+        }
+
         @Test
         @DisplayName("should return true if the bamboo layers are equal")
         void shouldReturnTrueIfTheBambooLayersAreEqual() {
