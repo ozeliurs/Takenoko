@@ -30,7 +30,7 @@ public class MoveGardenerAction implements Action {
         BambooStack bambooStack = board.moveGardener(relativePositionVector);
         botManager.displayMessage(
                 botManager.getName()
-                        + " moved the Gardener"
+                        + " moved the gardener"
                         + " with "
                         + relativePositionVector
                         + " to position "
