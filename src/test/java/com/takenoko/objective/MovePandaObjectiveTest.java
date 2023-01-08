@@ -93,11 +93,11 @@ public class MovePandaObjectiveTest {
         }
 
         @Test
-        @DisplayName(
-                "When the objective is compared to an objective of a different type, returns false")
-        @SuppressWarnings({"EqualsBetweenInconvertibleTypes"})
-        void equals_WhenObjectiveIsComparedToDifferentType_ThenReturnsFalse() {
-            assertThat(movePandaObjective.equals(new PlaceTileObjective(1))).isFalse();
+        @DisplayName("When the objective is compared to an different objective, returns false")
+        void equals_WhenObjectiveIsComparedToDifferentObjective_ThenReturnsFalse() {
+            MovePandaObjective movePandaObjective2 = new MovePandaObjective();
+            movePandaObjective2.state = ObjectiveState.ACHIEVED;
+            assertThat(movePandaObjective.equals(movePandaObjective2)).isFalse();
         }
 
         @Test
@@ -130,8 +130,34 @@ public class MovePandaObjectiveTest {
                 "When the objective is compared to an objective of a different type, returns a"
                         + " different hash code")
         void hashCode_WhenObjectiveIsComparedToDifferentType_ThenReturnsDifferentHashCode() {
+            MovePandaObjective movePandaObjective = new MovePandaObjective();
+            movePandaObjective.state = ObjectiveState.ACHIEVED;
             assertThat(movePandaObjective.hashCode())
-                    .isNotEqualTo(new PlaceTileObjective(1).hashCode());
+                    .isNotEqualTo(new MovePandaObjective().hashCode());
+        }
+    }
+
+    @Nested
+    @DisplayName("Method copy")
+    class TestCopy {
+        @Test
+        @DisplayName("Returns a copy of the objective")
+        void copy_ThenReturnsCopyOfObjective() {
+            assertThat(movePandaObjective.copy())
+                    .isEqualTo(movePandaObjective)
+                    .isNotSameAs(movePandaObjective);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method reset")
+    class TestReset {
+        @Test
+        @DisplayName("Resets the objective")
+        void reset_ThenResetsObjective() {
+            movePandaObjective.state = ObjectiveState.ACHIEVED;
+            movePandaObjective.reset();
+            assertThat(movePandaObjective.state).isEqualTo(ObjectiveState.NOT_ACHIEVED);
         }
     }
 }
