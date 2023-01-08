@@ -42,8 +42,8 @@ class ScoreboardTest {
     }
 
     @Test
-    @DisplayName("Method assScore & getScore")
-    void getScore_WhenBotManagerIsNotInScoreboard_ThenReturns0() {
+    @DisplayName("Method addScore & getScore")
+    void addScoreAndGetScore() {
         scoreboard.addBotManager(List.of(botManager1));
         assertThat(scoreboard.getScore(botManager1.getBotId())).isZero();
 
