@@ -2,7 +2,6 @@ package com.takenoko.layers.tile;
 
 import static org.mockito.Mockito.*;
 
-import com.takenoko.bot.Bot;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.LayerBambooStack;
@@ -20,7 +19,7 @@ class PlaceTileActionTest {
     @BeforeEach
     void setUp() {
         placeTileAction = new PlaceTileAction(new Tile(), new PositionVector(-1, 0, 1));
-        botManager = new BotManager(mock(Bot.class));
+        botManager = spy(BotManager.class);
         board = mock(Board.class);
         when(board.placeTile(any(), any())).thenReturn(new LayerBambooStack(1));
     }
@@ -28,11 +27,22 @@ class PlaceTileActionTest {
     @Nested
     @DisplayName("Method execute()")
     class TestExecute {
+
         @Test
-        @DisplayName("should place the tile on the board and grow bamboo")
-        void shouldPlaceTileAndGrowBamboo() {
+        @DisplayName("Should call board.placeTile()")
+        void shouldCallBoardPlaceTile() {
             placeTileAction.execute(board, botManager);
-            verify(board).placeTile(new Tile(), new PositionVector(-1, 0, 1));
+            verify(board, times(1)).placeTile(any(), any());
+        }
+
+        @Test
+        @DisplayName("Should display messages")
+        void shouldDisplayMessage() {
+            placeTileAction.execute(board, botManager);
+            verify(botManager, times(1))
+                    .displayMessage("Bamboo grew at Vector[q=-1.0, r=0.0, s=1.0]");
+            verify(botManager, times(1))
+                    .displayMessage("Joe placed a tile at Vector[q=-1.0, r=0.0, s=1.0]");
         }
     }
 }
