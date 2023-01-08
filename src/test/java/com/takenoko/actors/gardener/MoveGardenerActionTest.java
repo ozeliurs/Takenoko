@@ -30,8 +30,8 @@ public class MoveGardenerActionTest {
     @DisplayName("Method execute()")
     class TestExecute {
         @Test
-        @DisplayName("should move the gardener")
-        void shouldMoveTheGardener() {
+        @DisplayName("should move the gardener plant a bamboo and display messages")
+        void shouldMoveTheGardenerPlantBambooAndDisplayMessages() {
             when(board.getGardenerPosition()).thenReturn(new PositionVector(0, 0, 0));
             when(botManager.getName()).thenReturn("Joe");
             moveGardenerAction.execute(board, botManager);
