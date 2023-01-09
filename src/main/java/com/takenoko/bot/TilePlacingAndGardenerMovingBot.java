@@ -2,9 +2,9 @@ package com.takenoko.bot;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.MoveGardenerAction;
+import com.takenoko.actions.PlaceTileAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
-import com.takenoko.layers.tile.PlaceTileAction;
 
 /**
  * This class is a bot that will place a tile if it can't move the panda, and move the panda when it

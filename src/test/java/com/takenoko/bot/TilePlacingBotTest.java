@@ -3,9 +3,9 @@ package com.takenoko.bot;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
+import com.takenoko.actions.PlaceTileAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
-import com.takenoko.layers.tile.PlaceTileAction;
 import org.junit.jupiter.api.*;
 
 class TilePlacingBotTest {

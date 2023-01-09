@@ -1,8 +1,8 @@
-package com.takenoko.layers.tile;
+package com.takenoko.actions;
 
-import com.takenoko.actions.Action;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of placing a tile on the board. */

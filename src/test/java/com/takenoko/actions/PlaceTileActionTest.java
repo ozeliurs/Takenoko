@@ -1,10 +1,11 @@
-package com.takenoko.layers.tile;
+package com.takenoko.actions;
 
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.LayerBambooStack;
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
