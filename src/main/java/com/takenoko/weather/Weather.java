@@ -4,5 +4,7 @@ public enum Weather {
     SUNNY,
     RAINY,
     CLOUDY,
-    WINDY
+    WINDY,
+    STORM,
+    RANDOM
 }
