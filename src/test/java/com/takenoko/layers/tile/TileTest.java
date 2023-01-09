@@ -1,9 +1,7 @@
-package com.takenoko.tile;
+package com.takenoko.layers.tile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.takenoko.layers.tile.Tile;
-import com.takenoko.layers.tile.TileType;
 import org.junit.jupiter.api.*;
 
 class TileTest {

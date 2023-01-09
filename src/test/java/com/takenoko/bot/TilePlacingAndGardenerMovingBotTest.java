@@ -5,9 +5,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.takenoko.actions.MoveGardenerAction;
+import com.takenoko.actions.PlaceTileAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
-import com.takenoko.layers.tile.PlaceTileAction;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import java.util.List;

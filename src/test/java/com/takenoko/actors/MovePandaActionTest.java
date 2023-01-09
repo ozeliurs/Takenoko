@@ -1,4 +1,4 @@
-package com.takenoko.actors.panda;
+package com.takenoko.actors;
 
 import static org.mockito.Mockito.*;
 

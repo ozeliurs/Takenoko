@@ -1,4 +1,4 @@
-package com.takenoko.actors.panda;
+package com.takenoko.actions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
