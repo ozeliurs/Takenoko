@@ -133,6 +133,26 @@ public class Shape {
         return matches.stream().toList();
     }
 
+    public float matchPercent(Map<PositionVector, Tile> tileMap) {
+        float match = 0;
+        for (PositionVector tilePosition : tileMap.keySet()) {
+            // For each tilePosition on the board translate the shape to the tilePosition
+            Shape translatedShape = this.translate(tilePosition);
+            for (int i = 0; i < Direction.values().length; i++) {
+                float loopMatch = 0;
+                // compute transated percent
+                for (PositionVector positionVector : translatedShape.getPattern()) {
+                    if (tileMap.containsKey(positionVector)) {
+                        loopMatch++;
+                    }
+                }
+                translatedShape = translatedShape.rotate60();
+                match = Math.max(match, loopMatch / translatedShape.getPattern().size());
+            }
+        }
+        return Math.min(match, 1);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

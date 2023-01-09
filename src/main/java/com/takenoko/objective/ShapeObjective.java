@@ -43,4 +43,9 @@ public class ShapeObjective extends Objective {
         objective.state = state;
         return objective;
     }
+
+    @Override
+    public float getCompletion(Board board, BotManager botManager) {
+        return pattern.matchPercent(board.getTilesWithoutPond());
+    }
 }

@@ -36,4 +36,9 @@ public abstract class Objective {
     public abstract void reset();
 
     public abstract Objective copy();
+
+    /*
+     * @return the completion of the objective (between 0 and 1)
+     */
+    public abstract float getCompletion(Board board, BotManager botManager);
 }
