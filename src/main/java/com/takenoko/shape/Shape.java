@@ -1,28 +1,29 @@
 package com.takenoko.shape;
 
-import com.takenoko.layers.tile.Tile;
-import com.takenoko.vector.Direction;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.IntStream;
 
+/** Class representing a Shape. */
 public class Shape {
-    private final Set<PositionVector> pattern;
+    private final Set<PositionVector> elements;
     private final PositionVector origin;
 
     /**
      * Constructor for the Shape class.
      *
-     * @param shape  the pattern of the shape
+     * @param shape the pattern of the shape
      * @param origin the origin of the shape
      */
     public Shape(Set<PositionVector> shape, PositionVector origin) {
         if (shape.isEmpty()) {
             throw new IllegalArgumentException("The shape cannot be empty");
         }
-        this.pattern = shape;
+        this.elements = shape;
         this.origin = origin;
     }
 
@@ -63,8 +64,8 @@ public class Shape {
         this(new HashSet<>(Arrays.asList(vectors)));
     }
 
-    public Set<PositionVector> getPattern() {
-        return new HashSet<>(this.pattern);
+    public Set<PositionVector> getElements() {
+        return new HashSet<>(this.elements);
     }
 
     /**
@@ -77,7 +78,7 @@ public class Shape {
      */
     public Shape rotate60(PositionVector origin) {
         return new Shape(
-                this.pattern.stream()
+                this.elements.stream()
                         .map(v -> v.sub(origin).rotate60().add(origin))
                         .map(PositionVector::new)
                         .collect(HashSet::new, HashSet::add, HashSet::addAll),
@@ -94,18 +95,18 @@ public class Shape {
         return this.rotate60(this.origin);
     }
 
-    public List<Shape> getRotatedShapes() {
+    public Set<Shape> getRotatedShapes() {
         // return a list of shapes rotated in all directions
         return IntStream.range(0, 5)
                 .mapToObj(
                         i -> {
-                            Shape rotatedShape = this;
+                            Shape rotatedShape = this.copy();
                             for (int j = 0; j < i; j++) {
                                 rotatedShape = rotatedShape.rotate60();
                             }
                             return rotatedShape;
                         })
-                .toList();
+                .collect(HashSet::new, HashSet::add, HashSet::addAll);
     }
 
     /**
@@ -116,55 +117,11 @@ public class Shape {
      */
     public Shape translate(PositionVector vector) {
         return new Shape(
-                this.pattern.stream()
+                this.elements.stream()
                         .map(v -> v.add(vector))
                         .map(Vector::toPositionVector)
                         .collect(HashSet::new, HashSet::add, HashSet::addAll),
                 this.origin.add(vector).toPositionVector());
-    }
-
-    /**
-     * Method to match a shape on the board.
-     *
-     * @param tileMap the tileMap to match the shape on
-     * @return the matching translated/rotated shapes
-     */
-    public List<Shape> match(Map<PositionVector, Tile> tileMap) {
-        HashSet<Shape> matches = new HashSet<>();
-
-        for (PositionVector tilePosition : tileMap.keySet()) {
-            // For each tilePosition on the board translate the shape to the tilePosition
-            for (Shape rotTransShape : this.translate(tilePosition).getRotatedShapes()) {
-                // Check if the translated shape matches the board
-                boolean fullMatch =
-                        rotTransShape.getPattern().stream().allMatch(tileMap::containsKey);
-
-                if (fullMatch) {
-                    matches.add(rotTransShape);
-                }
-            }
-        }
-        return matches.stream().toList();
-    }
-
-    public float matchPercent(Map<PositionVector, Tile> tileMap) {
-        float match = 0;
-        for (PositionVector tilePosition : tileMap.keySet()) {
-            // For each tilePosition on the board translate the shape to the tilePosition
-            Shape translatedShape = this.translate(tilePosition);
-            for (int i = 0; i < Direction.values().length; i++) {
-                float loopMatch = 0;
-                // compute transated percent
-                for (PositionVector positionVector : translatedShape.getPattern()) {
-                    if (tileMap.containsKey(positionVector)) {
-                        loopMatch++;
-                    }
-                }
-                translatedShape = translatedShape.rotate60();
-                match = Math.max(match, loopMatch / translatedShape.getPattern().size());
-            }
-        }
-        return Math.min(match, 1);
     }
 
     @Override
@@ -172,16 +129,20 @@ public class Shape {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Shape shape = (Shape) o;
-        return getPattern().equals(shape.getPattern());
+        return getElements().equals(shape.getElements());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPattern());
+        return Objects.hash(getElements());
+    }
+
+    public Shape copy() {
+        return new Shape(this.elements, this.origin);
     }
 
     @Override
     public String toString() {
-        return "Shape{" + "pattern=" + pattern + ", origin=" + origin + '}';
+        return "Shape{" + "pattern=" + elements + ", origin=" + origin + '}';
     }
 }

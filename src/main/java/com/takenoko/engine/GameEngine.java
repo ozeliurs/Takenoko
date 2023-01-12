@@ -2,8 +2,8 @@ package com.takenoko.engine;
 
 import com.takenoko.bot.FullRandomBot;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.objective.ShapeObjective;
-import com.takenoko.shape.ShapeFactory;
+import com.takenoko.objective.PatternObjective;
+import com.takenoko.shape.PatternFactory;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,8 @@ public class GameEngine {
                                         new FullRandomBot(),
                                         new BotState(
                                                 2,
-                                                new ShapeObjective(ShapeFactory.LINE.createShape()),
+                                                new PatternObjective(
+                                                        PatternFactory.LINE.createPattern()),
                                                 new Inventory())),
                                 new BotManager(
                                         new ConsoleUserInterface(),
@@ -62,7 +63,8 @@ public class GameEngine {
                                         new FullRandomBot(),
                                         new BotState(
                                                 2,
-                                                new ShapeObjective(ShapeFactory.LINE.createShape()),
+                                                new PatternObjective(
+                                                        PatternFactory.LINE.createPattern()),
                                                 new Inventory())))),
                 new Scoreboard());
     }
