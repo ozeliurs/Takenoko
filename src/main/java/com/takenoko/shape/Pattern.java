@@ -19,6 +19,9 @@ public class Pattern extends Shape {
      */
     public Pattern(PositionVector... elements) {
         super(elements);
+        if (!getElements().contains(new PositionVector(0, 0, 0))) {
+            throw new IllegalArgumentException("The pattern must contain the origin");
+        }
     }
 
     @Override

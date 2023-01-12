@@ -102,7 +102,8 @@ class PatternTest {
                             new PositionVector(0, 0, 0),
                             new PositionVector(1, 0, -1),
                             new PositionVector(2, 0, -2));
-            Pattern pattern2 = new Pattern(new PositionVector(1, 0, -1));
+            Pattern pattern2 =
+                    new Pattern(new PositionVector(0, 0, 0), new PositionVector(1, 0, -1));
             assertThat(pattern1.equals(pattern2)).isFalse();
         }
     }
@@ -126,7 +127,8 @@ class PatternTest {
                             new PositionVector(0, 0, 0),
                             new PositionVector(1, 0, -1),
                             new PositionVector(2, 0, -2));
-            Pattern pattern2 = new Pattern(new PositionVector(1, 0, -1));
+            Pattern pattern2 =
+                    new Pattern(new PositionVector(0, 0, 0), new PositionVector(1, 0, -1));
             assertThat(pattern1.hashCode()).isNotEqualTo(pattern2.hashCode());
         }
     }
