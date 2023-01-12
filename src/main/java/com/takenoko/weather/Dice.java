@@ -3,6 +3,7 @@ package com.takenoko.weather;
 import java.security.SecureRandom;
 import java.util.Random;
 
+/** Dice with N sides, by default it has 6. */
 public class Dice {
     private final Random random;
     private final int sides;
@@ -10,7 +11,7 @@ public class Dice {
     private static final int DEFAULT_NUMBER_OF_SIDES = 6;
 
     /**
-     * Parametrized Constructor
+     * Specify the number of sides and the Random Generator
      *
      * @param sides number of sides of the dice
      * @param random random number generator
@@ -21,7 +22,7 @@ public class Dice {
     }
 
     /**
-     * Parametrized Constructor
+     * Specify the number of sides
      *
      * @param sides number of sides of the dice
      */
@@ -29,7 +30,7 @@ public class Dice {
         this(sides, new SecureRandom());
     }
 
-    /** Default Constructor */
+    /** Default Constructor With 6 sides and SecureRandom as a Random Generator */
     public Dice() {
         this(DEFAULT_NUMBER_OF_SIDES, new SecureRandom());
     }
@@ -37,7 +38,7 @@ public class Dice {
     /**
      * Roll the dice
      *
-     * @return the result of the roll
+     * @return the result of the roll (between 1 and N)
      */
     protected int roll() {
         return random.nextInt(sides) + 1;

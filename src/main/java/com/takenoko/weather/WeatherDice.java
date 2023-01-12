@@ -2,6 +2,7 @@ package com.takenoko.weather;
 
 import java.util.Random;
 
+/** Implementation of the WeatherDice of the game, it has 6 sides and each side is a weather. */
 public class WeatherDice extends Dice {
     /** Default Constructor */
     public WeatherDice() {
@@ -9,7 +10,7 @@ public class WeatherDice extends Dice {
     }
 
     /**
-     * Parametrized Constructor
+     * Specify the Random Generator
      *
      * @param random random number generator
      */
