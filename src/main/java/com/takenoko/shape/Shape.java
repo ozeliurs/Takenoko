@@ -11,25 +11,25 @@ import java.util.stream.IntStream;
 /** Class representing a Shape. */
 public class Shape {
     private final Set<PositionVector> elements;
-    private final PositionVector origin;
+    private final PositionVector defaultRotationOrigin;
 
     /**
      * Constructor for the Shape class.
      *
      * @param shape the pattern of the shape
-     * @param origin the origin of the shape
+     * @param defaultRotationOrigin the default rotation origin of the shape
      */
-    public Shape(Set<PositionVector> shape, PositionVector origin) {
+    public Shape(Set<PositionVector> shape, PositionVector defaultRotationOrigin) {
         if (shape.isEmpty()) {
             throw new IllegalArgumentException("The shape cannot be empty");
         }
         this.elements = shape;
-        this.origin = origin;
+        this.defaultRotationOrigin = defaultRotationOrigin;
     }
 
     /**
-     * Constructor for the Shape class. The origin is the element the closest to the origin of the
-     * coordinate system.
+     * Constructor for the Shape class. The rotation origin is the element the closest to the origin
+     * of the coordinate system.
      *
      * @param shape the pattern of the shape
      */
@@ -38,10 +38,10 @@ public class Shape {
     }
 
     /**
-     * Find the origin of the shape.
+     * Find the rotation origin of the shape.
      *
      * @param shape the pattern of the shape
-     * @return the origin of the shape
+     * @return the rotation origin of the shape
      */
     private static PositionVector findOrigin(Set<PositionVector> shape) {
         return shape.stream()
@@ -56,7 +56,8 @@ public class Shape {
 
     /**
      * Constructor of the Shape class. To facilitate the creation of the shape, the shape is defined
-     * by a list of vectors. The origin is the element the closest to the origin of the coordinate
+     * by a list of vectors. The rotation origin is the element the closest to the origin of the
+     * coordinate
      *
      * @param vectors the vectors of the shape
      */
@@ -69,30 +70,30 @@ public class Shape {
     }
 
     /**
-     * Returns a new shape with the same pattern but rotated 60 degrees around the given origin. see
-     * <a
+     * Returns a new shape with the same pattern but rotated 60 degrees around the given rotation
+     * rotationOrigin. see <a
      * href="https://www.redblobgames.com/grids/hexagons/#rotation">https://www.redblobgames.com/grids/hexagons/#rotation</a>
      *
-     * @param origin pivot point of the rotation
+     * @param rotationOrigin pivot point of the rotation
      * @return the rotated shape
      */
-    public Shape rotate60(PositionVector origin) {
+    public Shape rotate60(PositionVector rotationOrigin) {
         return new Shape(
                 this.elements.stream()
-                        .map(v -> v.sub(origin).rotate60().add(origin))
+                        .map(v -> v.sub(rotationOrigin).rotate60().add(rotationOrigin))
                         .map(PositionVector::new)
                         .collect(HashSet::new, HashSet::add, HashSet::addAll),
-                origin);
+                rotationOrigin);
     }
 
     /**
-     * Returns a new shape with the same pattern but rotated 60 degrees around the origin of the
-     * shape.
+     * Returns a new shape with the same pattern but rotated 60 degrees around the rotation origin
+     * of the shape.
      *
      * @return the shape rotated 60 degrees around the first element of the pattern
      */
     public Shape rotate60() {
-        return this.rotate60(this.origin);
+        return this.rotate60(this.defaultRotationOrigin);
     }
 
     public Set<Shape> getRotatedShapes() {
@@ -121,7 +122,7 @@ public class Shape {
                         .map(v -> v.add(vector))
                         .map(Vector::toPositionVector)
                         .collect(HashSet::new, HashSet::add, HashSet::addAll),
-                this.origin.add(vector).toPositionVector());
+                this.defaultRotationOrigin.add(vector).toPositionVector());
     }
 
     @Override
@@ -138,11 +139,11 @@ public class Shape {
     }
 
     public Shape copy() {
-        return new Shape(this.elements, this.origin);
+        return new Shape(this.elements, this.defaultRotationOrigin);
     }
 
     @Override
     public String toString() {
-        return "Shape{" + "pattern=" + elements + ", origin=" + origin + '}';
+        return "Shape{" + "pattern=" + elements + ", rotationOrigin=" + defaultRotationOrigin + '}';
     }
 }

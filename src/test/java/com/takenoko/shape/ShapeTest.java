@@ -173,8 +173,8 @@ public class ShapeTest {
             assertThat(shape.toString())
                     .hasToString(
                             "Shape{pattern=[Vector[q=0.0, r=0.0, s=0.0], Vector[q=1.0, r=0.0,"
-                                + " s=-1.0], Vector[q=1.0, r=-1.0, s=0.0]], origin=Vector[q=0.0,"
-                                + " r=0.0, s=0.0]}");
+                                    + " s=-1.0], Vector[q=1.0, r=-1.0, s=0.0]],"
+                                    + " rotationOrigin=Vector[q=0.0, r=0.0, s=0.0]}");
         }
     }
 }
