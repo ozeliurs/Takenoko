@@ -26,7 +26,7 @@ public enum Weather {
      * back to the plot of his choice. To recover from its emotions, the fearful animal eats a
      * section of bamboo. The section is placed on the player's individual board.
      */
-    STORM,
+    STORMY,
     /**
      * Grey clouds are veiling the sky. ☁️ So why not take advantage of this time to do some work?
      * The player can take one of the available facilities from the reserve and place it on the plot
