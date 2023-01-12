@@ -211,6 +211,8 @@ public class ShapeTest {
                             new PositionVector(2, 0, -2));
             assertThat(shape.equals(otherShape)).isFalse();
         }
+
+
     }
 
     @Nested

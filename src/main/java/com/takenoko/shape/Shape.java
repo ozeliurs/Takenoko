@@ -4,7 +4,9 @@ import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.Direction;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
+
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class Shape {
     private final Set<PositionVector> pattern;
@@ -13,7 +15,7 @@ public class Shape {
     /**
      * Constructor for the Shape class.
      *
-     * @param shape the pattern of the shape
+     * @param shape  the pattern of the shape
      * @param origin the origin of the shape
      */
     public Shape(Set<PositionVector> shape, PositionVector origin) {
@@ -92,6 +94,20 @@ public class Shape {
         return this.rotate60(this.origin);
     }
 
+    public List<Shape> getRotatedShapes() {
+        // return a list of shapes rotated in all directions
+        return IntStream.range(0, 5)
+                .mapToObj(
+                        i -> {
+                            Shape rotatedShape = this;
+                            for (int j = 0; j < i; j++) {
+                                rotatedShape = rotatedShape.rotate60();
+                            }
+                            return rotatedShape;
+                        })
+                .toList();
+    }
+
     /**
      * Returns a new shape with the same pattern but translated by the given vector.
      *
@@ -118,16 +134,14 @@ public class Shape {
 
         for (PositionVector tilePosition : tileMap.keySet()) {
             // For each tilePosition on the board translate the shape to the tilePosition
-            Shape translatedShape = this.translate(tilePosition);
-            for (int i = 0; i < Direction.values().length; i++) {
+            for (Shape rotTransShape : this.translate(tilePosition).getRotatedShapes()) {
                 // Check if the translated shape matches the board
                 boolean fullMatch =
-                        translatedShape.getPattern().stream().allMatch(tileMap::containsKey);
+                        rotTransShape.getPattern().stream().allMatch(tileMap::containsKey);
 
                 if (fullMatch) {
-                    matches.add(translatedShape);
+                    matches.add(rotTransShape);
                 }
-                translatedShape = translatedShape.rotate60();
             }
         }
         return matches.stream().toList();
