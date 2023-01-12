@@ -3,14 +3,25 @@ package com.takenoko.weather;
 import java.util.Random;
 
 public class WeatherDice extends Dice {
+    /** Default Constructor */
     public WeatherDice() {
         super(6);
     }
 
+    /**
+     * Parametrized Constructor
+     *
+     * @param random random number generator
+     */
     public WeatherDice(Random random) {
         super(6, random);
     }
 
+    /**
+     * Roll the dice to get a Weather
+     *
+     * @return the result of the roll
+     */
     public Weather rollWeather() {
         int roll = super.roll();
         return switch (roll) {
