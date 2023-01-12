@@ -27,6 +27,7 @@ class WeatherDiceTest {
 
                 // Then
                 assertThat(weather).isNotNull();
+                assertThat(weather).isInstanceOf(Weather.class);
             }
         }
 
