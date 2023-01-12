@@ -25,7 +25,7 @@ public class WeatherDice extends Dice {
      */
     public Weather rollWeather() {
         int roll = super.roll();
-        if((roll>=6)||(roll<0)){
+        if ((roll >= 6) || (roll < 0)) {
             throw new IllegalStateException("Unexpected value: " + roll);
         }
         return Weather.values()[roll];
