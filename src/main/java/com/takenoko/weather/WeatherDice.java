@@ -1,8 +1,14 @@
 package com.takenoko.weather;
 
+import java.util.Random;
+
 public class WeatherDice extends Dice {
     public WeatherDice() {
         super(6);
+    }
+
+    public WeatherDice(Random random) {
+        super(6, random);
     }
 
     public Weather rollWeather() {

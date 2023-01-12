@@ -1,14 +1,15 @@
 package com.takenoko.weather;
 
 import java.security.SecureRandom;
+import java.util.Random;
 
 public class Dice {
-    private SecureRandom random;
-    private int sides;
+    private final Random random;
+    private final int sides;
 
     private static final int DEFAULT_NUMBER_OF_SIDES = 6;
 
-    public Dice(int sides, SecureRandom random) {
+    public Dice(int sides, Random random) {
         this.sides = sides;
         this.random = random;
     }
@@ -17,15 +18,11 @@ public class Dice {
         this(sides, new SecureRandom());
     }
 
-    public Dice(SecureRandom random) {
-        this(DEFAULT_NUMBER_OF_SIDES, random);
-    }
-
     public Dice() {
         this(DEFAULT_NUMBER_OF_SIDES, new SecureRandom());
     }
 
-    public int roll() {
+    protected int roll() {
         return random.nextInt(sides) + 1;
     }
 }
