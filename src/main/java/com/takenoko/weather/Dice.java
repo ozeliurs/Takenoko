@@ -38,9 +38,9 @@ public class Dice {
     /**
      * Roll the dice
      *
-     * @return the result of the roll (between 1 and N)
+     * @return the result of the roll (between 0 and N-1)
      */
     protected int roll() {
-        return random.nextInt(sides) + 1;
+        return random.nextInt(sides);
     }
 }
