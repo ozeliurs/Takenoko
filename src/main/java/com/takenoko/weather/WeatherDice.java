@@ -4,11 +4,6 @@ import java.util.Random;
 
 /** Implementation of the WeatherDice of the game, it has 6 sides and each side is a weather. */
 public class WeatherDice extends Dice {
-    /** Default Constructor */
-    public WeatherDice() {
-        super(6);
-    }
-
     /**
      * Specify the Random Generator
      *
@@ -28,6 +23,6 @@ public class WeatherDice extends Dice {
         if ((roll >= 6) || (roll < 0)) {
             throw new IllegalStateException("Unexpected value: " + roll);
         }
-        return Weather.values()[roll];
+        return WeatherFactory.values()[roll].createWeather();
     }
 }

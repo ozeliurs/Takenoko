@@ -1,0 +1,11 @@
+package com.takenoko.weather;
+
+import com.takenoko.engine.Board;
+import com.takenoko.engine.BotState;
+
+public class Windy implements Weather {
+    @Override
+    public void execute(Board board, BotState botState) {
+        throw new UnsupportedOperationException("Not implemented yet");
+    }
+}
