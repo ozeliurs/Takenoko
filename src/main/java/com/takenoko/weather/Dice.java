@@ -1,6 +1,7 @@
 package com.takenoko.weather;
 
 import java.security.SecureRandom;
+import java.util.Objects;
 import java.util.Random;
 
 /** Dice with N sides, by default it has 6. */
@@ -42,5 +43,18 @@ public class Dice {
      */
     protected int roll() {
         return random.nextInt(sides);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Dice dice = (Dice) o;
+        return sides == dice.sides;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sides);
     }
 }
