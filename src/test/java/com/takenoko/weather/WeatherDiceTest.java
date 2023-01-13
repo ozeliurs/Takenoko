@@ -18,18 +18,12 @@ class WeatherDiceTest {
         @Test
         @DisplayName("should return a Weather when random is between 0 and 5")
         void shouldReturnAWeatherWhenRandomIsBetween0And5() {
-            // Given
             Random random = mock(Random.class);
             when(random.nextInt(any(Integer.class))).thenReturn(0, 1, 2, 3, 4, 5);
             WeatherDice weatherDice = new WeatherDice(random);
-
-            // When
             for (int i = 0; i < 6; i++) {
                 Weather weather = weatherDice.rollWeather();
-
-                // Then
-                assertThat(weather).isNotNull();
-                assertThat(weather).isInstanceOf(Weather.class);
+                assertThat(weather).isEqualTo(Weather.values()[i]);
             }
         }
     }
