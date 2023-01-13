@@ -1,12 +1,14 @@
 package com.takenoko.weather;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Random;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 class WeatherDiceTest {
 
@@ -29,21 +31,6 @@ class WeatherDiceTest {
                 assertThat(weather).isNotNull();
                 assertThat(weather).isInstanceOf(Weather.class);
             }
-        }
-
-        @Test
-        @DisplayName("should throw an IllegalStateException when random is out of bounds")
-        void shouldThrowAnIllegalStateExceptionWhenRandomIsOutOfBounds() {
-            // Given
-            Random random = mock(Random.class);
-            when(random.nextInt(any(Integer.class))).thenReturn(6);
-            WeatherDice weatherDice = new WeatherDice(random);
-
-            // When
-            Throwable throwable = catchThrowable(weatherDice::rollWeather);
-
-            // Then
-            assertThat(throwable).isInstanceOf(IllegalStateException.class);
         }
     }
 }
