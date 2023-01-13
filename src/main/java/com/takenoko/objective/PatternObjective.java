@@ -2,13 +2,13 @@ package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.shape.Shape;
+import com.takenoko.shape.Pattern;
 import java.util.Objects;
 
-public class ShapeObjective extends Objective {
-    private final Shape pattern;
+public class PatternObjective extends Objective {
+    private final Pattern pattern;
 
-    public ShapeObjective(Shape pattern) {
+    public PatternObjective(Pattern pattern) {
         super(ObjectiveTypes.SHAPE, ObjectiveState.NOT_ACHIEVED);
         this.pattern = pattern;
     }
@@ -29,7 +29,7 @@ public class ShapeObjective extends Objective {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ShapeObjective objective = (ShapeObjective) o;
+        PatternObjective objective = (PatternObjective) o;
         return pattern.equals(objective.pattern);
     }
 
@@ -38,9 +38,14 @@ public class ShapeObjective extends Objective {
         return Objects.hash(pattern);
     }
 
-    public ShapeObjective copy() {
-        ShapeObjective objective = new ShapeObjective(pattern);
+    public PatternObjective copy() {
+        PatternObjective objective = new PatternObjective(pattern);
         objective.state = state;
         return objective;
+    }
+
+    @Override
+    public float getCompletion(Board board, BotManager botManager) {
+        return pattern.matchRatio(board.getTilesWithoutPond());
     }
 }

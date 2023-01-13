@@ -1,32 +1,35 @@
 package com.takenoko.shape;
 
-import com.takenoko.layers.tile.Tile;
-import com.takenoko.vector.Direction;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.IntStream;
 
+/** Class representing a Shape. */
 public class Shape {
-    private final Set<PositionVector> pattern;
-    private final PositionVector origin;
+    private final Set<PositionVector> elements;
+    private final PositionVector defaultRotationOrigin;
 
     /**
      * Constructor for the Shape class.
      *
      * @param shape the pattern of the shape
-     * @param origin the origin of the shape
+     * @param defaultRotationOrigin the default rotation origin of the shape
      */
-    public Shape(Set<PositionVector> shape, PositionVector origin) {
+    public Shape(Set<PositionVector> shape, PositionVector defaultRotationOrigin) {
         if (shape.isEmpty()) {
             throw new IllegalArgumentException("The shape cannot be empty");
         }
-        this.pattern = shape;
-        this.origin = origin;
+        this.elements = shape;
+        this.defaultRotationOrigin = defaultRotationOrigin;
     }
 
     /**
-     * Constructor for the Shape class. The origin is the element the closest to the origin of the
-     * coordinate system.
+     * Constructor for the Shape class. The rotation origin is the element the closest to the origin
+     * of the coordinate system.
      *
      * @param shape the pattern of the shape
      */
@@ -35,10 +38,10 @@ public class Shape {
     }
 
     /**
-     * Find the origin of the shape.
+     * Find the rotation origin of the shape.
      *
      * @param shape the pattern of the shape
-     * @return the origin of the shape
+     * @return the rotation origin of the shape
      */
     private static PositionVector findOrigin(Set<PositionVector> shape) {
         return shape.stream()
@@ -53,7 +56,8 @@ public class Shape {
 
     /**
      * Constructor of the Shape class. To facilitate the creation of the shape, the shape is defined
-     * by a list of vectors. The origin is the element the closest to the origin of the coordinate
+     * by a list of vectors. The rotation origin is the element the closest to the origin of the
+     * coordinate
      *
      * @param vectors the vectors of the shape
      */
@@ -61,35 +65,49 @@ public class Shape {
         this(new HashSet<>(Arrays.asList(vectors)));
     }
 
-    public Set<PositionVector> getPattern() {
-        return new HashSet<>(this.pattern);
+    public Set<PositionVector> getElements() {
+        return new HashSet<>(this.elements);
     }
 
     /**
-     * Returns a new shape with the same pattern but rotated 60 degrees around the given origin. see
-     * <a
+     * Returns a new shape with the same pattern but rotated 60 degrees around the given rotation
+     * rotationOrigin. see <a
      * href="https://www.redblobgames.com/grids/hexagons/#rotation">https://www.redblobgames.com/grids/hexagons/#rotation</a>
      *
-     * @param origin pivot point of the rotation
+     * @param rotationOrigin pivot point of the rotation
      * @return the rotated shape
      */
-    public Shape rotate60(PositionVector origin) {
+    public Shape rotate60(PositionVector rotationOrigin) {
         return new Shape(
-                this.pattern.stream()
-                        .map(v -> v.sub(origin).rotate60().add(origin))
+                this.elements.stream()
+                        .map(v -> v.sub(rotationOrigin).rotate60().add(rotationOrigin))
                         .map(PositionVector::new)
                         .collect(HashSet::new, HashSet::add, HashSet::addAll),
-                origin);
+                rotationOrigin);
     }
 
     /**
-     * Returns a new shape with the same pattern but rotated 60 degrees around the origin of the
-     * shape.
+     * Returns a new shape with the same pattern but rotated 60 degrees around the rotation origin
+     * of the shape.
      *
      * @return the shape rotated 60 degrees around the first element of the pattern
      */
     public Shape rotate60() {
-        return this.rotate60(this.origin);
+        return this.rotate60(this.defaultRotationOrigin);
+    }
+
+    public Set<Shape> getRotatedShapes() {
+        // return a list of shapes rotated in all directions
+        return IntStream.range(0, 5)
+                .mapToObj(
+                        i -> {
+                            Shape rotatedShape = this.copy();
+                            for (int j = 0; j < i; j++) {
+                                rotatedShape = rotatedShape.rotate60();
+                            }
+                            return rotatedShape;
+                        })
+                .collect(HashSet::new, HashSet::add, HashSet::addAll);
     }
 
     /**
@@ -100,37 +118,11 @@ public class Shape {
      */
     public Shape translate(PositionVector vector) {
         return new Shape(
-                this.pattern.stream()
+                this.elements.stream()
                         .map(v -> v.add(vector))
                         .map(Vector::toPositionVector)
                         .collect(HashSet::new, HashSet::add, HashSet::addAll),
-                this.origin.add(vector).toPositionVector());
-    }
-
-    /**
-     * Method to match a shape on the board.
-     *
-     * @param tileMap the tileMap to match the shape on
-     * @return the matching translated/rotated shapes
-     */
-    public List<Shape> match(Map<PositionVector, Tile> tileMap) {
-        HashSet<Shape> matches = new HashSet<>();
-
-        for (PositionVector tilePosition : tileMap.keySet()) {
-            // For each tilePosition on the board translate the shape to the tilePosition
-            Shape translatedShape = this.translate(tilePosition);
-            for (int i = 0; i < Direction.values().length; i++) {
-                // Check if the translated shape matches the board
-                boolean fullMatch =
-                        translatedShape.getPattern().stream().allMatch(tileMap::containsKey);
-
-                if (fullMatch) {
-                    matches.add(translatedShape);
-                }
-                translatedShape = translatedShape.rotate60();
-            }
-        }
-        return matches.stream().toList();
+                this.defaultRotationOrigin.add(vector).toPositionVector());
     }
 
     @Override
@@ -138,16 +130,20 @@ public class Shape {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Shape shape = (Shape) o;
-        return getPattern().equals(shape.getPattern());
+        return getElements().equals(shape.getElements());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPattern());
+        return Objects.hash(getElements());
+    }
+
+    public Shape copy() {
+        return new Shape(this.elements, this.defaultRotationOrigin);
     }
 
     @Override
     public String toString() {
-        return "Shape{" + "pattern=" + pattern + ", origin=" + origin + '}';
+        return "Shape{" + "pattern=" + elements + ", rotationOrigin=" + defaultRotationOrigin + '}';
     }
 }

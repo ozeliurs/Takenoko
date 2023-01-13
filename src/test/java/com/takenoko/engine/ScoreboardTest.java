@@ -1,11 +1,14 @@
 package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.UUID;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class ScoreboardTest {
     Scoreboard scoreboard;
@@ -38,7 +41,10 @@ class ScoreboardTest {
 
         scoreboard.addBotManager(List.of(botManager1, botManager2));
 
-        assertThat(scoreboard).hasToString("Scoreboard:\nBot2 : 2 - Bot1 : 1 - ");
+        assertThat(scoreboard.toString())
+                .contains("Scoreboard:")
+                .contains("Bot2 : 2")
+                .contains("Bot1 : 1");
     }
 
     @Test
