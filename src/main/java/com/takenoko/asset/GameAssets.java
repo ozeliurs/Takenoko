@@ -7,7 +7,7 @@ public class GameAssets {
     private final WeatherDice weatherDice;
 
     public GameAssets() {
-        weatherDice = new WeatherDice();
+        this(new WeatherDice());
     }
 
     public GameAssets(WeatherDice weatherDice) {
