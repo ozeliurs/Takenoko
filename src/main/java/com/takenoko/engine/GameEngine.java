@@ -1,5 +1,8 @@
 package com.takenoko.engine;
 
+import com.takenoko.actions.MoveGardenerAction;
+import com.takenoko.actions.MovePandaAction;
+import com.takenoko.actions.PlaceTileAction;
 import com.takenoko.bot.FullRandomBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.PatternObjective;
@@ -56,7 +59,11 @@ public class GameEngine {
                                                 2,
                                                 new PatternObjective(
                                                         PatternFactory.LINE.createPattern()),
-                                                new Inventory())),
+                                                new Inventory(),
+                                                List.of(
+                                                        MovePandaAction.class,
+                                                        MoveGardenerAction.class,
+                                                        PlaceTileAction.class))),
                                 new BotManager(
                                         new ConsoleUserInterface(),
                                         "Bob",
@@ -65,7 +72,11 @@ public class GameEngine {
                                                 2,
                                                 new PatternObjective(
                                                         PatternFactory.LINE.createPattern()),
-                                                new Inventory())))),
+                                                new Inventory(),
+                                                List.of(
+                                                        MovePandaAction.class,
+                                                        MoveGardenerAction.class,
+                                                        PlaceTileAction.class))))),
                 new Scoreboard());
     }
 
