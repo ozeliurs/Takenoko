@@ -42,7 +42,7 @@ public class BambooSizeObjective extends Objective {
 
     @Override
     public float getCompletion(Board board, BotManager botManager) {
-        AtomicReference<Float> completion = new AtomicReference<>((float) 0);
+        AtomicReference<Float> completion = new AtomicReference<>(0f);
         board.getTiles()
                 .forEach(
                         (positionVector, tile) ->
