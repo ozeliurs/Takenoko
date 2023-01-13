@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.actors.Gardener;
 import com.takenoko.actors.Panda;
+import com.takenoko.asset.GameAssets;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
@@ -23,6 +24,7 @@ class BoardTest {
     BambooLayer bambooLayer;
     Panda panda;
     Gardener gardener;
+    GameAssets gameAssets;
 
     @BeforeEach
     void setUp() {
@@ -30,8 +32,9 @@ class BoardTest {
         bambooLayer = mock(BambooLayer.class);
         panda = mock(Panda.class);
         gardener = mock(Gardener.class);
+        gameAssets = mock(GameAssets.class);
 
-        board = new Board(tileLayer, bambooLayer, panda, gardener);
+        board = new Board(tileLayer, bambooLayer, panda, gardener, gameAssets);
     }
 
     @Test
@@ -231,7 +234,8 @@ class BoardTest {
                             mock(TileLayer.class),
                             mock(BambooLayer.class),
                             mock(Panda.class),
-                            mock(Gardener.class));
+                            mock(Gardener.class),
+                            mock(GameAssets.class));
             assertThat(board).isNotEqualTo(board2);
         }
 
@@ -263,7 +267,8 @@ class BoardTest {
                             mock(TileLayer.class),
                             mock(BambooLayer.class),
                             mock(Panda.class),
-                            mock(Gardener.class));
+                            mock(Gardener.class),
+                            mock(GameAssets.class));
             assertThat(board).doesNotHaveSameHashCodeAs(board2);
         }
     }

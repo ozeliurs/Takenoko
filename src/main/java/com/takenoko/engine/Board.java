@@ -2,11 +2,13 @@ package com.takenoko.engine;
 
 import com.takenoko.actors.Gardener;
 import com.takenoko.actors.Panda;
+import com.takenoko.asset.GameAssets;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
+import com.takenoko.weather.WeatherDice;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,7 @@ public class Board {
     private final BambooLayer bambooLayer;
     private final Panda panda;
     private final Gardener gardener;
+    private final GameAssets gameAssets;
 
     /**
      * Constructor for the Board class.
@@ -26,17 +29,24 @@ public class Board {
      * @param bambooLayer the bamboo layer
      * @param panda the panda
      * @param gardener the gardener
+     * @param gameAssets the game assets : dice
      */
-    public Board(TileLayer tileLayer, BambooLayer bambooLayer, Panda panda, Gardener gardener) {
+    public Board(
+            TileLayer tileLayer,
+            BambooLayer bambooLayer,
+            Panda panda,
+            Gardener gardener,
+            GameAssets gameAssets) {
         this.tileLayer = tileLayer;
         this.bambooLayer = bambooLayer;
         this.panda = panda;
         this.gardener = gardener;
+        this.gameAssets = gameAssets;
     }
 
     /** Constructor for the Board class. */
     public Board() {
-        this(new TileLayer(), new BambooLayer(), new Panda(), new Gardener());
+        this(new TileLayer(), new BambooLayer(), new Panda(), new Gardener(), new GameAssets());
     }
 
     public Board(Board board) {
@@ -44,6 +54,7 @@ public class Board {
         this.bambooLayer = board.bambooLayer.copy();
         this.panda = board.panda.copy();
         this.gardener = board.gardener.copy();
+        this.gameAssets = board.gameAssets.copy();
     }
 
     /**
@@ -185,6 +196,11 @@ public class Board {
         return gardener.move(vector, this);
     }
 
+    /** Get the weather dice */
+    public WeatherDice getWeatherDice() {
+        return gameAssets.getWeatherDice();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -193,12 +209,13 @@ public class Board {
         return tileLayer.equals(board.tileLayer)
                 && bambooLayer.equals(board.bambooLayer)
                 && panda.equals(board.panda)
-                && gardener.equals((board.gardener));
+                && gardener.equals((board.gardener))
+                && gameAssets.equals(board.gameAssets);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tileLayer, bambooLayer, panda, gardener);
+        return Objects.hash(tileLayer, bambooLayer, panda, gardener, gameAssets);
     }
 
     public Board copy() {
