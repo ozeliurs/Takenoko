@@ -197,6 +197,10 @@
                 </executions>
                 <configuration>
                     <threads>8</threads>
+                    <outputFormats>
+                        <format>HTML</format>
+                        <format>XML</format>
+                    </outputFormats>
                 </configuration>
             </plugin>
             <plugin>
