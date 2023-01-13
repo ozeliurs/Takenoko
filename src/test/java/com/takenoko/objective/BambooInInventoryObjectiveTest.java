@@ -98,7 +98,7 @@ public class BambooInInventoryObjectiveTest {
                 "When the objective is compared to an objective of a different type, returns false")
         @SuppressWarnings("EqualsBetweenInconvertibleTypes")
         void equals_WhenObjectiveIsComparedToDifferentType_ThenReturnsFalse() {
-            assertThat(bambooInInventoryObjective.equals(new PlaceTileObjective(1))).isFalse();
+            assertThat(bambooInInventoryObjective.equals(new BambooSizeObjective(1))).isFalse();
         }
 
         @Test
@@ -156,7 +156,7 @@ public class BambooInInventoryObjectiveTest {
                         + " different hash code")
         void hashCode_WhenObjectiveIsComparedToDifferentType_ThenReturnsDifferentHashCode() {
             assertThat(bambooInInventoryObjective)
-                    .doesNotHaveSameHashCodeAs(new PlaceTileObjective(1));
+                    .doesNotHaveSameHashCodeAs(new BambooSizeObjective(1));
         }
     }
 }

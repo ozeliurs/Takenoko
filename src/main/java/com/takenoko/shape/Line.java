@@ -2,7 +2,7 @@ package com.takenoko.shape;
 
 import com.takenoko.vector.PositionVector;
 
-public class Line extends Shape {
+public class Line extends Pattern {
     public Line() {
         super(
                 new PositionVector(0, 0, 0),

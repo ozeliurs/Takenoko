@@ -3,6 +3,7 @@ package com.takenoko.objective;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class BambooSizeObjective extends Objective {
     private final int size;
@@ -37,6 +38,20 @@ public class BambooSizeObjective extends Objective {
 
     public BambooSizeObjective copy() {
         return new BambooSizeObjective(size);
+    }
+
+    @Override
+    public float getCompletion(Board board, BotManager botManager) {
+        AtomicReference<Float> completion = new AtomicReference<>(0f);
+        board.getTiles()
+                .forEach(
+                        (positionVector, tile) ->
+                                completion.set(
+                                        Math.max(
+                                                completion.get(),
+                                                board.getBambooAt(positionVector).getBambooCount()
+                                                        / (float) size)));
+        return Math.min(1, completion.get());
     }
 
     @Override
