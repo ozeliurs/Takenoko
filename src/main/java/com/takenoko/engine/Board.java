@@ -8,11 +8,9 @@ import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
+import com.takenoko.weather.Weather;
 import com.takenoko.weather.WeatherDice;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /** Board class. The board contains the tiles. */
 public class Board {
@@ -42,6 +40,10 @@ public class Board {
         this.panda = panda;
         this.gardener = gardener;
         this.gameAssets = gameAssets;
+    }
+
+    public Weather rollWeather() {
+        return gameAssets.getWeatherDice().rollWeather();
     }
 
     /** Constructor for the Board class. */

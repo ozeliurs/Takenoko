@@ -8,7 +8,6 @@ import java.util.Random;
 public class Dice {
     private final Random random;
     private final int sides;
-
     private static final int DEFAULT_NUMBER_OF_SIDES = 6;
 
     /**

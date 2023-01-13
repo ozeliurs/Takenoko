@@ -1,11 +1,14 @@
 package com.takenoko.engine;
 
 import com.takenoko.actions.Action;
+import com.takenoko.actions.ChooseIfApplyWeatherAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
+import com.takenoko.weather.Weather;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -70,6 +73,9 @@ public class BotManager {
      * @param board the board of the game
      */
     public void playBot(Board board) {
+        Weather rolledWeather = board.rollWeather();
+        botState.setRolledWeather(rolledWeather);
+        botState.setAvailableActions(List.of(ChooseIfApplyWeatherAction.class));
         for (int i = 0; i < botState.getNumberOfActions(); i++) {
             Action action = bot.chooseAction(board.copy(), botState.copy());
             action.execute(board, this);
@@ -170,6 +176,18 @@ public class BotManager {
 
     public void incrementScore(int score) {
         this.score += score;
+    }
+
+    public Weather getRolledWeather() {
+        return botState.getRolledWeather();
+    }
+
+    public void addAction() {
+        botState.addAction();
+    }
+
+    public void setRolledWeather(Weather rolledWeather) {
+        botState.setRolledWeather(rolledWeather);
     }
 
     public void reset() {

@@ -4,17 +4,21 @@ import com.takenoko.actions.Action;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.BambooInInventoryObjective;
 import com.takenoko.objective.Objective;
+import com.takenoko.weather.Weather;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class BotState { // DEFAULT VALUES
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
     private static final Objective DEFAULT_OBJECTIVE = new BambooInInventoryObjective(2);
-    private final int numberOfActions;
+    private int numberOfActions;
     private Objective objective;
     private final Inventory inventory;
     private List<Class<? extends Action>> availableActions;
+    private Weather rolledWeather;
+    private Weather currentWeather;
 
     public BotState(
             int numberOfActions,
@@ -36,6 +40,8 @@ public class BotState { // DEFAULT VALUES
         this.objective = botState.objective.copy();
         this.inventory = botState.getInventory().copy();
         this.availableActions = new ArrayList<>(botState.availableActions);
+        this.rolledWeather = botState.rolledWeather;
+        this.currentWeather = botState.currentWeather;
     }
 
     /**
@@ -95,6 +101,26 @@ public class BotState { // DEFAULT VALUES
      */
     public void setAvailableActions(List<Class<? extends Action>> availableActions) {
         this.availableActions = availableActions;
+    }
+
+    public void setCurrentWeather(Weather currentWeather) {
+        this.currentWeather = currentWeather;
+    }
+
+    public Optional<Weather> getCurrentWeather() {
+        return Optional.ofNullable(currentWeather);
+    }
+
+    public void setRolledWeather(Weather rolledWeather) {
+        this.rolledWeather = rolledWeather;
+    }
+
+    public Weather getRolledWeather() {
+        return rolledWeather;
+    }
+
+    public void addAction() {
+        numberOfActions++;
     }
 
     public void reset() {
