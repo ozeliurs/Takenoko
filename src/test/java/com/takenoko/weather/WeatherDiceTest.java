@@ -23,7 +23,8 @@ class WeatherDiceTest {
             WeatherDice weatherDice = new WeatherDice(random);
             for (int i = 0; i < 6; i++) {
                 Weather weather = weatherDice.rollWeather();
-                assertThat(weather).isEqualTo(Weather.values()[i]);
+                assertThat(weather)
+                        .isInstanceOf(WeatherFactory.values()[i].createWeather().getClass());
             }
         }
     }
