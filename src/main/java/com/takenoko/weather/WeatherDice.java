@@ -15,7 +15,7 @@ public class WeatherDice extends Dice {
      * @param random random number generator
      */
     public WeatherDice(Random random) {
-        super(6, random);
+        super(WeatherFactory.values().length, random);
     }
 
     /**
