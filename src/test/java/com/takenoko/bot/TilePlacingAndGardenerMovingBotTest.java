@@ -53,8 +53,10 @@ class TilePlacingAndGardenerMovingBotTest {
             when(board.getGardenerPossibleMoves()).thenReturn(List.of());
             when(board.getAvailableTiles()).thenReturn(List.of(mock(Tile.class)));
             when(board.getAvailableTilePositions()).thenReturn(List.of(mock(PositionVector.class)));
-            assertThat(bot.chooseAction(board, mock(BotState.class)))
-                    .isInstanceOfAny(PlaceTileAction.class);
+            BotState botState = mock(BotState.class);
+            when(botState.getAvailableActions())
+                    .thenReturn(List.of(PlaceTileAction.class, MoveGardenerAction.class));
+            assertThat(bot.chooseAction(board, botState)).isInstanceOfAny(PlaceTileAction.class);
         }
     }
 }
