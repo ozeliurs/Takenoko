@@ -2,15 +2,14 @@ package com.takenoko.engine;
 
 import com.takenoko.actors.Gardener;
 import com.takenoko.actors.Panda;
+import com.takenoko.asset.GameAssets;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import com.takenoko.weather.Weather;
+import java.util.*;
 
 /** Board class. The board contains the tiles. */
 public class Board {
@@ -18,6 +17,8 @@ public class Board {
     private final BambooLayer bambooLayer;
     private final Panda panda;
     private final Gardener gardener;
+    private final GameAssets gameAssets;
+    private Weather weather = null;
 
     /**
      * Constructor for the Board class.
@@ -26,17 +27,32 @@ public class Board {
      * @param bambooLayer the bamboo layer
      * @param panda the panda
      * @param gardener the gardener
+     * @param gameAssets the game assets : dice
      */
-    public Board(TileLayer tileLayer, BambooLayer bambooLayer, Panda panda, Gardener gardener) {
+    public Board(
+            TileLayer tileLayer,
+            BambooLayer bambooLayer,
+            Panda panda,
+            Gardener gardener,
+            GameAssets gameAssets) {
         this.tileLayer = tileLayer;
         this.bambooLayer = bambooLayer;
         this.panda = panda;
         this.gardener = gardener;
+        this.gameAssets = gameAssets;
+    }
+
+    public void rollWeather() {
+        gameAssets.getWeatherDice().rollWeather();
+    }
+
+    public Weather peekWeather() {
+        return gameAssets.getWeatherDice().peekWeather();
     }
 
     /** Constructor for the Board class. */
     public Board() {
-        this(new TileLayer(), new BambooLayer(), new Panda(), new Gardener());
+        this(new TileLayer(), new BambooLayer(), new Panda(), new Gardener(), new GameAssets());
     }
 
     public Board(Board board) {
@@ -44,6 +60,8 @@ public class Board {
         this.bambooLayer = board.bambooLayer.copy();
         this.panda = board.panda.copy();
         this.gardener = board.gardener.copy();
+        this.gameAssets = board.gameAssets.copy();
+        this.weather = board.weather;
     }
 
     /**
@@ -149,6 +167,7 @@ public class Board {
     public PositionVector getGardenerPosition() {
         return gardener.getPosition();
     }
+
     /**
      * Returns possible moves for the panda.
      *
@@ -157,6 +176,7 @@ public class Board {
     public List<PositionVector> getPandaPossibleMoves() {
         return panda.getPossibleMoves(this);
     }
+
     /**
      * Returns possible moves for the gardener.
      *
@@ -175,6 +195,7 @@ public class Board {
     public LayerBambooStack movePanda(PositionVector vector) {
         return panda.move(vector, this);
     }
+
     /**
      * Move the gardener with a vector.
      *
@@ -193,15 +214,29 @@ public class Board {
         return tileLayer.equals(board.tileLayer)
                 && bambooLayer.equals(board.bambooLayer)
                 && panda.equals(board.panda)
-                && gardener.equals((board.gardener));
+                && gardener.equals((board.gardener))
+                && gameAssets.equals(board.gameAssets);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tileLayer, bambooLayer, panda, gardener);
+        return Objects.hash(tileLayer, bambooLayer, panda, gardener, gameAssets);
     }
 
     public Board copy() {
         return new Board(this);
+    }
+
+    public Optional<Weather> getWeather() {
+        return Optional.ofNullable(weather);
+    }
+
+    public void setWeather(Weather weather) {
+        this.weather = weather;
+    }
+
+    /** Changes the weather to null. This is used when the weather is over. */
+    public void resetWeather() {
+        weather = null;
     }
 }

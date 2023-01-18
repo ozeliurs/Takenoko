@@ -117,4 +117,33 @@ class BambooSizeObjectiveTest {
             assertThat(bambooSizeObjective.isAchieved()).isFalse();
         }
     }
+
+    @Nested
+    @DisplayName("Mathod getCompletion()")
+    class TestGetCompletion {
+        @Test
+        @DisplayName("should return the completion percentage when the objective not started")
+        void getCompletion_shouldReturnCompletionPercentage() {
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+
+            assertThat(bambooSizeObjective.getCompletion(board, botManager)).isZero();
+        }
+
+        @Test
+        @DisplayName("should return the completion percentage when the objective is completed")
+        void getCompletion_shouldReturnCompletionPercentageWhenCompleted() {
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+
+            HashMap<PositionVector, Tile> tiles = new HashMap<>();
+            tiles.put(new PositionVector(1, -1, 0), mock(Tile.class));
+
+            when(board.getTiles()).thenReturn(tiles);
+            when(board.getBambooAt(new PositionVector(1, -1, 0)))
+                    .thenReturn(new LayerBambooStack(4));
+            bambooSizeObjective.verify(board, botManager);
+            assertThat(bambooSizeObjective.getCompletion(board, botManager)).isEqualTo(1);
+        }
+    }
 }

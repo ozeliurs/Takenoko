@@ -52,4 +52,9 @@ public class BambooInInventoryObjective extends Objective {
     public Objective copy() {
         return new BambooInInventoryObjective(targetBambooInInventory);
     }
+
+    @Override
+    public float getCompletion(Board board, BotManager botManager) {
+        return Math.min(1, (float) botManager.getEatenBambooCounter() / targetBambooInInventory);
+    }
 }

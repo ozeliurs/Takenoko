@@ -1,8 +1,8 @@
-package com.takenoko.layers.tile;
+package com.takenoko.actions;
 
-import com.takenoko.actions.Action;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of placing a tile on the board. */
@@ -26,12 +26,15 @@ public class PlaceTileAction implements Action {
      *
      * @param board the board
      * @param botManager the bot manager
+     * @return the action result
      */
     @Override
-    public void execute(Board board, BotManager botManager) {
+    public ActionResult execute(Board board, BotManager botManager) {
         if (!board.placeTile(tile, positionVector).isEmpty()) {
             botManager.displayMessage("Bamboo grew at " + positionVector);
         }
         botManager.displayMessage(botManager.getName() + " placed a tile at " + positionVector);
+
+        return new ActionResult(1);
     }
 }
