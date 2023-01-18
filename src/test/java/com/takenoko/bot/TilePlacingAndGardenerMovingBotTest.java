@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.takenoko.actions.ChooseIfApplyWeatherAction;
 import com.takenoko.actions.MoveGardenerAction;
+import com.takenoko.actions.MovePandaAction;
 import com.takenoko.actions.PlaceTileAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
@@ -61,6 +63,21 @@ class TilePlacingAndGardenerMovingBotTest {
             when(botState.getAvailableActions())
                     .thenReturn(List.of(PlaceTileAction.class, MoveGardenerAction.class));
             assertThat(bot.chooseAction(board, botState)).isInstanceOfAny(PlaceTileAction.class);
+        }
+
+        @Test
+        @DisplayName("Should return applyWeatherAction if that action is available")
+        void shouldReturnApplyWeatherActionIfThatActionIsAvailable() {
+            BotState botState = mock(BotState.class);
+            when(botState.getAvailableActions())
+                    .thenReturn(
+                            List.of(
+                                    ChooseIfApplyWeatherAction.class,
+                                    PlaceTileAction.class,
+                                    MovePandaAction.class,
+                                    MoveGardenerAction.class));
+            assertThat(bot.chooseAction(board, botState))
+                    .isInstanceOf(ChooseIfApplyWeatherAction.class);
         }
     }
 }

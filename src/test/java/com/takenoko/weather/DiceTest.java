@@ -15,7 +15,7 @@ class DiceTest {
     @Nested
     @DisplayName("method roll()")
     class Roll {
-        @org.junit.jupiter.api.Test
+        @Test
         @DisplayName("should return a number between 0 and 5 when random is between 0 and 5")
         void shouldReturnANumberBetween0And5WhenRandomIsBetween0And5() {
             Random random = mock(Random.class);
@@ -36,7 +36,7 @@ class DiceTest {
     @Nested
     @DisplayName("method equals()")
     class Equals {
-        @org.junit.jupiter.api.Test
+        @Test
         @DisplayName("should return true when the number of sides is the same")
         void shouldReturnTrueWhenTheNumberOfSidesIsTheSame() {
             Dice dice1 = new Dice(6);
@@ -52,6 +52,31 @@ class DiceTest {
             Dice dice2 = new Dice(8);
 
             assertThat(dice1).isNotEqualTo(dice2);
+        }
+
+        @Test
+        @DisplayName("should return false when the object is not a dice")
+        void shouldReturnFalseWhenTheObjectIsNotADice() {
+            Dice dice = new Dice(6);
+            Object object = new Object();
+
+            assertThat(dice).isNotEqualTo(object);
+        }
+
+        @Test
+        @DisplayName("should return false when the object is null")
+        void shouldReturnFalseWhenTheObjectIsNull() {
+            Dice dice = new Dice(6);
+
+            assertThat(dice).isNotEqualTo(null);
+        }
+
+        @Test
+        @DisplayName("should return true when the object is the same")
+        void shouldReturnTrueWhenTheObjectIsTheSame() {
+            Dice dice = new Dice(6);
+
+            assertThat(dice).isEqualTo(dice);
         }
     }
 
@@ -74,6 +99,24 @@ class DiceTest {
             Dice dice2 = new Dice(8);
 
             assertThat(dice1).doesNotHaveSameHashCodeAs(dice2);
+        }
+    }
+
+    @Nested
+    @DisplayName("method peek()")
+    class Peek {
+        @Test
+        @DisplayName("should return the last roll when the dice is rolled")
+        void shouldReturnTheLastRollWhenTheDiceIsRolled() {
+            Random random = mock(Random.class);
+            when(random.nextInt(any(Integer.class))).thenReturn(0, 1, 2, 3, 4, 5);
+            Dice dice = new Dice(6, random);
+
+            for (int i = 0; i < 6; i++) {
+                dice.roll();
+            }
+
+            assertThat(dice.peek()).isEqualTo(5);
         }
     }
 }
