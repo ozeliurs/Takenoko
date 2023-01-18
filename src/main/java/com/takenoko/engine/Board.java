@@ -235,6 +235,7 @@ public class Board {
         this.weather = weather;
     }
 
+    /** Changes the weather to null. This is used when the weather is over. */
     public void resetWeather() {
         weather = null;
     }
