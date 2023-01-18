@@ -17,10 +17,6 @@ public class FullRandomBot implements Bot {
         random = new SecureRandom();
     }
 
-    public FullRandomBot(SecureRandom random) {
-        this.random = random;
-    }
-
     @Override
     public Action chooseAction(Board board, BotState botState) {
         if (botState.getAvailableActions().contains(ChooseIfApplyWeatherAction.class)) {

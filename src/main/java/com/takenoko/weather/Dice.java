@@ -8,7 +8,6 @@ import java.util.Random;
 public class Dice {
     private final Random random;
     private final int sides;
-    private static final int DEFAULT_NUMBER_OF_SIDES = 6;
     private int lastRoll;
 
     /**
@@ -30,11 +29,6 @@ public class Dice {
      */
     public Dice(int sides) {
         this(sides, new SecureRandom());
-    }
-
-    /** Default Constructor With 6 sides and SecureRandom as a Random Generator */
-    public Dice() {
-        this(DEFAULT_NUMBER_OF_SIDES, new SecureRandom());
     }
 
     /**
