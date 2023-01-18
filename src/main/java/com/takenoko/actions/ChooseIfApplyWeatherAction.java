@@ -3,6 +3,9 @@ package com.takenoko.actions;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 
+/**
+ * Action to choose whether to apply the weather or not
+ */
 public class ChooseIfApplyWeatherAction implements Action {
     private final boolean applyWeather;
 
