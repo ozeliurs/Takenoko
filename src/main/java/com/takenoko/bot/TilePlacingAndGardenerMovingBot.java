@@ -20,7 +20,8 @@ public class TilePlacingAndGardenerMovingBot implements Bot {
         }
 
         // check if the gardener can move
-        if (botState.getAvailableActions().contains(MoveGardenerAction.class)) {
+        if (botState.getAvailableActions().contains(MoveGardenerAction.class)
+                && !board.getGardenerPossibleMoves().isEmpty()) {
             // Move the gardener
             return new MoveGardenerAction(board.getGardenerPossibleMoves().get(0));
         } else if (botState.getAvailableActions().contains(PlaceTileAction.class)) {

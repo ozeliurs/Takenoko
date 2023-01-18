@@ -34,7 +34,10 @@ class TilePlacingAndGardenerMovingBotTest {
         void shouldReturnAnAction() {
             when(board.getGardenerPossibleMoves())
                     .thenReturn(List.of(new PositionVector(1, 0, -1)));
-            assertThat(bot.chooseAction(board, mock(BotState.class))).isNotNull();
+            BotState botState = mock(BotState.class);
+            when(botState.getAvailableActions())
+                    .thenReturn(List.of(MoveGardenerAction.class, PlaceTileAction.class));
+            assertThat(bot.chooseAction(board, botState)).isNotNull();
         }
 
         @Test
@@ -43,8 +46,9 @@ class TilePlacingAndGardenerMovingBotTest {
         void shouldReturnAnActionOfTypePlaceTileWhenTheGardenerIsCanMove() {
             when(board.getGardenerPossibleMoves())
                     .thenReturn(List.of(new PositionVector(1, 0, -1)));
-            assertThat(bot.chooseAction(board, mock(BotState.class)))
-                    .isInstanceOfAny(MoveGardenerAction.class);
+            BotState botState = mock(BotState.class);
+            when(botState.getAvailableActions()).thenReturn(List.of(MoveGardenerAction.class));
+            assertThat(bot.chooseAction(board, botState)).isInstanceOfAny(MoveGardenerAction.class);
         }
 
         @Test
