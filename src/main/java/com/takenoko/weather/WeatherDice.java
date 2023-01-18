@@ -26,4 +26,8 @@ public class WeatherDice extends Dice {
     public Weather rollWeather() {
         return WeatherFactory.values()[super.roll()].createWeather();
     }
+
+    public Weather peekWeather() {
+        return WeatherFactory.values()[super.peek()].createWeather();
+    }
 }

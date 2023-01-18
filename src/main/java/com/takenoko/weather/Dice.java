@@ -9,6 +9,7 @@ public class Dice {
     private final Random random;
     private final int sides;
     private static final int DEFAULT_NUMBER_OF_SIDES = 6;
+    private int lastRoll;
 
     /**
      * Specify the number of sides and the Random Generator
@@ -19,6 +20,7 @@ public class Dice {
     public Dice(int sides, Random random) {
         this.sides = sides;
         this.random = random;
+        this.lastRoll = 0;
     }
 
     /**
@@ -41,7 +43,8 @@ public class Dice {
      * @return the result of the roll (between 0 and N-1)
      */
     protected int roll() {
-        return random.nextInt(sides);
+        lastRoll = random.nextInt(sides);
+        return lastRoll;
     }
 
     @Override
@@ -55,5 +58,9 @@ public class Dice {
     @Override
     public int hashCode() {
         return Objects.hash(sides);
+    }
+
+    protected int peek() {
+        return lastRoll;
     }
 }

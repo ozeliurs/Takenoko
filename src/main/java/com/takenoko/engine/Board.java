@@ -9,7 +9,6 @@ import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.Weather;
-import com.takenoko.weather.WeatherDice;
 import java.util.*;
 
 /** Board class. The board contains the tiles. */
@@ -19,6 +18,7 @@ public class Board {
     private final Panda panda;
     private final Gardener gardener;
     private final GameAssets gameAssets;
+    private Weather weather = null;
 
     /**
      * Constructor for the Board class.
@@ -42,8 +42,12 @@ public class Board {
         this.gameAssets = gameAssets;
     }
 
-    public Weather rollWeather() {
-        return gameAssets.getWeatherDice().rollWeather();
+    public void rollWeather() {
+        gameAssets.getWeatherDice().rollWeather();
+    }
+
+    public Weather peekWeather() {
+        return gameAssets.getWeatherDice().peekWeather();
     }
 
     /** Constructor for the Board class. */
@@ -57,6 +61,7 @@ public class Board {
         this.panda = board.panda.copy();
         this.gardener = board.gardener.copy();
         this.gameAssets = board.gameAssets.copy();
+        this.weather = board.weather;
     }
 
     /**
@@ -162,6 +167,7 @@ public class Board {
     public PositionVector getGardenerPosition() {
         return gardener.getPosition();
     }
+
     /**
      * Returns possible moves for the panda.
      *
@@ -170,6 +176,7 @@ public class Board {
     public List<PositionVector> getPandaPossibleMoves() {
         return panda.getPossibleMoves(this);
     }
+
     /**
      * Returns possible moves for the gardener.
      *
@@ -188,6 +195,7 @@ public class Board {
     public LayerBambooStack movePanda(PositionVector vector) {
         return panda.move(vector, this);
     }
+
     /**
      * Move the gardener with a vector.
      *
@@ -196,11 +204,6 @@ public class Board {
      */
     public LayerBambooStack moveGardener(PositionVector vector) {
         return gardener.move(vector, this);
-    }
-
-    /** Get the weather dice */
-    public WeatherDice getWeatherDice() {
-        return gameAssets.getWeatherDice();
     }
 
     @Override
@@ -222,5 +225,17 @@ public class Board {
 
     public Board copy() {
         return new Board(this);
+    }
+
+    public Optional<Weather> getWeather() {
+        return Optional.ofNullable(weather);
+    }
+
+    public void setWeather(Weather weather) {
+        this.weather = weather;
+    }
+
+    public void resetWeather() {
+        weather = null;
     }
 }

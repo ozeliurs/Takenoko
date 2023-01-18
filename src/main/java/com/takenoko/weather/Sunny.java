@@ -5,7 +5,13 @@ import com.takenoko.engine.BotManager;
 
 public class Sunny implements Weather {
     @Override
-    public void execute(Board board, BotManager botManager) {
+    public void apply(Board board, BotManager botManager) {
+        board.setWeather(this);
         botManager.addAction();
+    }
+
+    @Override
+    public void revert(Board board, BotManager botManager) {
+        board.resetWeather();
     }
 }
