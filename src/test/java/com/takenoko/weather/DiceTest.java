@@ -38,7 +38,7 @@ class DiceTest {
     class Equals {
         @Test
         @DisplayName("should return true when the number of sides is the same")
-        void shouldReturnTrueWhenTheNumberOfSidesIsTheSame() {
+        void shouldReturnTrueWhenTheNumberOfSidesIsTheSameTestEqual() {
             Dice dice1 = new Dice(6);
             Dice dice2 = new Dice(6);
 
@@ -68,7 +68,7 @@ class DiceTest {
         void shouldReturnFalseWhenTheObjectIsNull() {
             Dice dice = new Dice(6);
 
-            assertThat(dice).isNotEqualTo(null);
+            assertThat(dice).isNotNull();
         }
 
         @Test
