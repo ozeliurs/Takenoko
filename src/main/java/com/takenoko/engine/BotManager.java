@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * This class is used to manage one bot. It is responsible for managing all of its attributes :
+ * This class is used to manage one bot.
  *
  * <ul>
  *   <li>name
@@ -92,6 +92,9 @@ public class BotManager {
             botState.setAvailableActions(actionResult.availableActions());
             botState.setNumberOfActions(botState.getNumberOfActions() - actionResult.cost());
             verifyObjective(board);
+            if (this.isObjectiveAchieved()) {
+                break;
+            }
         }
         board.getWeather().ifPresent(value -> value.revert(board, this));
     }
