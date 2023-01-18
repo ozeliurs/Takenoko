@@ -36,8 +36,8 @@ class BotManagerTest {
     @DisplayName("Method playBot")
     class PlayBot {
         @Test
-        @DisplayName("should do the lifecyle of a bot with win")
-        void shouldDoTheLifecyleOfABotWithWin() {
+        @DisplayName("should do the lifecycle of a bot with win")
+        void shouldDoTheLifecycleOfABotWithWin() {
             when(botState.getNumberOfActions()).thenReturn(2);
             Action action = mock(Action.class);
             when(bot.chooseAction(any(), any())).thenReturn(action);
@@ -53,8 +53,8 @@ class BotManagerTest {
         }
 
         @Test
-        @DisplayName("should do the lifecyle of a bot with no win")
-        void shouldDoTheLifecyleOfABotWithNoWin() {
+        @DisplayName("should do the lifecycle of a bot with no win")
+        void shouldDoTheLifecycleOfABotWithNoWin() {
             when(botState.getNumberOfActions()).thenReturn(2);
             Action action = mock(Action.class);
             when(bot.chooseAction(any(), any())).thenReturn(action);
