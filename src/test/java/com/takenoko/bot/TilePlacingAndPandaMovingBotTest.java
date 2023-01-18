@@ -1,18 +1,17 @@
 package com.takenoko.bot;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
 import com.takenoko.actions.MovePandaAction;
 import com.takenoko.actions.PlaceTileAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
 class TilePlacingAndPandaMovingBotTest {
 

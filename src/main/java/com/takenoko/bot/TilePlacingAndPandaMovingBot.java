@@ -16,10 +16,12 @@ public class TilePlacingAndPandaMovingBot implements Bot {
             return new ChooseIfApplyWeatherAction(false);
         }
         // check if the panda can move
-        if (botState.getAvailableActions().contains(MovePandaAction.class) && !board.getPandaPossibleMoves().isEmpty()) {
+        if (botState.getAvailableActions().contains(MovePandaAction.class)
+                && !board.getPandaPossibleMoves().isEmpty()) {
             // move the panda
             return new MoveGardenerAction(board.getPandaPossibleMoves().get(0));
-        } else if (botState.getAvailableActions().contains(PlaceTileAction.class) && !board.getAvailableTilePositions().isEmpty()) {
+        } else if (botState.getAvailableActions().contains(PlaceTileAction.class)
+                && !board.getAvailableTilePositions().isEmpty()) {
             // place a tile
             return new PlaceTileAction(
                     board.getAvailableTiles().get(0), board.getAvailableTilePositions().get(0));
