@@ -11,9 +11,10 @@ public class ChooseIfApplyWeatherAction implements Action {
     }
 
     @Override
-    public void execute(Board board, BotManager botManager) {
+    public ActionResult execute(Board board, BotManager botManager) {
         if (applyWeather) {
             botManager.getRolledWeather().execute(board, botManager);
         }
+        return new ActionResult();
     }
 }

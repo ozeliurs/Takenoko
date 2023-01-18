@@ -23,9 +23,10 @@ public class MovePandaAction implements Action {
      *
      * @param board the board
      * @param botManager the bot manager
+     * @return the action result
      */
     @Override
-    public void execute(Board board, BotManager botManager) {
+    public ActionResult execute(Board board, BotManager botManager) {
         // move the panda
         BambooStack bambooStack = board.movePanda(relativePositionVector);
         botManager.displayMessage(
@@ -40,5 +41,6 @@ public class MovePandaAction implements Action {
             botManager.getInventory().getBambooStack().collectBamboo();
             botManager.displayMessage(botManager.getName() + " collected one bamboo");
         }
+        return new ActionResult(1);
     }
 }

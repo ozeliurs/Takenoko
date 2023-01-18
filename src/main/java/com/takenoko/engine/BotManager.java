@@ -1,6 +1,7 @@
 package com.takenoko.engine;
 
 import com.takenoko.actions.Action;
+import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.ChooseIfApplyWeatherAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
@@ -31,6 +32,7 @@ public class BotManager {
     private final BotState botState;
     private final String name;
     private final Bot bot;
+    private final int defaultNumberOfActions;
     private int score;
     private final UUID botId;
 
@@ -50,6 +52,7 @@ public class BotManager {
         this.bot = bot;
         this.botId = UUID.randomUUID();
         this.score = 0;
+        this.defaultNumberOfActions = botState.getNumberOfActions();
     }
 
     /** Default constructor for the class */
