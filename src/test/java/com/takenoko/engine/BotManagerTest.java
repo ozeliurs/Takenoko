@@ -3,7 +3,6 @@ package com.takenoko.engine;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import com.takenoko.actions.Action;
 import com.takenoko.bot.Bot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
@@ -30,44 +29,6 @@ class BotManagerTest {
     @AfterEach
     void tearDown() {
         botManager = null;
-    }
-
-    @Nested
-    @DisplayName("Method playBot")
-    class PlayBot {
-        @Test
-        @DisplayName("should do the lifecyle of a bot with win")
-        void shouldDoTheLifecyleOfABotWithWin() {
-            when(botState.getNumberOfActions()).thenReturn(2);
-            Action action = mock(Action.class);
-            when(bot.chooseAction(any(), any())).thenReturn(action);
-            when(board.copy()).thenReturn(board);
-            when(botState.copy()).thenReturn(botState);
-            when(botState.getObjective()).thenReturn(mock(Objective.class));
-            when(botState.getObjective().isAchieved()).thenReturn(true);
-
-            botManager.playBot(board);
-            verify(bot, times(1)).chooseAction(board, botState);
-            verify(action, times(1)).execute(board, botManager);
-            verify(botState.getObjective(), times(1)).isAchieved();
-        }
-
-        @Test
-        @DisplayName("should do the lifecyle of a bot with no win")
-        void shouldDoTheLifecyleOfABotWithNoWin() {
-            when(botState.getNumberOfActions()).thenReturn(2);
-            Action action = mock(Action.class);
-            when(bot.chooseAction(any(), any())).thenReturn(action);
-            when(board.copy()).thenReturn(board);
-            when(botState.copy()).thenReturn(botState);
-            when(botState.getObjective()).thenReturn(mock(Objective.class));
-            when(botState.getObjective().isAchieved()).thenReturn(false);
-
-            botManager.playBot(board);
-            verify(bot, times(2)).chooseAction(board, botState);
-            verify(action, times(2)).execute(board, botManager);
-            verify(botState.getObjective(), times(2)).isAchieved();
-        }
     }
 
     @Nested

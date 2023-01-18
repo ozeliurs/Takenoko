@@ -10,6 +10,7 @@ public interface Action {
      *
      * @param board the board
      * @param botManager the bot manager
+     * @return the action result
      */
-    void execute(Board board, BotManager botManager);
+    ActionResult execute(Board board, BotManager botManager);
 }

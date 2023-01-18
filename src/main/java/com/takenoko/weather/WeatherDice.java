@@ -6,7 +6,7 @@ import java.util.Random;
 public class WeatherDice extends Dice {
     /** Default Constructor */
     public WeatherDice() {
-        super(6);
+        super(WeatherFactory.values().length);
     }
 
     /**
@@ -15,7 +15,7 @@ public class WeatherDice extends Dice {
      * @param random random number generator
      */
     public WeatherDice(Random random) {
-        super(6, random);
+        super(WeatherFactory.values().length, random);
     }
 
     /**
@@ -24,6 +24,10 @@ public class WeatherDice extends Dice {
      * @return the result of the roll
      */
     public Weather rollWeather() {
-        return Weather.values()[super.roll()];
+        return WeatherFactory.values()[super.roll()].createWeather();
+    }
+
+    public Weather peekWeather() {
+        return WeatherFactory.values()[super.peek()].createWeather();
     }
 }

@@ -22,9 +22,10 @@ public class MoveGardenerAction implements Action {
      *
      * @param board the board
      * @param botManager the bot manager
+     * @return the action result
      */
     @Override
-    public void execute(Board board, BotManager botManager) {
+    public ActionResult execute(Board board, BotManager botManager) {
         // move the Gardener
 
         BambooStack bambooStack = board.moveGardener(relativePositionVector);
@@ -39,5 +40,6 @@ public class MoveGardenerAction implements Action {
         if (!bambooStack.isEmpty()) {
             botManager.displayMessage(botManager.getName() + " planted one bamboo");
         }
+        return new ActionResult(1);
     }
 }
