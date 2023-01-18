@@ -1,9 +1,5 @@
 package com.takenoko.bot;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-
 import com.takenoko.actions.MovePandaAction;
 import com.takenoko.actions.PlaceTileAction;
 import com.takenoko.engine.Board;
@@ -12,6 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 class TilePlacingAndPandaMovingBotTest {
 
@@ -30,13 +31,19 @@ class TilePlacingAndPandaMovingBotTest {
         @Test
         @DisplayName("should return an action")
         void shouldReturnAnAction() {
-            assertThat(bot.chooseAction(board, mock(BotState.class))).isNotNull();
+            BotState botState = mock(BotState.class);
+            when(botState.getAvailableActions())
+                    .thenReturn(List.of(MovePandaAction.class, PlaceTileAction.class));
+            assertThat(bot.chooseAction(board, botState)).isNotNull();
         }
 
         @Test
         @DisplayName("should return an action of type PlaceTileAction or MovePandaAction")
         void shouldReturnAnActionOfTypePlaceTileOrMovePanda() {
-            assertThat(bot.chooseAction(board, mock(BotState.class)))
+            BotState botState = mock(BotState.class);
+            when(botState.getAvailableActions())
+                    .thenReturn(List.of(MovePandaAction.class, PlaceTileAction.class));
+            assertThat(bot.chooseAction(board, botState))
                     .isInstanceOfAny(PlaceTileAction.class, MovePandaAction.class);
         }
     }
