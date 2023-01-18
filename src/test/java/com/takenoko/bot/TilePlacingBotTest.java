@@ -49,7 +49,7 @@ class TilePlacingBotTest {
                                     PlaceTileAction.class,
                                     MoveGardenerAction.class,
                                     MovePandaAction.class));
-            assertThat(tilePlacingBot.chooseAction(board, mock(BotState.class)))
+            assertThat(tilePlacingBot.chooseAction(board, botState))
                     .isInstanceOf(PlaceTileAction.class);
         }
     }
