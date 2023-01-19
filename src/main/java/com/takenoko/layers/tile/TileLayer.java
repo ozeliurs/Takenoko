@@ -124,6 +124,19 @@ public class TileLayer {
     }
 
     /**
+     * Get the positions where an improvement can be placed.
+     *
+     * @return the positions where an improvement can be placed
+     */
+    public List<PositionVector> getAvailableImprovementPositions(Board board) {
+        return board.getTiles().keySet().stream()
+                .filter(position -> board.getTileAt(position).getType() != TileType.POND)
+                .filter(position -> board.getTileAt(position).getImprovement().isEmpty())
+                .filter(position -> (board.getBambooAt(position)).isEmpty())
+                .toList();
+    }
+
+    /**
      * Get the tile placed on the board but without the pond.
      *
      * @return the tile placed on the board but without the pond.
