@@ -1,11 +1,11 @@
 package com.takenoko.actions;
 
+import com.takenoko.actions.annotations.ForcedAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 
 /** Action to choose whether to apply the weather or not */
-@ActionAnnotation(ActionType.FORCED)
-public class ChooseIfApplyWeatherAction implements Action {
+public class ChooseIfApplyWeatherAction implements ForcedAction {
     private final boolean applyWeather;
 
     public ChooseIfApplyWeatherAction(boolean applyWeather) {
