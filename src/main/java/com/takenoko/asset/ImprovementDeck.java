@@ -3,6 +3,7 @@ package com.takenoko.asset;
 import com.takenoko.layers.tile.ImprovementType;
 import java.util.HashMap;
 
+/** The deck containing all the improvement chips you can place on the tiles. */
 public class ImprovementDeck extends HashMap<ImprovementType, Integer> {
     public ImprovementDeck() {
         for (ImprovementType improvementType : ImprovementType.values()) {
@@ -10,6 +11,10 @@ public class ImprovementDeck extends HashMap<ImprovementType, Integer> {
         }
     }
 
+    /**
+     * @param improvementType what improvement type you choose to draw
+     * @return the improvement type you choose to draw
+     */
     public ImprovementType draw(ImprovementType improvementType) {
         if (this.get(improvementType) > 0) {
             this.put(improvementType, this.get(improvementType) - 1);
