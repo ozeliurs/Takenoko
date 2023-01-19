@@ -4,6 +4,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 
 /** Action to choose whether to apply the weather or not */
+@ActionAnnotation(ActionType.FORCED)
 public class ChooseIfApplyWeatherAction implements Action {
     private final boolean applyWeather;
 
@@ -17,10 +18,5 @@ public class ChooseIfApplyWeatherAction implements Action {
             board.peekWeather().apply(board, botManager);
         }
         return new ActionResult();
-    }
-
-    @Override
-    public ActionType getType() {
-        return ActionType.FORCED;
     }
 }

@@ -4,7 +4,9 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 
 /** Action interface. An action is a command that can be executed by the Bot Manager. */
+@ActionAnnotation(ActionType.DEFAULT)
 public interface Action {
+
     /**
      * Executes the action on the board and the bot manager.
      *
@@ -13,7 +15,4 @@ public interface Action {
      * @return the action result
      */
     ActionResult execute(Board board, BotManager botManager);
-
-    /** Get the type of the action. */
-    ActionType getType();
 }

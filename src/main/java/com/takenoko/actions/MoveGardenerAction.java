@@ -5,6 +5,7 @@ import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.vector.PositionVector;
 
+@ActionAnnotation(ActionType.DEFAULT)
 public class MoveGardenerAction implements Action {
     private final PositionVector relativePositionVector;
 
@@ -41,10 +42,5 @@ public class MoveGardenerAction implements Action {
             botManager.displayMessage(botManager.getName() + " planted one bamboo");
         }
         return new ActionResult(1);
-    }
-
-    @Override
-    public ActionType getType() {
-        return ActionType.DEFAULT;
     }
 }

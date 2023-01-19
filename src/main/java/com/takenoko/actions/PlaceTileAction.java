@@ -6,6 +6,7 @@ import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of placing a tile on the board. */
+@ActionAnnotation(ActionType.DEFAULT)
 public class PlaceTileAction implements Action {
     private final Tile tile;
     private final PositionVector positionVector;
@@ -36,10 +37,5 @@ public class PlaceTileAction implements Action {
         botManager.displayMessage(botManager.getName() + " placed a tile at " + positionVector);
 
         return new ActionResult(1);
-    }
-
-    @Override
-    public ActionType getType() {
-        return ActionType.DEFAULT;
     }
 }

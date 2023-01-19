@@ -6,6 +6,7 @@ import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of moving the panda. */
+@ActionAnnotation(ActionType.DEFAULT)
 public class MovePandaAction implements Action {
     private final PositionVector relativePositionVector;
 
@@ -42,10 +43,5 @@ public class MovePandaAction implements Action {
             botManager.displayMessage(botManager.getName() + " collected one bamboo");
         }
         return new ActionResult(1);
-    }
-
-    @Override
-    public ActionType getType() {
-        return ActionType.DEFAULT;
     }
 }
