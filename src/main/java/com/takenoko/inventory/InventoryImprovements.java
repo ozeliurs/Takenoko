@@ -4,6 +4,10 @@ import com.takenoko.layers.tile.ImprovementType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * InventoryImprovements contains the improvements picked by the player after getting Cloudy weather
+ * InventoryImprovements is an attribute in Inventory
+ */
 public class InventoryImprovements extends ArrayList<ImprovementType> {
     public InventoryImprovements() {
         super();
