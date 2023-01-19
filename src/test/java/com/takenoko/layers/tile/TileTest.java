@@ -6,18 +6,21 @@ import org.junit.jupiter.api.*;
 
 class TileTest {
     private Tile tile;
+    private Tile other;
     private Tile pondTile;
 
     @BeforeEach
     void setUp() {
         pondTile = new Tile(TileType.POND);
         tile = new Tile();
+        other = new Tile();
     }
 
     @AfterEach
     void tearDown() {
         pondTile = null;
         tile = null;
+        other = null;
     }
 
     @Nested
@@ -76,9 +79,16 @@ class TileTest {
         }
 
         @Test
-        @DisplayName("When tiles are not equal, returns false")
-        void equals_WhenTilesAreNotEqual_ThenReturnsFalse() {
+        @DisplayName("When tiles have not the same type, returns false")
+        void equals_WhenTilesHaveNotTheSameType_ThenReturnsFalse() {
             assertThat(pondTile.equals(tile)).isFalse();
+        }
+
+        @Test
+        @DisplayName("When tiles have not the same chip, returns false")
+        void equals_WhenTilesHaveNotTheSameChip_ThenReturnsFalse() {
+            other.setChip(ChipType.FERTILIZER);
+            assertThat(other).isNotEqualTo(tile);
         }
 
         @Test
@@ -103,6 +113,13 @@ class TileTest {
         @DisplayName("When tiles are equal, returns same hash code")
         void hashCode_WhenTilesAreEqual_ThenReturnsSameHashCode() {
             assertThat(pondTile).hasSameHashCodeAs(pondTile);
+        }
+
+        @Test
+        @DisplayName("When tiles have different chips, returns different hash code")
+        void hashCode_WhenTilesHaveDifferentChips_ThenReturnsDifferentHashCode() {
+            other.setChip(ChipType.FERTILIZER);
+            assertThat(tile).doesNotHaveSameHashCodeAs(other);
         }
 
         @Test
