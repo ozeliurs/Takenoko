@@ -2,8 +2,7 @@ package com.takenoko.objective;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
@@ -130,6 +129,36 @@ class PatternObjectiveTest {
             PatternObjective patternObjective = new PatternObjective(pattern);
             PatternObjective patternObjective2 = new PatternObjective(pattern2);
             assertThat(patternObjective).doesNotHaveSameHashCodeAs(patternObjective2);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method copy")
+    class TestCopy {
+        @Test
+        @DisplayName("When PatternObjective is copied, it is equal to the original")
+        void copy_WhenPatternObjectiveIsCopied_ThenItIsEqualToTheOriginal() {
+            Pattern pattern = mock(Pattern.class);
+            PatternObjective patternObjective = new PatternObjective(pattern);
+            PatternObjective patternObjective2 = patternObjective.copy();
+            assertThat(patternObjective).isEqualTo(patternObjective2);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getCompletion")
+    class TestGetCompletion {
+        @Test
+        @DisplayName("When PatternObjective is called calls getCompletion on Pattern")
+        void getCompletion_WhenPatternObjectiveIsCalled_CallsGetCompletionOnPattern() {
+            Pattern pattern = mock(Pattern.class);
+            PatternObjective patternObjective = new PatternObjective(pattern);
+            patternObjective.getCompletion(mock(Board.class), mock(BotManager.class));
+            verify(pattern).matchRatio(any());
+            // then verify that it returns the same value as the pattern
+            when(pattern.matchRatio(any())).thenReturn(1f);
+            assertThat(patternObjective.getCompletion(mock(Board.class), mock(BotManager.class)))
+                    .isEqualTo(1f);
         }
     }
 }

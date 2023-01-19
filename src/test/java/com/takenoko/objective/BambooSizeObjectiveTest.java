@@ -105,6 +105,19 @@ class BambooSizeObjectiveTest {
         }
 
         @Test
+        @DisplayName("should return true when the bamboo count is equal with the objective")
+        void verify_shouldReturnTrueWhenBambooCountEqualToObjective() {
+            Board board = mock(Board.class);
+            HashMap<PositionVector, Tile> tiles = new HashMap<>();
+            tiles.put(new PositionVector(1, -1, 0), mock(Tile.class));
+            when(board.getTiles()).thenReturn(tiles);
+            when(board.getBambooAt(new PositionVector(1, -1, 0)))
+                    .thenReturn(new LayerBambooStack(3));
+            bambooSizeObjective.verify(board, mock(BotManager.class));
+            assertThat(bambooSizeObjective.isAchieved()).isTrue();
+        }
+
+        @Test
         @DisplayName("should return false when the bamboo count is less than the objective")
         void verify_shouldReturnFalseWhenBambooCountLessThanObjective() {
             Board board = mock(Board.class);
@@ -131,6 +144,21 @@ class BambooSizeObjectiveTest {
         }
 
         @Test
+        @DisplayName("should return the completion percentage when the objective is started")
+        void getCompletion_shouldReturnCompletionPercentageWhenStarted() {
+            bambooSizeObjective = new BambooSizeObjective(4);
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+            HashMap<PositionVector, Tile> tiles = new HashMap<>();
+            tiles.put(new PositionVector(1, -1, 0), mock(Tile.class));
+            when(board.getTiles()).thenReturn(tiles);
+            when(board.getBambooAt(new PositionVector(1, -1, 0)))
+                    .thenReturn(new LayerBambooStack(2));
+
+            assertThat(bambooSizeObjective.getCompletion(board, botManager)).isEqualTo(0.5f);
+        }
+
+        @Test
         @DisplayName("should return the completion percentage when the objective is completed")
         void getCompletion_shouldReturnCompletionPercentageWhenCompleted() {
             Board board = mock(Board.class);
@@ -142,7 +170,7 @@ class BambooSizeObjectiveTest {
             when(board.getTiles()).thenReturn(tiles);
             when(board.getBambooAt(new PositionVector(1, -1, 0)))
                     .thenReturn(new LayerBambooStack(4));
-            bambooSizeObjective.verify(board, botManager);
+
             assertThat(bambooSizeObjective.getCompletion(board, botManager)).isEqualTo(1);
         }
     }
