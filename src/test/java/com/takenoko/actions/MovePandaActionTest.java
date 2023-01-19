@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.inventory.InventoryBambooStack;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,11 +32,9 @@ class MovePandaActionTest {
         @Test
         @DisplayName("should move the panda collect bamboo and display messages")
         void shouldMoveThePandaCollectBambooAndDisplayMessages() {
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
             Inventory inventory = mock(Inventory.class);
             when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
             when(botManager.getInventory()).thenReturn(inventory);
-            when(inventory.getBambooStack()).thenReturn(bambooStack);
             when(botManager.getName()).thenReturn("Joe");
             movePandaAction.execute(board, botManager);
             verify(board).movePanda(new PositionVector(-1, 0, 1));
@@ -46,7 +43,7 @@ class MovePandaActionTest {
                             "Joe moved the panda with Vector[q=-1.0, r=0.0, s=1.0] to position"
                                     + " Vector[q=0.0, r=0.0, s=0.0]");
             verify(botManager, times(1)).displayMessage("Joe collected one bamboo");
-            verify(bambooStack, times(1)).collectBamboo();
+            verify(inventory, times(1)).collectBamboo();
         }
     }
 }

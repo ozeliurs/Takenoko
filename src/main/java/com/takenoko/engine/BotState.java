@@ -72,7 +72,7 @@ public class BotState { // DEFAULT VALUES
      * @return the number of bamboo eaten by the bot
      */
     public int getEatenBambooCounter() {
-        return inventory.getBambooStack().getBambooCount();
+        return inventory.getBambooCount();
     }
 
     /**
