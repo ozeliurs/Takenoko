@@ -6,7 +6,7 @@ import java.util.Optional;
 /** Class Tile represents a tile in the game. A tile has a type {@link TileType}. */
 public class Tile {
     private final TileType type;
-    private ChipType chip;
+    private ImprovementType improvement;
 
     /**
      * Constructor of the class Tile. It creates a tile with the default type OTHER {@link
@@ -26,13 +26,13 @@ public class Tile {
     }
 
     /**
-     * Constructor of the class Tile. It creates a tile with the given type and chip.
+     * Constructor of the class Tile. It creates a tile with the given type and improvement.
      *
      * @param type the type of the tile
      */
-    public Tile(TileType type, ChipType chip) {
+    public Tile(TileType type, ImprovementType improvement) {
         this.type = type;
-        this.chip = chip;
+        this.improvement = improvement;
     }
 
     /**
@@ -42,7 +42,7 @@ public class Tile {
      */
     public Tile(Tile tile) {
         this.type = tile.type;
-        this.chip = tile.chip;
+        this.improvement = tile.improvement;
     }
 
     /**
@@ -55,20 +55,20 @@ public class Tile {
     }
 
     /**
-     * Get the chip of the tile.
+     * Get the improvement of the tile.
      *
-     * @return the chip of the tile
+     * @return the improvement of the tile
      */
-    public Optional<ChipType> getChip() {
-        return Optional.ofNullable(chip);
+    public Optional<ImprovementType> getImprovement() {
+        return Optional.ofNullable(improvement);
     }
 
-    /** Set the chip of the tile. If the chip is null, throw an exception. */
-    public void setChip(ChipType chip) {
-        if (this.chip != null) {
-            throw new IllegalStateException("The tile already has a chip");
+    /** Set the improvement of the tile. If the improvement is null, throw an exception. */
+    public void setImprovement(ImprovementType improvement) {
+        if (this.improvement != null) {
+            throw new IllegalStateException("The tile already has an improvement");
         }
-        this.chip = chip;
+        this.improvement = improvement;
     }
 
     @Override
@@ -77,12 +77,12 @@ public class Tile {
         if (o == null || getClass() != o.getClass()) return false;
         Tile tile = (Tile) o;
 
-        return type == tile.type && Objects.equals(chip, tile.chip);
+        return type == tile.type && Objects.equals(improvement, tile.improvement);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getType(), getChip());
+        return Objects.hash(getType(), getImprovement());
     }
 
     public Tile copy() {
