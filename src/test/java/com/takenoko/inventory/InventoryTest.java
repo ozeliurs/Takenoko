@@ -1,7 +1,10 @@
 package com.takenoko.inventory;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.takenoko.layers.tile.ImprovementType;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -21,6 +24,28 @@ class InventoryTest {
         InventoryBambooStack bambooStack = new InventoryBambooStack(5);
         Inventory inventory = new Inventory(bambooStack);
         assertThat(inventory.getBambooStack()).isEqualTo(bambooStack);
+    }
+
+    @Test
+    @DisplayName("should return the improvements")
+    void shouldReturnTheImprovements() {
+        InventoryBambooStack bambooStack = new InventoryBambooStack(0);
+        InventoryImprovements inventoryImprovements =
+                new InventoryImprovements(List.of(ImprovementType.values()));
+        Inventory inventory = new Inventory(bambooStack, inventoryImprovements);
+        assertThat(inventory.getInventoryImprovements()).isEqualTo(inventoryImprovements);
+    }
+
+    @Test
+    @DisplayName("should clear both bambooStack and improvements")
+    void shouldClearBothBambooStackAndImprovements() {
+        InventoryBambooStack bambooStack = new InventoryBambooStack(5);
+        InventoryImprovements inventoryImprovements =
+                new InventoryImprovements(List.of(ImprovementType.values()));
+        Inventory inventory = new Inventory(bambooStack, inventoryImprovements);
+        inventory.clear();
+        assertTrue(inventory.getBambooStack().isEmpty());
+        assertThat(inventory.getInventoryImprovements()).isEmpty();
     }
 
     @Nested
