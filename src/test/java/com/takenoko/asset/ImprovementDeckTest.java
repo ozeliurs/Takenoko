@@ -1,6 +1,6 @@
 package com.takenoko.asset;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import com.takenoko.layers.tile.ImprovementType;
 import org.junit.jupiter.api.DisplayName;
@@ -27,8 +27,21 @@ class ImprovementDeckTest {
         @DisplayName("When improvement is drawn, it is removed from the deck")
         void draw_WhenImprovementIsDrawn_ThenItIsRemovedFromTheDeck() {
             ImprovementDeck deck = new ImprovementDeck();
-            deck.draw(ImprovementType.FERTILIZER);
+            ImprovementType imp = deck.draw(ImprovementType.FERTILIZER);
+            assertThat(imp).isEqualTo(ImprovementType.FERTILIZER);
             assertThat(deck).containsEntry(ImprovementType.FERTILIZER, 2);
+        }
+
+        @Test
+        @DisplayName("When improvement is exhausted, an exception is thrown")
+        void draw_WhenImprovementIsExhausted_ThenAnExceptionIsThrown() {
+            ImprovementDeck deck = new ImprovementDeck();
+            deck.draw(ImprovementType.FERTILIZER);
+            deck.draw(ImprovementType.FERTILIZER);
+            deck.draw(ImprovementType.FERTILIZER);
+            assertThatThrownBy(() -> deck.draw(ImprovementType.FERTILIZER))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("No more improvement of type FERTILIZER");
         }
     }
 
@@ -57,6 +70,20 @@ class ImprovementDeckTest {
     @Nested
     @DisplayName("Method equals")
     class TestEquals {
+        @Test
+        @DisplayName("When called on self, returns true")
+        void equals_WhenCalledOnSelf_ThenReturnsTrue() {
+            ImprovementDeck deck = new ImprovementDeck();
+            assertThat(deck).isEqualTo(deck);
+        }
+
+        @Test
+        @DisplayName("When called on a different object, returns false")
+        void equals_WhenCalledOnDifferentObject_ThenReturnsFalse() {
+            ImprovementDeck deck = new ImprovementDeck();
+            assertThat(deck).isNotEqualTo(new Object());
+        }
+
         @Test
         @DisplayName("When two decks are instantiated, they should be equals")
         void equals_WhenTwoDecksAreInstantiated_ThenTheyAreEquals() {
