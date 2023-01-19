@@ -256,4 +256,24 @@ public class Board {
     public boolean hasImprovementInDeck(ImprovementType improvementType) {
         return gameAssets.getImprovementDeck().hasImprovement(improvementType);
     }
+
+    public List<PositionVector> getAvailableImprovementPositions() {
+        return tileLayer.getAvailableImprovementPositions(this);
+    }
+
+    public void drawTiles() {
+        gameAssets.getTileDeck().draw();
+    }
+
+    public List<Tile> peekTileDeck() {
+        return gameAssets.getTileDeck().peek();
+    }
+
+    public void chooseTileInTileDeck(Tile tile) {
+        gameAssets.getTileDeck().choose(tile);
+    }
+
+    public void applyImprovement(ImprovementType improvementType, PositionVector positionVector) {
+        tileLayer.applyImprovement(improvementType, positionVector, this);
+    }
 }

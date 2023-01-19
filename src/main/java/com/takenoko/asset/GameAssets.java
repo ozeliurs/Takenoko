@@ -6,6 +6,7 @@ import java.util.Objects;
 public class GameAssets {
     private final WeatherDice weatherDice;
     private final ImprovementDeck improvementDeck;
+    private final TileDeck tileDeck;
 
     public GameAssets() {
         this(new WeatherDice(), new ImprovementDeck());
@@ -18,11 +19,13 @@ public class GameAssets {
     public GameAssets(WeatherDice weatherDice, ImprovementDeck improvementDeck) {
         this.weatherDice = weatherDice;
         this.improvementDeck = improvementDeck;
+        this.tileDeck = new TileDeck();
     }
 
     public GameAssets(GameAssets gameAssets) {
         this.weatherDice = gameAssets.weatherDice;
         this.improvementDeck = gameAssets.improvementDeck;
+        this.tileDeck = gameAssets.tileDeck;
     }
 
     /**
@@ -54,5 +57,9 @@ public class GameAssets {
     @Override
     public int hashCode() {
         return Objects.hash(weatherDice);
+    }
+
+    public TileDeck getTileDeck() {
+        return tileDeck;
     }
 }
