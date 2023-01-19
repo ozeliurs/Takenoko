@@ -13,4 +13,7 @@ public interface Action {
      * @return the action result
      */
     ActionResult execute(Board board, BotManager botManager);
+
+    /** Get the type of the action. */
+    ActionType getType();
 }

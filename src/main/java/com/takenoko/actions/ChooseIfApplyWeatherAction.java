@@ -18,4 +18,9 @@ public class ChooseIfApplyWeatherAction implements Action {
         }
         return new ActionResult();
     }
+
+    @Override
+    public ActionType getType() {
+        return ActionType.FORCED;
+    }
 }

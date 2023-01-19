@@ -42,4 +42,9 @@ public class MoveGardenerAction implements Action {
         }
         return new ActionResult(1);
     }
+
+    @Override
+    public ActionType getType() {
+        return ActionType.DEFAULT;
+    }
 }
