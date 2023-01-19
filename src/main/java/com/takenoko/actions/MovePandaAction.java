@@ -38,7 +38,7 @@ public class MovePandaAction implements Action {
 
         if (!bambooStack.isEmpty()) {
             // eat bamboo
-            botManager.getInventory().getBambooStack().collectBamboo();
+            botManager.getInventory().collectBamboo();
             botManager.displayMessage(botManager.getName() + " collected one bamboo");
         }
         return new ActionResult(1);
