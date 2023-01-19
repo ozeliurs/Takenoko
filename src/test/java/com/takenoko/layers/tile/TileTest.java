@@ -88,6 +88,7 @@ class TileTest {
         @DisplayName("When tiles have not the same chip, returns false")
         void equals_WhenTilesHaveNotTheSameChip_ThenReturnsFalse() {
             other.setChip(ChipType.FERTILIZER);
+            tile.setChip(ChipType.ENCLOSURE);
             assertThat(other).isNotEqualTo(tile);
         }
 

@@ -7,4 +7,9 @@ public enum ChipType {
      * 4 sections).
      */
     FERTILIZER,
+    /**
+     * The enclosure 🛑 protects the bamboo of the plot where it is, the panda can cross it, stop
+     * there but in no case eat the bamboo that is there.
+     */
+    ENCLOSURE,
 }
