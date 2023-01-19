@@ -1,8 +1,6 @@
 package com.takenoko.engine;
 
-import com.takenoko.actions.Action;
-import com.takenoko.actions.ActionResult;
-import com.takenoko.actions.ChooseIfApplyWeatherAction;
+import com.takenoko.actions.*;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
@@ -34,6 +32,9 @@ public class BotManager {
     private final int defaultNumberOfActions;
     private int score;
     private final UUID botId;
+
+    public static final List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS =
+            List.of(MovePandaAction.class, MoveGardenerAction.class, PlaceTileAction.class);
 
     /**
      * Constructor for the class
