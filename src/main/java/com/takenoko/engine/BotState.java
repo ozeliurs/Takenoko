@@ -1,6 +1,8 @@
 package com.takenoko.engine;
 
 import com.takenoko.actions.Action;
+import com.takenoko.actions.annotations.ActionAnnotation;
+import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.BambooInInventoryObjective;
 import com.takenoko.objective.Objective;
@@ -85,12 +87,25 @@ public class BotState { // DEFAULT VALUES
     }
 
     /**
-     * Return the list of available actions
+     * Return the list of available actions. If actions of FORCED type are available, only these
+     * actions are returned else all available actions are returned.
      *
      * @return the list of available actions
      */
     public List<Class<? extends Action>> getAvailableActions() {
-        return availableActions;
+        List<Class<? extends Action>> forcedActions =
+                availableActions.stream()
+                        .filter(
+                                action ->
+                                        action.getAnnotation(ActionAnnotation.class).value()
+                                                == ActionType.FORCED)
+                        .toList();
+
+        if (forcedActions.isEmpty()) {
+            return availableActions;
+        } else {
+            return forcedActions;
+        }
     }
 
     /**
@@ -100,6 +115,14 @@ public class BotState { // DEFAULT VALUES
      */
     public void setAvailableActions(List<Class<? extends Action>> availableActions) {
         this.availableActions = availableActions;
+    }
+
+    public void addAvailableAction(Class<? extends Action> action) {
+        this.availableActions.add(action);
+    }
+
+    public void addAvailableActions(List<Class<? extends Action>> actions) {
+        this.availableActions.addAll(actions);
     }
 
     public void addAction() {
@@ -128,5 +151,11 @@ public class BotState { // DEFAULT VALUES
     @Override
     public int hashCode() {
         return Objects.hash(getNumberOfActions(), getObjective(), getInventory());
+    }
+
+    public void clearForcedActions() {
+        availableActions.removeIf(
+                action ->
+                        action.getAnnotation(ActionAnnotation.class).value() == ActionType.FORCED);
     }
 }

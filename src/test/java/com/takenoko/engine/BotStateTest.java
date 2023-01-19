@@ -2,6 +2,10 @@ package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.takenoko.actions.Action;
+import com.takenoko.actions.ChooseIfApplyWeatherAction;
+import com.takenoko.actions.annotations.DefaultAction;
+import com.takenoko.actions.annotations.ForcedAction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -79,6 +83,39 @@ class BotStateTest {
         void copy_shouldReturnCopyOfObject() {
             BotState copy = botState.copy();
             assertThat(copy).isEqualTo(botState).isNotSameAs(botState);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getAvailableActions()")
+    class TestGetAvailableActions {
+        @Test
+        @DisplayName("should return the list of available actions")
+        void getAvailableActions_shouldReturnListOfAvailableActions() {
+            assertThat(botState.getAvailableActions()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should return only the forced actions if there are forced actions")
+        void getAvailableActions_shouldReturnOnlyForcedActions() {
+            botState.addAvailableAction(ForcedAction.class);
+            botState.addAvailableAction(ForcedAction.class);
+            botState.addAvailableAction(DefaultAction.class);
+            assertThat(botState.getAvailableActions()).hasSize(2);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method clearForcedActions()")
+    class TestClearForcedActions {
+        @Test
+        @DisplayName("should remove all the forced actions")
+        void clearForcedActions_shouldRemoveAllForcedActions() {
+            botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
+            botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
+            botState.addAvailableAction(Action.class);
+            botState.clearForcedActions();
+            assertThat(botState.getAvailableActions()).hasSize(1);
         }
     }
 }
