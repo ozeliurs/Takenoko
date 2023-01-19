@@ -126,5 +126,12 @@ class TileTest {
         void copy_WhenTileIsCopied_ThenReturnsTileWithSameType() {
             assertThat(tile.copy().getType()).isEqualTo(tile.getType());
         }
+
+        @Test
+        @DisplayName("When tile is copied, returns a tile with the same chip")
+        void copy_WhenTileIsCopied_ThenReturnsTileWithSameChip() {
+            tile.setChip(ChipType.FERTILIZER);
+            assertThat(tile.copy().getChip()).isEqualTo(tile.getChip());
+        }
     }
 }

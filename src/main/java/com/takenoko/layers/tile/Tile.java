@@ -36,6 +36,16 @@ public class Tile {
     }
 
     /**
+     * Copy Constructor
+     *
+     * @param tile the tile to copy
+     */
+    public Tile(Tile tile) {
+        this.type = tile.type;
+        this.chip = tile.chip;
+    }
+
+    /**
      * Get the type of the tile.
      *
      * @return the type of the tile
@@ -66,15 +76,16 @@ public class Tile {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tile tile = (Tile) o;
-        return getType() == tile.getType();
+
+        return type == tile.type && Objects.equals(chip, tile.chip);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getType());
+        return Objects.hash(getType(), getChip());
     }
 
     public Tile copy() {
-        return new Tile(this.getType());
+        return new Tile(this);
     }
 }
