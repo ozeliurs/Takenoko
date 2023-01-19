@@ -5,6 +5,7 @@ import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
+import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
@@ -238,5 +239,21 @@ public class Board {
     /** Changes the weather to null. This is used when the weather is over. */
     public void resetWeather() {
         weather = null;
+    }
+
+    /**
+     * @param improvementType the type of improvement
+     * @return the improvement of the type
+     */
+    public ImprovementType drawImprovement(ImprovementType improvementType) {
+        return gameAssets.getImprovementDeck().draw(improvementType);
+    }
+
+    /**
+     * @param improvementType the type of improvement
+     * @return if the improvement is available
+     */
+    public boolean hasImprovementInDeck(ImprovementType improvementType) {
+        return gameAssets.getImprovementDeck().hasImprovement(improvementType);
     }
 }
