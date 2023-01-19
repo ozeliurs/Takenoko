@@ -6,6 +6,7 @@ import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -77,7 +78,8 @@ public class BotManager {
      */
     public void playBot(Board board) {
         board.rollWeather();
-        botState.setAvailableActions(List.of(ChooseIfApplyWeatherAction.class));
+        botState.setAvailableActions(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS));
+        botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         botState.setNumberOfActions(defaultNumberOfActions);
         while (canPlayBot()) {
             Action action = bot.chooseAction(board.copy(), botState.copy());
@@ -90,7 +92,8 @@ public class BotManager {
                                 + ". Please choose another action.");
             }
             ActionResult actionResult = action.execute(board, this);
-            botState.setAvailableActions(actionResult.availableActions());
+            botState.clearForcedActions();
+            botState.addAvailableActions(actionResult.availableActions());
             botState.setNumberOfActions(botState.getNumberOfActions() - actionResult.cost());
             verifyObjective(board);
             if (this.isObjectiveAchieved()) {

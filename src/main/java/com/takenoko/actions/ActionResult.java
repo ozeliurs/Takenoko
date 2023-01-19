@@ -15,10 +15,10 @@ public record ActionResult(List<Class<? extends Action>> availableActions, int c
     }
 
     public ActionResult() {
-        this(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS), 0);
+        this(new ArrayList<>(), 0);
     }
 
     public ActionResult(int cost) {
-        this(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS), cost);
+        this(new ArrayList<>(), cost);
     }
 }
