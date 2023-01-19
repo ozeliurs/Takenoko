@@ -28,8 +28,7 @@ public class InventoryImprovements extends ArrayList<ImprovementType> {
     }
 
     /**
-     * @param toUse
-     * remove used improvement from list or throw exception if not possessed
+     * @param toUse remove used improvement from list or throw exception if not possessed
      */
     public void use(ImprovementType toUse) {
         if (!contains(toUse)) {

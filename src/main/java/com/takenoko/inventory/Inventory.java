@@ -1,7 +1,6 @@
 package com.takenoko.inventory;
 
 import com.takenoko.layers.tile.ImprovementType;
-
 import java.util.Objects;
 
 public class Inventory {
@@ -22,20 +21,20 @@ public class Inventory {
         this(new InventoryBambooStack(0), new InventoryImprovements());
     }
 
-    public void collectBamboo(){
-        bambooStack.collectBamboo();
+    public void collectBamboo() {
+        getBambooStack().collectBamboo();
     }
 
-    public void storeImprovement(ImprovementType improvementType){
-        inventoryImprovements.store(improvementType);
+    public void storeImprovement(ImprovementType improvementType) {
+        getInventoryImprovements().store(improvementType);
     }
 
-    public void useImprovement(ImprovementType improvementType){
-        inventoryImprovements.use(improvementType);
+    public void useImprovement(ImprovementType improvementType) {
+        getInventoryImprovements().use(improvementType);
     }
 
-    public int getBambooCount(){
-        return bambooStack.getBambooCount();
+    public int getBambooCount() {
+        return getBambooStack().getBambooCount();
     }
 
     public InventoryBambooStack getBambooStack() {
