@@ -40,31 +40,31 @@ class TileTest {
     }
 
     @Nested
-    @DisplayName("Method setChip && getChip")
-    class TestSetChipAndGetChip {
+    @DisplayName("Method setImprovement && getImprovement")
+    class TestSetImprovementAndGetImprovement {
         @Test
-        @DisplayName("When instantiated, chip is null")
-        void getChip_WhenCalled_ThenReturnsNull() {
-            assertThat(tile.getChip()).isEmpty();
+        @DisplayName("When instantiated, improvement is null")
+        void getImprovement_WhenCalled_ThenReturnsNull() {
+            assertThat(tile.getImprovement()).isEmpty();
         }
 
         @Test
-        @DisplayName("When chip is set, getChip returns the chip")
-        void getChip_WhenChipIsSet_ThenReturnsChip() {
-            tile.setChip(ChipType.FERTILIZER);
-            assertThat(tile.getChip()).isNotEmpty();
-            assertThat(tile.getChip()).contains(ChipType.FERTILIZER);
+        @DisplayName("When improvement is set, getImprovement returns the improvement")
+        void getImprovement_WhenImprovementIsSet_ThenReturnsImprovement() {
+            tile.setImprovement(ImprovementType.FERTILIZER);
+            assertThat(tile.getImprovement()).isNotEmpty();
+            assertThat(tile.getImprovement()).contains(ImprovementType.FERTILIZER);
         }
 
         @Test
-        @DisplayName("When chip is already set, setChip throws an exception")
-        void setChip_WhenChipIsAlreadySet_ThenThrowsException() {
-            tile.setChip(ChipType.FERTILIZER);
-            assertThat(tile.getChip()).isNotEmpty();
-            assertThat(tile.getChip()).contains(ChipType.FERTILIZER);
-            assertThatThrownBy(() -> tile.setChip(ChipType.FERTILIZER))
+        @DisplayName("When improvement is already set, setImprovement throws an exception")
+        void setImprovement_WhenImprovementIsAlreadySet_ThenThrowsException() {
+            tile.setImprovement(ImprovementType.FERTILIZER);
+            assertThat(tile.getImprovement()).isNotEmpty();
+            assertThat(tile.getImprovement()).contains(ImprovementType.FERTILIZER);
+            assertThatThrownBy(() -> tile.setImprovement(ImprovementType.FERTILIZER))
                     .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("The tile already has a chip");
+                    .hasMessage("The tile already has an improvement");
         }
     }
 
@@ -85,10 +85,10 @@ class TileTest {
         }
 
         @Test
-        @DisplayName("When tiles have not the same chip, returns false")
-        void equals_WhenTilesHaveNotTheSameChip_ThenReturnsFalse() {
-            other.setChip(ChipType.FERTILIZER);
-            tile.setChip(ChipType.ENCLOSURE);
+        @DisplayName("When tiles have not the same improvement, returns false")
+        void equals_WhenTilesHaveNotTheSameImprovement_ThenReturnsFalse() {
+            other.setImprovement(ImprovementType.FERTILIZER);
+            tile.setImprovement(ImprovementType.ENCLOSURE);
             assertThat(other).isNotEqualTo(tile);
         }
 
@@ -117,9 +117,9 @@ class TileTest {
         }
 
         @Test
-        @DisplayName("When tiles have different chips, returns different hash code")
-        void hashCode_WhenTilesHaveDifferentChips_ThenReturnsDifferentHashCode() {
-            other.setChip(ChipType.FERTILIZER);
+        @DisplayName("When tiles have different improvements, returns different hash code")
+        void hashCode_WhenTilesHaveDifferentImprovements_ThenReturnsDifferentHashCode() {
+            other.setImprovement(ImprovementType.FERTILIZER);
             assertThat(tile).doesNotHaveSameHashCodeAs(other);
         }
 
@@ -146,10 +146,10 @@ class TileTest {
         }
 
         @Test
-        @DisplayName("When tile is copied, returns a tile with the same chip")
-        void copy_WhenTileIsCopied_ThenReturnsTileWithSameChip() {
-            tile.setChip(ChipType.FERTILIZER);
-            assertThat(tile.copy().getChip()).isEqualTo(tile.getChip());
+        @DisplayName("When tile is copied, returns a tile with the same improvement")
+        void copy_WhenTileIsCopied_ThenReturnsTileWithSameImprovement() {
+            tile.setImprovement(ImprovementType.FERTILIZER);
+            assertThat(tile.copy().getImprovement()).isEqualTo(tile.getImprovement());
         }
     }
 }
