@@ -33,6 +33,28 @@ class ImprovementDeckTest {
     }
 
     @Nested
+    @DisplayName("Method hasImprovement")
+    class TestHasImprovement {
+        @Test
+        @DisplayName("When instantiated, deck has 3 times the number of improvement types")
+        void hasImprovement_WhenImprovementIsDrawn_ThenItIsRemovedFromTheDeck() {
+            ImprovementDeck deck = new ImprovementDeck();
+            deck.draw(ImprovementType.FERTILIZER);
+            assertThat(deck.hasImprovement(ImprovementType.FERTILIZER)).isTrue();
+        }
+
+        @Test
+        @DisplayName("When the deck runs out of improvement, hasImprovement returns false")
+        void hasImprovement_WhenDeckRunsOutOfImprovement_ThenReturnsFalse() {
+            ImprovementDeck deck = new ImprovementDeck();
+            deck.draw(ImprovementType.FERTILIZER);
+            deck.draw(ImprovementType.FERTILIZER);
+            deck.draw(ImprovementType.FERTILIZER);
+            assertThat(deck.hasImprovement(ImprovementType.FERTILIZER)).isFalse();
+        }
+    }
+
+    @Nested
     @DisplayName("Method equals")
     class TestEquals {
         @Test

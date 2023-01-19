@@ -24,6 +24,14 @@ public class ImprovementDeck extends HashMap<ImprovementType, Integer> {
         throw new IllegalArgumentException("No more improvement of type " + improvementType);
     }
 
+    /**
+     * @param improvementType the improvement type you want to know if available
+     * @return true if the improvement type is available, false otherwise
+     */
+    public boolean hasImprovement(ImprovementType improvementType) {
+        return this.get(improvementType) > 0;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
