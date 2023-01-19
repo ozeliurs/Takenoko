@@ -3,9 +3,7 @@ package com.takenoko.layers.tile;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * Class Tile represents a tile in the game. A tile has a type {@link TileType}.
- */
+/** Class Tile represents a tile in the game. A tile has a type {@link TileType}. */
 public class Tile {
     private final TileType type;
     private ChipType chip;
@@ -55,9 +53,7 @@ public class Tile {
         return Optional.ofNullable(chip);
     }
 
-    /**
-     * Set the chip of the tile. If the chip is null, throw an exception.
-     */
+    /** Set the chip of the tile. If the chip is null, throw an exception. */
     public void setChip(ChipType chip) {
         if (this.chip != null) {
             throw new IllegalStateException("The tile already has a chip");

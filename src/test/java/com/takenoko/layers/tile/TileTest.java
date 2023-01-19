@@ -1,6 +1,6 @@
 package com.takenoko.layers.tile;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
@@ -33,6 +33,35 @@ class TileTest {
         @DisplayName("When tiles is Pond, returns TileType POND")
         void getType_WhenTileIsPond_ThenReturnsTrue() {
             assertThat(pondTile.getType()).isEqualTo(TileType.POND);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method setChip && getChip")
+    class TestSetChipAndGetChip {
+        @Test
+        @DisplayName("When instantiated, chip is null")
+        void getChip_WhenCalled_ThenReturnsNull() {
+            assertThat(tile.getChip()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("When chip is set, getChip returns the chip")
+        void getChip_WhenChipIsSet_ThenReturnsChip() {
+            tile.setChip(ChipType.FERTILIZER);
+            assertThat(tile.getChip()).isNotEmpty();
+            assertThat(tile.getChip()).contains(ChipType.FERTILIZER);
+        }
+
+        @Test
+        @DisplayName("When chip is already set, setChip throws an exception")
+        void setChip_WhenChipIsAlreadySet_ThenThrowsException() {
+            tile.setChip(ChipType.FERTILIZER);
+            assertThat(tile.getChip()).isNotEmpty();
+            assertThat(tile.getChip()).contains(ChipType.FERTILIZER);
+            assertThatThrownBy(() -> tile.setChip(ChipType.FERTILIZER))
+                    .isInstanceOf(IllegalStateException.class)
+                    .hasMessage("The tile already has a chip");
         }
     }
 
