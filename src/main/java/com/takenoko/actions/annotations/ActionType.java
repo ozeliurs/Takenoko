@@ -1,4 +1,4 @@
-package com.takenoko.actions;
+package com.takenoko.actions.annotations;
 
 /** Types of actions that can be performed. This used to define the lifetime of an action */
 public enum ActionType {

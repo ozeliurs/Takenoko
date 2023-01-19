@@ -1,4 +1,4 @@
-package com.takenoko.actions;
+package com.takenoko.actions.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

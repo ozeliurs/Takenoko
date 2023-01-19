@@ -1,13 +1,13 @@
 package com.takenoko.actions;
 
+import com.takenoko.actions.annotations.ForcedAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of placing a tile on the board. */
-@ActionAnnotation(ActionType.DEFAULT)
-public class PlaceTileAction implements Action {
+public class PlaceTileAction implements ForcedAction {
     private final Tile tile;
     private final PositionVector positionVector;
 

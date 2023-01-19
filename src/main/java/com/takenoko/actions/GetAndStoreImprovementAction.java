@@ -1,10 +1,11 @@
 package com.takenoko.actions;
 
+import com.takenoko.actions.annotations.ForcedAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.tile.ImprovementType;
 
-public class GetAndStoreImprovementAction implements Action {
+public class GetAndStoreImprovementAction implements ForcedAction {
     private final ImprovementType improvementType;
 
     /**
@@ -27,10 +28,5 @@ public class GetAndStoreImprovementAction implements Action {
         botManager.displayMessage(botManager.getName() + " got an improvement");
         botManager.getInventory().storeImprovement(improvementType);
         return new ActionResult(1);
-    }
-
-    @Override
-    public ActionType getType() {
-        return ActionType.FORCED;
     }
 }

@@ -1,12 +1,12 @@
 package com.takenoko.actions;
 
+import com.takenoko.actions.annotations.DefaultAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.vector.PositionVector;
 
-@ActionAnnotation(ActionType.DEFAULT)
-public class MoveGardenerAction implements Action {
+public class MoveGardenerAction implements DefaultAction {
     private final PositionVector relativePositionVector;
 
     /**

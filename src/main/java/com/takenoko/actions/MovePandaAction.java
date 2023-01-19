@@ -1,13 +1,13 @@
 package com.takenoko.actions;
 
+import com.takenoko.actions.annotations.DefaultAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of moving the panda. */
-@ActionAnnotation(ActionType.DEFAULT)
-public class MovePandaAction implements Action {
+public class MovePandaAction implements DefaultAction {
     private final PositionVector relativePositionVector;
 
     /**
