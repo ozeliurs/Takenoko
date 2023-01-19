@@ -49,6 +49,7 @@ public class TileLayer {
             throw new IllegalArgumentException("Tile position not available");
         }
         tiles.put(position, tile);
+        board.chooseTileInTileDeck(tile);
         updateAvailableTilePositions(position);
         // grow bamboo
         board.growBamboo(position);
@@ -183,5 +184,15 @@ public class TileLayer {
     @Override
     public int hashCode() {
         return Objects.hash(getTiles(), getAvailableTilePositions());
+    }
+
+    public void applyImprovement(
+            ImprovementType improvementType, PositionVector positionVector, Board board) {
+        if (!board.getAvailableImprovementPositions().contains(positionVector)) {
+            throw new IllegalStateException("Tile not available for improvement");
+        }
+        Tile tile = board.getTileAt(positionVector);
+        tile.setImprovement(improvementType);
+        board.growBamboo(positionVector);
     }
 }

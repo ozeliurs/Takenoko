@@ -41,4 +41,8 @@ public class InventoryImprovements extends ArrayList<ImprovementType> {
         }
         super.remove(toUse);
     }
+
+    public boolean hasImprovement(ImprovementType improvementType) {
+        return contains(improvementType);
+    }
 }

@@ -9,6 +9,7 @@ import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.*;
 
@@ -317,6 +318,24 @@ class TileLayerTest {
             when(board.getTileAt(any())).thenReturn(pond);
             when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
             assertThat(tileLayer.getAvailableImprovementPositions(board)).isEmpty();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method applyImprovement()")
+    class TestApplyImprovement {
+        @Test
+        @DisplayName("should apply the improvement to the tile")
+        void applyImprovement_shouldApplyImprovementToTile() {
+            Board board = mock(Board.class);
+            Tile tile = new Tile();
+            PositionVector position = mock(PositionVector.class);
+            when(board.getTiles()).thenReturn(Map.of(position, tile));
+            when(board.getTileAt(any())).thenReturn(tile);
+            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
+            when(board.getAvailableImprovementPositions()).thenReturn(List.of(position));
+            tileLayer.applyImprovement(mock(ImprovementType.class), position, board);
+            assertThat(tile.getImprovement()).isNotNull();
         }
     }
 }
