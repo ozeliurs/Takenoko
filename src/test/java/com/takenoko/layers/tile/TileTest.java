@@ -1,23 +1,26 @@
 package com.takenoko.layers.tile;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 
 class TileTest {
     private Tile tile;
+    private Tile other;
     private Tile pondTile;
 
     @BeforeEach
     void setUp() {
         pondTile = new Tile(TileType.POND);
         tile = new Tile();
+        other = new Tile();
     }
 
     @AfterEach
     void tearDown() {
         pondTile = null;
         tile = null;
+        other = null;
     }
 
     @Nested
@@ -37,6 +40,35 @@ class TileTest {
     }
 
     @Nested
+    @DisplayName("Method setChip && getChip")
+    class TestSetChipAndGetChip {
+        @Test
+        @DisplayName("When instantiated, chip is null")
+        void getChip_WhenCalled_ThenReturnsNull() {
+            assertThat(tile.getChip()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("When chip is set, getChip returns the chip")
+        void getChip_WhenChipIsSet_ThenReturnsChip() {
+            tile.setChip(ChipType.FERTILIZER);
+            assertThat(tile.getChip()).isNotEmpty();
+            assertThat(tile.getChip()).contains(ChipType.FERTILIZER);
+        }
+
+        @Test
+        @DisplayName("When chip is already set, setChip throws an exception")
+        void setChip_WhenChipIsAlreadySet_ThenThrowsException() {
+            tile.setChip(ChipType.FERTILIZER);
+            assertThat(tile.getChip()).isNotEmpty();
+            assertThat(tile.getChip()).contains(ChipType.FERTILIZER);
+            assertThatThrownBy(() -> tile.setChip(ChipType.FERTILIZER))
+                    .isInstanceOf(IllegalStateException.class)
+                    .hasMessage("The tile already has a chip");
+        }
+    }
+
+    @Nested
     @DisplayName("Method equals")
     class TestEquals {
         @Test
@@ -47,9 +79,16 @@ class TileTest {
         }
 
         @Test
-        @DisplayName("When tiles are not equal, returns false")
-        void equals_WhenTilesAreNotEqual_ThenReturnsFalse() {
+        @DisplayName("When tiles have not the same type, returns false")
+        void equals_WhenTilesHaveNotTheSameType_ThenReturnsFalse() {
             assertThat(pondTile.equals(tile)).isFalse();
+        }
+
+        @Test
+        @DisplayName("When tiles have not the same chip, returns false")
+        void equals_WhenTilesHaveNotTheSameChip_ThenReturnsFalse() {
+            other.setChip(ChipType.FERTILIZER);
+            assertThat(other).isNotEqualTo(tile);
         }
 
         @Test
@@ -77,6 +116,13 @@ class TileTest {
         }
 
         @Test
+        @DisplayName("When tiles have different chips, returns different hash code")
+        void hashCode_WhenTilesHaveDifferentChips_ThenReturnsDifferentHashCode() {
+            other.setChip(ChipType.FERTILIZER);
+            assertThat(tile).doesNotHaveSameHashCodeAs(other);
+        }
+
+        @Test
         @DisplayName("When tiles are not equal, returns different hash code")
         void hashCode_WhenTilesAreNotEqual_ThenReturnsDifferentHashCode() {
             assertThat(pondTile).doesNotHaveSameHashCodeAs(tile);
@@ -96,6 +142,13 @@ class TileTest {
         @DisplayName("When tile is copied, returns a tile with the same type")
         void copy_WhenTileIsCopied_ThenReturnsTileWithSameType() {
             assertThat(tile.copy().getType()).isEqualTo(tile.getType());
+        }
+
+        @Test
+        @DisplayName("When tile is copied, returns a tile with the same chip")
+        void copy_WhenTileIsCopied_ThenReturnsTileWithSameChip() {
+            tile.setChip(ChipType.FERTILIZER);
+            assertThat(tile.copy().getChip()).isEqualTo(tile.getChip());
         }
     }
 }

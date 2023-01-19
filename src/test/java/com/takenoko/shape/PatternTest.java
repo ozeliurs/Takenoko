@@ -1,6 +1,7 @@
 package com.takenoko.shape;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -13,6 +14,16 @@ import java.util.HashMap;
 import org.junit.jupiter.api.*;
 
 class PatternTest {
+    @Nested
+    @DisplayName("Class constructor")
+    class Constructor {
+        @Test
+        @DisplayName("Should throw an exception when the pattern is empty")
+        void shouldThrowExceptionWhenPatternIsEmpty() {
+            assertThatThrownBy(Pattern::new).isInstanceOf(IllegalArgumentException.class);
+        }
+    }
+
     @Nested
     @DisplayName("Method match")
     class TestMatch {
@@ -86,6 +97,21 @@ class PatternTest {
     @Nested
     @DisplayName("Test equals")
     class TestEquals {
+        @Test
+        @SuppressWarnings("EqualsWithItself")
+        @DisplayName("should return true called on self")
+        void equals_shouldReturnTrueWhenCalledOnSelf() {
+            Pattern pattern = new Pattern(new PositionVector(0, 0, 0));
+            assertThat(pattern.equals(pattern)).isTrue();
+        }
+
+        @Test
+        @DisplayName("should return false when called on another class")
+        void equals_shouldReturnFalseWhenCalledOnAnotherClass() {
+            Pattern pattern = new Pattern(new PositionVector(0, 0, 0));
+            assertThat(pattern.equals(new Object())).isFalse();
+        }
+
         @Test
         @DisplayName("should return true when the patterns are equal")
         void equals_shouldReturnTrueWhenPatternsAreEqual() {

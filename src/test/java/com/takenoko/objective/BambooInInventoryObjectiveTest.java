@@ -159,4 +159,35 @@ public class BambooInInventoryObjectiveTest {
                     .doesNotHaveSameHashCodeAs(new BambooSizeObjective(1));
         }
     }
+
+    @Nested
+    @DisplayName("Method getCompletion")
+    class TestGetCompletion {
+        @Test
+        @DisplayName("When the objective is not achieved, returns 0")
+        void getCompletion_WhenObjectiveIsNotAchieved_ThenReturns0() {
+            assertThat(bambooInInventoryObjective.getCompletion(board, mock(BotManager.class)))
+                    .isZero();
+        }
+
+        @Test
+        @DisplayName("When the objective is started, returns 0.5")
+        void getCompletion_WhenObjectiveIsStarted_ThenReturns05() {
+            bambooInInventoryObjective = new BambooInInventoryObjective(2);
+            BotManager botManager = mock(BotManager.class);
+            when(botManager.getEatenBambooCounter()).thenReturn(1);
+            bambooInInventoryObjective.verify(board, botManager);
+            assertThat(bambooInInventoryObjective.getCompletion(board, botManager)).isEqualTo(0.5f);
+        }
+
+        @Test
+        @DisplayName("When the objective is achieved, returns 1")
+        void getCompletion_WhenObjectiveIsAchieved_ThenReturns1() {
+            bambooInInventoryObjective = new BambooInInventoryObjective(2);
+            BotManager botManager = mock(BotManager.class);
+            when(botManager.getEatenBambooCounter()).thenReturn(2);
+            bambooInInventoryObjective.verify(board, botManager);
+            assertThat(bambooInInventoryObjective.getCompletion(board, botManager)).isEqualTo(1);
+        }
+    }
 }
