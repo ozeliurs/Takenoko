@@ -3,7 +3,7 @@ package com.takenoko.layers.bamboo;
 import java.util.Objects;
 
 public class LayerBambooStack extends BambooStack {
-    private static final int MAX_BAMBOO = 4;
+    public static final int MAX_BAMBOO = 4;
 
     public LayerBambooStack(int startingBamboo) {
         super(startingBamboo);
@@ -48,9 +48,7 @@ public class LayerBambooStack extends BambooStack {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        LayerBambooStack that = (LayerBambooStack) o;
-        return bambooCount == that.bambooCount;
+        return super.equals(o);
     }
 
     @Override

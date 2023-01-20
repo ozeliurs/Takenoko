@@ -35,11 +35,21 @@ public class BambooLayer {
             throw new IllegalArgumentException("The tile is not growable");
         }
 
-        if (bamboo.containsKey(positionVector)) {
-            bamboo.get(positionVector).growBamboo();
-        } else {
-            bamboo.put(positionVector, new LayerBambooStack(1));
+        Optional<ImprovementType> improvement = board.getTileAt(positionVector).getImprovement();
+
+        bamboo.computeIfAbsent(positionVector, k -> new LayerBambooStack(0));
+
+        if (improvement.isPresent() && improvement.get() == ImprovementType.FERTILIZER) {
+
+            if (bamboo.get(positionVector).bambooCount == LayerBambooStack.MAX_BAMBOO - 1) {
+                bamboo.get(positionVector).growBamboo();
+                return;
+            }
+            bamboo.get(positionVector).growBamboo(2);
+            return;
         }
+
+        bamboo.get(positionVector).growBamboo();
     }
 
     /**
