@@ -15,7 +15,12 @@ public class BambooStack {
 
     /** increment bambooCount by 1 */
     protected void growBamboo() {
-        bambooCount++;
+        this.growBamboo(1);
+    }
+
+    /** increment bambooCount by height */
+    protected void growBamboo(int height) {
+        bambooCount += height;
     }
 
     /** lower bambooCount by 1 */

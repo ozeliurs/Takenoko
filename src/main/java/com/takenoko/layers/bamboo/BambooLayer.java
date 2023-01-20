@@ -1,10 +1,12 @@
 package com.takenoko.layers.bamboo;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.TileType;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Optional;
 
 /** BambooLayer class. The bamboo layer contains the number of bamboo on each tile. */
 public class BambooLayer {
@@ -36,10 +38,20 @@ public class BambooLayer {
             throw new IllegalArgumentException("The position is not on the board");
         }
 
-        if (bamboo.containsKey(positionVector)) {
-            bamboo.get(positionVector).growBamboo();
+        Optional<ImprovementType> improvement = board.getTileAt(positionVector).getImprovement();
+
+        if (improvement.isPresent() && improvement.get() == ImprovementType.FERTILIZER) {
+            if (bamboo.containsKey(positionVector)) {
+                bamboo.get(positionVector).growBamboo(2);
+            } else {
+                bamboo.put(positionVector, new LayerBambooStack(2));
+            }
         } else {
-            bamboo.put(positionVector, new LayerBambooStack(1));
+            if (bamboo.containsKey(positionVector)) {
+                bamboo.get(positionVector).growBamboo();
+            } else {
+                bamboo.put(positionVector, new LayerBambooStack(1));
+            }
         }
     }
 
