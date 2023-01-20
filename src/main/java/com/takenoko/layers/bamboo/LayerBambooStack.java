@@ -3,7 +3,7 @@ package com.takenoko.layers.bamboo;
 import java.util.Objects;
 
 public class LayerBambooStack extends BambooStack {
-    private static final int MAX_BAMBOO = 4;
+    public static final int MAX_BAMBOO = 4;
 
     public LayerBambooStack(int startingBamboo) {
         super(startingBamboo);

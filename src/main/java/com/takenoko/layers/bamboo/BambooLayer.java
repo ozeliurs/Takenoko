@@ -4,15 +4,20 @@ import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.TileType;
 import com.takenoko.vector.PositionVector;
+
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
 
-/** BambooLayer class. The bamboo layer contains the number of bamboo on each tile. */
+/**
+ * BambooLayer class. The bamboo layer contains the number of bamboo on each tile.
+ */
 public class BambooLayer {
     private final HashMap<PositionVector, LayerBambooStack> bamboo;
 
-    /** Constructor for the BambooLayer class. */
+    /**
+     * Constructor for the BambooLayer class.
+     */
     public BambooLayer() {
         bamboo = new HashMap<>();
     }
@@ -28,7 +33,7 @@ public class BambooLayer {
      * Grow bamboo on a tile. By default, the number of bamboo is 1 if the tile is irrigated.
      *
      * @param positionVector the position of the tile
-     * @param board the board
+     * @param board          the board
      */
     public void growBamboo(PositionVector positionVector, Board board) {
         if (!board.isBambooGrowableAt(positionVector)) {
@@ -39,28 +44,30 @@ public class BambooLayer {
 
         if (improvement.isPresent() && improvement.get() == ImprovementType.FERTILIZER) {
             if (bamboo.containsKey(positionVector)) {
-                if (bamboo.get(positionVector).bambooCount == 3) {
+                if (bamboo.get(positionVector).bambooCount == LayerBambooStack.MAX_BAMBOO - 1) {
                     bamboo.get(positionVector).growBamboo();
-                } else {
-                    bamboo.get(positionVector).growBamboo(2);
+                    return;
                 }
-            } else {
-                bamboo.put(positionVector, new LayerBambooStack(2));
+                bamboo.get(positionVector).growBamboo(2);
+                return;
             }
-        } else {
-            if (bamboo.containsKey(positionVector)) {
-                bamboo.get(positionVector).growBamboo();
-            } else {
-                bamboo.put(positionVector, new LayerBambooStack(1));
-            }
+            bamboo.put(positionVector, new LayerBambooStack(2));
+            return;
         }
+
+        if (bamboo.containsKey(positionVector)) {
+            bamboo.get(positionVector).growBamboo();
+            return;
+        }
+        bamboo.put(positionVector, new LayerBambooStack(1));
+
     }
 
     /**
      * Get the number of bamboo on a tile.
      *
      * @param positionVector the position of the tile
-     * @param board the board
+     * @param board          the board
      * @return the number of bamboo on the tile
      */
     public LayerBambooStack getBambooAt(PositionVector positionVector, Board board) {
@@ -76,7 +83,7 @@ public class BambooLayer {
      * Eat a bamboo from a tile.
      *
      * @param positionVector the position of the tile
-     * @param board the board
+     * @param board          the board
      */
     public void eatBamboo(PositionVector positionVector, Board board) {
         if (board.isBambooEatableAt(positionVector)) {
