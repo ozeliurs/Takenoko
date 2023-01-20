@@ -42,7 +42,11 @@ public class BambooLayer {
 
         if (improvement.isPresent() && improvement.get() == ImprovementType.FERTILIZER) {
             if (bamboo.containsKey(positionVector)) {
-                bamboo.get(positionVector).growBamboo(2);
+                if (bamboo.get(positionVector).bambooCount == 3) {
+                    bamboo.get(positionVector).growBamboo();
+                } else {
+                    bamboo.get(positionVector).growBamboo(2);
+                }
             } else {
                 bamboo.put(positionVector, new LayerBambooStack(2));
             }

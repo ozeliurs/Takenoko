@@ -21,7 +21,6 @@ public class BambooStack {
     /** increment bambooCount by height */
     protected void growBamboo(int height) {
         bambooCount += height;
-        bambooCount = Math.min(bambooCount, 4);
     }
 
     /** lower bambooCount by 1 */
