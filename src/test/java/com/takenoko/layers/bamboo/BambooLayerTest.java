@@ -6,8 +6,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -50,10 +52,24 @@ class BambooLayerTest {
         @DisplayName("should add a bamboo to the bamboo layer")
         void shouldAddABambooToTheBambooLayerIfTheKeyExists() {
             when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             PositionVector position = new PositionVector(1, 0, -1);
             bambooLayer.growBamboo(position, board);
             bambooLayer.growBamboo(position, board);
             assertThat(bambooLayer.getBambooAt(position, board).getBambooCount()).isEqualTo(2);
+        }
+
+        @Test
+        @DisplayName("should add two bamboos to the bamboo layer when fertilized")
+        void shouldAddTwoBamboosToTheBambooLayerWhenFertilized() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.getTileAt(any()).getImprovement())
+                    .thenReturn(Optional.of(ImprovementType.FERTILIZER));
+            PositionVector position = new PositionVector(1, 0, -1);
+            bambooLayer.growBamboo(position, board);
+            bambooLayer.growBamboo(position, board);
+            assertThat(bambooLayer.getBambooAt(position, board).getBambooCount()).isEqualTo(4);
         }
     }
 
@@ -82,6 +98,7 @@ class BambooLayerTest {
         @DisplayName("should return the bamboo stack at the position")
         void shouldReturnTheBambooStackAtThePosition() {
             when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             bambooLayer.growBamboo(new PositionVector(-1, 0, 1), board);
             assertThat(bambooLayer.getBambooAt(new PositionVector(-1, 0, 1), board))
                     .isEqualTo(new LayerBambooStack(1));
@@ -95,6 +112,7 @@ class BambooLayerTest {
         @DisplayName("should remove the bamboo from the bamboo layer")
         void shouldRemoveTheBambooFromTheBambooLayer() {
             when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             LayerBambooStack bambooStack = new LayerBambooStack(1);
             when(board.getBambooAt(any())).thenReturn(bambooStack);
             bambooLayer.growBamboo(new PositionVector(-1, 0, 1), board);
@@ -155,6 +173,7 @@ class BambooLayerTest {
             BambooLayer bambooLayer1 = new BambooLayer();
             BambooLayer bambooLayer2 = new BambooLayer();
             when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             bambooLayer1.growBamboo(new PositionVector(-1, 0, 1), board);
             assertThat(bambooLayer1).isNotEqualTo(bambooLayer2);
         }
@@ -176,6 +195,7 @@ class BambooLayerTest {
         void shouldReturnADifferentHashCodeIfTheBambooLayersAreNotEqual() {
             BambooLayer bambooLayer1 = new BambooLayer();
             BambooLayer bambooLayer2 = new BambooLayer();
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             when(board.isTile(any())).thenReturn(true);
             bambooLayer1.growBamboo(new PositionVector(-1, 0, 1), board);
             assertThat(bambooLayer1).doesNotHaveSameHashCodeAs(bambooLayer2);
@@ -190,6 +210,7 @@ class BambooLayerTest {
         void shouldReturnACopyOfTheBambooLayer() {
             BambooLayer bambooLayer1 = new BambooLayer();
             when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             bambooLayer1.growBamboo(new PositionVector(-1, 0, 1), board);
             BambooLayer bambooLayer2 = bambooLayer1.copy();
             assertThat(bambooLayer1).isEqualTo(bambooLayer2);
