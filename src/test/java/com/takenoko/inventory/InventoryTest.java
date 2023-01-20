@@ -179,4 +179,18 @@ class InventoryTest {
             assertThat(inventory.getBambooCount()).isEqualTo(bambooStack.getBambooCount());
         }
     }
+
+    @Nested
+    @DisplayName("Method hasImprovement()")
+    class TestHasImprovement {
+        @Test
+        @DisplayName("should call method hasImprovement in InventoryImprovements")
+        void hasImprovement_shouldCallMethodHasImprovementInInventoryImprovements() {
+            InventoryImprovements inventoryImprovements = mock(InventoryImprovements.class);
+            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
+            inventory = new Inventory(bambooStack, inventoryImprovements);
+            inventory.hasImprovement(ImprovementType.FERTILIZER);
+            verify(inventoryImprovements, times(1)).hasImprovement(ImprovementType.FERTILIZER);
+        }
+    }
 }
