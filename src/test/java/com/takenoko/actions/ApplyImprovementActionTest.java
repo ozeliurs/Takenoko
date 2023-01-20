@@ -31,7 +31,7 @@ class ApplyImprovementActionTest {
 
             assertThatThrownBy(() -> applyImprovementAction.execute(board, botManager))
                     .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("Improvement not in inventory");
+                    .hasMessage("Improvement not in deck");
         }
     }
 }

@@ -1,14 +1,14 @@
 package com.takenoko.actions;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.tile.ImprovementType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.mock;
 
 class DrawImprovementActionTest {
     @Nested
@@ -25,8 +25,11 @@ class DrawImprovementActionTest {
         }
 
         @Test
-        @DisplayName("should return an ActionResult containing ApplyImprovementAction and StoreImprovementAction if an improvement is drawn")
-        void shouldReturnAnActionResultContainingApplyImprovementActionAndStoreImprovementActionIfAnImprovementIsDrawn() {
+        @DisplayName(
+                "should return an ActionResult containing ApplyImprovementAction and"
+                        + " StoreImprovementAction if an improvement is drawn")
+        void
+                shouldReturnAnActionResultContainingApplyImprovementActionAndStoreImprovementActionIfAnImprovementIsDrawn() {
             ImprovementType improvementType = ImprovementType.FERTILIZER;
             DrawImprovementAction drawImprovementAction =
                     new DrawImprovementAction(improvementType);

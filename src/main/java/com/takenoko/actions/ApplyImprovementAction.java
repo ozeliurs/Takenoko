@@ -9,8 +9,8 @@ import com.takenoko.vector.PositionVector;
 
 @ActionAnnotation(ActionType.FORCED)
 public class ApplyImprovementAction implements Action {
-    ImprovementType improvementType;
-    PositionVector positionVector;
+    protected ImprovementType improvementType;
+    protected PositionVector positionVector;
 
     public ApplyImprovementAction(ImprovementType improvementType, PositionVector positionVector) {
         this.improvementType = improvementType;
@@ -19,8 +19,8 @@ public class ApplyImprovementAction implements Action {
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
-        if (!botManager.getInventory().hasImprovement(improvementType)) {
-            throw new IllegalStateException("Improvement not in inventory");
+        if (!board.hasImprovementInDeck(improvementType)) {
+            throw new IllegalStateException("Improvement not in deck");
         }
         board.applyImprovement(improvementType, positionVector);
 

@@ -1,9 +1,12 @@
 package com.takenoko.actions;
 
+import com.takenoko.actions.annotations.ActionAnnotation;
+import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.weather.Weather;
 
+@ActionAnnotation(ActionType.FORCED)
 public class ChooseAndApplyWeatherAction implements Action {
     Weather weather;
 
