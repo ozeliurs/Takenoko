@@ -188,9 +188,15 @@ class InventoryTest {
         void hasImprovement_shouldCallMethodHasImprovementInInventoryImprovements() {
             InventoryImprovements inventoryImprovements = mock(InventoryImprovements.class);
             InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
+            when(inventoryImprovements.hasImprovement(ImprovementType.FERTILIZER)).thenReturn(true);
             inventory = new Inventory(bambooStack, inventoryImprovements);
-            inventory.hasImprovement(ImprovementType.FERTILIZER);
+            assertThat(inventory.hasImprovement(ImprovementType.FERTILIZER)).isTrue();
             verify(inventoryImprovements, times(1)).hasImprovement(ImprovementType.FERTILIZER);
+
+            when(inventoryImprovements.hasImprovement(ImprovementType.FERTILIZER))
+                    .thenReturn(false);
+            assertThat(inventory.hasImprovement(ImprovementType.FERTILIZER)).isFalse();
+            verify(inventoryImprovements, times(2)).hasImprovement(ImprovementType.FERTILIZER);
         }
     }
 }
