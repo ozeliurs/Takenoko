@@ -63,6 +63,7 @@ class BambooLayerTest {
         void shouldAddTwoBamboosToTheBambooLayerWhenFertilized() {
             when(board.isTile(any())).thenReturn(true);
             when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.isBambooGrowableAt(any())).thenReturn(true);
             when(board.getTileAt(any()).getImprovement())
                     .thenReturn(Optional.of(ImprovementType.FERTILIZER));
             PositionVector position = new PositionVector(1, 0, -1);
@@ -76,6 +77,7 @@ class BambooLayerTest {
         void shouldNotGrowBambooPastTheMaximumNumberOfBamboos() {
             when(board.isTile(any())).thenReturn(true);
             when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.isBambooGrowableAt(any())).thenReturn(true);
             PositionVector position = new PositionVector(1, 0, -1);
             bambooLayer.growBamboo(position, board);
             when(board.getTileAt(any()).getImprovement())
@@ -127,7 +129,7 @@ class BambooLayerTest {
         void shouldRemoveTheBambooFromTheBambooLayer() {
             when(board.isTile(any())).thenReturn(true);
             when(board.getTileAt(any())).thenReturn(mock(Tile.class));
-            LayerBambooStack bambooStack = new LayerBambooStack(1);
+            // LayerBambooStack bambooStack1 = new LayerBambooStack(1);
             LayerBambooStack bambooStack =
                     bambooLayer.getBambooAt(new PositionVector(-1, 0, 1), board);
             bambooStack.growBamboo();
@@ -256,7 +258,7 @@ class BambooLayerTest {
         void whenTheTileHasAnImprovementEnclosureShouldReturnFalse() {
             when(board.isTile(any())).thenReturn(true);
             when(board.getTileAt(any())).thenReturn(mock(Tile.class));
-            ;
+
             when(board.getTileAt(any()).getImprovement())
                     .thenReturn(Optional.of(ImprovementType.ENCLOSURE));
             assertThat(bambooLayer.isEatableAt(new PositionVector(-1, 0, 1), board)).isFalse();
