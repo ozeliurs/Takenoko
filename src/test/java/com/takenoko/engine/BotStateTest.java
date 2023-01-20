@@ -1,7 +1,14 @@
 package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
+import com.takenoko.actions.Action;
+import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.ChooseIfApplyWeatherAction;
+import com.takenoko.actions.MoveGardenerAction;
+import com.takenoko.actions.annotations.PersistentApplyImprovementAction;
+import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -79,6 +86,58 @@ class BotStateTest {
         void copy_shouldReturnCopyOfObject() {
             BotState copy = botState.copy();
             assertThat(copy).isEqualTo(botState).isNotSameAs(botState);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getAvailableActions()")
+    class TestGetAvailableActions {
+        @Test
+        @DisplayName("should return the list of available actions")
+        void getAvailableActions_shouldReturnListOfAvailableActions() {
+            assertThat(botState.getAvailableActions()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should return only the forced actions if there are forced actions")
+        void getAvailableActions_shouldReturnOnlyForcedActions() {
+            botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
+            botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
+            botState.addAvailableAction(Action.class);
+            assertThat(botState.getAvailableActions()).hasSize(2);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method updateAvailableActions()")
+    class TestUpdateAvailableActions {
+        @Test
+        @DisplayName("should remove the forced actions")
+        void updateAvailableActions_shouldRemoveForcedActions() {
+            botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
+            botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
+            botState.updateAvailableActions(
+                    new ChooseIfApplyWeatherAction(false), new ActionResult());
+            assertThat(botState.getAvailableActions()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should remove the current action")
+        void updateAvailableActions_shouldRemoveCurrentAction() {
+            botState.addAvailableAction(MoveGardenerAction.class);
+            botState.updateAvailableActions(
+                    new MoveGardenerAction(mock(PositionVector.class)), new ActionResult());
+            assertThat(botState.getAvailableActions()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should keep persistant actions")
+        void updateAvailableActions_shouldKeepPersistantActions() {
+            botState.addAvailableAction(MoveGardenerAction.class);
+            botState.addAvailableAction(PersistentApplyImprovementAction.class);
+            botState.updateAvailableActions(
+                    new MoveGardenerAction(mock(PositionVector.class)), new ActionResult());
+            assertThat(botState.getAvailableActions()).hasSize(1);
         }
     }
 }

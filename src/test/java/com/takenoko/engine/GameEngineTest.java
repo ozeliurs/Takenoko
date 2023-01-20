@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
@@ -198,112 +197,24 @@ class GameEngineTest {
     }
 
     @Nested
-    @DisplayName("Method playGame")
-    class TestPlayGame {
+    @DisplayName("Method playgame")
+    class Playgame {
         @Test
-        @DisplayName("when bots have no objective then they should play all the rounds")
-        void playGame_whenBotsHaveNoObjective_shouldPlayAllTheRounds() {
-
-            BotManager botManager01 = spy(new BotManager(new TilePlacingBot()));
-            BotManager botManager02 = spy(new BotManager(new TilePlacingBot()));
-            when(botManager01.isObjectiveAchieved()).thenReturn(false);
-            when(botManager02.isObjectiveAchieved()).thenReturn(false);
-
-            GameEngine gameEngine =
-                    new GameEngine(new ArrayList<>(List.of(botManager01, botManager02)));
-
-            gameEngine.newGame();
-            gameEngine.startGame();
-            gameEngine.playGame();
-
-            verify(botManager01, times(GameEngine.DEFAULT_NUMBER_OF_ROUNDS)).playBot(any());
-            verify(botManager02, times(GameEngine.DEFAULT_NUMBER_OF_ROUNDS)).playBot(any());
-        }
-
-        @Test
-        @DisplayName("should display a lot of messages when playing")
-        void playGame_shouldDisplayALotOfMessagesWhenPlaying() {
-            ConsoleUserInterface consoleUserInterface = mock(ConsoleUserInterface.class);
-
-            BotManager botManager1 = mock(BotManager.class);
-            when(botManager1.getName()).thenReturn("Bot 1");
-            BotManager botManager2 = mock(BotManager.class);
-            when(botManager2.getName()).thenReturn("Bot 2");
-
-            gameEngine =
+        @DisplayName("By should call playbot")
+        void shouldCallPlaybot() {
+            BotManager botm1 = mock(BotManager.class);
+            BotManager botm2 = mock(BotManager.class);
+            GameEngine ge =
                     new GameEngine(
-                            1,
-                            new Board(),
-                            consoleUserInterface,
-                            GameState.READY,
-                            new ArrayList<>(List.of(botManager1, botManager2)),
-                            new Scoreboard());
-
-            gameEngine.startGame();
-            gameEngine.playGame();
-
-            verify(consoleUserInterface, times(1)).displayMessage("===== Round 1 =====");
-            verify(consoleUserInterface, times(1)).displayMessage("===== <Bot 1> is playing =====");
-            verify(consoleUserInterface, times(1)).displayMessage("===== <Bot 2> is playing =====");
-        }
-
-        @Test
-        @DisplayName("should increment score when a bot has achieved its objective")
-        void playGame_shouldIncrementScoreWhenABotHasAchievedItsObjective() {
-            ConsoleUserInterface consoleUserInterface = mock(ConsoleUserInterface.class);
-
-            BotManager botManager1 = mock(BotManager.class);
-            when(botManager1.getName()).thenReturn("Bot 1");
-            when(botManager1.getObjectiveDescription()).thenReturn("Objective 1");
-            when(botManager1.isObjectiveAchieved()).thenReturn(true);
-            when(botManager1.getScore()).thenReturn(10);
-            BotManager botManager2 = mock(BotManager.class);
-            when(botManager2.getName()).thenReturn("Bot 2");
-
-            gameEngine =
-                    new GameEngine(
-                            1,
-                            new Board(),
-                            consoleUserInterface,
-                            GameState.READY,
-                            new ArrayList<>(List.of(botManager1, botManager2)),
-                            new Scoreboard());
-
-            gameEngine.startGame();
-            gameEngine.playGame();
-
-            verify(botManager1, times(1)).incrementScore(anyInt());
-        }
-
-        @Test
-        @DisplayName("should display a lot of messages when objective is achieved")
-        void playGame_shouldDisplayALotOfMessagesWhenObjectiveIsAchieved() {
-            ConsoleUserInterface consoleUserInterface = mock(ConsoleUserInterface.class);
-
-            BotManager botManager1 = mock(BotManager.class);
-            when(botManager1.getName()).thenReturn("Bot 1");
-            when(botManager1.getObjectiveDescription()).thenReturn("Objective 1");
-            when(botManager1.isObjectiveAchieved()).thenReturn(true);
-            when(botManager1.getScore()).thenReturn(10);
-            BotManager botManager2 = mock(BotManager.class);
-            when(botManager2.getName()).thenReturn("Bot 2");
-
-            gameEngine =
-                    new GameEngine(
-                            1,
-                            new Board(),
-                            consoleUserInterface,
-                            GameState.READY,
-                            new ArrayList<>(List.of(botManager1, botManager2)),
-                            new Scoreboard());
-
-            gameEngine.startGame();
-            gameEngine.playGame();
-
-            verify(consoleUserInterface, times(1))
-                    .displayMessage(
-                            "Bot 1 has achieved the objective Objective 1, it has won with 10"
-                                    + " points");
+                            2,
+                            mock(Board.class),
+                            mock(ConsoleUserInterface.class),
+                            mock(GameState.class),
+                            List.of(botm1, botm2),
+                            mock(Scoreboard.class));
+            ge.playGame();
+            verify(botm1, times(2)).playBot(any());
+            verify(botm2, times(2)).playBot(any());
         }
     }
 

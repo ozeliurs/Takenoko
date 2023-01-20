@@ -10,18 +10,15 @@ import java.util.List;
  * @param cost the cost of the action
  */
 public record ActionResult(List<Class<? extends Action>> availableActions, int cost) {
-    static List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS =
-            List.of(MovePandaAction.class, MoveGardenerAction.class, PlaceTileAction.class);
-
     public ActionResult(List<Class<? extends Action>> availableActions) {
         this(availableActions, 0);
     }
 
     public ActionResult() {
-        this(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS), 0);
+        this(new ArrayList<>(), 0);
     }
 
     public ActionResult(int cost) {
-        this(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS), cost);
+        this(new ArrayList<>(), cost);
     }
 }

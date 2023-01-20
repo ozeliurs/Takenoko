@@ -45,6 +45,10 @@ public class Tile {
         this.improvement = tile.improvement;
     }
 
+    public Tile(ImprovementType improvementType) {
+        this(TileType.OTHER, improvementType);
+    }
+
     /**
      * Get the type of the tile.
      *

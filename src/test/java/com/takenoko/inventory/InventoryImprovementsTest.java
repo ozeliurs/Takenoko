@@ -59,4 +59,21 @@ class InventoryImprovementsTest {
                     .hasMessage("You do not possess any improvements of type: FERTILIZER");
         }
     }
+
+    @Nested
+    @DisplayName("Method hasImprovement()")
+    class TestHasImprovement {
+        @Test
+        @DisplayName("should return true if improvement is in list")
+        void hasImprovement_shouldReturnTrueIfImprovementIsInList() {
+            inventoryImprovements.store(ImprovementType.FERTILIZER);
+            assertThat(inventoryImprovements.hasImprovement(ImprovementType.FERTILIZER)).isTrue();
+        }
+
+        @Test
+        @DisplayName("should return false if improvement is not in list")
+        void hasImprovement_shouldReturnFalseIfImprovementIsNotInList() {
+            assertThat(inventoryImprovements.hasImprovement(ImprovementType.FERTILIZER)).isFalse();
+        }
+    }
 }

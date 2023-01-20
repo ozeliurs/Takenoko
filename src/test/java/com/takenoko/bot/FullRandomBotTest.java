@@ -3,12 +3,10 @@ package com.takenoko.bot;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import com.takenoko.actions.ChooseIfApplyWeatherAction;
-import com.takenoko.actions.MoveGardenerAction;
-import com.takenoko.actions.MovePandaAction;
-import com.takenoko.actions.PlaceTileAction;
+import com.takenoko.actions.*;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import java.util.List;
 import org.junit.jupiter.api.*;
@@ -31,7 +29,16 @@ class FullRandomBotTest {
         @Test
         @DisplayName("should return an action")
         void shouldReturnAnAction() {
-            when(botState.getAvailableActions()).thenReturn(List.of(PlaceTileAction.class));
+            board = mock(Board.class);
+            BotState botState = mock(BotState.class);
+            when(botState.getAvailableActions())
+                    .thenReturn(
+                            List.of(
+                                    PlaceTileAction.class,
+                                    MoveGardenerAction.class,
+                                    MovePandaAction.class));
+            when(board.peekTileDeck()).thenReturn(List.of(mock(Tile.class)));
+            when(board.getAvailableTilePositions()).thenReturn(List.of(mock(PositionVector.class)));
             assertThat(bot.chooseAction(board, botState)).isNotNull();
         }
 
@@ -52,6 +59,9 @@ class FullRandomBotTest {
         @Test
         @DisplayName("should return an action of type PlaceTileAction")
         void shouldReturnAnActionOfTypePlaceTile() {
+            board = mock(Board.class);
+            when(board.peekTileDeck()).thenReturn(List.of(mock(Tile.class)));
+            when(board.getAvailableTilePositions()).thenReturn(List.of(mock(PositionVector.class)));
             when(botState.getAvailableActions()).thenReturn(List.of(PlaceTileAction.class));
             assertThat(bot.chooseAction(board, botState)).isInstanceOfAny(PlaceTileAction.class);
         }
@@ -70,6 +80,22 @@ class FullRandomBotTest {
             when(botState.getAvailableActions()).thenReturn(List.of(MoveGardenerAction.class));
             when(board.getGardenerPossibleMoves()).thenReturn(List.of(mock(PositionVector.class)));
             assertThat(bot.chooseAction(board, botState)).isInstanceOfAny(MoveGardenerAction.class);
+        }
+
+        @Test
+        @DisplayName("should return an action of type DrawTileAction")
+        void shouldReturnAnActionOfTypeDrawTileAction() {
+            when(botState.getAvailableActions()).thenReturn(List.of(DrawTileAction.class));
+            assertThat(bot.chooseAction(board, botState)).isInstanceOfAny(DrawTileAction.class);
+        }
+
+        @Test
+        @DisplayName("should return an action of type GetAndStoreImprovementAction")
+        void shouldReturnAnActionOfTypeGetAndStoreImprovementAction() {
+            when(botState.getAvailableActions())
+                    .thenReturn(List.of(GetAndStoreImprovementAction.class));
+            assertThat(bot.chooseAction(board, botState))
+                    .isInstanceOfAny(GetAndStoreImprovementAction.class);
         }
     }
 }

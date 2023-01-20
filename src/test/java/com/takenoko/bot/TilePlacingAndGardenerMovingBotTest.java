@@ -59,6 +59,7 @@ class TilePlacingAndGardenerMovingBotTest {
             when(board.getGardenerPossibleMoves()).thenReturn(List.of());
             when(board.getAvailableTiles()).thenReturn(List.of(mock(Tile.class)));
             when(board.getAvailableTilePositions()).thenReturn(List.of(mock(PositionVector.class)));
+            when(board.peekTileDeck()).thenReturn(List.of(mock(Tile.class)));
             BotState botState = mock(BotState.class);
             when(botState.getAvailableActions())
                     .thenReturn(List.of(PlaceTileAction.class, MoveGardenerAction.class));

@@ -9,6 +9,7 @@ import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.*;
 
@@ -112,6 +113,15 @@ class TileLayerTest {
             assertThatThrownBy(() -> tileLayer.placeTile(t, p, board))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Tile position not available");
+        }
+
+        @Test
+        @DisplayName("should call Board.chooseTileInTileDeck when called")
+        void placeTile_WhenCalled_CallsChooseTileInTileDeck() {
+            Tile t = new Tile(TileType.OTHER);
+            PositionVector p = new PositionVector(1, 0, -1);
+            tileLayer.placeTile(t, p, board);
+            verify(board).chooseTileInTileDeck(any());
         }
     }
 
@@ -317,6 +327,25 @@ class TileLayerTest {
             when(board.getTileAt(any())).thenReturn(pond);
             when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
             assertThat(tileLayer.getAvailableImprovementPositions(board)).isEmpty();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method applyImprovement()")
+    class TestApplyImprovement {
+        @Test
+        @DisplayName("should apply the improvement to the tile")
+        void applyImprovement_shouldApplyImprovementToTile() {
+            Board board = mock(Board.class);
+            Tile tile = new Tile();
+            PositionVector position = mock(PositionVector.class);
+            when(board.getTiles()).thenReturn(Map.of(position, tile));
+            when(board.getTileAt(any())).thenReturn(tile);
+            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
+            when(board.getAvailableImprovementPositions()).thenReturn(List.of(position));
+            ImprovementType improvement = mock(ImprovementType.class);
+            tileLayer.applyImprovement(improvement, position, board);
+            assertThat(tile.getImprovement()).contains(improvement);
         }
     }
 }
