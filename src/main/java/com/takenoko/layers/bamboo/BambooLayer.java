@@ -1,10 +1,12 @@
 package com.takenoko.layers.bamboo;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.TileType;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Optional;
 
 /** BambooLayer class. The bamboo layer contains the number of bamboo on each tile. */
 public class BambooLayer {
@@ -29,11 +31,8 @@ public class BambooLayer {
      * @param board the board
      */
     public void growBamboo(PositionVector positionVector, Board board) {
-        if (positionVector.equals(new PositionVector(0, 0, 0))) {
-            throw new IllegalArgumentException("The bamboo cannot be placed on the pond");
-        }
-        if (!board.isTile(positionVector)) {
-            throw new IllegalArgumentException("The position is not on the board");
+        if (!board.isBambooGrowableAt(positionVector)) {
+            throw new IllegalArgumentException("The tile is not growable");
         }
 
         if (bamboo.containsKey(positionVector)) {
@@ -52,9 +51,7 @@ public class BambooLayer {
      */
     public LayerBambooStack getBambooAt(PositionVector positionVector, Board board) {
         if (board.isTile(positionVector)) {
-            bamboo.computeIfAbsent(
-                    positionVector,
-                    k -> new LayerBambooStack(0, board.getTileAt(k).getType() == TileType.POND));
+            bamboo.computeIfAbsent(positionVector, k -> new LayerBambooStack(0));
             return bamboo.get(positionVector);
         } else {
             throw new IllegalArgumentException("The position is not a tile");
@@ -68,10 +65,10 @@ public class BambooLayer {
      * @param board the board
      */
     public void eatBamboo(PositionVector positionVector, Board board) {
-        if (!board.getBambooAt(positionVector).isEmpty()) {
+        if (board.isBambooEatableAt(positionVector)) {
             bamboo.get(positionVector).eatBamboo();
         } else {
-            throw new IllegalArgumentException("There is no bamboo on this tile");
+            throw new IllegalArgumentException("The tile is not eatable");
         }
     }
 
@@ -90,5 +87,20 @@ public class BambooLayer {
     @Override
     public int hashCode() {
         return Objects.hash(bamboo);
+    }
+
+    public boolean isEatableAt(PositionVector positionVector, Board board) {
+        if (board.isTile(positionVector)
+                && board.getTileAt(positionVector).getType() != TileType.POND) {
+
+            return board.getBambooAt(positionVector).isEatable();
+        }
+        return false;
+    }
+
+    public boolean isGrowableAt(PositionVector positionVector, Board board) {
+        return board.isTile(positionVector)
+                && board.getTileAt(positionVector).getType() != TileType.POND
+                && board.getBambooAt(positionVector).isGrowable();
     }
 }
