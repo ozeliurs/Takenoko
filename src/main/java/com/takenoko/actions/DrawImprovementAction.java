@@ -18,7 +18,12 @@ public class DrawImprovementAction implements Action {
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
+        if (!board.hasImprovementInDeck(improvementType)) {
+            botManager.displayMessage("No more " + improvementType + " in the deck");
+            return new ActionResult(List.of(ChooseAndApplyWeatherAction.class));
+        }
         board.drawImprovement(improvementType);
+        botManager.displayMessage(botManager.getName() + " got improvement" + improvementType);
         return new ActionResult(
                 List.of(ApplyImprovementAction.class, StoreImprovementAction.class), 1);
     }
