@@ -92,10 +92,9 @@ class FullRandomBotTest {
         @Test
         @DisplayName("should return an action of type GetAndStoreImprovementAction")
         void shouldReturnAnActionOfTypeGetAndStoreImprovementAction() {
-            when(botState.getAvailableActions())
-                    .thenReturn(List.of(GetAndStoreImprovementAction.class));
+            when(botState.getAvailableActions()).thenReturn(List.of(StoreImprovementAction.class));
             assertThat(bot.chooseAction(board, botState))
-                    .isInstanceOfAny(GetAndStoreImprovementAction.class);
+                    .isInstanceOfAny(StoreImprovementAction.class);
         }
     }
 }

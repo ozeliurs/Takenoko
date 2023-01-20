@@ -14,7 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-class GetAndStoreImprovementActionTest {
+class StoreImprovementActionTest {
 
     Board board;
 
@@ -34,8 +34,7 @@ class GetAndStoreImprovementActionTest {
                 "When getting an improvement and the improvement is available, the number of"
                         + " actions consumed is 1")
         void whenGettingAnImprovementTheNumberOfActionsConsumedIs1() {
-            GetAndStoreImprovementAction action =
-                    new GetAndStoreImprovementAction(ImprovementType.FERTILIZER);
+            StoreImprovementAction action = new StoreImprovementAction(ImprovementType.FERTILIZER);
             Board board = mock(Board.class);
             BotManager botManager = mock(BotManager.class);
             when(board.hasImprovementInDeck(any(ImprovementType.class))).thenReturn(true);

@@ -9,15 +9,15 @@ import com.takenoko.layers.tile.ImprovementType;
 import java.util.List;
 
 @ActionAnnotation(ActionType.FORCED)
-public class GetAndStoreImprovementAction implements Action {
+public class StoreImprovementAction implements Action {
     private final ImprovementType improvementType;
 
     /**
-     * Constructor for the GetAndStoreImprovementAction class.
+     * Constructor for the StoreImprovementAction class.
      *
      * @param improvementType the improvement type
      */
-    public GetAndStoreImprovementAction(ImprovementType improvementType) {
+    public StoreImprovementAction(ImprovementType improvementType) {
         this.improvementType = improvementType;
     }
 

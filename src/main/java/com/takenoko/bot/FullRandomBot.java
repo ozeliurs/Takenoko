@@ -46,9 +46,9 @@ public class FullRandomBot implements Bot {
             actions.add(getRandomApplyImprovementAction(board));
         }
 
-        if (botState.getAvailableActions().contains(GetAndStoreImprovementAction.class)) {
+        if (botState.getAvailableActions().contains(StoreImprovementAction.class)) {
             actions.add(
-                    new GetAndStoreImprovementAction(
+                    new StoreImprovementAction(
                             ImprovementType.values()[
                                     random.nextInt(ImprovementType.values().length)]));
         }
