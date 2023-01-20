@@ -193,6 +193,5 @@ public class TileLayer {
         }
         Tile tile = board.getTileAt(positionVector);
         tile.setImprovement(improvementType);
-        board.growBamboo(positionVector);
     }
 }

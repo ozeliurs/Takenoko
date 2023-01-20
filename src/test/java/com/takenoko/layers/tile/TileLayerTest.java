@@ -114,6 +114,15 @@ class TileLayerTest {
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Tile position not available");
         }
+
+        @Test
+        @DisplayName("should call Board.chooseTileInTileDeck when called")
+        void placeTile_WhenCalled_CallsChooseTileInTileDeck() {
+            Tile t = new Tile(TileType.OTHER);
+            PositionVector p = new PositionVector(1, 0, -1);
+            tileLayer.placeTile(t, p, board);
+            verify(board).chooseTileInTileDeck(any());
+        }
     }
 
     @Nested
@@ -334,8 +343,9 @@ class TileLayerTest {
             when(board.getTileAt(any())).thenReturn(tile);
             when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
             when(board.getAvailableImprovementPositions()).thenReturn(List.of(position));
-            tileLayer.applyImprovement(mock(ImprovementType.class), position, board);
-            assertThat(tile.getImprovement()).isNotNull();
+            ImprovementType improvement = mock(ImprovementType.class);
+            tileLayer.applyImprovement(improvement, position, board);
+            assertThat(tile.getImprovement()).contains(improvement);
         }
     }
 }
