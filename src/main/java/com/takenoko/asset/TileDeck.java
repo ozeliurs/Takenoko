@@ -49,6 +49,11 @@ public class TileDeck extends ArrayList<Tile> {
         }
     }
 
+    /**
+     * Choose what tile to place on the board.
+     *
+     * @param tile the tile to place
+     */
     public void choose(Tile tile) {
         if (lastDrawnTiles.contains(tile)) {
             this.remove(tile);
