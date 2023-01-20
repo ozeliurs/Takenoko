@@ -6,7 +6,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import java.util.List;
 
-@ActionAnnotation(ActionType.FORCED)
+@ActionAnnotation(ActionType.DEFAULT)
 public class DrawTileAction implements Action {
 
     @Override
