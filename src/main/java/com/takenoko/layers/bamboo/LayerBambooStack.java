@@ -48,9 +48,8 @@ public class LayerBambooStack extends BambooStack {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        LayerBambooStack that = (LayerBambooStack) o;
-        return bambooCount == that.bambooCount;
+        return super.equals(o);
+
     }
 
     @Override
