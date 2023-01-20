@@ -9,12 +9,11 @@ import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileType;
 import com.takenoko.vector.PositionVector;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import java.util.Optional;
 
 class BambooLayerTest {
 
@@ -222,13 +221,17 @@ class BambooLayerTest {
         @DisplayName("when the tile has an improvement Enclosure should return false")
         void whenTheTileHasAnImprovementEnclosureShouldReturnFalse() {
             when(board.isTile(any())).thenReturn(true);
-            when(board.getTileAt(any())).thenReturn(mock(Tile.class));;
-            when(board.getTileAt(any()).getImprovement()).thenReturn(Optional.of(ImprovementType.ENCLOSURE));
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            ;
+            when(board.getTileAt(any()).getImprovement())
+                    .thenReturn(Optional.of(ImprovementType.ENCLOSURE));
             assertThat(bambooLayer.isEatableAt(new PositionVector(-1, 0, 1), board)).isFalse();
         }
 
         @Test
-        @DisplayName("when the tile is neither a pond nor has an improvement Enclosure should return true")
+        @DisplayName(
+                "when the tile is neither a pond nor has an improvement Enclosure should return"
+                        + " true")
         void whenTheTileIsNeitherAPondNorHasAnImprovementEnclosureShouldReturnTrue() {
             when(board.isTile(any())).thenReturn(true);
             when(board.getTileAt(any())).thenReturn(mock(Tile.class));
@@ -236,6 +239,41 @@ class BambooLayerTest {
             when(board.getBambooAt(any())).thenReturn(mock(LayerBambooStack.class));
             when(board.getBambooAt(any()).isEatable()).thenReturn(true);
             assertThat(bambooLayer.isEatableAt(new PositionVector(-1, 0, 1), board)).isTrue();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method isGrowableAt()")
+    class TestIsGrowableAt {
+        @Test
+        @DisplayName("when it is a pond should return false")
+        void whenItIsAPondShouldReturnFalse() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.getTileAt(any()).getType()).thenReturn(TileType.POND);
+            assertThat(bambooLayer.isGrowableAt(new PositionVector(-1, 0, 1), board)).isFalse();
+        }
+
+        @Test
+        @DisplayName("when the tile is not a growable tile should return false")
+        void whenTheTileIsNotAGrowableTileShouldReturnFalse() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.getTileAt(any()).getType()).thenReturn(mock(TileType.class));
+            when(board.getBambooAt(any())).thenReturn(mock(LayerBambooStack.class));
+            when(board.getBambooAt(any()).isGrowable()).thenReturn(false);
+            assertThat(bambooLayer.isGrowableAt(new PositionVector(-1, 0, 1), board)).isFalse();
+        }
+
+        @Test
+        @DisplayName("when the tile is not a pond and is a growable tile should return true")
+        void whenTheTileIsNotAPondAndIsAGrowableTileShouldReturnTrue() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.getTileAt(any()).getType()).thenReturn(mock(TileType.class));
+            when(board.getBambooAt(any())).thenReturn(mock(LayerBambooStack.class));
+            when(board.getBambooAt(any()).isGrowable()).thenReturn(true);
+            assertThat(bambooLayer.isGrowableAt(new PositionVector(-1, 0, 1), board)).isTrue();
         }
     }
 }
