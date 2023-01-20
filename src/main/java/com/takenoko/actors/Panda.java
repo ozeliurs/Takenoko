@@ -33,7 +33,7 @@ public class Panda extends com.takenoko.actors.Actor {
 
     public LayerBambooStack afterMove(Board board) {
         // check if the panda can eat bamboo
-        if (board.getBambooAt(this.getPositionVector()).isEatable()) {
+        if (board.isBambooEatableAt(this.getPositionVector())) {
             // eat bamboo
             board.eatBamboo(this.getPositionVector());
             return new LayerBambooStack(1);

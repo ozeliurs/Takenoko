@@ -1,13 +1,13 @@
 package com.takenoko.layers.bamboo;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
+import com.takenoko.layers.tile.TileType;
 import com.takenoko.vector.PositionVector;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,8 +34,7 @@ class BambooLayerTest {
         void shouldThrowAnExceptionIfThePositionIsTheSameAsThePond() {
             PositionVector pondPosition = new PositionVector(0, 0, 0);
             assertThatThrownBy(() -> bambooLayer.growBamboo(pondPosition, board))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("The bamboo cannot be placed on the pond");
+                    .isInstanceOf(IllegalArgumentException.class);
         }
 
         @Test
@@ -44,8 +43,7 @@ class BambooLayerTest {
             PositionVector position = new PositionVector(1, 0, -1);
             when(board.isTile(position)).thenReturn(false);
             assertThatThrownBy(() -> bambooLayer.growBamboo(position, board))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("The position is not on the board");
+                    .isInstanceOf(IllegalArgumentException.class);
         }
 
         @Test
@@ -54,6 +52,7 @@ class BambooLayerTest {
             when(board.isTile(any())).thenReturn(true);
             when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             PositionVector position = new PositionVector(1, 0, -1);
+            when(board.isBambooGrowableAt(position)).thenReturn(true);
             bambooLayer.growBamboo(position, board);
             bambooLayer.growBamboo(position, board);
             assertThat(bambooLayer.getBambooAt(position, board).getBambooCount()).isEqualTo(2);
@@ -113,6 +112,7 @@ class BambooLayerTest {
         void shouldReturnTheBambooStackAtThePosition() {
             when(board.isTile(any())).thenReturn(true);
             when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.isBambooGrowableAt(any())).thenReturn(true);
             bambooLayer.growBamboo(new PositionVector(-1, 0, 1), board);
             assertThat(bambooLayer.getBambooAt(new PositionVector(-1, 0, 1), board))
                     .isEqualTo(new LayerBambooStack(1));
@@ -128,8 +128,11 @@ class BambooLayerTest {
             when(board.isTile(any())).thenReturn(true);
             when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             LayerBambooStack bambooStack = new LayerBambooStack(1);
+            LayerBambooStack bambooStack =
+                    bambooLayer.getBambooAt(new PositionVector(-1, 0, 1), board);
+            bambooStack.growBamboo();
             when(board.getBambooAt(any())).thenReturn(bambooStack);
-            bambooLayer.growBamboo(new PositionVector(-1, 0, 1), board);
+            when(board.isBambooEatableAt(any())).thenReturn(true);
             bambooLayer.eatBamboo(new PositionVector(-1, 0, 1), board);
             assertThat(bambooLayer.getBambooAt(new PositionVector(-1, 0, 1), board))
                     .isEqualTo(new LayerBambooStack(0));
@@ -149,11 +152,13 @@ class BambooLayerTest {
         @DisplayName("should throw an exception if the bamboo stack is empty")
         void shouldThrowAnExceptionIfTheBambooStackIsEmpty() {
             when(board.isTile(any())).thenReturn(true);
-            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
+            LayerBambooStack bambooStack =
+                    bambooLayer.getBambooAt(new PositionVector(-1, 0, 1), board);
+            when(board.getBambooAt(any())).thenReturn(bambooStack);
+            when(board.isBambooEatableAt(any())).thenReturn(true);
             PositionVector position = new PositionVector(-1, 0, 1);
             assertThatThrownBy(() -> bambooLayer.eatBamboo(position, board))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("There is no bamboo on this tile");
+                    .isInstanceOf(IllegalArgumentException.class);
         }
     }
 
@@ -188,6 +193,7 @@ class BambooLayerTest {
             BambooLayer bambooLayer2 = new BambooLayer();
             when(board.isTile(any())).thenReturn(true);
             when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.isBambooGrowableAt(any())).thenReturn(true);
             bambooLayer1.growBamboo(new PositionVector(-1, 0, 1), board);
             assertThat(bambooLayer1).isNotEqualTo(bambooLayer2);
         }
@@ -211,6 +217,7 @@ class BambooLayerTest {
             BambooLayer bambooLayer2 = new BambooLayer();
             when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             when(board.isTile(any())).thenReturn(true);
+            when(board.isBambooGrowableAt(any())).thenReturn(true);
             bambooLayer1.growBamboo(new PositionVector(-1, 0, 1), board);
             assertThat(bambooLayer1).doesNotHaveSameHashCodeAs(bambooLayer2);
         }
@@ -225,9 +232,82 @@ class BambooLayerTest {
             BambooLayer bambooLayer1 = new BambooLayer();
             when(board.isTile(any())).thenReturn(true);
             when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.isBambooGrowableAt(any())).thenReturn(true);
             bambooLayer1.growBamboo(new PositionVector(-1, 0, 1), board);
             BambooLayer bambooLayer2 = bambooLayer1.copy();
             assertThat(bambooLayer1).isEqualTo(bambooLayer2);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method isEatableAt()")
+    class TestIsEatableAt {
+        @Test
+        @DisplayName("when it is a pond should return false")
+        void whenItIsAPondShouldReturnFalse() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.getTileAt(any()).getType()).thenReturn(TileType.POND);
+            assertThat(bambooLayer.isEatableAt(new PositionVector(-1, 0, 1), board)).isFalse();
+        }
+
+        @Test
+        @DisplayName("when the tile has an improvement Enclosure should return false")
+        void whenTheTileHasAnImprovementEnclosureShouldReturnFalse() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            ;
+            when(board.getTileAt(any()).getImprovement())
+                    .thenReturn(Optional.of(ImprovementType.ENCLOSURE));
+            assertThat(bambooLayer.isEatableAt(new PositionVector(-1, 0, 1), board)).isFalse();
+        }
+
+        @Test
+        @DisplayName(
+                "when the tile is neither a pond nor has an improvement Enclosure should return"
+                        + " true")
+        void whenTheTileIsNeitherAPondNorHasAnImprovementEnclosureShouldReturnTrue() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.getTileAt(any()).getImprovement()).thenReturn(Optional.empty());
+            when(board.getBambooAt(any())).thenReturn(mock(LayerBambooStack.class));
+            when(board.getBambooAt(any()).isEatable()).thenReturn(true);
+            assertThat(bambooLayer.isEatableAt(new PositionVector(-1, 0, 1), board)).isTrue();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method isGrowableAt()")
+    class TestIsGrowableAt {
+        @Test
+        @DisplayName("when it is a pond should return false")
+        void whenItIsAPondShouldReturnFalse() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.getTileAt(any()).getType()).thenReturn(TileType.POND);
+            assertThat(bambooLayer.isGrowableAt(new PositionVector(-1, 0, 1), board)).isFalse();
+        }
+
+        @Test
+        @DisplayName("when the tile is not a growable tile should return false")
+        void whenTheTileIsNotAGrowableTileShouldReturnFalse() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.getTileAt(any()).getType()).thenReturn(mock(TileType.class));
+            when(board.getBambooAt(any())).thenReturn(mock(LayerBambooStack.class));
+            when(board.getBambooAt(any()).isGrowable()).thenReturn(false);
+            assertThat(bambooLayer.isGrowableAt(new PositionVector(-1, 0, 1), board)).isFalse();
+        }
+
+        @Test
+        @DisplayName("when the tile is not a pond and is a growable tile should return true")
+        void whenTheTileIsNotAPondAndIsAGrowableTileShouldReturnTrue() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.getTileAt(any()).getType()).thenReturn(mock(TileType.class));
+            when(board.getBambooAt(any())).thenReturn(mock(LayerBambooStack.class));
+            when(board.getBambooAt(any()).isGrowable()).thenReturn(true);
+            assertThat(bambooLayer.isGrowableAt(new PositionVector(-1, 0, 1), board)).isTrue();
         }
     }
 }

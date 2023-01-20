@@ -159,6 +159,16 @@ public class Board {
         bambooLayer.eatBamboo(positionVector, this);
     }
 
+    /**
+     * Check if the bamboo at the position is eatable.
+     *
+     * @param positionVector the position of the tile
+     * @return if the bamboo at the position is eatable
+     */
+    public boolean isBambooEatableAt(PositionVector positionVector) {
+        return bambooLayer.isEatableAt(positionVector, this);
+    }
+
     /** Get the Position of the Panda */
     public PositionVector getPandaPosition() {
         return panda.getPosition();
@@ -239,6 +249,10 @@ public class Board {
     /** Changes the weather to null. This is used when the weather is over. */
     public void resetWeather() {
         weather = null;
+    }
+
+    public boolean isBambooGrowableAt(PositionVector positionVector) {
+        return bambooLayer.isGrowableAt(positionVector, this);
     }
 
     /**

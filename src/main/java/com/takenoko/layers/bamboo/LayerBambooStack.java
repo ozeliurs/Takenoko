@@ -4,15 +4,9 @@ import java.util.Objects;
 
 public class LayerBambooStack extends BambooStack {
     private static final int MAX_BAMBOO = 4;
-    private boolean isImmutable = false;
 
     public LayerBambooStack(int startingBamboo) {
         super(startingBamboo);
-    }
-
-    public LayerBambooStack(int startingBamboo, boolean isImmutable) {
-        super(startingBamboo);
-        this.isImmutable = isImmutable;
     }
 
     @Override
@@ -35,14 +29,14 @@ public class LayerBambooStack extends BambooStack {
      * @return if the bamboo can grow
      */
     public boolean isGrowable() {
-        return bambooCount < MAX_BAMBOO && !isImmutable;
+        return bambooCount < MAX_BAMBOO;
     }
 
     /*
      * @return if the bamboo can be eaten
      */
     public boolean isEatable() {
-        return bambooCount > 0 && !isImmutable;
+        return bambooCount > 0;
     }
 
     @Override
@@ -56,11 +50,11 @@ public class LayerBambooStack extends BambooStack {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         LayerBambooStack that = (LayerBambooStack) o;
-        return isImmutable == that.isImmutable;
+        return bambooCount == that.bambooCount;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), isImmutable);
+        return Objects.hash(super.hashCode());
     }
 }
