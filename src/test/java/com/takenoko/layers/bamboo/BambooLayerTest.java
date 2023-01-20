@@ -1,17 +1,20 @@
 package com.takenoko.layers.bamboo;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
+import com.takenoko.layers.tile.TileType;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 class BambooLayerTest {
 
@@ -200,6 +203,39 @@ class BambooLayerTest {
             bambooLayer1.growBamboo(new PositionVector(-1, 0, 1), board);
             BambooLayer bambooLayer2 = bambooLayer1.copy();
             assertThat(bambooLayer1).isEqualTo(bambooLayer2);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method isEatableAt()")
+    class TestIsEatableAt {
+        @Test
+        @DisplayName("when it is a pond should return false")
+        void whenItIsAPondShouldReturnFalse() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.getTileAt(any()).getType()).thenReturn(TileType.POND);
+            assertThat(bambooLayer.isEatableAt(new PositionVector(-1, 0, 1), board)).isFalse();
+        }
+
+        @Test
+        @DisplayName("when the tile has an improvement Enclosure should return false")
+        void whenTheTileHasAnImprovementEnclosureShouldReturnFalse() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));;
+            when(board.getTileAt(any()).getImprovement()).thenReturn(Optional.of(ImprovementType.ENCLOSURE));
+            assertThat(bambooLayer.isEatableAt(new PositionVector(-1, 0, 1), board)).isFalse();
+        }
+
+        @Test
+        @DisplayName("when the tile is neither a pond nor has an improvement Enclosure should return true")
+        void whenTheTileIsNeitherAPondNorHasAnImprovementEnclosureShouldReturnTrue() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            when(board.getTileAt(any()).getImprovement()).thenReturn(Optional.empty());
+            when(board.getBambooAt(any())).thenReturn(mock(LayerBambooStack.class));
+            when(board.getBambooAt(any()).isEatable()).thenReturn(true);
+            assertThat(bambooLayer.isEatableAt(new PositionVector(-1, 0, 1), board)).isTrue();
         }
     }
 }
