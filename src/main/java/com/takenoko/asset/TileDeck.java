@@ -2,15 +2,12 @@ package com.takenoko.asset;
 
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
-
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * The deck containing all the improvement chips you can place on the tiles.
- */
+/** The deck containing all the improvement chips you can place on the tiles. */
 public class TileDeck extends ArrayList<Tile> {
 
     private final Random random;
@@ -44,9 +41,7 @@ public class TileDeck extends ArrayList<Tile> {
         lastDrawnTiles = new ArrayList<>();
     }
 
-    /**
-     * Draw tiles from the deck.
-     */
+    /** Draw tiles from the deck. */
     public void draw() {
         lastDrawnTiles.clear();
         for (int i = 0; i < 3; i++) {
@@ -57,6 +52,7 @@ public class TileDeck extends ArrayList<Tile> {
     public void choose(Tile tile) {
         if (lastDrawnTiles.contains(tile)) {
             this.remove(tile);
+            return;
         }
         throw new IllegalArgumentException("This tile is not in the last drawn tiles.");
     }
