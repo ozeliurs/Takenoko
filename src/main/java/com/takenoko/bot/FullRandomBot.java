@@ -3,6 +3,7 @@ package com.takenoko.bot;
 import com.takenoko.actions.*;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
+import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import java.security.SecureRandom;
@@ -19,28 +20,61 @@ public class FullRandomBot implements Bot {
 
     @Override
     public Action chooseAction(Board board, BotState botState) {
-        if (botState.getAvailableActions().contains(ChooseIfApplyWeatherAction.class)) {
-            return new ChooseIfApplyWeatherAction(random.nextBoolean());
-        }
-
         List<Action> actions = new ArrayList<>();
 
-        for (Class<? extends Action> actionClass : botState.getAvailableActions()) {
-            if (actionClass.equals(MoveGardenerAction.class)) {
-                actions.add(getRandomMoveGardenerAction(board));
-            } else if (actionClass.equals(MovePandaAction.class)) {
-                actions.add(getRandomMovePandaAction(board));
-            } else if (actionClass.equals(PlaceTileAction.class)) {
-                actions.add(getRandomPlaceTileAction(board));
-            }
+        if (botState.getAvailableActions().contains(ChooseIfApplyWeatherAction.class)) {
+            actions.add(new ChooseIfApplyWeatherAction(random.nextBoolean()));
+        }
+
+        if (botState.getAvailableActions().contains(DrawTileAction.class)) {
+            actions.add(new DrawTileAction());
+        }
+
+        if (botState.getAvailableActions().contains(PlaceTileAction.class)) {
+            actions.add(getRandomPlaceTileAction(board));
+        }
+
+        if (botState.getAvailableActions().contains(MoveGardenerAction.class)) {
+            actions.add(getRandomMoveGardenerAction(board));
+        }
+
+        if (botState.getAvailableActions().contains(MovePandaAction.class)) {
+            actions.add(getRandomMovePandaAction(board));
+        }
+
+        if (botState.getAvailableActions().contains(ApplyImprovementAction.class)) {
+            actions.add(getRandomApplyImprovementAction(board));
+        }
+
+        if (botState.getAvailableActions().contains(GetAndStoreImprovementAction.class)) {
+            actions.add(
+                    new GetAndStoreImprovementAction(
+                            ImprovementType.values()[
+                                    random.nextInt(ImprovementType.values().length)]));
         }
 
         actions.removeIf(Objects::isNull);
         return actions.get(random.nextInt(actions.size()));
     }
 
+    private Action getRandomApplyImprovementAction(Board board) {
+        List<PositionVector> positions = board.getAvailableImprovementPositions();
+
+        List<ImprovementType> imp = new ArrayList<>();
+        if (board.hasImprovementInDeck(ImprovementType.FERTILIZER)) {
+            imp.add(ImprovementType.FERTILIZER);
+        }
+        if (board.hasImprovementInDeck(ImprovementType.ENCLOSURE)) {
+            imp.add(ImprovementType.ENCLOSURE);
+        }
+
+        return new ApplyImprovementAction(
+                imp.get(random.nextInt(imp.size())),
+                positions.get(random.nextInt(positions.size())));
+    }
+
     private Action getRandomPlaceTileAction(Board board) {
-        List<Tile> availableTiles = board.getAvailableTiles();
+        List<Tile> availableTiles = board.peekTileDeck();
         List<PositionVector> availableTilePositions = board.getAvailableTilePositions();
         if (availableTiles.isEmpty() || availableTilePositions.isEmpty()) {
             return null;

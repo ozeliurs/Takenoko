@@ -5,17 +5,27 @@ import java.util.Objects;
 
 public class GameAssets {
     private final WeatherDice weatherDice;
+    private final ImprovementDeck improvementDeck;
+    private final TileDeck tileDeck;
 
     public GameAssets() {
-        this(new WeatherDice());
+        this(new WeatherDice(), new ImprovementDeck());
     }
 
     public GameAssets(WeatherDice weatherDice) {
+        this(weatherDice, new ImprovementDeck());
+    }
+
+    public GameAssets(WeatherDice weatherDice, ImprovementDeck improvementDeck) {
         this.weatherDice = weatherDice;
+        this.improvementDeck = improvementDeck;
+        this.tileDeck = new TileDeck();
     }
 
     public GameAssets(GameAssets gameAssets) {
         this.weatherDice = gameAssets.weatherDice;
+        this.improvementDeck = gameAssets.improvementDeck;
+        this.tileDeck = gameAssets.tileDeck;
     }
 
     /**
@@ -23,6 +33,13 @@ public class GameAssets {
      */
     public WeatherDice getWeatherDice() {
         return weatherDice;
+    }
+
+    /**
+     * @return the improvement deck used by all bots
+     */
+    public ImprovementDeck getImprovementDeck() {
+        return improvementDeck;
     }
 
     public GameAssets copy() {
@@ -40,5 +57,9 @@ public class GameAssets {
     @Override
     public int hashCode() {
         return Objects.hash(weatherDice);
+    }
+
+    public TileDeck getTileDeck() {
+        return tileDeck;
     }
 }

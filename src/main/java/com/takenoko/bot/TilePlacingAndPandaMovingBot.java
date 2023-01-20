@@ -20,11 +20,13 @@ public class TilePlacingAndPandaMovingBot implements Bot {
                 && !board.getPandaPossibleMoves().isEmpty()) {
             // move the panda
             return new MoveGardenerAction(board.getPandaPossibleMoves().get(0));
-        } else if (botState.getAvailableActions().contains(PlaceTileAction.class)
-                && !board.getAvailableTilePositions().isEmpty()) {
+        } else if (botState.getAvailableActions().contains(DrawTileAction.class)) {
+            // draw a tile
+            return new DrawTileAction();
+        } else if (botState.getAvailableActions().contains(PlaceTileAction.class)) {
             // place a tile
             return new PlaceTileAction(
-                    board.getAvailableTiles().get(0), board.getAvailableTilePositions().get(0));
+                    board.peekTileDeck().get(0), board.getAvailableTilePositions().get(0));
         }
         throw new NotImplementedException("No action available");
     }

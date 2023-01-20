@@ -85,4 +85,8 @@ public class Inventory {
     public int hashCode() {
         return Objects.hash(getBambooStack(), inventoryImprovements);
     }
+
+    public boolean hasImprovement(ImprovementType improvementType) {
+        return inventoryImprovements.hasImprovement(improvementType);
+    }
 }
