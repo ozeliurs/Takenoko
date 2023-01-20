@@ -93,6 +93,12 @@ public class BambooLayer {
         if (board.isTile(positionVector)
                 && board.getTileAt(positionVector).getType() != TileType.POND) {
 
+            Optional<ImprovementType> improvementType =
+                    board.getTileAt(positionVector).getImprovement();
+            if (improvementType.isPresent()
+                    && improvementType.get().equals(ImprovementType.ENCLOSURE)) {
+                return false;
+            }
             return board.getBambooAt(positionVector).isEatable();
         }
         return false;
