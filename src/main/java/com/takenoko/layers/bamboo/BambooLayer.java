@@ -37,24 +37,19 @@ public class BambooLayer {
 
         Optional<ImprovementType> improvement = board.getTileAt(positionVector).getImprovement();
 
+        bamboo.computeIfAbsent(positionVector, k -> new LayerBambooStack(0));
+
         if (improvement.isPresent() && improvement.get() == ImprovementType.FERTILIZER) {
-            if (bamboo.containsKey(positionVector)) {
-                if (bamboo.get(positionVector).bambooCount == LayerBambooStack.MAX_BAMBOO - 1) {
-                    bamboo.get(positionVector).growBamboo();
-                    return;
-                }
-                bamboo.get(positionVector).growBamboo(2);
+
+            if (bamboo.get(positionVector).bambooCount == LayerBambooStack.MAX_BAMBOO - 1) {
+                bamboo.get(positionVector).growBamboo();
                 return;
             }
-            bamboo.put(positionVector, new LayerBambooStack(2));
+            bamboo.get(positionVector).growBamboo(2);
             return;
         }
 
-        if (bamboo.containsKey(positionVector)) {
-            bamboo.get(positionVector).growBamboo();
-            return;
-        }
-        bamboo.put(positionVector, new LayerBambooStack(1));
+        bamboo.get(positionVector).growBamboo();
     }
 
     /**
