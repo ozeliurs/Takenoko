@@ -35,7 +35,7 @@ public class BotManager {
     private final UUID botId;
 
     public static final List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS =
-            List.of(MovePandaAction.class, MoveGardenerAction.class, PlaceTileAction.class);
+            List.of(MovePandaAction.class, MoveGardenerAction.class, DrawTileAction.class);
 
     /**
      * Constructor for the class
@@ -77,10 +77,11 @@ public class BotManager {
      * @param board the board of the game
      */
     public void playBot(Board board) {
-        board.rollWeather();
         botState.setAvailableActions(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS));
-        botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         botState.setNumberOfActions(defaultNumberOfActions);
+
+        board.rollWeather();
+        botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         while (canPlayBot()) {
             Action action = bot.chooseAction(board.copy(), botState.copy());
             if (!botState.getAvailableActions().contains(action.getClass())) {
@@ -92,9 +93,8 @@ public class BotManager {
                                 + ". Please choose another action.");
             }
             ActionResult actionResult = action.execute(board, this);
-            botState.clearForcedActions();
-            botState.addAvailableActions(actionResult.availableActions());
-            botState.setNumberOfActions(botState.getNumberOfActions() - actionResult.cost());
+            botState.updateAvailableActions(action, actionResult);
+
             verifyObjective(board);
             if (this.isObjectiveAchieved()) {
                 break;
@@ -104,7 +104,7 @@ public class BotManager {
     }
 
     private boolean canPlayBot() {
-        return botState.getNumberOfActions() > 0;
+        return !botState.getAvailableActions().isEmpty() && botState.getNumberOfActions() > 0;
     }
 
     /**

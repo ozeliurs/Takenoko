@@ -1,6 +1,7 @@
 package com.takenoko.engine;
 
 import com.takenoko.actions.Action;
+import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.inventory.Inventory;
@@ -153,9 +154,16 @@ public class BotState { // DEFAULT VALUES
         return Objects.hash(getNumberOfActions(), getObjective(), getInventory());
     }
 
-    public void clearForcedActions() {
+    private void clearForcedActions() {
         availableActions.removeIf(
                 action ->
                         action.getAnnotation(ActionAnnotation.class).value() == ActionType.FORCED);
+    }
+
+    public void updateAvailableActions(Action action, ActionResult actionResult) {
+        this.availableActions.remove(action.getClass());
+        this.clearForcedActions();
+        this.addAvailableActions(actionResult.availableActions());
+        this.setNumberOfActions(this.getNumberOfActions() - actionResult.cost());
     }
 }
