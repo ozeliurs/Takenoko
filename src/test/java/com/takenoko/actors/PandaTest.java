@@ -103,7 +103,7 @@ class PandaTest {
         @DisplayName("should eat a bamboo if there is one")
         void shouldEatABambooIfThereIsOne() {
             Panda panda = new Panda();
-
+            when(board.isBambooEatableAt(any())).thenReturn(true);
             LayerBambooStack stack = panda.move(new PositionVector(1, 0, -1), board);
             verify(board, times(1)).eatBamboo(any());
             assertThat(stack.getBambooCount()).isEqualTo(1);
