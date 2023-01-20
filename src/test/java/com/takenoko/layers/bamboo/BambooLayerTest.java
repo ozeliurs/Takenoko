@@ -71,6 +71,20 @@ class BambooLayerTest {
             bambooLayer.growBamboo(position, board);
             assertThat(bambooLayer.getBambooAt(position, board).getBambooCount()).isEqualTo(4);
         }
+
+        @Test
+        @DisplayName("should not grow bamboo past the maximum number of bamboos")
+        void shouldNotGrowBambooPastTheMaximumNumberOfBamboos() {
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            PositionVector position = new PositionVector(1, 0, -1);
+            bambooLayer.growBamboo(position, board);
+            when(board.getTileAt(any()).getImprovement())
+                    .thenReturn(Optional.of(ImprovementType.FERTILIZER));
+            bambooLayer.growBamboo(position, board);
+            bambooLayer.growBamboo(position, board);
+            assertThat(bambooLayer.getBambooAt(position, board).getBambooCount()).isEqualTo(4);
+        }
     }
 
     @Nested
