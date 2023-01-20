@@ -1,15 +1,15 @@
 package com.takenoko.weather;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
 import com.takenoko.actions.DrawImprovementAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 class CloudyTest {
 
@@ -21,10 +21,10 @@ class CloudyTest {
         void shouldReturnDrawImprovementActionClass() {
             Board board = mock(Board.class);
             Weather weather = new Cloudy();
-            assertThat(weather.apply(board, mock(BotManager.class))).contains(DrawImprovementAction.class);
+            assertThat(weather.apply(board, mock(BotManager.class)))
+                    .contains(DrawImprovementAction.class);
             verify(board).setWeather(weather);
         }
-
     }
 
     @Nested
@@ -39,5 +39,4 @@ class CloudyTest {
             verify(board).resetWeather();
         }
     }
-
 }

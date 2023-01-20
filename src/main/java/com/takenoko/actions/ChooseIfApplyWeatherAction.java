@@ -17,6 +17,7 @@ public class ChooseIfApplyWeatherAction implements Action {
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
         if (applyWeather) {
+            botManager.displayMessage("Bot " + botManager.getName() + " applied the weather");
             return new ActionResult(board.peekWeather().apply(board, botManager));
         }
         return new ActionResult();
