@@ -25,11 +25,7 @@ public class ApplyImprovementAction implements Action {
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
-        if (!board.hasImprovementInDeck(improvementType)) {
-            throw new IllegalStateException("Improvement not in deck");
-        }
         board.applyImprovement(improvementType, positionVector);
-
         return new ActionResult(0);
     }
 }

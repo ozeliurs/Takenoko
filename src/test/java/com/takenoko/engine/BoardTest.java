@@ -1,13 +1,16 @@
 package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.actors.Gardener;
 import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
+import com.takenoko.asset.ImprovementDeck;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
+import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
@@ -281,6 +284,38 @@ class BoardTest {
         void copy_WhenBoardIsCopied_ThenReturnsNewBoard() {
             Board board = new Board();
             assertThat(board.copy()).isNotSameAs(board).isEqualTo(board);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method applyImprovement")
+    class TestApplyImprovement {
+        @Test
+        @DisplayName(
+                "When improvement is applied and improvement is in deck, calls applyImprovement on"
+                        + " tile layer")
+        void
+                applyImprovement_WhenImprovementIsAppliedAndImprovementIsInDeck_ThenCallsApplyImprovementOnTileLayer() {
+            ImprovementType improvementType = mock(ImprovementType.class);
+            PositionVector positionVector = mock(PositionVector.class);
+            when(gameAssets.getImprovementDeck()).thenReturn(mock(ImprovementDeck.class));
+            when(gameAssets.getImprovementDeck().hasImprovement(improvementType)).thenReturn(true);
+            board.applyImprovement(improvementType, positionVector);
+            verify(tileLayer, times(1)).applyImprovement(improvementType, positionVector, board);
+        }
+
+        @Test
+        @DisplayName(
+                "When improvement is applied and improvement is not in deck, throws illegal"
+                        + " argument exception")
+        void
+                applyImprovement_WhenImprovementIsAppliedAndImprovementIsNotInDeck_ThenThrowsIllegalArgumentException() {
+            ImprovementType improvementType = mock(ImprovementType.class);
+            PositionVector positionVector = mock(PositionVector.class);
+            when(gameAssets.getImprovementDeck()).thenReturn(mock(ImprovementDeck.class));
+            when(gameAssets.getImprovementDeck().hasImprovement(improvementType)).thenReturn(false);
+            assertThatThrownBy(() -> board.applyImprovement(improvementType, positionVector))
+                    .isInstanceOf(IllegalStateException.class);
         }
     }
 }

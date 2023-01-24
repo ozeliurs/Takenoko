@@ -288,6 +288,9 @@ public class Board {
     }
 
     public void applyImprovement(ImprovementType improvementType, PositionVector positionVector) {
+        if (!this.hasImprovementInDeck(improvementType)) {
+            throw new IllegalStateException("Improvement not in deck");
+        }
         tileLayer.applyImprovement(improvementType, positionVector, this);
     }
 }
