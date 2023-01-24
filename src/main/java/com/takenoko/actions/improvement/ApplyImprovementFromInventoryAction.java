@@ -8,6 +8,7 @@ import com.takenoko.engine.BotManager;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.vector.PositionVector;
 
+/** Action to apply an improvement from the inventory. */
 @ActionAnnotation(ActionType.PERSISTENT)
 public class ApplyImprovementFromInventoryAction extends ApplyImprovementAction {
     public ApplyImprovementFromInventoryAction(

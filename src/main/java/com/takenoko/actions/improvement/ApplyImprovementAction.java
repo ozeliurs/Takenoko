@@ -9,6 +9,10 @@ import com.takenoko.engine.BotManager;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.vector.PositionVector;
 
+/**
+ * Action to draw an improvement from the inventory. Throws an exception if the improvement is not
+ * available.
+ */
 @ActionAnnotation(ActionType.FORCED)
 public class ApplyImprovementAction implements Action {
     protected ImprovementType improvementType;

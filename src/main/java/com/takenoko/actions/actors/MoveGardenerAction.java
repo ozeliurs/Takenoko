@@ -9,6 +9,7 @@ import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.vector.PositionVector;
 
+/** Action to move a gardener. */
 @ActionAnnotation(ActionType.DEFAULT)
 public class MoveGardenerAction implements Action {
     private final PositionVector relativePositionVector;

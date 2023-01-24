@@ -8,6 +8,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import java.util.List;
 
+/** Action to draw a Tile from the deck. */
 @ActionAnnotation(ActionType.DEFAULT)
 public class DrawTileAction implements Action {
 
