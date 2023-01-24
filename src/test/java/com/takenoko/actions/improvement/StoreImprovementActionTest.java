@@ -1,11 +1,11 @@
-package com.takenoko.actions;
+package com.takenoko.actions.improvement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.takenoko.actions.improvement.StoreImprovementAction;
+import com.takenoko.actions.ActionResult;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.inventory.Inventory;

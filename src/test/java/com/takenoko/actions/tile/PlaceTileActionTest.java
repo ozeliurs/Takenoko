@@ -1,8 +1,7 @@
-package com.takenoko.actions;
+package com.takenoko.actions.tile;
 
 import static org.mockito.Mockito.*;
 
-import com.takenoko.actions.tile.PlaceTileAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.LayerBambooStack;

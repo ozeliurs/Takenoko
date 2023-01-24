@@ -1,9 +1,8 @@
-package com.takenoko.actions;
+package com.takenoko.actions.improvement;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 
-import com.takenoko.actions.improvement.DrawImprovementAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.tile.ImprovementType;

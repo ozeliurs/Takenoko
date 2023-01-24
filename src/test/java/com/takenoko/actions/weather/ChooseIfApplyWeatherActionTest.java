@@ -1,9 +1,9 @@
-package com.takenoko.actions;
+package com.takenoko.actions.weather;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
+import com.takenoko.actions.ActionResult;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.weather.Weather;

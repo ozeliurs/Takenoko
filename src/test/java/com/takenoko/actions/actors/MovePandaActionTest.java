@@ -1,8 +1,7 @@
-package com.takenoko.actions;
+package com.takenoko.actions.actors;
 
 import static org.mockito.Mockito.*;
 
-import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.inventory.Inventory;

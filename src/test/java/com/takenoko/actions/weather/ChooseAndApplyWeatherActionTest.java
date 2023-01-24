@@ -1,10 +1,9 @@
-package com.takenoko.actions;
+package com.takenoko.actions.weather;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import com.takenoko.actions.weather.ChooseAndApplyWeatherAction;
 import com.takenoko.weather.Weather;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
