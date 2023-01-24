@@ -18,11 +18,8 @@ public class ApplyImprovementFromInventoryAction extends ApplyImprovementAction 
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
-        if (!botManager.getInventory().hasImprovement(improvementType)) {
-            throw new IllegalStateException("Improvement not in inventory");
-        }
-        board.applyImprovement(improvementType, positionVector);
         botManager.getInventory().useImprovement(improvementType);
+        board.applyImprovement(improvementType, positionVector);
 
         return new ActionResult(0);
     }

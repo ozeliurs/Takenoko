@@ -1,6 +1,5 @@
 package com.takenoko.actions.improvement;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -34,26 +33,6 @@ class ApplyImprovementFromInventoryActionTest {
             // calls board.applyImprovement() and botManager.getInventory().useImprovement()
             verify(board).applyImprovement(any(ImprovementType.class), any(PositionVector.class));
             verify(botManager.getInventory()).useImprovement(any(ImprovementType.class));
-        }
-
-        @Test
-        @DisplayName(
-                "should throw an IllegalStateException if the improvement is not in the inventory")
-        void shouldThrowAnIllegalStateExceptionIfTheImprovementIsNotInTheInventory() {
-            Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
-            when(botManager.getInventory()).thenReturn(mock(Inventory.class));
-            when(botManager.getInventory().hasImprovement(any(ImprovementType.class)))
-                    .thenReturn(false);
-            ApplyImprovementFromInventoryAction applyImprovementFromInventoryAction =
-                    new ApplyImprovementFromInventoryAction(
-                            mock(ImprovementType.class), mock(PositionVector.class));
-            assertThatThrownBy(() -> applyImprovementFromInventoryAction.execute(board, botManager))
-                    .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("Improvement not in inventory");
-            verify(board, never())
-                    .applyImprovement(any(ImprovementType.class), any(PositionVector.class));
-            verify(botManager.getInventory(), never()).useImprovement(any(ImprovementType.class));
         }
     }
 }
