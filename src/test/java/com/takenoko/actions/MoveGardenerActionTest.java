@@ -2,6 +2,7 @@ package com.takenoko.actions;
 
 import static org.mockito.Mockito.*;
 
+import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.LayerBambooStack;

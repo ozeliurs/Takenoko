@@ -1,5 +1,7 @@
-package com.takenoko.actions;
+package com.takenoko.actions.actors;
 
+import com.takenoko.actions.Action;
+import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;

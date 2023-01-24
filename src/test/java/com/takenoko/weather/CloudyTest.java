@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import com.takenoko.actions.DrawImprovementAction;
+import com.takenoko.actions.improvement.DrawImprovementAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import org.junit.jupiter.api.DisplayName;

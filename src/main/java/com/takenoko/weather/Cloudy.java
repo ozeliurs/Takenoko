@@ -1,7 +1,7 @@
 package com.takenoko.weather;
 
 import com.takenoko.actions.Action;
-import com.takenoko.actions.DrawImprovementAction;
+import com.takenoko.actions.improvement.DrawImprovementAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import java.util.List;

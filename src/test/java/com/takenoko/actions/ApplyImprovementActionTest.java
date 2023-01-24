@@ -3,6 +3,7 @@ package com.takenoko.actions;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+import com.takenoko.actions.improvement.ApplyImprovementAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.inventory.Inventory;

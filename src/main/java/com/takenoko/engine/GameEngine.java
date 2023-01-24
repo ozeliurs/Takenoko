@@ -1,8 +1,8 @@
 package com.takenoko.engine;
 
-import com.takenoko.actions.MoveGardenerAction;
-import com.takenoko.actions.MovePandaAction;
-import com.takenoko.actions.PlaceTileAction;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.actors.MovePandaAction;
+import com.takenoko.actions.tile.PlaceTileAction;
 import com.takenoko.bot.FullRandomBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.PatternObjective;

@@ -1,6 +1,10 @@
 package com.takenoko.bot;
 
 import com.takenoko.actions.*;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.tile.DrawTileAction;
+import com.takenoko.actions.tile.PlaceTileAction;
+import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import org.apache.commons.lang3.NotImplementedException;

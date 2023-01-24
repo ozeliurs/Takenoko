@@ -5,9 +5,9 @@ import static org.mockito.Mockito.mock;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
-import com.takenoko.actions.ChooseIfApplyWeatherAction;
-import com.takenoko.actions.MoveGardenerAction;
-import com.takenoko.actions.annotations.ApplyImprovementFromInventoryAction;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
+import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
