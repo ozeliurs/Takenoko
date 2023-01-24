@@ -22,6 +22,7 @@ public class ApplyImprovementFromInventoryAction extends ApplyImprovementAction 
             throw new IllegalStateException("Improvement not in inventory");
         }
         board.applyImprovement(improvementType, positionVector);
+        botManager.getInventory().useImprovement(improvementType);
 
         return new ActionResult(0);
     }
