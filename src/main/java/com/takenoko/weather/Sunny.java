@@ -5,6 +5,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import java.util.List;
 
+/** Weather that adds a new action to the bot. */
 public class Sunny implements Weather {
     @Override
     public List<Class<? extends Action>> apply(Board board, BotManager botManager) {

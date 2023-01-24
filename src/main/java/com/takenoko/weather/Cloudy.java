@@ -6,6 +6,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import java.util.List;
 
+/** Weather that makes the player draw an improvement from the deck. */
 public class Cloudy implements Weather {
     @Override
     public List<Class<? extends Action>> apply(Board board, BotManager botManager) {
