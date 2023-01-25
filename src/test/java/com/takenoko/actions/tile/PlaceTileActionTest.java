@@ -1,4 +1,4 @@
-package com.takenoko.actions;
+package com.takenoko.actions.tile;
 
 import static org.mockito.Mockito.*;
 

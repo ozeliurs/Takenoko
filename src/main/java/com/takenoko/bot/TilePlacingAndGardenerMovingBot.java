@@ -1,9 +1,10 @@
 package com.takenoko.bot;
 
-import com.takenoko.actions.Action;
-import com.takenoko.actions.ChooseIfApplyWeatherAction;
-import com.takenoko.actions.MoveGardenerAction;
-import com.takenoko.actions.PlaceTileAction;
+import com.takenoko.actions.*;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.tile.DrawTileAction;
+import com.takenoko.actions.tile.PlaceTileAction;
+import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import org.apache.commons.lang3.NotImplementedException;
@@ -24,10 +25,13 @@ public class TilePlacingAndGardenerMovingBot implements Bot {
                 && !board.getGardenerPossibleMoves().isEmpty()) {
             // Move the gardener
             return new MoveGardenerAction(board.getGardenerPossibleMoves().get(0));
+        } else if (botState.getAvailableActions().contains(DrawTileAction.class)) {
+            // draw a tile
+            return new DrawTileAction();
         } else if (botState.getAvailableActions().contains(PlaceTileAction.class)) {
             // place a tile
             return new PlaceTileAction(
-                    board.getAvailableTiles().get(0), board.getAvailableTilePositions().get(0));
+                    board.peekTileDeck().get(0), board.getAvailableTilePositions().get(0));
         }
         throw new NotImplementedException("No action available");
     }

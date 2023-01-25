@@ -99,15 +99,16 @@ public class Shape {
     public Set<Shape> getRotatedShapes() {
         // return a list of shapes rotated in all directions
         return IntStream.range(0, 5)
-                .mapToObj(
-                        i -> {
-                            Shape rotatedShape = this.copy();
-                            for (int j = 0; j < i; j++) {
-                                rotatedShape = rotatedShape.rotate60();
-                            }
-                            return rotatedShape;
-                        })
+                .mapToObj(this::getRotatedShape)
                 .collect(HashSet::new, HashSet::add, HashSet::addAll);
+    }
+
+    public Shape getRotatedShape(int i) {
+        Shape rotatedShape = this.copy();
+        for (int j = 0; j < i; j++) {
+            rotatedShape = rotatedShape.rotate60();
+        }
+        return rotatedShape;
     }
 
     /**

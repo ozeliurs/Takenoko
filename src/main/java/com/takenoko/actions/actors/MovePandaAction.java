@@ -1,11 +1,16 @@
-package com.takenoko.actions;
+package com.takenoko.actions.actors;
 
+import com.takenoko.actions.Action;
+import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.annotations.ActionAnnotation;
+import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of moving the panda. */
+@ActionAnnotation(ActionType.DEFAULT)
 public class MovePandaAction implements Action {
     private final PositionVector relativePositionVector;
 
@@ -38,7 +43,7 @@ public class MovePandaAction implements Action {
 
         if (!bambooStack.isEmpty()) {
             // eat bamboo
-            botManager.getInventory().getBambooStack().collectBamboo();
+            botManager.getInventory().collectBamboo();
             botManager.displayMessage(botManager.getName() + " collected one bamboo");
         }
         return new ActionResult(1);

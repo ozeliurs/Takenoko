@@ -5,6 +5,7 @@ import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
+import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
@@ -158,6 +159,16 @@ public class Board {
         bambooLayer.eatBamboo(positionVector, this);
     }
 
+    /**
+     * Check if the bamboo at the position is eatable.
+     *
+     * @param positionVector the position of the tile
+     * @return if the bamboo at the position is eatable
+     */
+    public boolean isBambooEatableAt(PositionVector positionVector) {
+        return bambooLayer.isEatableAt(positionVector, this);
+    }
+
     /** Get the Position of the Panda */
     public PositionVector getPandaPosition() {
         return panda.getPosition();
@@ -238,5 +249,54 @@ public class Board {
     /** Changes the weather to null. This is used when the weather is over. */
     public void resetWeather() {
         weather = null;
+    }
+
+    public boolean isBambooGrowableAt(PositionVector positionVector) {
+        return bambooLayer.isGrowableAt(positionVector, this);
+    }
+
+    /**
+     * @param improvementType the type of improvement
+     * @return the improvement of the type
+     */
+    public ImprovementType drawImprovement(ImprovementType improvementType) {
+        return gameAssets.getImprovementDeck().draw(improvementType);
+    }
+
+    /**
+     * Returns last improvement drawn.
+     *
+     * @return the last improvement drawn
+     */
+    public ImprovementType peekImprovement() {
+        return gameAssets.getImprovementDeck().peek();
+    }
+
+    /**
+     * @param improvementType the type of improvement
+     * @return if the improvement is available
+     */
+    public boolean hasImprovementInDeck(ImprovementType improvementType) {
+        return gameAssets.getImprovementDeck().hasImprovement(improvementType);
+    }
+
+    public List<PositionVector> getAvailableImprovementPositions() {
+        return tileLayer.getAvailableImprovementPositions(this);
+    }
+
+    public void drawTiles() {
+        gameAssets.getTileDeck().draw();
+    }
+
+    public List<Tile> peekTileDeck() {
+        return gameAssets.getTileDeck().peek();
+    }
+
+    public void chooseTileInTileDeck(Tile tile) {
+        gameAssets.getTileDeck().choose(tile);
+    }
+
+    public void applyImprovement(ImprovementType improvementType, PositionVector positionVector) {
+        tileLayer.applyImprovement(improvementType, positionVector, this);
     }
 }

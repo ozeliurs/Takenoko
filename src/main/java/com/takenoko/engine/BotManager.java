@@ -1,13 +1,16 @@
 package com.takenoko.engine;
 
-import com.takenoko.actions.Action;
-import com.takenoko.actions.ActionResult;
-import com.takenoko.actions.ChooseIfApplyWeatherAction;
+import com.takenoko.actions.*;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.actors.MovePandaAction;
+import com.takenoko.actions.tile.DrawTileAction;
+import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +37,9 @@ public class BotManager {
     private final int defaultNumberOfActions;
     private int score;
     private final UUID botId;
+
+    public static final List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS =
+            List.of(MovePandaAction.class, MoveGardenerAction.class, DrawTileAction.class);
 
     /**
      * Constructor for the class
@@ -75,9 +81,11 @@ public class BotManager {
      * @param board the board of the game
      */
     public void playBot(Board board) {
-        board.rollWeather();
-        botState.setAvailableActions(List.of(ChooseIfApplyWeatherAction.class));
+        botState.setAvailableActions(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS));
         botState.setNumberOfActions(defaultNumberOfActions);
+
+        board.rollWeather();
+        botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         while (canPlayBot()) {
             Action action = bot.chooseAction(board.copy(), botState.copy());
             if (!botState.getAvailableActions().contains(action.getClass())) {
@@ -89,8 +97,8 @@ public class BotManager {
                                 + ". Please choose another action.");
             }
             ActionResult actionResult = action.execute(board, this);
-            botState.setAvailableActions(actionResult.availableActions());
-            botState.setNumberOfActions(botState.getNumberOfActions() - actionResult.cost());
+            botState.updateAvailableActions(action, actionResult);
+
             verifyObjective(board);
             if (this.isObjectiveAchieved()) {
                 break;
@@ -100,7 +108,7 @@ public class BotManager {
     }
 
     private boolean canPlayBot() {
-        return botState.getNumberOfActions() > 0;
+        return !botState.getAvailableActions().isEmpty() && botState.getNumberOfActions() > 0;
     }
 
     /**

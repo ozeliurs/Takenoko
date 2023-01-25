@@ -1,10 +1,16 @@
-package com.takenoko.actions;
+package com.takenoko.actions.actors;
 
+import com.takenoko.actions.Action;
+import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.annotations.ActionAnnotation;
+import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.vector.PositionVector;
 
+/** Action to move a gardener. */
+@ActionAnnotation(ActionType.DEFAULT)
 public class MoveGardenerAction implements Action {
     private final PositionVector relativePositionVector;
 

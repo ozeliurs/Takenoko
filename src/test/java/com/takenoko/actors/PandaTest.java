@@ -4,8 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.layers.bamboo.LayerBambooStack;
@@ -98,6 +97,31 @@ class PandaTest {
     }
 
     @Nested
+    @DisplayName("Method afterMove()")
+    class TestAfterMove {
+        @Test
+        @DisplayName("should eat a bamboo if there is one")
+        void shouldEatABambooIfThereIsOne() {
+            Panda panda = new Panda();
+            when(board.isBambooEatableAt(any())).thenReturn(true);
+            LayerBambooStack stack = panda.move(new PositionVector(1, 0, -1), board);
+            verify(board, times(1)).eatBamboo(any());
+            assertThat(stack.getBambooCount()).isEqualTo(1);
+        }
+
+        @Test
+        @DisplayName("should not eat a bamboo if there is none")
+        void shouldNotEatABambooIfThereIsNone() {
+            Panda panda = new Panda();
+
+            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
+
+            LayerBambooStack stack = panda.move(new PositionVector(1, 0, -1), board);
+            assertThat(stack.getBambooCount()).isZero();
+        }
+    }
+
+    @Nested
     @DisplayName("Method getPossibleMoves()")
     class TestGetPossibleMoves {
         @Test
@@ -125,10 +149,9 @@ class PandaTest {
 
         @Test
         @DisplayName("should return true if the two objects are the same")
-        void shouldReturnTrueIfTheTwoObjectsAreTheSame() {
+        void equals_shouldReturnTrueIfTheTwoObjectsAreTheSame() {
             Panda panda = new Panda();
-            Panda panda2 = panda;
-            assertEquals(panda, panda2);
+            assertEquals(panda, panda);
         }
 
         @Test

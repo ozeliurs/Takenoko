@@ -64,6 +64,46 @@ public class ShapeTest {
     }
 
     @Nested
+    @DisplayName("Method getRotatedShape")
+    class TestGetRotatedShape {
+        @Test
+        @DisplayName("should return a new shape with the same size")
+        void getRotatedShape_shouldReturnNewShapeWithSameSize() {
+            assertThat(shape.getRotatedShape(0).getElements()).hasSize(shape.getElements().size());
+        }
+
+        @Test
+        @DisplayName("should return a new shape with the same origin")
+        void getRotatedShape_shouldReturnNewShapeWithSameOrigin() {
+            assertThat(shape.getRotatedShape(0).getElements())
+                    .contains(new PositionVector(0, 0, 0));
+        }
+
+        @Test
+        @DisplayName("should return a new shape with the tiles rotated 60 degrees")
+        void getRotatedShape_shouldReturnNewShapeWithTilesRotated60Degrees() {
+            assertThat(shape.getRotatedShape(1).getElements())
+                    .contains(new PositionVector(0, 0, 0));
+            assertThat(shape.getRotatedShape(1).getElements())
+                    .contains(new PositionVector(0, 1, -1));
+            assertThat(shape.getRotatedShape(1).getElements())
+                    .contains(new PositionVector(1, 0, -1));
+        }
+
+        @Test
+        @DisplayName(
+                "should return the same shape when the rotation is is a multiple of 360 degrees")
+        void getRotatedShape_shouldReturnSameShapeWhenRotationIsMultipleOf360() {
+            assertThat(shape.getRotatedShape(6).getElements())
+                    .contains(new PositionVector(0, 0, 0));
+            assertThat(shape.getRotatedShape(6).getElements())
+                    .contains(new PositionVector(1, 0, -1));
+            assertThat(shape.getRotatedShape(6).getElements())
+                    .contains(new PositionVector(1, -1, 0));
+        }
+    }
+
+    @Nested
     @DisplayName("Method translate")
     class TestTranslate {
         @Test
