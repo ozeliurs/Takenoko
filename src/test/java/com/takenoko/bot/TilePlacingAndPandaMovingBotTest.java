@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-import com.takenoko.actions.ChooseIfApplyWeatherAction;
-import com.takenoko.actions.MoveGardenerAction;
-import com.takenoko.actions.MovePandaAction;
-import com.takenoko.actions.PlaceTileAction;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.actors.MovePandaAction;
+import com.takenoko.actions.tile.PlaceTileAction;
+import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.layers.tile.Tile;

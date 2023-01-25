@@ -8,6 +8,7 @@ import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
+import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
@@ -281,6 +282,17 @@ class BoardTest {
         void copy_WhenBoardIsCopied_ThenReturnsNewBoard() {
             Board board = new Board();
             assertThat(board.copy()).isNotSameAs(board).isEqualTo(board);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method applyImprovement")
+    class TestApplyImprovement {
+        @Test
+        @DisplayName("When improvement is applied calls applyImprovement on" + " tile layer")
+        void applyImprovement_WhenImprovementIsApplied_CallsApplyImprovementOnTileLayer() {
+            board.applyImprovement(mock(ImprovementType.class), mock(PositionVector.class));
+            verify(tileLayer).applyImprovement(any(), any(), any());
         }
     }
 }

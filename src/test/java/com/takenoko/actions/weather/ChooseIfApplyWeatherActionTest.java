@@ -1,9 +1,11 @@
-package com.takenoko.actions;
+package com.takenoko.actions.weather;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+import com.takenoko.actions.ActionResult;
 import com.takenoko.engine.Board;
+import com.takenoko.engine.BotManager;
 import com.takenoko.weather.Weather;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,7 +36,7 @@ class ChooseIfApplyWeatherActionTest {
                     new ChooseIfApplyWeatherAction(true);
 
             // When
-            ActionResult result = chooseIfApplyWeatherAction.execute(board, null);
+            ActionResult result = chooseIfApplyWeatherAction.execute(board, mock(BotManager.class));
 
             assertThat(result).isNotNull();
         }
@@ -47,8 +49,10 @@ class ChooseIfApplyWeatherActionTest {
                     new ChooseIfApplyWeatherAction(true);
 
             // When
-            chooseIfApplyWeatherAction.execute(board, null);
-            verify(weather, times(1)).apply(board, null);
+
+            BotManager botManager = mock(BotManager.class);
+            chooseIfApplyWeatherAction.execute(board, botManager);
+            verify(weather, times(1)).apply(board, botManager);
         }
     }
 }

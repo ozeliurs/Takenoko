@@ -3,7 +3,12 @@ package com.takenoko.bot;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import com.takenoko.actions.*;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.actors.MovePandaAction;
+import com.takenoko.actions.improvement.StoreImprovementAction;
+import com.takenoko.actions.tile.DrawTileAction;
+import com.takenoko.actions.tile.PlaceTileAction;
+import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.layers.tile.Tile;
@@ -92,10 +97,9 @@ class FullRandomBotTest {
         @Test
         @DisplayName("should return an action of type GetAndStoreImprovementAction")
         void shouldReturnAnActionOfTypeGetAndStoreImprovementAction() {
-            when(botState.getAvailableActions())
-                    .thenReturn(List.of(GetAndStoreImprovementAction.class));
+            when(botState.getAvailableActions()).thenReturn(List.of(StoreImprovementAction.class));
             assertThat(bot.chooseAction(board, botState))
-                    .isInstanceOfAny(GetAndStoreImprovementAction.class);
+                    .isInstanceOfAny(StoreImprovementAction.class);
         }
     }
 }

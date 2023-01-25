@@ -1,6 +1,10 @@
 package com.takenoko.engine;
 
 import com.takenoko.actions.*;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.actors.MovePandaAction;
+import com.takenoko.actions.tile.DrawTileAction;
+import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;

@@ -5,9 +5,9 @@ import static org.mockito.Mockito.mock;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
-import com.takenoko.actions.ChooseIfApplyWeatherAction;
-import com.takenoko.actions.MoveGardenerAction;
-import com.takenoko.actions.annotations.PersistentApplyImprovementAction;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
+import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -134,7 +134,7 @@ class BotStateTest {
         @DisplayName("should keep persistant actions")
         void updateAvailableActions_shouldKeepPersistantActions() {
             botState.addAvailableAction(MoveGardenerAction.class);
-            botState.addAvailableAction(PersistentApplyImprovementAction.class);
+            botState.addAvailableAction(ApplyImprovementFromInventoryAction.class);
             botState.updateAvailableActions(
                     new MoveGardenerAction(mock(PositionVector.class)), new ActionResult());
             assertThat(botState.getAvailableActions()).hasSize(1);

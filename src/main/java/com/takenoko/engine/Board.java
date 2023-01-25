@@ -264,6 +264,15 @@ public class Board {
     }
 
     /**
+     * Returns last improvement drawn.
+     *
+     * @return the last improvement drawn
+     */
+    public ImprovementType peekImprovement() {
+        return gameAssets.getImprovementDeck().peek();
+    }
+
+    /**
      * @param improvementType the type of improvement
      * @return if the improvement is available
      */

@@ -6,6 +6,7 @@ import java.util.HashMap;
 /** The deck containing all the improvement chips you can place on the tiles. */
 public class ImprovementDeck extends HashMap<ImprovementType, Integer> {
     private static final int DEFAULT_IMPROVEMENT_COUNT = 3;
+    private ImprovementType lastDrawnImprovement;
 
     public ImprovementDeck() {
         for (ImprovementType improvementType : ImprovementType.values()) {
@@ -20,6 +21,7 @@ public class ImprovementDeck extends HashMap<ImprovementType, Integer> {
     public ImprovementType draw(ImprovementType improvementType) {
         if (this.get(improvementType) > 0) {
             this.put(improvementType, this.get(improvementType) - 1);
+            lastDrawnImprovement = improvementType;
             return improvementType;
         }
 
@@ -44,5 +46,9 @@ public class ImprovementDeck extends HashMap<ImprovementType, Integer> {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    public ImprovementType peek() {
+        return lastDrawnImprovement;
     }
 }

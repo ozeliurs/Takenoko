@@ -14,6 +14,13 @@ public enum WeatherFactory {
         public Weather createWeather() {
             return new Sunny();
         }
+    },
+
+    CLOUDY {
+        @Override
+        public Weather createWeather() {
+            return new Cloudy();
+        }
     };
 
     public abstract Weather createWeather();

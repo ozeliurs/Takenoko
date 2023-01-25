@@ -1,4 +1,4 @@
-package com.takenoko.actions;
+package com.takenoko.actions.actors;
 
 import static org.mockito.Mockito.*;
 

@@ -1,5 +1,7 @@
-package com.takenoko.actions;
+package com.takenoko.actions.tile;
 
+import com.takenoko.actions.Action;
+import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
@@ -33,11 +35,10 @@ public class PlaceTileAction implements Action {
      */
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
+        botManager.displayMessage(botManager.getName() + " placed a tile at " + positionVector);
         if (!board.placeTile(tile, positionVector).isEmpty()) {
             botManager.displayMessage("Bamboo grew at " + positionVector);
         }
-        botManager.displayMessage(botManager.getName() + " placed a tile at " + positionVector);
-
         return new ActionResult(1);
     }
 }
