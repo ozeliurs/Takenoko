@@ -7,6 +7,7 @@ import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.*;
 
 public class ShapeTest {
@@ -15,12 +16,12 @@ public class ShapeTest {
 
     @BeforeEach
     void setUp() {
-        HashMap<PositionVector, Tile> elements = new HashMap<>();
-        elements.put(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW));
-        elements.put(new PositionVector(1, 0, -1), new Tile(TileColor.GREEN));
-        elements.put(new PositionVector(1, -1, 0), new Tile(TileColor.PINK));
 
-        this.shape = new Shape(elements);
+        this.shape =
+                new Shape(
+                        Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW)),
+                        Pair.of(new PositionVector(1, 0, -1), new Tile(TileColor.GREEN)),
+                        Pair.of(new PositionVector(1, -1, 0), new Tile(TileColor.PINK)));
     }
 
     @AfterEach
@@ -159,11 +160,11 @@ public class ShapeTest {
         @Test
         @DisplayName("should return false when the shape has a different elements color")
         void equals_shouldReturnFalseWhenShapeHasDifferentElementsColor() {
-            HashMap<PositionVector, Tile> otherElements = new HashMap<>();
-            otherElements.put(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW));
-            otherElements.put(new PositionVector(1, 0, -1), new Tile(TileColor.YELLOW));
-            otherElements.put(new PositionVector(1, -1, 0), new Tile(TileColor.PINK));
-            Shape otherShape = new Shape(otherElements);
+            Shape otherShape =
+                    new Shape(
+                            Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, 0, -1), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, -1, 0), new Tile(TileColor.PINK)));
 
             assertThat(shape).isNotEqualTo(otherShape);
         }
@@ -171,11 +172,11 @@ public class ShapeTest {
         @Test
         @DisplayName("should return false when the shape has a different elements position")
         void equals_shouldReturnFalseWhenShapeHasDifferentElementsPosition() {
-            HashMap<PositionVector, Tile> otherElements = new HashMap<>();
-            otherElements.put(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW));
-            otherElements.put(new PositionVector(1, 1, -2), new Tile(TileColor.GREEN));
-            otherElements.put(new PositionVector(1, -1, 0), new Tile(TileColor.PINK));
-            Shape otherShape = new Shape(otherElements);
+            Shape otherShape =
+                    new Shape(
+                            Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, 1, -2), new Tile(TileColor.GREEN)),
+                            Pair.of(new PositionVector(1, -1, 0), new Tile(TileColor.PINK)));
 
             assertThat(shape).isNotEqualTo(otherShape);
         }
@@ -202,11 +203,11 @@ public class ShapeTest {
         @DisplayName(
                 "should return a different hash code when the shape has a different elements color")
         void hashCode_shouldReturnDifferentHashCodeWhenShapeHasDifferentElementsColor() {
-            HashMap<PositionVector, Tile> otherElements = new HashMap<>();
-            otherElements.put(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW));
-            otherElements.put(new PositionVector(1, 0, -1), new Tile(TileColor.YELLOW));
-            otherElements.put(new PositionVector(1, -1, 0), new Tile(TileColor.PINK));
-            Shape otherShape = new Shape(otherElements);
+            Shape otherShape =
+                    new Shape(
+                            Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, 0, -1), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, -1, 0), new Tile(TileColor.PINK)));
 
             assertThat(shape).doesNotHaveSameHashCodeAs(otherShape);
         }
@@ -216,11 +217,11 @@ public class ShapeTest {
                 "should return a different hash code when the shape has a different elements"
                         + " position")
         void hashCode_shouldReturnDifferentHashCodeWhenShapeHasDifferentElementsPosition() {
-            HashMap<PositionVector, Tile> otherElements = new HashMap<>();
-            otherElements.put(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW));
-            otherElements.put(new PositionVector(1, 1, -2), new Tile(TileColor.GREEN));
-            otherElements.put(new PositionVector(1, -1, 0), new Tile(TileColor.PINK));
-            Shape otherShape = new Shape(otherElements);
+            Shape otherShape =
+                    new Shape(
+                            Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, 1, -2), new Tile(TileColor.GREEN)),
+                            Pair.of(new PositionVector(1, -1, 0), new Tile(TileColor.PINK)));
 
             assertThat(shape).doesNotHaveSameHashCodeAs(otherShape);
         }

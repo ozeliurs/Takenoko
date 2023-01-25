@@ -8,6 +8,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 /** Class representing a Shape. */
 public class Shape {
+    public static final IllegalArgumentException THE_SHAPE_CANNOT_BE_EMPTY_EXCEPTION =
+            new IllegalArgumentException("The shape cannot be empty");
     private final Map<PositionVector, Tile> elements;
     private final PositionVector defaultRotationOrigin;
 
@@ -19,7 +21,7 @@ public class Shape {
      */
     public Shape(Map<PositionVector, Tile> shape, PositionVector defaultRotationOrigin) {
         if (shape.isEmpty()) {
-            throw new IllegalArgumentException("The shape cannot be empty");
+            throw THE_SHAPE_CANNOT_BE_EMPTY_EXCEPTION;
         }
         this.elements = shape;
         this.defaultRotationOrigin = defaultRotationOrigin;
@@ -61,12 +63,29 @@ public class Shape {
      */
     public Shape(PositionVector... vectors) {
         if (vectors.length == 0) {
-            throw new IllegalArgumentException("The shape cannot be empty");
+            throw THE_SHAPE_CANNOT_BE_EMPTY_EXCEPTION;
         }
         this.elements = new HashMap<>();
         this.defaultRotationOrigin = findOrigin(this.elements);
         for (PositionVector vector : vectors) {
             this.elements.put(vector, new Tile());
+        }
+    }
+
+    /**
+     * Constructor of the Shape class. To facilitate the creation of the shape, the shape is defined
+     * by a list of Pair of vectors and tiles. The rotation origin is the element the closest to the
+     * origin of the coordinate system.
+     */
+    @SafeVarargs
+    public Shape(Pair<PositionVector, Tile>... vectors) {
+        if (vectors.length == 0) {
+            throw THE_SHAPE_CANNOT_BE_EMPTY_EXCEPTION;
+        }
+        this.elements = new HashMap<>();
+        this.defaultRotationOrigin = findOrigin(this.elements);
+        for (Pair<PositionVector, Tile> vector : vectors) {
+            this.elements.put(vector.getLeft(), vector.getRight());
         }
     }
 
