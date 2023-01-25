@@ -4,4 +4,7 @@ public enum TileColor {
     PINK,
     YELLOW,
     GREEN,
+
+    ANY,
+    NONE
 }
