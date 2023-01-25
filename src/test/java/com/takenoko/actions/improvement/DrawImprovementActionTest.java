@@ -1,8 +1,11 @@
 package com.takenoko.actions.improvement;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import com.takenoko.actions.weather.ChooseAndApplyWeatherAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.tile.ImprovementType;
@@ -34,7 +37,13 @@ class DrawImprovementActionTest {
             DrawImprovementAction drawImprovementAction =
                     new DrawImprovementAction(improvementType);
             Board board = mock(Board.class);
+            when(board.hasImprovementInDeck(improvementType)).thenReturn(true);
             assertNotNull(drawImprovementAction.execute(board, mock(BotManager.class)));
+            assertThat(
+                            drawImprovementAction
+                                    .execute(board, mock(BotManager.class))
+                                    .availableActions())
+                    .containsExactly(ApplyImprovementAction.class, StoreImprovementAction.class);
         }
 
         @Test
@@ -48,6 +57,11 @@ class DrawImprovementActionTest {
                     new DrawImprovementAction(improvementType);
             Board board = mock(Board.class);
             assertNotNull(drawImprovementAction.execute(board, mock(BotManager.class)));
+            assertThat(
+                            drawImprovementAction
+                                    .execute(board, mock(BotManager.class))
+                                    .availableActions())
+                    .containsExactly(ChooseAndApplyWeatherAction.class);
         }
     }
 }
