@@ -2,6 +2,7 @@ package com.takenoko.asset;
 
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
+import com.takenoko.layers.tile.TileColor;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,23 +22,23 @@ public class TileDeck extends ArrayList<Tile> {
         this.random = random;
 
         for (int i = 0; i < 6; i++) { // Green Tiles
-            this.add(new Tile());
+            this.add(new Tile(TileColor.GREEN));
         }
-        this.add(new Tile(ImprovementType.ENCLOSURE));
-        this.add(new Tile(ImprovementType.ENCLOSURE));
-        this.add(new Tile(ImprovementType.FERTILIZER));
+        this.add(new Tile(ImprovementType.ENCLOSURE, TileColor.GREEN));
+        this.add(new Tile(ImprovementType.ENCLOSURE, TileColor.GREEN));
+        this.add(new Tile(ImprovementType.FERTILIZER, TileColor.GREEN));
 
         for (int i = 0; i < 4; i++) { // Pink Tiles
             this.add(new Tile());
         }
-        this.add(new Tile(ImprovementType.ENCLOSURE));
-        this.add(new Tile(ImprovementType.FERTILIZER));
+        this.add(new Tile(ImprovementType.ENCLOSURE, TileColor.PINK));
+        this.add(new Tile(ImprovementType.FERTILIZER, TileColor.PINK));
 
         for (int i = 0; i < 6; i++) { // Yellow Tiles
-            this.add(new Tile());
+            this.add(new Tile(TileColor.YELLOW));
         }
-        this.add(new Tile(ImprovementType.ENCLOSURE));
-        this.add(new Tile(ImprovementType.FERTILIZER));
+        this.add(new Tile(ImprovementType.ENCLOSURE, TileColor.YELLOW));
+        this.add(new Tile(ImprovementType.FERTILIZER, TileColor.YELLOW));
         lastDrawnTiles = new ArrayList<>();
     }
 
