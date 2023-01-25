@@ -15,16 +15,15 @@ import com.takenoko.vector.PositionVector;
  */
 @ActionAnnotation(ActionType.FORCED)
 public class ApplyImprovementAction implements Action {
-    protected ImprovementType improvementType;
     protected PositionVector positionVector;
 
-    public ApplyImprovementAction(ImprovementType improvementType, PositionVector positionVector) {
-        this.improvementType = improvementType;
+    public ApplyImprovementAction(PositionVector positionVector) {
         this.positionVector = positionVector;
     }
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
+        ImprovementType improvementType = board.peekImprovement();
         board.applyImprovement(improvementType, positionVector);
         botManager.displayMessage(
                 botManager.getName()

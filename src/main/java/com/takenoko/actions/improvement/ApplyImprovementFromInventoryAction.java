@@ -11,9 +11,12 @@ import com.takenoko.vector.PositionVector;
 /** Action to apply an improvement from the inventory. */
 @ActionAnnotation(ActionType.PERSISTENT)
 public class ApplyImprovementFromInventoryAction extends ApplyImprovementAction {
+    private final ImprovementType improvementType;
+
     public ApplyImprovementFromInventoryAction(
             ImprovementType improvementType, PositionVector positionVector) {
-        super(improvementType, positionVector);
+        super(positionVector);
+        this.improvementType = improvementType;
     }
 
     @Override

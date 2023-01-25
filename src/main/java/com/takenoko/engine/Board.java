@@ -264,6 +264,15 @@ public class Board {
     }
 
     /**
+     * Returns last improvement drawn.
+     *
+     * @return the last improvement drawn
+     */
+    public ImprovementType peekImprovement() {
+        return gameAssets.getImprovementDeck().peek();
+    }
+
+    /**
      * @param improvementType the type of improvement
      * @return if the improvement is available
      */
@@ -288,9 +297,6 @@ public class Board {
     }
 
     public void applyImprovement(ImprovementType improvementType, PositionVector positionVector) {
-        if (!this.hasImprovementInDeck(improvementType)) {
-            throw new IllegalStateException("Improvement not in deck");
-        }
         tileLayer.applyImprovement(improvementType, positionVector, this);
     }
 }

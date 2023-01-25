@@ -12,20 +12,9 @@ import java.util.List;
 /** Action to store an improvement in the inventory. */
 @ActionAnnotation(ActionType.FORCED)
 public class StoreImprovementAction implements Action {
-    private final ImprovementType improvementType;
-
-    /**
-     * Constructor for the StoreImprovementAction class.
-     *
-     * @param improvementType the improvement type
-     */
-    public StoreImprovementAction(ImprovementType improvementType) {
-        this.improvementType = improvementType;
-    }
-
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
-        board.drawImprovement(improvementType);
+        ImprovementType improvementType = board.peekImprovement();
         botManager.displayMessage(botManager.getName() + " stored improvement " + improvementType);
         botManager.getInventory().storeImprovement(improvementType);
         return new ActionResult(List.of(ApplyImprovementFromInventoryAction.class), 1);

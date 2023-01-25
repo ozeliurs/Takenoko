@@ -58,10 +58,7 @@ public class FullRandomBot implements Bot {
         }
 
         if (botState.getAvailableActions().contains(StoreImprovementAction.class)) {
-            actions.add(
-                    new StoreImprovementAction(
-                            ImprovementType.values()[
-                                    random.nextInt(ImprovementType.values().length)]));
+            actions.add(new StoreImprovementAction());
         }
 
         if (botState.getAvailableActions().contains(DrawImprovementAction.class)) {
@@ -119,9 +116,7 @@ public class FullRandomBot implements Bot {
 
         if (positions.isEmpty() || imp.isEmpty()) return null;
 
-        return new ApplyImprovementAction(
-                imp.get(random.nextInt(imp.size())),
-                positions.get(random.nextInt(positions.size())));
+        return new ApplyImprovementAction(positions.get(random.nextInt(positions.size())));
     }
 
     private Action getRandomPlaceTileAction(Board board) {

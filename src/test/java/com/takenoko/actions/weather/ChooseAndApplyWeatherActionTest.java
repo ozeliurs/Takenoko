@@ -21,9 +21,10 @@ class ChooseAndApplyWeatherActionTest {
             Weather weather = mock(Weather.class);
             ChooseAndApplyWeatherAction chooseAndApplyWeatherAction =
                     new ChooseAndApplyWeatherAction(weather);
-            assertNotNull(
-                    chooseAndApplyWeatherAction.execute(mock(Board.class), mock(BotManager.class)));
-            verify(weather).apply(null, null);
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+            assertNotNull(chooseAndApplyWeatherAction.execute(board, botManager));
+            verify(weather).apply(board, botManager);
         }
     }
 }

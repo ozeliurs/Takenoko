@@ -34,12 +34,10 @@ class StoreImprovementActionTest {
                 "When getting an improvement and the improvement is available, the number of"
                         + " actions consumed is 1")
         void whenGettingAnImprovementTheNumberOfActionsConsumedIs1() {
-            StoreImprovementAction action = new StoreImprovementAction(ImprovementType.FERTILIZER);
+            StoreImprovementAction action = new StoreImprovementAction();
             Board board = mock(Board.class);
             BotManager botManager = mock(BotManager.class);
-            when(board.hasImprovementInDeck(any(ImprovementType.class))).thenReturn(true);
-            when(board.drawImprovement(any(ImprovementType.class)))
-                    .thenReturn(mock(ImprovementType.class));
+            when(board.peekImprovement()).thenReturn(mock(ImprovementType.class));
             when(botManager.getInventory()).thenReturn(mock(Inventory.class));
             ActionResult result = action.execute(board, botManager);
             assertEquals(1, result.cost());

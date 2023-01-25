@@ -21,9 +21,9 @@ class ApplyImprovementActionTest {
         void shouldCallBoardApplyImprovement() {
             Board board = mock(Board.class);
             BotManager botManager = mock(BotManager.class);
+            when(board.peekImprovement()).thenReturn(mock(ImprovementType.class));
             ApplyImprovementAction applyImprovementAction =
-                    new ApplyImprovementAction(
-                            mock(ImprovementType.class), mock(PositionVector.class));
+                    new ApplyImprovementAction(mock(PositionVector.class));
             assertThat(applyImprovementAction.execute(board, botManager)).isNotNull();
             verify(board).applyImprovement(any(ImprovementType.class), any(PositionVector.class));
         }
