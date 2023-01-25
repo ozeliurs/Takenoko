@@ -36,5 +36,18 @@ class DrawImprovementActionTest {
             Board board = mock(Board.class);
             assertNotNull(drawImprovementAction.execute(board, mock(BotManager.class)));
         }
+
+        @Test
+        @DisplayName(
+                "should return an ActionResult containing ChooseAndApplyWeatherAction if no"
+                        + " improvement can be drawn")
+        void
+                shouldReturnAnActionResultContainingChooseAndApplyWeatherActionIfNoImprovementCanBeDrawn() {
+            ImprovementType improvementType = ImprovementType.FERTILIZER;
+            DrawImprovementAction drawImprovementAction =
+                    new DrawImprovementAction(improvementType);
+            Board board = mock(Board.class);
+            assertNotNull(drawImprovementAction.execute(board, mock(BotManager.class)));
+        }
     }
 }
