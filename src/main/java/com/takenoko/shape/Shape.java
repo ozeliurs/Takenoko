@@ -1,16 +1,14 @@
 package com.takenoko.shape;
 
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
-import com.takenoko.vector.Vector;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.IntStream;
+import org.apache.commons.lang3.tuple.Pair;
 
 /** Class representing a Shape. */
 public class Shape {
-    private final Set<PositionVector> elements;
+    private final Map<PositionVector, Tile> elements;
     private final PositionVector defaultRotationOrigin;
 
     /**
@@ -19,7 +17,7 @@ public class Shape {
      * @param shape the pattern of the shape
      * @param defaultRotationOrigin the default rotation origin of the shape
      */
-    public Shape(Set<PositionVector> shape, PositionVector defaultRotationOrigin) {
+    public Shape(Map<PositionVector, Tile> shape, PositionVector defaultRotationOrigin) {
         if (shape.isEmpty()) {
             throw new IllegalArgumentException("The shape cannot be empty");
         }
@@ -33,7 +31,7 @@ public class Shape {
      *
      * @param shape the pattern of the shape
      */
-    public Shape(Set<PositionVector> shape) {
+    public Shape(Map<PositionVector, Tile> shape) {
         this(shape, findOrigin(shape));
     }
 
@@ -43,8 +41,8 @@ public class Shape {
      * @param shape the pattern of the shape
      * @return the rotation origin of the shape
      */
-    private static PositionVector findOrigin(Set<PositionVector> shape) {
-        return shape.stream()
+    private static PositionVector findOrigin(Map<PositionVector, Tile> shape) {
+        return shape.keySet().stream()
                 .min(
                         (v1, v2) -> {
                             double v1Distance = v1.distance(new PositionVector(0, 0, 0));
@@ -62,11 +60,18 @@ public class Shape {
      * @param vectors the vectors of the shape
      */
     public Shape(PositionVector... vectors) {
-        this(new HashSet<>(Arrays.asList(vectors)));
+        if (vectors.length == 0) {
+            throw new IllegalArgumentException("The shape cannot be empty");
+        }
+        this.elements = new HashMap<>();
+        this.defaultRotationOrigin = findOrigin(this.elements);
+        for (PositionVector vector : vectors) {
+            this.elements.put(vector, new Tile());
+        }
     }
 
-    public Set<PositionVector> getElements() {
-        return new HashSet<>(this.elements);
+    public Map<PositionVector, Tile> getElements() {
+        return new HashMap<>(this.elements);
     }
 
     /**
@@ -79,10 +84,20 @@ public class Shape {
      */
     public Shape rotate60(PositionVector rotationOrigin) {
         return new Shape(
-                this.elements.stream()
-                        .map(v -> v.sub(rotationOrigin).rotate60().add(rotationOrigin))
-                        .map(PositionVector::new)
-                        .collect(HashSet::new, HashSet::add, HashSet::addAll),
+                this.elements.entrySet().stream()
+                        .map(
+                                v ->
+                                        Pair.of(
+                                                v.getKey()
+                                                        .sub(rotationOrigin)
+                                                        .rotate60()
+                                                        .add(rotationOrigin)
+                                                        .toPositionVector(),
+                                                v.getValue()))
+                        .collect(
+                                HashMap::new,
+                                (m, v) -> m.put(v.getLeft(), v.getRight()),
+                                HashMap::putAll),
                 rotationOrigin);
     }
 
@@ -119,10 +134,12 @@ public class Shape {
      */
     public Shape translate(PositionVector vector) {
         return new Shape(
-                this.elements.stream()
-                        .map(v -> v.add(vector))
-                        .map(Vector::toPositionVector)
-                        .collect(HashSet::new, HashSet::add, HashSet::addAll),
+                this.elements.entrySet().stream()
+                        .map(v -> Pair.of(v.getKey().add(vector).toPositionVector(), v.getValue()))
+                        .collect(
+                                HashMap::new,
+                                (m, v) -> m.put(v.getLeft(), v.getRight()),
+                                HashMap::putAll),
                 this.defaultRotationOrigin.add(vector).toPositionVector());
     }
 

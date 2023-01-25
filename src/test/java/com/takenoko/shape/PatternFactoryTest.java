@@ -21,14 +21,14 @@ public class PatternFactoryTest {
         @Test
         @DisplayName("When the shape is ADJACENT should contain the origin")
         void createShape_shouldReturnAdjacentContainingOrigin() {
-            assertThat(PatternFactory.ADJACENT.createPattern().getElements())
+            assertThat(PatternFactory.ADJACENT.createPattern().getElements().keySet())
                     .contains(new PositionVector(0, 0, 0));
         }
 
         @Test
         @DisplayName("When the shape is ADJACENT should contain the adjacent tile")
         void createShape_shouldReturnAdjacentContainingAdjacentTile() {
-            assertThat(PatternFactory.ADJACENT.createPattern().getElements())
+            assertThat(PatternFactory.ADJACENT.createPattern().getElements().keySet())
                     .contains(new PositionVector(1, 0, -1));
         }
     }
@@ -46,21 +46,21 @@ public class PatternFactoryTest {
         @Test
         @DisplayName("When the shape is LINE should contain the origin")
         void createShape_shouldReturnLineContainingOrigin() {
-            assertThat(PatternFactory.LINE.createPattern().getElements())
+            assertThat(PatternFactory.LINE.createPattern().getElements().keySet())
                     .contains(new PositionVector(0, 0, 0));
         }
 
         @Test
         @DisplayName("When the shape is LINE should contain the adjacent tile")
         void createShape_shouldReturnLineContainingAdjacentTile() {
-            assertThat(PatternFactory.LINE.createPattern().getElements())
+            assertThat(PatternFactory.LINE.createPattern().getElements().keySet())
                     .contains(new PositionVector(1, 0, -1));
         }
 
         @Test
         @DisplayName("When the shape is LINE should contain the second adjacent tile")
         void createShape_shouldReturnLineContainingSecondAdjacentTile() {
-            assertThat(PatternFactory.LINE.createPattern().getElements())
+            assertThat(PatternFactory.LINE.createPattern().getElements().keySet())
                     .contains(new PositionVector(2, 0, -2));
         }
     }

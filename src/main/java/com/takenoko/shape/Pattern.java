@@ -19,7 +19,7 @@ public class Pattern extends Shape {
      */
     public Pattern(PositionVector... elements) {
         super(elements);
-        if (!getElements().contains(new PositionVector(0, 0, 0))) {
+        if (!getElements().containsKey(new PositionVector(0, 0, 0))) {
             throw new IllegalArgumentException("The pattern must contain the origin");
         }
     }
@@ -43,7 +43,8 @@ public class Pattern extends Shape {
             for (Shape rotTransShape : this.translate(tilePosition).getRotatedShapes()) {
                 // Check if the translated shape matches the board
                 boolean fullMatch =
-                        rotTransShape.getElements().stream().allMatch(tileMap::containsKey);
+                        rotTransShape.getElements().keySet().stream()
+                                .allMatch(tileMap::containsKey);
 
                 if (fullMatch) {
                     matches.add(rotTransShape);
@@ -65,7 +66,7 @@ public class Pattern extends Shape {
                         .mapToObj(
                                 v ->
                                         new Pattern(
-                                                getElements().stream()
+                                                getElements().keySet().stream()
                                                         .limit(v)
                                                         .toArray(PositionVector[]::new)))
                         .filter(p -> !p.match(tileMap).isEmpty())
