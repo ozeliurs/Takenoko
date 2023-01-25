@@ -6,6 +6,7 @@ import java.util.Optional;
 /** Class Tile represents a tile in the game. A tile has a type {@link TileType}. */
 public class Tile {
     private final TileType type;
+    private final TileColor color;
     private ImprovementType improvement;
 
     /**
@@ -16,23 +17,29 @@ public class Tile {
         this(TileType.OTHER);
     }
 
+    public Tile(TileColor color) {
+        this(TileType.OTHER, null, color);
+    }
+
     /**
      * Constructor of the class Tile. It creates a tile with the given type.
      *
      * @param type the type of the tile
      */
     public Tile(TileType type) {
-        this(type, null);
+        this(type, null, TileColor.PINK);
     }
 
     /**
      * Constructor of the class Tile. It creates a tile with the given type and improvement.
      *
      * @param type the type of the tile
+     * @param color the color of the tile
      */
-    public Tile(TileType type, ImprovementType improvement) {
+    public Tile(TileType type, ImprovementType improvement, TileColor color) {
         this.type = type;
         this.improvement = improvement;
+        this.color = color;
     }
 
     /**
@@ -43,10 +50,15 @@ public class Tile {
     public Tile(Tile tile) {
         this.type = tile.type;
         this.improvement = tile.improvement;
+        this.color = tile.color;
     }
 
     public Tile(ImprovementType improvementType) {
-        this(TileType.OTHER, improvementType);
+        this(TileType.OTHER, improvementType, TileColor.PINK);
+    }
+
+    public Tile(ImprovementType improvementType, TileColor tileColor) {
+        this(TileType.OTHER, improvementType, tileColor);
     }
 
     /**
@@ -75,21 +87,32 @@ public class Tile {
         this.improvement = improvement;
     }
 
+    public TileColor getColor() {
+        return color;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tile tile = (Tile) o;
 
-        return type == tile.type && Objects.equals(improvement, tile.improvement);
+        return type == tile.type
+                && Objects.equals(improvement, tile.improvement)
+                && color == tile.color;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getType(), getImprovement());
+        return Objects.hash(getType(), getImprovement(), getColor());
     }
 
     public Tile copy() {
         return new Tile(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Tile{" + "type=" + type + ", color=" + color + ", improvement=" + improvement + '}';
     }
 }

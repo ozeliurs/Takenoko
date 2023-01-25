@@ -1,6 +1,7 @@
 package com.takenoko.layers.tile;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.*;
 
@@ -124,6 +125,13 @@ class TileTest {
         }
 
         @Test
+        @DisplayName("When tiles have different colors, returns different hash code")
+        void hashCode_WhenTilesHaveDifferentColors_ThenReturnsDifferentHashCode() {
+            assertThat(new Tile(TileColor.YELLOW))
+                    .doesNotHaveSameHashCodeAs(new Tile(TileColor.GREEN));
+        }
+
+        @Test
         @DisplayName("When tiles are not equal, returns different hash code")
         void hashCode_WhenTilesAreNotEqual_ThenReturnsDifferentHashCode() {
             assertThat(pondTile).doesNotHaveSameHashCodeAs(tile);
@@ -150,6 +158,33 @@ class TileTest {
         void copy_WhenTileIsCopied_ThenReturnsTileWithSameImprovement() {
             tile.setImprovement(ImprovementType.FERTILIZER);
             assertThat(tile.copy().getImprovement()).isEqualTo(tile.getImprovement());
+        }
+
+        @Test
+        @DisplayName("When tile is copied, returns a tile with the same color")
+        void copy_WhenTileIsCopied_ThenReturnsTileWithSameColor() {
+            tile = new Tile(TileColor.PINK);
+            assertThat(tile.copy().getColor()).isEqualTo(tile.getColor());
+        }
+    }
+
+    @Nested
+    @DisplayName("Method toString")
+    class TestToString {
+        @Test
+        @DisplayName("When tile is created, returns a string")
+        void toString_WhenTileIsCreated_ThenReturnsString() {
+            assertThat(tile.toString()).isNotEmpty();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getColor")
+    class TestGetColor {
+        @Test
+        @DisplayName("When tile is created, returns a color")
+        void getColor_WhenTileIsCreated_ThenReturnsColor() {
+            assertThat(tile.getColor()).isNotNull();
         }
     }
 }
