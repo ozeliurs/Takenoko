@@ -18,6 +18,13 @@ public class ApplyImprovementFromInventoryAction extends ApplyImprovementAction 
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
+        botManager.displayMessage(
+                botManager.getName()
+                        + " applied improvement "
+                        + improvementType
+                        + " at "
+                        + positionVector
+                        + " from inventory");
         botManager.getInventory().useImprovement(improvementType);
         board.applyImprovement(improvementType, positionVector);
 

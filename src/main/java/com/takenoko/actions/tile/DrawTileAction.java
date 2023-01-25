@@ -15,6 +15,7 @@ public class DrawTileAction implements Action {
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
         board.drawTiles();
+        botManager.displayMessage(botManager.getName() + " drew tiles" + board.peekTileDeck());
         return new ActionResult(List.of(PlaceTileAction.class), 0);
     }
 }

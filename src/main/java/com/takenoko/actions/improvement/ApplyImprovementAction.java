@@ -26,6 +26,12 @@ public class ApplyImprovementAction implements Action {
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
         board.applyImprovement(improvementType, positionVector);
+        botManager.displayMessage(
+                botManager.getName()
+                        + " applied improvement "
+                        + improvementType
+                        + " at "
+                        + positionVector);
         return new ActionResult(0);
     }
 }

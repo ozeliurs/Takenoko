@@ -25,13 +25,8 @@ public class StoreImprovementAction implements Action {
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
-        if (!board.hasImprovementInDeck(improvementType)) {
-            botManager.displayMessage("No more " + improvementType + " in the deck");
-            return new ActionResult(0);
-        }
-
         board.drawImprovement(improvementType);
-        botManager.displayMessage(botManager.getName() + " got an improvement");
+        botManager.displayMessage(botManager.getName() + " stored improvement " + improvementType);
         botManager.getInventory().storeImprovement(improvementType);
         return new ActionResult(List.of(ApplyImprovementFromInventoryAction.class), 1);
     }

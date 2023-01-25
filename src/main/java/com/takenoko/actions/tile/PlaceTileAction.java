@@ -35,11 +35,10 @@ public class PlaceTileAction implements Action {
      */
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
+        botManager.displayMessage(botManager.getName() + " placed a tile at " + positionVector);
         if (!board.placeTile(tile, positionVector).isEmpty()) {
             botManager.displayMessage("Bamboo grew at " + positionVector);
         }
-        botManager.displayMessage(botManager.getName() + " placed a tile at " + positionVector);
-
         return new ActionResult(1);
     }
 }

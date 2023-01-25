@@ -2,8 +2,7 @@ package com.takenoko.actions.improvement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.takenoko.actions.ActionResult;
 import com.takenoko.engine.Board;
@@ -44,6 +43,7 @@ class StoreImprovementActionTest {
             when(botManager.getInventory()).thenReturn(mock(Inventory.class));
             ActionResult result = action.execute(board, botManager);
             assertEquals(1, result.cost());
+            verify(botManager.getInventory()).storeImprovement(any(ImprovementType.class));
         }
     }
 }
