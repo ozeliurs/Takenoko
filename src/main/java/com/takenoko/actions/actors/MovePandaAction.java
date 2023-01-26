@@ -46,7 +46,11 @@ public class MovePandaAction implements Action {
             botManager
                     .getInventory()
                     .collectBamboo(board.getTileAt(board.getPandaPosition()).getColor());
-            botManager.displayMessage(botManager.getName() + " collected one " + board.getTileAt(board.getPandaPosition()).getColor() + " bamboo");
+            botManager.displayMessage(
+                    botManager.getName()
+                            + " collected one "
+                            + board.getTileAt(board.getPandaPosition()).getColor()
+                            + " bamboo");
         }
         return new ActionResult(1);
     }

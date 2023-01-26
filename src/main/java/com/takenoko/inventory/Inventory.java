@@ -11,7 +11,9 @@ public class Inventory {
     private final Map<TileColor, InventoryBambooStack> bambooStacks;
     private final InventoryImprovements inventoryImprovements;
 
-    public Inventory(Map<TileColor, InventoryBambooStack> bambooStacks, InventoryImprovements inventoryImprovements) {
+    public Inventory(
+            Map<TileColor, InventoryBambooStack> bambooStacks,
+            InventoryImprovements inventoryImprovements) {
         this.bambooStacks = bambooStacks;
         this.inventoryImprovements = inventoryImprovements;
     }
