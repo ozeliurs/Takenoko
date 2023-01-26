@@ -132,8 +132,8 @@ class InventoryTest {
         @DisplayName("should call method store in InventoryImprovements")
         void storeImprovement_shouldCallMethodStoreInInventoryImprovements() {
             InventoryImprovements inventoryImprovements = mock(InventoryImprovements.class);
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
-            inventory = new Inventory(bambooStack, inventoryImprovements);
+            EnumMap<TileColor, InventoryBambooStack> inventoryBambooStack = new EnumMap<>(TileColor.class);
+            inventory = new Inventory(inventoryBambooStack, inventoryImprovements);
             inventory.storeImprovement(ImprovementType.FERTILIZER);
             verify(inventoryImprovements, times(1)).store(ImprovementType.FERTILIZER);
         }
