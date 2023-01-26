@@ -81,7 +81,7 @@ class InventoryTest {
         @DisplayName("should return false when the two objects are not equal")
         void equals_shouldReturnFalseWhenNotEqual() {
             Inventory other = new Inventory();
-            other.getBambooStack(TileColor.ANY).collectBamboo();
+            other.getBambooStack(TileColor.GREEN).collectBamboo();
             assertThat(inventory).isNotEqualTo(other);
         }
 
@@ -112,7 +112,7 @@ class InventoryTest {
         @DisplayName("should return a different hash code when the two objects are not equal")
         void hashCode_shouldReturnDifferentHashCodeWhenNotEqual() {
             Inventory other = new Inventory();
-            other.getBambooStack(TileColor.ANY).collectBamboo();
+            other.getBambooStack(TileColor.GREEN).collectBamboo();
             assertThat(inventory).doesNotHaveSameHashCodeAs(other);
         }
     }
