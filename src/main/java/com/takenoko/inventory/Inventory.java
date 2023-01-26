@@ -11,6 +11,11 @@ public class Inventory {
     private final Map<TileColor, InventoryBambooStack> bambooStacks;
     private final InventoryImprovements inventoryImprovements;
 
+    /**
+     * Constructor
+     * @param bambooStacks bamboo stacks
+     * @param inventoryImprovements improvements
+     */
     public Inventory(
             Map<TileColor, InventoryBambooStack> bambooStacks,
             InventoryImprovements inventoryImprovements) {
@@ -18,14 +23,25 @@ public class Inventory {
         this.inventoryImprovements = inventoryImprovements;
     }
 
+    /**
+     * Constructor
+     * @param bambooStacks bamboo stacks
+     */
     public Inventory(Map<TileColor, InventoryBambooStack> bambooStacks) {
         this(bambooStacks, new InventoryImprovements());
     }
 
+    /**
+     * Constructor
+     */
     public Inventory() {
         this(new EnumMap<>(TileColor.class), new InventoryImprovements());
     }
 
+    /**
+     * Constructor
+     * @param inventory inventory
+     */
     public Inventory(Inventory inventory) {
         this.bambooStacks = new EnumMap<>(TileColor.class);
 
@@ -103,6 +119,10 @@ public class Inventory {
         return Objects.hash(bambooStacks, inventoryImprovements);
     }
 
+    /**
+     * Method to verify whether the inventory contains the improvement type specified or not
+     * @param improvementType improvement type
+     */
     public boolean hasImprovement(ImprovementType improvementType) {
         return inventoryImprovements.hasImprovement(improvementType);
     }
