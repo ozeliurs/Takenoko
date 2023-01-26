@@ -160,9 +160,9 @@ class InventoryTest {
         @DisplayName("should call method hasImprovement in InventoryImprovements")
         void hasImprovement_shouldCallMethodHasImprovementInInventoryImprovements() {
             InventoryImprovements inventoryImprovements = mock(InventoryImprovements.class);
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
+            EnumMap<TileColor, InventoryBambooStack> inventoryBambooStack = new EnumMap<>(TileColor.class);
             when(inventoryImprovements.hasImprovement(ImprovementType.FERTILIZER)).thenReturn(true);
-            inventory = new Inventory(bambooStack, inventoryImprovements);
+            inventory = new Inventory(inventoryBambooStack, inventoryImprovements);
             assertThat(inventory.hasImprovement(ImprovementType.FERTILIZER)).isTrue();
             verify(inventoryImprovements, times(1)).hasImprovement(ImprovementType.FERTILIZER);
 
