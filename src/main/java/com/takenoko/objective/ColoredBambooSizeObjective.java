@@ -2,20 +2,16 @@ package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.layers.tile.TileColor;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class BambooSizeObjective extends Objective {
-    private final int size;
+public class ColoredBambooSizeObjective extends BambooSizeObjective {
+    private final TileColor tileColor;
 
-    /**
-     * BambooSizeObjective constructor.
-     *
-     * @param size the size of the bamboo to achieve.
-     */
-    protected BambooSizeObjective(int size) {
-        super(ObjectiveTypes.BAMBOO_STACK, ObjectiveState.NOT_ACHIEVED);
-        this.size = size;
+    public ColoredBambooSizeObjective(int size, TileColor tileColor) {
+        super(size);
+        this.tileColor = tileColor;
     }
 
     @Override
@@ -25,19 +21,16 @@ public class BambooSizeObjective extends Objective {
         board.getTiles()
                 .forEach(
                         (positionVector, tile) -> {
-                            if (board.getBambooAt(positionVector).getBambooCount() >= size) {
+                            if (board.getBambooAt(positionVector).getBambooCount() >= this.getSize()
+                                    && tile.getColor() == tileColor) {
                                 this.state = ObjectiveState.ACHIEVED;
                             }
                         });
     }
 
     @Override
-    public void reset() {
-        this.state = ObjectiveState.NOT_ACHIEVED;
-    }
-
-    public BambooSizeObjective copy() {
-        return new BambooSizeObjective(size);
+    public ColoredBambooSizeObjective copy() {
+        return new ColoredBambooSizeObjective(this.getSize(), this.tileColor);
     }
 
     @Override
@@ -45,12 +38,15 @@ public class BambooSizeObjective extends Objective {
         AtomicReference<Float> completion = new AtomicReference<>(0f);
         board.getTiles()
                 .forEach(
-                        (positionVector, tile) ->
+                        (positionVector, tile) -> {
+                            if (tile.getColor() == tileColor) {
                                 completion.set(
                                         Math.max(
                                                 completion.get(),
                                                 board.getBambooAt(positionVector).getBambooCount()
-                                                        / (float) size)));
+                                                        / (float) this.getSize()));
+                            }
+                        });
         return Math.min(1, completion.get());
     }
 
@@ -58,19 +54,13 @@ public class BambooSizeObjective extends Objective {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BambooSizeObjective that = (BambooSizeObjective) o;
-        return size == that.size;
+        if (!super.equals(o)) return false;
+        ColoredBambooSizeObjective that = (ColoredBambooSizeObjective) o;
+        return tileColor == that.tileColor;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(size);
-    }
-
-    /**
-     * @return the size
-     */
-    public int getSize() {
-        return size;
+        return Objects.hash(super.hashCode(), tileColor);
     }
 }
