@@ -16,19 +16,24 @@ public class Inventory {
         this.inventoryImprovements = inventoryImprovements;
     }
 
-    public Inventory(InventoryBambooStack bambooStack) {
-        this(bambooStack, new InventoryImprovements());
+    public Inventory(Map<TileColor, InventoryBambooStack> bambooStacks) {
+        this(bambooStacks, new InventoryImprovements());
     }
 
     public Inventory() {
-        this(new InventoryBambooStack(0), new InventoryImprovements());
+        this(new EnumMap<>(TileColor.class), new InventoryImprovements());
+        this.bambooStacks.put(TileColor.GREEN, new InventoryBambooStack(0));
+        this.bambooStacks.put(TileColor.YELLOW, new InventoryBambooStack(0));
+        this.bambooStacks.put(TileColor.PINK, new InventoryBambooStack(0));
     }
 
     public Inventory(Inventory inventory) {
         this.bambooStacks = new EnumMap<>(TileColor.class);
-        for (TileColor tileColor : TileColor.values()) {
-            this.bambooStacks.put(tileColor, inventory.getBambooStack(tileColor).copy());
-        }
+
+        this.bambooStacks.put(TileColor.GREEN, inventory.getBambooStack(TileColor.GREEN).copy());
+        this.bambooStacks.put(TileColor.YELLOW, inventory.getBambooStack(TileColor.YELLOW).copy());
+        this.bambooStacks.put(TileColor.PINK, inventory.getBambooStack(TileColor.PINK).copy());
+
         this.inventoryImprovements = inventory.getInventoryImprovements().copy();
     }
 
@@ -62,6 +67,7 @@ public class Inventory {
      * @return the bambooStack
      */
     public InventoryBambooStack getBambooStack(TileColor tileColor) {
+        bambooStacks.computeIfAbsent(tileColor, k -> new InventoryBambooStack(0));
         return bambooStacks.get(tileColor);
     }
 
