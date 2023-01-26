@@ -6,7 +6,10 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.TileColor;
+
+import java.util.EnumMap;
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -23,28 +26,33 @@ class InventoryTest {
     @Test
     @DisplayName("should return the bamboo stack")
     void shouldReturnTheBambooStack() {
-        InventoryBambooStack bambooStack = new InventoryBambooStack(5);
-        Inventory inventory = new Inventory(bambooStack);
-        assertThat(inventory.getBambooStack(TileColor.ANY)).isEqualTo(bambooStack);
+        EnumMap<TileColor, InventoryBambooStack> bambooStacks = new EnumMap<>(TileColor.class);
+        bambooStacks.put(TileColor.GREEN, new InventoryBambooStack(5));
+        bambooStacks.put(TileColor.YELLOW, new InventoryBambooStack(5));
+        bambooStacks.put(TileColor.PINK, new InventoryBambooStack(5));
+        Inventory inventory = new Inventory(bambooStacks);
+        assertThat(inventory.getBambooStack(TileColor.GREEN)).isEqualTo(bambooStacks.get(TileColor.GREEN));
+        assertThat(inventory.getBambooStack(TileColor.YELLOW)).isEqualTo(bambooStacks.get(TileColor.YELLOW));
+        assertThat(inventory.getBambooStack(TileColor.PINK)).isEqualTo(bambooStacks.get(TileColor.PINK));
     }
 
     @Test
     @DisplayName("should return the improvements")
     void shouldReturnTheImprovements() {
-        InventoryBambooStack bambooStack = new InventoryBambooStack(0);
+        EnumMap<TileColor, InventoryBambooStack> inventoryBambooStack = new EnumMap<>(TileColor.class);
         InventoryImprovements inventoryImprovements =
                 new InventoryImprovements(List.of(ImprovementType.values()));
-        Inventory inventory = new Inventory(bambooStack, inventoryImprovements);
+        Inventory inventory = new Inventory(inventoryBambooStack, inventoryImprovements);
         assertThat(inventory.getInventoryImprovements()).isEqualTo(inventoryImprovements);
     }
 
     @Test
     @DisplayName("should clear both bambooStack and improvements")
     void shouldClearBothBambooStackAndImprovements() {
-        InventoryBambooStack bambooStack = new InventoryBambooStack(5);
+        EnumMap<TileColor, InventoryBambooStack> inventoryBambooStack = new EnumMap<>(TileColor.class);
         InventoryImprovements inventoryImprovements =
                 new InventoryImprovements(List.of(ImprovementType.values()));
-        Inventory inventory = new Inventory(bambooStack, inventoryImprovements);
+        Inventory inventory = new Inventory(inventoryBambooStack, inventoryImprovements);
         inventory.clear();
         assertTrue(inventory.getBambooStack(TileColor.ANY).isEmpty());
         assertThat(inventory.getInventoryImprovements()).isEmpty();
