@@ -1,16 +1,18 @@
 package com.takenoko.inventory;
 
 import com.takenoko.layers.tile.ImprovementType;
+import com.takenoko.layers.tile.TileColor;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 
 /** Inventory contains elements stored by player */
 public class Inventory {
-    private final InventoryBambooStack bambooStack;
+    private final Map<TileColor, InventoryBambooStack> bambooStacks;
     private final InventoryImprovements inventoryImprovements;
 
-    public Inventory(
-            InventoryBambooStack bambooStack, InventoryImprovements inventoryImprovements) {
-        this.bambooStack = bambooStack;
+    public Inventory(Map<TileColor, InventoryBambooStack> bambooStacks, InventoryImprovements inventoryImprovements) {
+        this.bambooStacks = bambooStacks;
         this.inventoryImprovements = inventoryImprovements;
     }
 
@@ -22,9 +24,17 @@ public class Inventory {
         this(new InventoryBambooStack(0), new InventoryImprovements());
     }
 
+    public Inventory(Inventory inventory) {
+        this.bambooStacks = new EnumMap<>(TileColor.class);
+        for (TileColor tileColor : TileColor.values()) {
+            this.bambooStacks.put(tileColor, inventory.getBambooStack(tileColor).copy());
+        }
+        this.inventoryImprovements = inventory.getInventoryImprovements().copy();
+    }
+
     /** add 1 bamboo to the inventory */
-    public void collectBamboo() {
-        getBambooStack().collectBamboo();
+    public void collectBamboo(TileColor tileColor) {
+        getBambooStack(tileColor).collectBamboo();
     }
 
     /**
@@ -45,14 +55,14 @@ public class Inventory {
      * @return number of bamboos in Inventory
      */
     public int getBambooCount() {
-        return getBambooStack().getBambooCount();
+        return getBambooStack(TileColor.ANY).getBambooCount();
     }
 
     /**
      * @return the bambooStack
      */
-    public InventoryBambooStack getBambooStack() {
-        return bambooStack;
+    public InventoryBambooStack getBambooStack(TileColor tileColor) {
+        return bambooStacks.get(tileColor);
     }
 
     /**
@@ -64,12 +74,12 @@ public class Inventory {
 
     /** reset inventory */
     public void clear() {
-        bambooStack.clear();
+        bambooStacks.clear();
         inventoryImprovements.clear();
     }
 
     public Inventory copy() {
-        return new Inventory(bambooStack.copy(), inventoryImprovements.copy());
+        return new Inventory(this);
     }
 
     @Override
@@ -77,13 +87,13 @@ public class Inventory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Inventory inventory = (Inventory) o;
-        return getBambooStack().equals(inventory.getBambooStack())
+        return getBambooStack(TileColor.ANY).equals(inventory.getBambooStack(TileColor.ANY))
                 && inventoryImprovements.equals(inventory.inventoryImprovements);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getBambooStack(), inventoryImprovements);
+        return Objects.hash(getBambooStack(TileColor.ANY), inventoryImprovements);
     }
 
     public boolean hasImprovement(ImprovementType improvementType) {

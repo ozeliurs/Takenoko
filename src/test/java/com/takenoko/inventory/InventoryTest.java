@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.layers.tile.ImprovementType;
+import com.takenoko.layers.tile.TileColor;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +25,7 @@ class InventoryTest {
     void shouldReturnTheBambooStack() {
         InventoryBambooStack bambooStack = new InventoryBambooStack(5);
         Inventory inventory = new Inventory(bambooStack);
-        assertThat(inventory.getBambooStack()).isEqualTo(bambooStack);
+        assertThat(inventory.getBambooStack(TileColor.ANY)).isEqualTo(bambooStack);
     }
 
     @Test
@@ -45,7 +46,7 @@ class InventoryTest {
                 new InventoryImprovements(List.of(ImprovementType.values()));
         Inventory inventory = new Inventory(bambooStack, inventoryImprovements);
         inventory.clear();
-        assertTrue(inventory.getBambooStack().isEmpty());
+        assertTrue(inventory.getBambooStack(TileColor.ANY).isEmpty());
         assertThat(inventory.getInventoryImprovements()).isEmpty();
     }
 
@@ -69,7 +70,7 @@ class InventoryTest {
         @DisplayName("should return false when the two objects are not equal")
         void equals_shouldReturnFalseWhenNotEqual() {
             Inventory other = new Inventory();
-            other.getBambooStack().collectBamboo();
+            other.getBambooStack(TileColor.ANY).collectBamboo();
             assertThat(inventory).isNotEqualTo(other);
         }
 
@@ -100,7 +101,7 @@ class InventoryTest {
         @DisplayName("should return a different hash code when the two objects are not equal")
         void hashCode_shouldReturnDifferentHashCodeWhenNotEqual() {
             Inventory other = new Inventory();
-            other.getBambooStack().collectBamboo();
+            other.getBambooStack(TileColor.ANY).collectBamboo();
             assertThat(inventory).doesNotHaveSameHashCodeAs(other);
         }
     }
@@ -153,7 +154,7 @@ class InventoryTest {
             InventoryImprovements inventoryImprovements = mock(InventoryImprovements.class);
             InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
             inventory = new Inventory(bambooStack, inventoryImprovements);
-            inventory.collectBamboo();
+            inventory.collectBamboo(TileColor.ANY);
             verify(bambooStack, times(1)).collectBamboo();
         }
     }
