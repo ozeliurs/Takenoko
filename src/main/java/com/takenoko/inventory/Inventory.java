@@ -24,9 +24,6 @@ public class Inventory {
 
     public Inventory() {
         this(new EnumMap<>(TileColor.class), new InventoryImprovements());
-        this.bambooStacks.put(TileColor.GREEN, new InventoryBambooStack(0));
-        this.bambooStacks.put(TileColor.YELLOW, new InventoryBambooStack(0));
-        this.bambooStacks.put(TileColor.PINK, new InventoryBambooStack(0));
     }
 
     public Inventory(Inventory inventory) {
