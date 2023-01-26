@@ -94,13 +94,13 @@ public class Inventory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Inventory inventory = (Inventory) o;
-        return getBambooStack(TileColor.ANY).equals(inventory.getBambooStack(TileColor.ANY))
+        return Objects.equals(bambooStacks, inventory.bambooStacks)
                 && inventoryImprovements.equals(inventory.inventoryImprovements);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getBambooStack(TileColor.ANY), inventoryImprovements);
+        return Objects.hash(bambooStacks, inventoryImprovements);
     }
 
     public boolean hasImprovement(ImprovementType improvementType) {
