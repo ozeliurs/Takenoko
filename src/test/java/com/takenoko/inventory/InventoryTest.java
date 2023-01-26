@@ -146,46 +146,10 @@ class InventoryTest {
         @DisplayName("should call method use in InventoryImprovements")
         void useImprovement_shouldCallMethodUseInInventoryImprovements() {
             InventoryImprovements inventoryImprovements = mock(InventoryImprovements.class);
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
-            inventory = new Inventory(bambooStack, inventoryImprovements);
+            EnumMap<TileColor, InventoryBambooStack> inventoryBambooStack = mock(EnumMap.class);
+            inventory = new Inventory(inventoryBambooStack, inventoryImprovements);
             inventory.useImprovement(ImprovementType.FERTILIZER);
             verify(inventoryImprovements, times(1)).use(ImprovementType.FERTILIZER);
-        }
-    }
-
-    @Nested
-    @DisplayName("Method collectBamboo()")
-    class TestCollectBamboo {
-        @Test
-        @DisplayName("should call method collectBamboo in InventoryBambooStack")
-        void collectBamboo_shouldCallMethodCollectBambooInInventoryBambooStack() {
-            InventoryImprovements inventoryImprovements = mock(InventoryImprovements.class);
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
-            inventory = new Inventory(bambooStack, inventoryImprovements);
-            inventory.collectBamboo(TileColor.ANY);
-            verify(bambooStack, times(1)).collectBamboo();
-        }
-    }
-
-    @Nested
-    @DisplayName("Method getBambooCount()")
-    class TestGetBambooCount {
-        @Test
-        @DisplayName("should call method getBambooCount in BambooStack")
-        void getBambooCount_shouldCallMethodGetBambooCountInBambooStack() {
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
-            inventory = new Inventory(bambooStack);
-            inventory.getBambooCount();
-            verify(bambooStack, times(1)).getBambooCount();
-        }
-
-        @Test
-        @DisplayName("should return the same result as bambooStack.getBambooCount()")
-        void getBambooCount_shouldReturnSameResultASBambooStackGetBambooCount() {
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
-            when(bambooStack.getBambooCount()).thenReturn(1);
-            inventory = new Inventory(bambooStack);
-            assertThat(inventory.getBambooCount()).isEqualTo(bambooStack.getBambooCount());
         }
     }
 
