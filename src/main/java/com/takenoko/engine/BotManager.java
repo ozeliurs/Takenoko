@@ -34,7 +34,6 @@ public class BotManager {
     private final String name;
     private final Bot bot;
     private final int defaultNumberOfActions;
-    private int score;
 
     public static final List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS =
             List.of(MovePandaAction.class, MoveGardenerAction.class, DrawTileAction.class);
@@ -53,7 +52,6 @@ public class BotManager {
         this.consoleUserInterface = consoleUserInterface;
         this.name = name;
         this.bot = bot;
-        this.score = 0;
         this.defaultNumberOfActions = botState.getNumberOfActions();
     }
 
@@ -98,6 +96,7 @@ public class BotManager {
 
             verifyObjective(board);
             if (this.isObjectiveAchieved()) {
+                botState.incrementScore(1);
                 break;
             }
         }
@@ -185,19 +184,15 @@ public class BotManager {
         return botState.getInventory();
     }
 
-    public int getScore() {
-        return score;
-    }
-
-    public void incrementScore(int score) {
-        this.score += score;
-    }
-
     public void addAction() {
         botState.addAction();
     }
 
     public void reset() {
         this.botState.reset();
+    }
+
+    public int getScore() {
+        return botState.getScore();
     }
 }
