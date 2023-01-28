@@ -39,23 +39,28 @@ public class MultipleGardenerObjective extends Objective {
 
     @Override
     public float getCompletion(Board board, BotManager botManager) {
+        List<Integer> bambooCounts =
+                objective.getEligiblePositions(board).stream()
+                        .filter(
+                                v ->
+                                        board.getBambooAt(v).getBambooCount()
+                                                <= objective.getTargetSize())
+                        .sorted(
+                                Comparator.comparingInt(
+                                                v ->
+                                                        board.getBambooAt((PositionVector) v)
+                                                                .getBambooCount())
+                                        .reversed())
+                        .limit(numberOfTimes)
+                        .map(v -> board.getBambooAt(v).getBambooCount())
+                        .toList();
+        Stream<Integer> bambooCountFilled =
+                Stream.concat(
+                        bambooCounts.stream(),
+                        Stream.generate(() -> 0).limit((long) numberOfTimes - bambooCounts.size()));
         return 1
                 - ((float)
-                                objective.getEligiblePositions(board).stream()
-                                        .filter(
-                                                v ->
-                                                        board.getBambooAt(v).getBambooCount()
-                                                                <= objective.getTargetSize())
-                                        .sorted(
-                                                Comparator.comparingInt(
-                                                                v ->
-                                                                        board.getBambooAt(
-                                                                                        (PositionVector)
-                                                                                                v)
-                                                                                .getBambooCount())
-                                                        .reversed())
-                                        .limit(numberOfTimes)
-                                        .map(v -> board.getBambooAt(v).getBambooCount())
+                                bambooCountFilled
                                         .map(v -> Math.abs(v - objective.getTargetSize()))
                                         .reduce(0, Integer::sum)
                         / (numberOfTimes * objective.getTargetSize()));
