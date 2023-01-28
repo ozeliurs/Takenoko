@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.layers.tile.ImprovementType;
+import com.takenoko.layers.tile.TileColor;
+import java.util.EnumMap;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,30 +24,40 @@ class InventoryTest {
     @Test
     @DisplayName("should return the bamboo stack")
     void shouldReturnTheBambooStack() {
-        InventoryBambooStack bambooStack = new InventoryBambooStack(5);
-        Inventory inventory = new Inventory(bambooStack);
-        assertThat(inventory.getBambooStack()).isEqualTo(bambooStack);
+        EnumMap<TileColor, InventoryBambooStack> bambooStacks = new EnumMap<>(TileColor.class);
+        bambooStacks.put(TileColor.GREEN, new InventoryBambooStack(5));
+        bambooStacks.put(TileColor.YELLOW, new InventoryBambooStack(5));
+        bambooStacks.put(TileColor.PINK, new InventoryBambooStack(5));
+        Inventory inventory = new Inventory(bambooStacks);
+        assertThat(inventory.getBambooStack(TileColor.GREEN))
+                .isEqualTo(bambooStacks.get(TileColor.GREEN));
+        assertThat(inventory.getBambooStack(TileColor.YELLOW))
+                .isEqualTo(bambooStacks.get(TileColor.YELLOW));
+        assertThat(inventory.getBambooStack(TileColor.PINK))
+                .isEqualTo(bambooStacks.get(TileColor.PINK));
     }
 
     @Test
     @DisplayName("should return the improvements")
     void shouldReturnTheImprovements() {
-        InventoryBambooStack bambooStack = new InventoryBambooStack(0);
+        EnumMap<TileColor, InventoryBambooStack> inventoryBambooStack =
+                new EnumMap<>(TileColor.class);
         InventoryImprovements inventoryImprovements =
                 new InventoryImprovements(List.of(ImprovementType.values()));
-        Inventory inventory = new Inventory(bambooStack, inventoryImprovements);
+        Inventory inventory = new Inventory(inventoryBambooStack, inventoryImprovements);
         assertThat(inventory.getInventoryImprovements()).isEqualTo(inventoryImprovements);
     }
 
     @Test
     @DisplayName("should clear both bambooStack and improvements")
     void shouldClearBothBambooStackAndImprovements() {
-        InventoryBambooStack bambooStack = new InventoryBambooStack(5);
+        EnumMap<TileColor, InventoryBambooStack> inventoryBambooStack =
+                new EnumMap<>(TileColor.class);
         InventoryImprovements inventoryImprovements =
                 new InventoryImprovements(List.of(ImprovementType.values()));
-        Inventory inventory = new Inventory(bambooStack, inventoryImprovements);
+        Inventory inventory = new Inventory(inventoryBambooStack, inventoryImprovements);
         inventory.clear();
-        assertTrue(inventory.getBambooStack().isEmpty());
+        assertTrue(inventory.getBambooStack(TileColor.ANY).isEmpty());
         assertThat(inventory.getInventoryImprovements()).isEmpty();
     }
 
@@ -69,7 +81,7 @@ class InventoryTest {
         @DisplayName("should return false when the two objects are not equal")
         void equals_shouldReturnFalseWhenNotEqual() {
             Inventory other = new Inventory();
-            other.getBambooStack().collectBamboo();
+            other.getBambooStack(TileColor.GREEN).collectBamboo();
             assertThat(inventory).isNotEqualTo(other);
         }
 
@@ -100,7 +112,7 @@ class InventoryTest {
         @DisplayName("should return a different hash code when the two objects are not equal")
         void hashCode_shouldReturnDifferentHashCodeWhenNotEqual() {
             Inventory other = new Inventory();
-            other.getBambooStack().collectBamboo();
+            other.getBambooStack(TileColor.GREEN).collectBamboo();
             assertThat(inventory).doesNotHaveSameHashCodeAs(other);
         }
     }
@@ -123,8 +135,9 @@ class InventoryTest {
         @DisplayName("should call method store in InventoryImprovements")
         void storeImprovement_shouldCallMethodStoreInInventoryImprovements() {
             InventoryImprovements inventoryImprovements = mock(InventoryImprovements.class);
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
-            inventory = new Inventory(bambooStack, inventoryImprovements);
+            EnumMap<TileColor, InventoryBambooStack> inventoryBambooStack =
+                    new EnumMap<>(TileColor.class);
+            inventory = new Inventory(inventoryBambooStack, inventoryImprovements);
             inventory.storeImprovement(ImprovementType.FERTILIZER);
             verify(inventoryImprovements, times(1)).store(ImprovementType.FERTILIZER);
         }
@@ -137,46 +150,10 @@ class InventoryTest {
         @DisplayName("should call method use in InventoryImprovements")
         void useImprovement_shouldCallMethodUseInInventoryImprovements() {
             InventoryImprovements inventoryImprovements = mock(InventoryImprovements.class);
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
-            inventory = new Inventory(bambooStack, inventoryImprovements);
+            EnumMap<TileColor, InventoryBambooStack> inventoryBambooStack = mock(EnumMap.class);
+            inventory = new Inventory(inventoryBambooStack, inventoryImprovements);
             inventory.useImprovement(ImprovementType.FERTILIZER);
             verify(inventoryImprovements, times(1)).use(ImprovementType.FERTILIZER);
-        }
-    }
-
-    @Nested
-    @DisplayName("Method collectBamboo()")
-    class TestCollectBamboo {
-        @Test
-        @DisplayName("should call method collectBamboo in InventoryBambooStack")
-        void collectBamboo_shouldCallMethodCollectBambooInInventoryBambooStack() {
-            InventoryImprovements inventoryImprovements = mock(InventoryImprovements.class);
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
-            inventory = new Inventory(bambooStack, inventoryImprovements);
-            inventory.collectBamboo();
-            verify(bambooStack, times(1)).collectBamboo();
-        }
-    }
-
-    @Nested
-    @DisplayName("Method getBambooCount()")
-    class TestGetBambooCount {
-        @Test
-        @DisplayName("should call method getBambooCount in BambooStack")
-        void getBambooCount_shouldCallMethodGetBambooCountInBambooStack() {
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
-            inventory = new Inventory(bambooStack);
-            inventory.getBambooCount();
-            verify(bambooStack, times(1)).getBambooCount();
-        }
-
-        @Test
-        @DisplayName("should return the same result as bambooStack.getBambooCount()")
-        void getBambooCount_shouldReturnSameResultASBambooStackGetBambooCount() {
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
-            when(bambooStack.getBambooCount()).thenReturn(1);
-            inventory = new Inventory(bambooStack);
-            assertThat(inventory.getBambooCount()).isEqualTo(bambooStack.getBambooCount());
         }
     }
 
@@ -187,9 +164,10 @@ class InventoryTest {
         @DisplayName("should call method hasImprovement in InventoryImprovements")
         void hasImprovement_shouldCallMethodHasImprovementInInventoryImprovements() {
             InventoryImprovements inventoryImprovements = mock(InventoryImprovements.class);
-            InventoryBambooStack bambooStack = mock(InventoryBambooStack.class);
+            EnumMap<TileColor, InventoryBambooStack> inventoryBambooStack =
+                    new EnumMap<>(TileColor.class);
             when(inventoryImprovements.hasImprovement(ImprovementType.FERTILIZER)).thenReturn(true);
-            inventory = new Inventory(bambooStack, inventoryImprovements);
+            inventory = new Inventory(inventoryBambooStack, inventoryImprovements);
             assertThat(inventory.hasImprovement(ImprovementType.FERTILIZER)).isTrue();
             verify(inventoryImprovements, times(1)).hasImprovement(ImprovementType.FERTILIZER);
 

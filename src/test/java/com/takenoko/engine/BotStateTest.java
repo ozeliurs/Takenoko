@@ -8,6 +8,7 @@ import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
+import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +43,7 @@ class BotStateTest {
         @DisplayName("should return false when the two objects are not equal")
         void equals_shouldReturnFalseWhenNotEqual() {
             BotState other = new BotState();
-            other.getInventory().getBambooStack().collectBamboo();
+            other.getInventory().getBambooStack(TileColor.ANY).collectBamboo();
             assertThat(botState).isNotEqualTo(other);
         }
 
@@ -73,7 +74,7 @@ class BotStateTest {
         @DisplayName("should return a different hash code when the two objects are not equal")
         void hashCode_shouldReturnDifferentHashCodeWhenNotEqual() {
             BotState other = new BotState();
-            other.getInventory().getBambooStack().collectBamboo();
+            other.getInventory().getBambooStack(TileColor.ANY).collectBamboo();
             assertThat(botState).doesNotHaveSameHashCodeAs(other);
         }
     }
