@@ -53,19 +53,20 @@ public class SingleGardenerObjective extends Objective {
                 && !targetImprovementType.equals(ImprovementType.ANY))) {
             Optional<ImprovementType> improvementType = tile.getImprovement();
             return !(improvementType.isPresent()
-                    && !improvementType.get().equals(targetImprovementType));
+                            && !improvementType.get().equals(targetImprovementType))
+                    && board.getBambooAt(positionVector).getBambooCount() <= targetSize;
         }
         return board.getBambooAt(positionVector).getBambooCount() <= targetSize;
     }
 
-    List<PositionVector> getEligiblePositions(Board board) {
+    public List<PositionVector> getEligiblePositions(Board board) {
         return board.getTiles().entrySet().stream()
                 .filter(v -> isTileEligible(board, v.getKey(), v.getValue()))
                 .map(Map.Entry::getKey)
                 .toList();
     }
 
-    List<PositionVector> getMatchingPositions(Board board) {
+    public List<PositionVector> getMatchingPositions(Board board) {
         return board.getTiles().entrySet().stream()
                 .filter(v -> match(board, v.getKey(), v.getValue()))
                 .map(Map.Entry::getKey)
