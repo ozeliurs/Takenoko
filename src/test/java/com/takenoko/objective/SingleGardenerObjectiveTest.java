@@ -48,7 +48,7 @@ class SingleGardenerObjectiveTest {
         class TestNotEquals {
             @Test
             @DisplayName("because the color is not the same")
-            void shouldReturnFalseWhenTheTwoObjectsAreNotEqual() {
+            void shouldReturnFalseWhenTheTwoObjectsAreNotEqualBecauseThecolorIsNotTheSame() {
                 assertThat(objectiveWithImprovement)
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
@@ -57,7 +57,7 @@ class SingleGardenerObjectiveTest {
 
             @Test
             @DisplayName("because the improvement is not the same")
-            void shouldReturnFalseWhenTheTwoObjectsAreNotEqual2() {
+            void shouldReturnFalseWhenTheTwoObjectsAreNotEqualBecauseTheImprovementIsNotTheSame() {
                 assertThat(objectiveWithImprovement)
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
@@ -66,7 +66,7 @@ class SingleGardenerObjectiveTest {
 
             @Test
             @DisplayName("because the size is not the same")
-            void shouldReturnFalseWhenTheTwoObjectsAreNotEqual3() {
+            void shouldReturnFalseWhenTheTwoObjectsAreNotEqualBecauseTheSizeIsNotTheSame() {
                 assertThat(objectiveWithImprovement)
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
@@ -75,13 +75,14 @@ class SingleGardenerObjectiveTest {
 
             @Test
             @DisplayName("because the other object is null")
-            void shouldReturnFalseWhenTheTwoObjectsAreNotEqual4() {
+            void shouldReturnFalseWhenTheTwoObjectsAreNotEqualBecauseTheOtherObjectIsNull() {
                 assertThat(objectiveWithImprovement).isNotEqualTo(null);
             }
 
             @Test
             @DisplayName("because the other object is not a SingleGardenerObjective")
-            void shouldReturnFalseWhenTheTwoObjectsAreNotEqual5() {
+            void
+                    shouldReturnFalseWhenTheTwoObjectsAreNotEqualBecauseTheOtherObjectIsNotASingleGardenerObjective() {
                 assertThat(objectiveWithImprovement).isNotEqualTo(new Object());
             }
         }
