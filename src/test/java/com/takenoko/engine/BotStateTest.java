@@ -141,4 +141,21 @@ class BotStateTest {
             assertThat(botState.getAvailableActions()).hasSize(1);
         }
     }
+
+    @Test
+    @DisplayName("test getScore")
+    void test_getScore() {
+        assertThat(botState.getScore()).isZero();
+        botState.incrementScore(10);
+        assertThat(botState.getScore()).isEqualTo(10);
+    }
+
+    @Test
+    @DisplayName("test incrementScore")
+    void test_incrementScore() {
+        botState.incrementScore(10);
+        assertThat(botState.getScore()).isEqualTo(10);
+        botState.incrementScore(10);
+        assertThat(botState.getScore()).isEqualTo(20);
+    }
 }
