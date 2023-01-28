@@ -64,6 +64,5 @@ class ScoreboardTest {
     void toString_ThenReturnsCorrectString() {
         String result = scoreboard.toString();
         assertThat(result).contains("============== Scoreboard ==============");
-
     }
 }
