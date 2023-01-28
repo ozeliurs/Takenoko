@@ -158,6 +158,7 @@
                             <style>AOSP</style>
                             <reflowLongStrings>true</reflowLongStrings>
                         </googleJavaFormat>
+                        <toggleOffOn />
                     </java>
                 </configuration>
                 <executions>
