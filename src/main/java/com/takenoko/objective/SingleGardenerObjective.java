@@ -6,7 +6,6 @@ import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
-
 import java.util.*;
 
 public class SingleGardenerObjective extends Objective {
@@ -84,7 +83,8 @@ public class SingleGardenerObjective extends Objective {
                 .filter(v -> board.getBambooAt(v.getKey()).getBambooCount() <= targetSize)
                 .max(Comparator.comparingInt(v -> board.getBambooAt(v.getKey()).getBambooCount()))
                 .map(v -> board.getBambooAt(v.getKey()).getBambooCount())
-                .map(integer -> (float) integer / targetSize).orElse(0f);
+                .map(integer -> (float) integer / targetSize)
+                .orElse(0f);
     }
 
     @Override
