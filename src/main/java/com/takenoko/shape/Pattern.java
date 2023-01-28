@@ -84,26 +84,21 @@ public class Pattern extends Shape {
      * @return the ratio of the matching translated/rotated shapes
      */
     public float matchRatio(Map<PositionVector, Tile> tileMap) {
+        // spotless:off
         long matchedElements =
                 IntStream.range(1, getElements().size() + 1)
                         .mapToObj(
-                                v ->
-                                        new Pattern(
-                                                getElements().entrySet().stream()
-                                                        .sorted(
-                                                                Comparator.comparingDouble(
-                                                                        e ->
-                                                                                e.getKey()
-                                                                                        .distance(
-                                                                                                new PositionVector(
-                                                                                                        0,
-                                                                                                        0,
-                                                                                                        0))))
-                                                        .limit(v)
-                                                        .toList()))
+                                v -> new Pattern(
+                                        getElements().entrySet().stream()
+                                                .sorted(Comparator.comparingDouble(e -> e.getKey()
+                                                        .distance(new PositionVector(0, 0, 0))))
+                                                .limit(v)
+                                                .toList())
+                        )
                         .filter(p -> !p.match(tileMap).isEmpty())
                         .count();
         return (float) matchedElements / getElements().size();
+        // spotless:on
     }
 
     @Override

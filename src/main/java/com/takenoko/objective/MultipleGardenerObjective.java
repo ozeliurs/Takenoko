@@ -42,13 +42,10 @@ public class MultipleGardenerObjective extends Objective {
 
     @Override
     public float getCompletion(Board board, BotManager botManager) {
+        // spotless:off
         List<Integer> bambooCounts =
                 objective.getEligiblePositions(board).stream()
-                        .sorted(
-                                Comparator.comparingInt(
-                                                v ->
-                                                        board.getBambooAt((PositionVector) v)
-                                                                .getBambooCount())
+                        .sorted(Comparator.comparingInt(v -> board.getBambooAt((PositionVector) v).getBambooCount())
                                         .reversed())
                         .limit(numberOfTimes)
                         .map(v -> board.getBambooAt(v).getBambooCount())
@@ -57,12 +54,11 @@ public class MultipleGardenerObjective extends Objective {
                 Stream.concat(
                         bambooCounts.stream(),
                         Stream.generate(() -> 0).limit((long) numberOfTimes - bambooCounts.size()));
-        return 1
-                - ((float)
-                                bambooCountFilled
+        return 1 - ((float) bambooCountFilled
                                         .map(v -> Math.abs(v - objective.getTargetSize()))
                                         .reduce(0, Integer::sum)
                         / (numberOfTimes * objective.getTargetSize()));
+        // spotless:on
     }
 
     @Override
