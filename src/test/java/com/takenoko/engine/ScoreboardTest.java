@@ -40,4 +40,30 @@ class ScoreboardTest {
             assertThat(scoreboard.getBotManagers()).contains(botManager1);
         }
     }
+
+    @Test
+    @DisplayName("Method incrementNumberOfVictory")
+    void incrementNumberOfVictory() {
+        scoreboard.addBotManager(botManager1);
+        scoreboard.incrementNumberOfVictory(botManager1);
+        // Assert that botManager1 has 1 victory
+        assertThat(scoreboard.getNumberOfVictory(botManager1)).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("Method getNumberOfVictory")
+    void getNumberOfVictory() {
+        scoreboard.addBotManager(botManager1);
+        scoreboard.incrementNumberOfVictory(botManager1);
+        // Assert that botManager1 has 1 victory
+        assertThat(scoreboard.getNumberOfVictory(botManager1)).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("Method toString")
+    void toString_ThenReturnsCorrectString() {
+        String result = scoreboard.toString();
+        assertThat(result).contains("============== Scoreboard ==============");
+
+    }
 }
