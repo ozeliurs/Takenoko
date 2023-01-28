@@ -139,8 +139,9 @@ class ColoredBambooSizeObjectiveTest {
         @DisplayName("should return a copy of the objective")
         void copy_shouldReturnCopyOfObjective() {
             ColoredBambooSizeObjective copy = coloredBambooSizeObjective.copy();
-            assertThat(copy).isEqualTo(coloredBambooSizeObjective);
-            assertThat(copy).isNotSameAs(coloredBambooSizeObjective);
+            assertThat(copy)
+                    .isEqualTo(coloredBambooSizeObjective)
+                    .isNotSameAs(coloredBambooSizeObjective);
         }
     }
 
