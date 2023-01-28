@@ -192,7 +192,7 @@ public class BotManager {
         this.botState.reset();
     }
 
-    public int getScore() {
-        return botState.getScore();
+    public int getObjectiveScore() {
+        return botState.getObjectiveScore();
     }
 }

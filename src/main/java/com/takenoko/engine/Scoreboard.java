@@ -29,7 +29,7 @@ public class Scoreboard {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder
-                .append("\n ============== Scoreboard ==============")
+                .append("============== Scoreboard ==============")
                 .append(System.lineSeparator());
         for (Map.Entry<BotManager, Integer> entry : numberOfVictoryHashMap.entrySet()) {
             stringBuilder
@@ -37,7 +37,7 @@ public class Scoreboard {
                     .append(entry.getKey().getName())
                     .append(" : ")
                     .append(entry.getValue())
-                    .append(" >\n");
+                    .append(" > | ");
         }
         return stringBuilder.toString();
     }

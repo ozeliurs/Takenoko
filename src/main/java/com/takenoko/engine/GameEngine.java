@@ -162,7 +162,7 @@ public class GameEngine {
                                     + " has achieved the objective "
                                     + botManager.getObjectiveDescription()
                                     + ", it has won with "
-                                    + botManager.getScore()
+                                    + botManager.getObjectiveScore()
                                     + " points");
                     gameState = GameState.FINISHED;
                     return;

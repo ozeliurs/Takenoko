@@ -145,17 +145,17 @@ class BotStateTest {
     @Test
     @DisplayName("test getScore")
     void test_getScore() {
-        assertThat(botState.getScore()).isZero();
+        assertThat(botState.getObjectiveScore()).isZero();
         botState.incrementScore(10);
-        assertThat(botState.getScore()).isEqualTo(10);
+        assertThat(botState.getObjectiveScore()).isEqualTo(10);
     }
 
     @Test
     @DisplayName("test incrementScore")
     void test_incrementScore() {
         botState.incrementScore(10);
-        assertThat(botState.getScore()).isEqualTo(10);
+        assertThat(botState.getObjectiveScore()).isEqualTo(10);
         botState.incrementScore(10);
-        assertThat(botState.getScore()).isEqualTo(20);
+        assertThat(botState.getObjectiveScore()).isEqualTo(20);
     }
 }
