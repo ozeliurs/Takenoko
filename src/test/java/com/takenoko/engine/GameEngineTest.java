@@ -305,8 +305,7 @@ class GameEngineTest {
 
             gameEngine.runGame();
 
-            verify(scoreboard, times(2)).addScore(any(UUID.class), anyInt());
-            verify(scoreboard).incrementNumberOfGamesPlayed();
+            verify(scoreboard, times(1)).incrementNumberOfVictory(any());
         }
 
         @Test

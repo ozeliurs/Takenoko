@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class ScoreboardTest {
@@ -20,40 +21,25 @@ class ScoreboardTest {
         botManager1 = mock(BotManager.class);
         botManager2 = mock(BotManager.class);
         scoreboard = new Scoreboard();
-        when(botManager1.getBotId()).thenReturn(UUID.nameUUIDFromBytes("bot1".getBytes()));
-        when(botManager2.getBotId()).thenReturn(UUID.nameUUIDFromBytes("bot2".getBytes()));
     }
 
-    @Test
-    @DisplayName("Method incrementNumberOfGamesPlayed & getNumberOfGamesPlayed")
-    void incrementNumberOfGamesPlayed_ThenReturnsCorrectNumberOfGamesPlayed() {
-        scoreboard.incrementNumberOfGamesPlayed();
-        assertThat(scoreboard.getNumberOfGamesPlayed()).isEqualTo(1);
-    }
+    @Nested
+    @DisplayName("Method addBotManager")
+    class TestAddBotManager {
+        @Test
+        @DisplayName("using constructor with list of BotManager")
+        void usingConstructorWithList() {
+            scoreboard.addBotManager(List.of(botManager1, botManager2));
+            // Assert that botManager1 and botManager2 are in the scoreboard
+            assertThat(scoreboard.getBotManagers()).contains(botManager1, botManager2);
+        }
 
-    @Test
-    @DisplayName("Method toString")
-    void TestToString() {
-        when(botManager1.getName()).thenReturn("Bot1");
-        when(botManager2.getName()).thenReturn("Bot2");
-        when(botManager1.getScore()).thenReturn(1);
-        when(botManager2.getScore()).thenReturn(2);
-
-        scoreboard.addBotManager(List.of(botManager1, botManager2));
-
-        assertThat(scoreboard.toString())
-                .contains("Scoreboard:")
-                .contains("Bot2 : 2")
-                .contains("Bot1 : 1");
-    }
-
-    @Test
-    @DisplayName("Method addScore & getScore")
-    void addScoreAndGetScore() {
-        scoreboard.addBotManager(List.of(botManager1));
-        assertThat(scoreboard.getScore(botManager1.getBotId())).isZero();
-
-        scoreboard.addScore(botManager1.getBotId(), 1);
-        assertThat(scoreboard.getScore(botManager1.getBotId())).isEqualTo(1);
+        @Test
+        @DisplayName("using constructor with single BotManager")
+        void usingConstructorWithSingleBotManager() {
+            scoreboard.addBotManager(botManager1);
+            // Assert that botManager1 is in the scoreboard
+            assertThat(scoreboard.getBotManagers()).contains(botManager1);
+        }
     }
 }

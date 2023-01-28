@@ -28,14 +28,18 @@ public class Scoreboard {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Scoreboard:").append(System.lineSeparator());
+        stringBuilder.append("\n ============== Scoreboard ==============").append(System.lineSeparator());
         for (Map.Entry<BotManager, Integer> entry : numberOfVictoryHashMap.entrySet()) {
             stringBuilder.append("< ").append(entry.getKey().getName()).append(" : ").append(entry.getValue()).append(" >\n");
         }
         return stringBuilder.toString();
     }
 
-    public int getScore(BotManager botManager) {
+    public int getNumberOfVictory(BotManager botManager) {
         return numberOfVictoryHashMap.get(botManager);
+    }
+
+    public List<BotManager> getBotManagers() {
+        return List.copyOf(numberOfVictoryHashMap.keySet());
     }
 }

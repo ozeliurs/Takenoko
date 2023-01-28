@@ -12,7 +12,6 @@ import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * This class is used to manage one bot.
@@ -36,7 +35,6 @@ public class BotManager {
     private final Bot bot;
     private final int defaultNumberOfActions;
     private int score;
-    private final UUID botId;
 
     public static final List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS =
             List.of(MovePandaAction.class, MoveGardenerAction.class, DrawTileAction.class);
@@ -55,7 +53,6 @@ public class BotManager {
         this.consoleUserInterface = consoleUserInterface;
         this.name = name;
         this.bot = bot;
-        this.botId = UUID.randomUUID();
         this.score = 0;
         this.defaultNumberOfActions = botState.getNumberOfActions();
     }
@@ -186,13 +183,6 @@ public class BotManager {
      */
     public Inventory getInventory() {
         return botState.getInventory();
-    }
-
-    /**
-     * @return the bot id
-     */
-    public UUID getBotId() {
-        return botId;
     }
 
     public int getScore() {
