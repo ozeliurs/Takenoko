@@ -28,9 +28,7 @@ public class Scoreboard {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder
-                .append("============== Scoreboard ==============")
-                .append(System.lineSeparator());
+        stringBuilder.append("============== Scoreboard ==============\n");
         for (Map.Entry<BotManager, Integer> entry : numberOfVictoryHashMap.entrySet()) {
             stringBuilder
                     .append("< ")
