@@ -3,22 +3,16 @@ package com.takenoko.engine;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class Scoreboard {
-    private final HashMap<UUID, BotManager> botManagerHashMap;
-    private final HashMap<UUID, Integer> scoreHashMap;
-    private int numberOfGamesPlayed;
+    private final HashMap<BotManager, Integer> numberOfVictoryHashMap;
 
     public Scoreboard() {
-        numberOfGamesPlayed = 0;
-        botManagerHashMap = new HashMap<>();
-        scoreHashMap = new HashMap<>();
+        numberOfVictoryHashMap = new HashMap<>();
     }
 
     public void addBotManager(BotManager botManager) {
-        botManagerHashMap.put(botManager.getBotId(), botManager);
-        scoreHashMap.put(botManager.getBotId(), 0);
+        numberOfVictoryHashMap.put(botManager, 0);
     }
 
     public void addBotManager(List<BotManager> botManagerList) {
@@ -27,32 +21,21 @@ public class Scoreboard {
         }
     }
 
-    public void addScore(UUID botId, int score) {
-        scoreHashMap.put(botId, scoreHashMap.get(botId) + score);
-    }
-
-    public void incrementNumberOfGamesPlayed() {
-        numberOfGamesPlayed++;
-    }
-
-    public int getNumberOfGamesPlayed() {
-        return numberOfGamesPlayed;
+    public void incrementNumberOfVictory(BotManager botManager) {
+        numberOfVictoryHashMap.put(botManager, numberOfVictoryHashMap.get(botManager) + 1);
     }
 
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Scoreboard:").append(System.lineSeparator());
-        for (Map.Entry<UUID, BotManager> entry : botManagerHashMap.entrySet()) {
-            stringBuilder.append(entry.getValue().getName());
-            stringBuilder.append(" : ");
-            stringBuilder.append(entry.getValue().getScore());
-            stringBuilder.append(" - ");
+        for (Map.Entry<BotManager, Integer> entry : numberOfVictoryHashMap.entrySet()) {
+            stringBuilder.append("< ").append(entry.getKey().getName()).append(" : ").append(entry.getValue()).append(" >\n");
         }
         return stringBuilder.toString();
     }
 
-    public int getScore(UUID botId) {
-        return scoreHashMap.get(botId);
+    public int getScore(BotManager botManager) {
+        return numberOfVictoryHashMap.get(botManager);
     }
 }
