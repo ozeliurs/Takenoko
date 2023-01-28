@@ -6,5 +6,6 @@ public enum ObjectiveTypes {
     MOVED_PANDA,
     BAMBOO_STACK,
     SHAPE,
-    NUMBER_OF_BAMBOOS_EATEN
+    NUMBER_OF_BAMBOOS_EATEN,
+    GARDENER,
 }
