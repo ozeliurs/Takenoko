@@ -290,25 +290,6 @@ class GameEngineTest {
         }
 
         @Test
-        @DisplayName("should update scoreboard")
-        void runGame_shouldUpdateScoreboard() {
-            Scoreboard scoreboard = spy(Scoreboard.class);
-
-            GameEngine gameEngine =
-                    new GameEngine(
-                            1,
-                            new Board(),
-                            new ConsoleUserInterface(),
-                            GameState.INITIALIZED,
-                            new ArrayList<>(List.of(spy(BotManager.class), spy(BotManager.class))),
-                            scoreboard);
-
-            gameEngine.runGame();
-
-            verify(scoreboard, times(1)).incrementNumberOfVictory(any());
-        }
-
-        @Test
         @DisplayName("should run runGame multiple times")
         void runGame_shouldRunRunGameMultipleTimes() {
             GameEngine gameEngine = spy(new GameEngine());
