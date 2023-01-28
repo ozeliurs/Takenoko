@@ -7,9 +7,7 @@ import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.*;
 
 public class SingleGardenerObjective extends Objective {
     private final int targetSize;
@@ -17,45 +15,23 @@ public class SingleGardenerObjective extends Objective {
 
     private final ImprovementType targetImprovementType;
 
-    public SingleGardenerObjective(int targetSize, TileColor targetColor, ImprovementType targetImprovementType) {
+    public SingleGardenerObjective(
+            int targetSize, TileColor targetColor, ImprovementType targetImprovementType) {
         super(ObjectiveTypes.GARDENER, ObjectiveState.NOT_ACHIEVED);
         this.targetSize = targetSize;
         this.targetImprovementType = targetImprovementType;
-        if (targetColor == TileColor.ANY) {
-            this.targetColor = null;
-        } else {
-            this.targetColor = targetColor;
-        }
+        this.targetColor = targetColor;
     }
 
     public SingleGardenerObjective(int targetSize, TileColor targetColor) {
-        this(targetSize, targetColor, null);
+        this(targetSize, targetColor, ImprovementType.NONE);
     }
 
     @Override
     public void verify(Board board, BotManager botManager) {
-        board.getTiles()
-                .forEach(
-                        (positionVector, tile) -> {
-                            if (match(board, positionVector, tile)) {
-                                this.state = ObjectiveState.ACHIEVED;
-                            }
-
-                        });
-    }
-
-    private boolean match(Board board, PositionVector positionVector, Tile tile) {
-        if (targetColor != null && !tile.getColor().equals(targetColor)) {
-            return false;
+        if (!getMatchingPositions(board).isEmpty()) {
+            this.state = ObjectiveState.ACHIEVED;
         }
-        if (targetImprovementType != null) {
-            Optional<ImprovementType> improvementType = tile.getImprovement();
-            if (improvementType.isPresent() && !improvementType.get().equals(targetImprovementType)) {
-                return false;
-            }
-        }
-
-        return board.getBambooAt(positionVector).getBambooCount() == targetSize;
     }
 
     @Override
@@ -63,41 +39,70 @@ public class SingleGardenerObjective extends Objective {
         this.state = ObjectiveState.NOT_ACHIEVED;
     }
 
-    @Override
-    public Objective copy() {
+    private boolean match(Board board, PositionVector positionVector, Tile tile) {
+        if (!isTileEligible(board, positionVector, tile)) return false;
+
+        return board.getBambooAt(positionVector).getBambooCount() == targetSize;
+    }
+
+    private boolean isTileEligible(Board board, PositionVector positionVector, Tile tile) {
+        if ((targetColor.equals(TileColor.NONE) || !tile.getColor().equals(targetColor))
+                && !targetColor.equals(TileColor.ANY)) {
+            return false;
+        }
+        if ((!targetImprovementType.equals(ImprovementType.NONE)
+                && !targetImprovementType.equals(ImprovementType.ANY))) {
+            Optional<ImprovementType> improvementType = tile.getImprovement();
+            return !(improvementType.isPresent()
+                    && !improvementType.get().equals(targetImprovementType));
+        }
+        return board.getBambooAt(positionVector).getBambooCount() <= targetSize;
+    }
+
+    List<PositionVector> getEligiblePositions(Board board) {
+        return board.getTiles().entrySet().stream()
+                .filter(v -> isTileEligible(board, v.getKey(), v.getValue()))
+                .map(Map.Entry::getKey)
+                .toList();
+    }
+
+    List<PositionVector> getMatchingPositions(Board board) {
+        return board.getTiles().entrySet().stream()
+                .filter(v -> match(board, v.getKey(), v.getValue()))
+                .map(Map.Entry::getKey)
+                .toList();
+    }
+
+    public SingleGardenerObjective copy() {
         return new SingleGardenerObjective(targetSize, targetColor, targetImprovementType);
     }
 
     @Override
     public float getCompletion(Board board, BotManager botManager) {
-        AtomicReference<Float> completion = new AtomicReference<>(0f);
-        board.getTiles()
-                .forEach(
-                        (positionVector, tile) -> {
-                            if (match(board, positionVector, tile)) {
-                                completion.set(
-                                        Math.max(
-                                                completion.get(),
-                                                board.getBambooAt(positionVector).getBambooCount()
-                                                        / (float) this.targetSize));
-                            }
-                        });
-        return Math.min(1, completion.get());
+        return board.getTiles().entrySet().stream()
+                .filter(v -> isTileEligible(board, v.getKey(), v.getValue()))
+                .filter(v -> board.getBambooAt(v.getKey()).getBambooCount() <= targetSize)
+                .max(Comparator.comparingInt(v -> board.getBambooAt(v.getKey()).getBambooCount()))
+                .map(v -> board.getBambooAt(v.getKey()).getBambooCount())
+                .map(integer -> (float) integer / targetSize).orElse(0f);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         SingleGardenerObjective that = (SingleGardenerObjective) o;
-        return targetSize == that.targetSize &&
-                targetColor == that.targetColor &&
-                targetImprovementType == that.targetImprovementType;
+        return targetSize == that.targetSize
+                && targetColor == that.targetColor
+                && targetImprovementType == that.targetImprovementType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), targetSize, targetColor, targetImprovementType);
+        return Objects.hash(targetSize, targetColor, targetImprovementType);
+    }
+
+    public int getTargetSize() {
+        return targetSize;
     }
 }
