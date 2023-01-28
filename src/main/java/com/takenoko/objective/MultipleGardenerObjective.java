@@ -4,6 +4,9 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.vector.PositionVector;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 public class MultipleGardenerObjective extends Objective {
 
@@ -33,7 +36,7 @@ public class MultipleGardenerObjective extends Objective {
     }
 
     @Override
-    public Objective copy() {
+    public MultipleGardenerObjective copy() {
         return new MultipleGardenerObjective(this);
     }
 
@@ -64,5 +67,18 @@ public class MultipleGardenerObjective extends Objective {
                                         .map(v -> Math.abs(v - objective.getTargetSize()))
                                         .reduce(0, Integer::sum)
                         / (numberOfTimes * objective.getTargetSize()));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MultipleGardenerObjective that = (MultipleGardenerObjective) o;
+        return numberOfTimes == that.numberOfTimes && objective.equals(that.objective);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(objective, numberOfTimes);
     }
 }
