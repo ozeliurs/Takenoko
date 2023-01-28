@@ -1,15 +1,21 @@
 package com.takenoko.engine;
 
-import com.takenoko.actions.Action;
+import com.takenoko.actions.*;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.actors.MovePandaAction;
+import com.takenoko.actions.tile.DrawTileAction;
+import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
- * This class is used to manage one bot. It is responsible for managing all of its attributes :
+ * This class is used to manage one bot.
  *
  * <ul>
  *   <li>name
@@ -28,8 +34,12 @@ public class BotManager {
     private final BotState botState;
     private final String name;
     private final Bot bot;
+    private final int defaultNumberOfActions;
     private int score;
     private final UUID botId;
+
+    public static final List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS =
+            List.of(MovePandaAction.class, MoveGardenerAction.class, DrawTileAction.class);
 
     /**
      * Constructor for the class
@@ -47,6 +57,7 @@ public class BotManager {
         this.bot = bot;
         this.botId = UUID.randomUUID();
         this.score = 0;
+        this.defaultNumberOfActions = botState.getNumberOfActions();
     }
 
     /** Default constructor for the class */
@@ -70,14 +81,34 @@ public class BotManager {
      * @param board the board of the game
      */
     public void playBot(Board board) {
-        for (int i = 0; i < botState.getNumberOfActions(); i++) {
+        botState.setAvailableActions(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS));
+        botState.setNumberOfActions(defaultNumberOfActions);
+
+        board.rollWeather();
+        botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
+        while (canPlayBot()) {
             Action action = bot.chooseAction(board.copy(), botState.copy());
-            action.execute(board, this);
+            if (!botState.getAvailableActions().contains(action.getClass())) {
+                throw new IllegalStateException(
+                        "The action "
+                                + action.getClass().getSimpleName()
+                                + " is not available for the bot "
+                                + name
+                                + ". Please choose another action.");
+            }
+            ActionResult actionResult = action.execute(board, this);
+            botState.updateAvailableActions(action, actionResult);
+
             verifyObjective(board);
-            if (isObjectiveAchieved()) {
-                return;
+            if (this.isObjectiveAchieved()) {
+                break;
             }
         }
+        board.getWeather().ifPresent(value -> value.revert(board, this));
+    }
+
+    private boolean canPlayBot() {
+        return !botState.getAvailableActions().isEmpty() && botState.getNumberOfActions() > 0;
     }
 
     /**
@@ -170,6 +201,10 @@ public class BotManager {
 
     public void incrementScore(int score) {
         this.score += score;
+    }
+
+    public void addAction() {
+        botState.addAction();
     }
 
     public void reset() {

@@ -113,6 +113,21 @@ class VectorTest {
     @DisplayName("Method equals")
     class TestEquals {
         @Test
+        @SuppressWarnings("EqualsWithItself")
+        @DisplayName("should return true if called on self")
+        void equals_WhenCalledOnSelf_ReturnsTrue() {
+            Vector vector = new Vector(1, 2, -3);
+            assertThat(vector.equals(vector)).isTrue();
+        }
+
+        @Test
+        @DisplayName("should return false if called on another class")
+        void equals_WhenCalledOnAnotherClass_ReturnsFalse() {
+            Vector vector = new Vector(1, 2, -3);
+            assertThat(vector.equals(new Object())).isFalse();
+        }
+
+        @Test
         @DisplayName("should return true if the vectors are equal")
         void equals_WhenVectorsAreEqual_ReturnsTrue() {
             Vector vector1 = new Vector(1, 2, -3);

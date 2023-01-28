@@ -4,10 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.takenoko.actions.MoveGardenerAction;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.actors.MovePandaAction;
+import com.takenoko.actions.tile.PlaceTileAction;
+import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
-import com.takenoko.layers.tile.PlaceTileAction;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import java.util.List;
@@ -34,7 +36,10 @@ class TilePlacingAndGardenerMovingBotTest {
         void shouldReturnAnAction() {
             when(board.getGardenerPossibleMoves())
                     .thenReturn(List.of(new PositionVector(1, 0, -1)));
-            assertThat(bot.chooseAction(board, mock(BotState.class))).isNotNull();
+            BotState botState = mock(BotState.class);
+            when(botState.getAvailableActions())
+                    .thenReturn(List.of(MoveGardenerAction.class, PlaceTileAction.class));
+            assertThat(bot.chooseAction(board, botState)).isNotNull();
         }
 
         @Test
@@ -43,8 +48,9 @@ class TilePlacingAndGardenerMovingBotTest {
         void shouldReturnAnActionOfTypePlaceTileWhenTheGardenerIsCanMove() {
             when(board.getGardenerPossibleMoves())
                     .thenReturn(List.of(new PositionVector(1, 0, -1)));
-            assertThat(bot.chooseAction(board, mock(BotState.class)))
-                    .isInstanceOfAny(MoveGardenerAction.class);
+            BotState botState = mock(BotState.class);
+            when(botState.getAvailableActions()).thenReturn(List.of(MoveGardenerAction.class));
+            assertThat(bot.chooseAction(board, botState)).isInstanceOfAny(MoveGardenerAction.class);
         }
 
         @Test
@@ -53,8 +59,26 @@ class TilePlacingAndGardenerMovingBotTest {
             when(board.getGardenerPossibleMoves()).thenReturn(List.of());
             when(board.getAvailableTiles()).thenReturn(List.of(mock(Tile.class)));
             when(board.getAvailableTilePositions()).thenReturn(List.of(mock(PositionVector.class)));
-            assertThat(bot.chooseAction(board, mock(BotState.class)))
-                    .isInstanceOfAny(PlaceTileAction.class);
+            when(board.peekTileDeck()).thenReturn(List.of(mock(Tile.class)));
+            BotState botState = mock(BotState.class);
+            when(botState.getAvailableActions())
+                    .thenReturn(List.of(PlaceTileAction.class, MoveGardenerAction.class));
+            assertThat(bot.chooseAction(board, botState)).isInstanceOfAny(PlaceTileAction.class);
+        }
+
+        @Test
+        @DisplayName("Should return applyWeatherAction if that action is available")
+        void shouldReturnApplyWeatherActionIfThatActionIsAvailable() {
+            BotState botState = mock(BotState.class);
+            when(botState.getAvailableActions())
+                    .thenReturn(
+                            List.of(
+                                    ChooseIfApplyWeatherAction.class,
+                                    PlaceTileAction.class,
+                                    MovePandaAction.class,
+                                    MoveGardenerAction.class));
+            assertThat(bot.chooseAction(board, botState))
+                    .isInstanceOf(ChooseIfApplyWeatherAction.class);
         }
     }
 }

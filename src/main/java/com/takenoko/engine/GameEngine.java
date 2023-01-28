@@ -1,9 +1,15 @@
 package com.takenoko.engine;
 
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.actors.MovePandaAction;
+import com.takenoko.actions.tile.PlaceTileAction;
 import com.takenoko.bot.FullRandomBot;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.objective.ShapeObjective;
-import com.takenoko.shape.ShapeFactory;
+import com.takenoko.layers.tile.TileColor;
+import com.takenoko.objective.MultipleGardenerObjective;
+import com.takenoko.objective.PatternObjective;
+import com.takenoko.objective.SingleGardenerObjective;
+import com.takenoko.shape.PatternFactory;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,16 +60,28 @@ public class GameEngine {
                                         new FullRandomBot(),
                                         new BotState(
                                                 2,
-                                                new ShapeObjective(ShapeFactory.LINE.createShape()),
-                                                new Inventory())),
+                                                new MultipleGardenerObjective(
+                                                        new SingleGardenerObjective(
+                                                                3, TileColor.GREEN),
+                                                        2),
+                                                new Inventory(),
+                                                List.of(
+                                                        MovePandaAction.class,
+                                                        MoveGardenerAction.class,
+                                                        PlaceTileAction.class))),
                                 new BotManager(
                                         new ConsoleUserInterface(),
                                         "Bob",
                                         new FullRandomBot(),
                                         new BotState(
                                                 2,
-                                                new ShapeObjective(ShapeFactory.LINE.createShape()),
-                                                new Inventory())))),
+                                                new PatternObjective(
+                                                        PatternFactory.LINE.createPattern()),
+                                                new Inventory(),
+                                                List.of(
+                                                        MovePandaAction.class,
+                                                        MoveGardenerAction.class,
+                                                        PlaceTileAction.class))))),
                 new Scoreboard());
     }
 

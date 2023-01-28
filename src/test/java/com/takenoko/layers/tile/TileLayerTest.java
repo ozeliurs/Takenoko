@@ -2,12 +2,15 @@ package com.takenoko.layers.tile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.*;
 
 /** Test class for the Board class. */
@@ -110,6 +113,15 @@ class TileLayerTest {
             assertThatThrownBy(() -> tileLayer.placeTile(t, p, board))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("Tile position not available");
+        }
+
+        @Test
+        @DisplayName("should call Board.chooseTileInTileDeck when called")
+        void placeTile_WhenCalled_CallsChooseTileInTileDeck() {
+            Tile t = new Tile(TileType.OTHER);
+            PositionVector p = new PositionVector(1, 0, -1);
+            tileLayer.placeTile(t, p, board);
+            verify(board).chooseTileInTileDeck(any());
         }
     }
 
@@ -252,6 +264,88 @@ class TileLayerTest {
         void copy_shouldReturnCopyOfObject() {
             TileLayer copy = tileLayer.copy();
             assertThat(copy).isEqualTo(tileLayer).isNotSameAs(tileLayer);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getAvailableImprovementPositions()")
+    class TestGetAvailableImprovementPositions {
+        @Test
+        @DisplayName("should return not return any positions when there are no tiles")
+        void getAvailableImprovementPositions_shouldReturnEmptyListWhenNoTiles() {
+            Board board = mock(Board.class);
+            when(board.getTiles()).thenReturn(new HashMap<>());
+            assertThat(tileLayer.getAvailableImprovementPositions(board)).isEmpty();
+        }
+
+        @Test
+        @DisplayName(
+                "should return not return any positions when there are tiles with improvements")
+        void getAvailableImprovementPositions_shouldReturnEmptyListWhenTilesWithImprovements() {
+            Board board = mock(Board.class);
+            when(board.getTiles()).thenReturn(new HashMap<>());
+            Tile tile = new Tile();
+            tile.setImprovement(mock(ImprovementType.class));
+            when(board.getTiles()).thenReturn(Map.of(mock(PositionVector.class), tile));
+            when(board.getTileAt(any())).thenReturn(tile);
+            assertThat(tileLayer.getAvailableImprovementPositions(board)).isEmpty();
+        }
+
+        @Test
+        @DisplayName(
+                "should return positions when there are tiles with no improvements and no bamboo")
+        void
+                getAvailableImprovementPositions_shouldReturnPositionsWhenTilesWithNoImprovementsAndBamboo() {
+            Board board = mock(Board.class);
+            Tile tile = new Tile();
+            when(board.getTiles()).thenReturn(Map.of(mock(PositionVector.class), tile));
+            when(board.getTileAt(any())).thenReturn(tile);
+            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
+            assertThat(tileLayer.getAvailableImprovementPositions(board)).isNotEmpty();
+        }
+
+        @Test
+        @DisplayName(
+                "should not return positions when there are tiles with no improvements but have"
+                        + " bamboo")
+        void
+                getAvailableImprovementPositions_shouldNotReturnPositionsWhenTilesWithNoImprovementsButBamboo() {
+            Board board = mock(Board.class);
+            Tile tile = new Tile();
+            when(board.getTiles()).thenReturn(Map.of(mock(PositionVector.class), tile));
+            when(board.getTileAt(any())).thenReturn(tile);
+            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(1));
+            assertThat(tileLayer.getAvailableImprovementPositions(board)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should not return the pond position")
+        void getAvailableImprovementPositions_shouldNotReturnPondPosition() {
+            Board board = mock(Board.class);
+            Pond pond = new Pond();
+            when(board.getTiles()).thenReturn(Map.of(mock(PositionVector.class), pond));
+            when(board.getTileAt(any())).thenReturn(pond);
+            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
+            assertThat(tileLayer.getAvailableImprovementPositions(board)).isEmpty();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method applyImprovement()")
+    class TestApplyImprovement {
+        @Test
+        @DisplayName("should apply the improvement to the tile")
+        void applyImprovement_shouldApplyImprovementToTile() {
+            Board board = mock(Board.class);
+            Tile tile = new Tile();
+            PositionVector position = mock(PositionVector.class);
+            when(board.getTiles()).thenReturn(Map.of(position, tile));
+            when(board.getTileAt(any())).thenReturn(tile);
+            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
+            when(board.getAvailableImprovementPositions()).thenReturn(List.of(position));
+            ImprovementType improvement = mock(ImprovementType.class);
+            tileLayer.applyImprovement(improvement, position, board);
+            assertThat(tile.getImprovement()).contains(improvement);
         }
     }
 }

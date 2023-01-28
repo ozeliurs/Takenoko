@@ -13,10 +13,17 @@ public class BambooStack {
         this(bambooStack.bambooCount);
     }
 
+    /** increment bambooCount by 1 */
     protected void growBamboo() {
-        bambooCount++;
+        this.growBamboo(1);
     }
 
+    /** increment bambooCount by height */
+    protected void growBamboo(int height) {
+        bambooCount += height;
+    }
+
+    /** lower bambooCount by 1 */
     protected void eatBamboo() {
         if (bambooCount == 0) {
             throw new IllegalArgumentException("There is no bamboo to remove");
@@ -24,6 +31,9 @@ public class BambooStack {
         bambooCount--;
     }
 
+    /**
+     * @return number of bamboos
+     */
     public int getBambooCount() {
         return bambooCount;
     }
@@ -45,10 +55,14 @@ public class BambooStack {
         return new BambooStack(this);
     }
 
+    /**
+     * @return true if bambooCount is 0
+     */
     public boolean isEmpty() {
         return bambooCount == 0;
     }
 
+    /** reset bamboo counter to value 0 */
     public void clear() {
         bambooCount = 0;
     }

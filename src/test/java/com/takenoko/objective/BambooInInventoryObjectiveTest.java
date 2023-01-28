@@ -98,7 +98,7 @@ public class BambooInInventoryObjectiveTest {
                 "When the objective is compared to an objective of a different type, returns false")
         @SuppressWarnings("EqualsBetweenInconvertibleTypes")
         void equals_WhenObjectiveIsComparedToDifferentType_ThenReturnsFalse() {
-            assertThat(bambooInInventoryObjective.equals(new PlaceTileObjective(1))).isFalse();
+            assertThat(bambooInInventoryObjective.equals(new Object())).isFalse();
         }
 
         @Test
@@ -155,8 +155,38 @@ public class BambooInInventoryObjectiveTest {
                 "When the objective is compared to an objective of a different type, returns a"
                         + " different hash code")
         void hashCode_WhenObjectiveIsComparedToDifferentType_ThenReturnsDifferentHashCode() {
-            assertThat(bambooInInventoryObjective)
-                    .doesNotHaveSameHashCodeAs(new PlaceTileObjective(1));
+            assertThat(bambooInInventoryObjective).doesNotHaveSameHashCodeAs(new Object());
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getCompletion")
+    class TestGetCompletion {
+        @Test
+        @DisplayName("When the objective is not achieved, returns 0")
+        void getCompletion_WhenObjectiveIsNotAchieved_ThenReturns0() {
+            assertThat(bambooInInventoryObjective.getCompletion(board, mock(BotManager.class)))
+                    .isZero();
+        }
+
+        @Test
+        @DisplayName("When the objective is started, returns 0.5")
+        void getCompletion_WhenObjectiveIsStarted_ThenReturns05() {
+            bambooInInventoryObjective = new BambooInInventoryObjective(2);
+            BotManager botManager = mock(BotManager.class);
+            when(botManager.getEatenBambooCounter()).thenReturn(1);
+            bambooInInventoryObjective.verify(board, botManager);
+            assertThat(bambooInInventoryObjective.getCompletion(board, botManager)).isEqualTo(0.5f);
+        }
+
+        @Test
+        @DisplayName("When the objective is achieved, returns 1")
+        void getCompletion_WhenObjectiveIsAchieved_ThenReturns1() {
+            bambooInInventoryObjective = new BambooInInventoryObjective(2);
+            BotManager botManager = mock(BotManager.class);
+            when(botManager.getEatenBambooCounter()).thenReturn(2);
+            bambooInInventoryObjective.verify(board, botManager);
+            assertThat(bambooInInventoryObjective.getCompletion(board, botManager)).isEqualTo(1);
         }
     }
 }

@@ -30,7 +30,7 @@ public class Gardener extends com.takenoko.actors.Actor {
 
     public LayerBambooStack afterMove(Board board) {
         // check if the gardener can grow bamboo (not pond)
-        if (board.getBambooAt(this.getPositionVector()).isGrowable()) {
+        if (board.isBambooGrowableAt(this.getPositionVector())) {
             // grow bamboo
             board.growBamboo(this.getPositionVector());
             return new LayerBambooStack(1);

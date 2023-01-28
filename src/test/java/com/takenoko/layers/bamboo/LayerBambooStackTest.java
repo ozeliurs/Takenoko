@@ -125,14 +125,6 @@ class LayerBambooStackTest {
             LayerBambooStack layerBambooStack2 = new LayerBambooStack(5);
             assertEquals(layerBambooStack1, layerBambooStack2);
         }
-
-        @Test
-        @DisplayName("should return false if the immutability is different")
-        void shouldReturnFalseIfTheImmutabilityIsDifferent() {
-            LayerBambooStack layerBambooStack1 = new LayerBambooStack(5, true);
-            LayerBambooStack layerBambooStack2 = new LayerBambooStack(5, false);
-            assertThat(layerBambooStack1).isNotEqualTo(layerBambooStack2);
-        }
     }
 
     @Nested
