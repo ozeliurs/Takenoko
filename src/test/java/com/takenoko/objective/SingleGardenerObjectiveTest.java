@@ -347,4 +347,106 @@ class SingleGardenerObjectiveTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("method getEligiblePositions")
+    class GetEligiblePositions {
+        @Test
+        @DisplayName("should return the eligible positions")
+        void getEligiblePositions_shouldReturnTheEligiblePositions() {
+            // Variables
+            Board board = mock(Board.class);
+            HashMap<PositionVector, Tile> tiles = new HashMap<>();
+
+            // Position for all the tiles
+            PositionVector position01 = new PositionVector(1, -1, 0);
+            PositionVector position02 = new PositionVector(2, -2, 0);
+            PositionVector position03 = new PositionVector(3, -3, 0);
+            PositionVector position04 = new PositionVector(4, -4, 0);
+            PositionVector position05 = new PositionVector(5, -5, 0);
+
+            // Define all tiles
+            Tile tileCorrectColorImprovementSize = new Tile(TARGET_IMPROVEMENT_TYPE, TARGET_COLOR);
+            when(board.getBambooAt(position01)).thenReturn(new LayerBambooStack(TARGET_SIZE));
+            //
+            Tile tileCorrectImprovementSize = new Tile(TARGET_IMPROVEMENT_TYPE, TileColor.NONE);
+            when(board.getBambooAt(position02)).thenReturn(new LayerBambooStack(TARGET_SIZE));
+            //
+            Tile tileCorrectColorSize = new Tile(ImprovementType.NONE, TARGET_COLOR);
+            when(board.getBambooAt(position03)).thenReturn(new LayerBambooStack(TARGET_SIZE));
+            //
+            Tile tileCorrectColorImprovementSmallerSize =
+                    new Tile(TARGET_IMPROVEMENT_TYPE, TARGET_COLOR);
+            when(board.getBambooAt(position04)).thenReturn(new LayerBambooStack(TARGET_SIZE - 1));
+            //
+            Tile tileCorrectColorImprovementGreaterSize =
+                    new Tile(TARGET_IMPROVEMENT_TYPE, TARGET_COLOR);
+            when(board.getBambooAt(position05)).thenReturn(new LayerBambooStack(TARGET_SIZE + 1));
+
+            // Place tile on the board
+            tiles.put(position01, tileCorrectColorImprovementSize);
+            tiles.put(position02, tileCorrectImprovementSize);
+            tiles.put(position03, tileCorrectColorSize);
+            tiles.put(position04, tileCorrectColorImprovementSmallerSize);
+            tiles.put(position05, tileCorrectColorImprovementGreaterSize);
+
+            // Board getTiles()
+            when(board.getTiles()).thenReturn(tiles);
+
+            // Test
+            assertThat(objectiveWithImprovement.getEligiblePositions(board))
+                    .containsExactly(position01, position04);
+        }
+    }
+
+    @Nested
+    @DisplayName("method getMatchingPositions")
+    class GetMatchingPositions {
+        @Test
+        @DisplayName("should return the matching positions")
+        void getMatchingPositions_shouldReturnTheMatchingPositions() {
+            // Variables
+            Board board = mock(Board.class);
+            HashMap<PositionVector, Tile> tiles = new HashMap<>();
+
+            // Position for all the tiles
+            PositionVector position01 = new PositionVector(1, -1, 0);
+            PositionVector position02 = new PositionVector(2, -2, 0);
+            PositionVector position03 = new PositionVector(3, -3, 0);
+            PositionVector position04 = new PositionVector(4, -4, 0);
+            PositionVector position05 = new PositionVector(5, -5, 0);
+
+            // Define all tiles
+            Tile tileCorrectColorImprovementSize = new Tile(TARGET_IMPROVEMENT_TYPE, TARGET_COLOR);
+            when(board.getBambooAt(position01)).thenReturn(new LayerBambooStack(TARGET_SIZE));
+            //
+            Tile tileCorrectImprovementSize = new Tile(TARGET_IMPROVEMENT_TYPE, TileColor.NONE);
+            when(board.getBambooAt(position02)).thenReturn(new LayerBambooStack(TARGET_SIZE));
+            //
+            Tile tileCorrectColorSize = new Tile(ImprovementType.NONE, TARGET_COLOR);
+            when(board.getBambooAt(position03)).thenReturn(new LayerBambooStack(TARGET_SIZE));
+            //
+            Tile tileCorrectColorImprovementSmallerSize =
+                    new Tile(TARGET_IMPROVEMENT_TYPE, TARGET_COLOR);
+            when(board.getBambooAt(position04)).thenReturn(new LayerBambooStack(TARGET_SIZE - 1));
+            //
+            Tile tileCorrectColorImprovementGreaterSize =
+                    new Tile(TARGET_IMPROVEMENT_TYPE, TARGET_COLOR);
+            when(board.getBambooAt(position05)).thenReturn(new LayerBambooStack(TARGET_SIZE + 1));
+
+            // Place tile on the board
+            tiles.put(position01, tileCorrectColorImprovementSize);
+            tiles.put(position02, tileCorrectImprovementSize);
+            tiles.put(position03, tileCorrectColorSize);
+            tiles.put(position04, tileCorrectColorImprovementSmallerSize);
+            tiles.put(position05, tileCorrectColorImprovementGreaterSize);
+
+            // Board getTiles()
+            when(board.getTiles()).thenReturn(tiles);
+
+            // Test
+            assertThat(objectiveWithImprovement.getMatchingPositions(board))
+                    .containsExactly(position01);
+        }
+    }
 }
