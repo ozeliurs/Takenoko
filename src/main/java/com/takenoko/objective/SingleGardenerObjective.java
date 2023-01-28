@@ -8,6 +8,10 @@ import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
 import java.util.*;
 
+/**
+ * Class SingleGardenerObjective represents a single gardener objective.
+ * A single gardener objective is composed of a size, a color and an improvement type.
+ */
 public class SingleGardenerObjective extends Objective {
     private final int targetSize;
     private final TileColor targetColor;

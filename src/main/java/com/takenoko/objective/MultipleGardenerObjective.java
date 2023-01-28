@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+/**
+ * Objective is to complete a certain number of single gardener objectives.
+ */
 public class MultipleGardenerObjective extends Objective {
 
     SingleGardenerObjective objective;
