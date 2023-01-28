@@ -1,30 +1,61 @@
 package com.takenoko.inventory;
 
 import com.takenoko.layers.tile.ImprovementType;
+import com.takenoko.layers.tile.TileColor;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 
 /** Inventory contains elements stored by player */
 public class Inventory {
-    private final InventoryBambooStack bambooStack;
+    private final Map<TileColor, InventoryBambooStack> bambooStacks;
     private final InventoryImprovements inventoryImprovements;
 
+    /**
+     * Constructor
+     *
+     * @param bambooStacks bamboo stacks
+     * @param inventoryImprovements improvements
+     */
     public Inventory(
-            InventoryBambooStack bambooStack, InventoryImprovements inventoryImprovements) {
-        this.bambooStack = bambooStack;
+            Map<TileColor, InventoryBambooStack> bambooStacks,
+            InventoryImprovements inventoryImprovements) {
+        this.bambooStacks = bambooStacks;
         this.inventoryImprovements = inventoryImprovements;
     }
 
-    public Inventory(InventoryBambooStack bambooStack) {
-        this(bambooStack, new InventoryImprovements());
+    /**
+     * Constructor
+     *
+     * @param bambooStacks bamboo stacks
+     */
+    public Inventory(Map<TileColor, InventoryBambooStack> bambooStacks) {
+        this(bambooStacks, new InventoryImprovements());
     }
 
+    /** Constructor */
     public Inventory() {
-        this(new InventoryBambooStack(0), new InventoryImprovements());
+        this(new EnumMap<>(TileColor.class), new InventoryImprovements());
+    }
+
+    /**
+     * Constructor
+     *
+     * @param inventory inventory
+     */
+    public Inventory(Inventory inventory) {
+        this.bambooStacks = new EnumMap<>(TileColor.class);
+
+        this.bambooStacks.put(TileColor.GREEN, inventory.getBambooStack(TileColor.GREEN).copy());
+        this.bambooStacks.put(TileColor.YELLOW, inventory.getBambooStack(TileColor.YELLOW).copy());
+        this.bambooStacks.put(TileColor.PINK, inventory.getBambooStack(TileColor.PINK).copy());
+
+        this.inventoryImprovements = inventory.getInventoryImprovements().copy();
     }
 
     /** add 1 bamboo to the inventory */
-    public void collectBamboo() {
-        getBambooStack().collectBamboo();
+    public void collectBamboo(TileColor tileColor) {
+        getBambooStack(tileColor).collectBamboo();
     }
 
     /**
@@ -45,14 +76,17 @@ public class Inventory {
      * @return number of bamboos in Inventory
      */
     public int getBambooCount() {
-        return getBambooStack().getBambooCount();
+        return getBambooStack(TileColor.GREEN).getBambooCount()
+                + getBambooStack(TileColor.YELLOW).getBambooCount()
+                + getBambooStack(TileColor.PINK).getBambooCount();
     }
 
     /**
      * @return the bambooStack
      */
-    public InventoryBambooStack getBambooStack() {
-        return bambooStack;
+    public InventoryBambooStack getBambooStack(TileColor tileColor) {
+        bambooStacks.computeIfAbsent(tileColor, k -> new InventoryBambooStack(0));
+        return bambooStacks.get(tileColor);
     }
 
     /**
@@ -64,12 +98,12 @@ public class Inventory {
 
     /** reset inventory */
     public void clear() {
-        bambooStack.clear();
+        bambooStacks.clear();
         inventoryImprovements.clear();
     }
 
     public Inventory copy() {
-        return new Inventory(bambooStack.copy(), inventoryImprovements.copy());
+        return new Inventory(this);
     }
 
     @Override
@@ -77,15 +111,20 @@ public class Inventory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Inventory inventory = (Inventory) o;
-        return getBambooStack().equals(inventory.getBambooStack())
+        return Objects.equals(bambooStacks, inventory.bambooStacks)
                 && inventoryImprovements.equals(inventory.inventoryImprovements);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getBambooStack(), inventoryImprovements);
+        return Objects.hash(bambooStacks, inventoryImprovements);
     }
 
+    /**
+     * Method to verify whether the inventory contains the improvement type specified or not
+     *
+     * @param improvementType improvement type
+     */
     public boolean hasImprovement(ImprovementType improvementType) {
         return inventoryImprovements.hasImprovement(improvementType);
     }

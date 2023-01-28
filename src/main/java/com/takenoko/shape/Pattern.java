@@ -1,12 +1,13 @@
 package com.takenoko.shape;
 
 import com.takenoko.layers.tile.Tile;
+import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import org.apache.commons.lang3.tuple.Pair;
 
 /** Class representing a pattern. */
 public class Pattern extends Shape {
@@ -17,9 +18,17 @@ public class Pattern extends Shape {
      *
      * @param elements the elements of the pattern
      */
-    public Pattern(PositionVector... elements) {
+    @SafeVarargs
+    public Pattern(Pair<PositionVector, Tile>... elements) {
         super(elements);
-        if (!getElements().contains(new PositionVector(0, 0, 0))) {
+        if (!getElements().containsKey(new PositionVector(0, 0, 0))) {
+            throw new IllegalArgumentException("The pattern must contain the origin");
+        }
+    }
+
+    public Pattern(List<Entry<PositionVector, Tile>> toList) {
+        super(toList.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue)));
+        if (!getElements().containsKey(new PositionVector(0, 0, 0))) {
             throw new IllegalArgumentException("The pattern must contain the origin");
         }
     }
@@ -37,19 +46,30 @@ public class Pattern extends Shape {
      */
     public List<Shape> match(Map<PositionVector, Tile> tileMap) {
         HashSet<Shape> matches = new HashSet<>();
-
+        // spotless:off
         for (PositionVector tilePosition : tileMap.keySet()) {
             // For each tilePosition on the board translate the shape to the tilePosition
             for (Shape rotTransShape : this.translate(tilePosition).getRotatedShapes()) {
                 // Check if the translated shape matches the board
                 boolean fullMatch =
-                        rotTransShape.getElements().stream().allMatch(tileMap::containsKey);
+                        rotTransShape.getElements().entrySet().stream()
+                                .allMatch(e ->
+                                        tileMap.containsKey(e.getKey()) &&
+                                                (
+                                                        tileMap.get(e.getKey()).equals(e.getValue()) ||
+                                                                (
+                                                                        e.getValue().getColor().equals(TileColor.ANY) &&
+                                                                                !tileMap.get(e.getKey()).getColor().equals(TileColor.NONE)
+                                                                )
+                                                )
+                                );
 
                 if (fullMatch) {
                     matches.add(rotTransShape);
                 }
             }
         }
+        // spotless:on
         return matches.stream().toList();
     }
 
@@ -60,17 +80,21 @@ public class Pattern extends Shape {
      * @return the ratio of the matching translated/rotated shapes
      */
     public float matchRatio(Map<PositionVector, Tile> tileMap) {
+        // spotless:off
         long matchedElements =
                 IntStream.range(1, getElements().size() + 1)
                         .mapToObj(
-                                v ->
-                                        new Pattern(
-                                                getElements().stream()
-                                                        .limit(v)
-                                                        .toArray(PositionVector[]::new)))
+                                v -> new Pattern(
+                                        getElements().entrySet().stream()
+                                                .sorted(Comparator.comparingDouble(e -> e.getKey()
+                                                        .distance(new PositionVector(0, 0, 0))))
+                                                .limit(v)
+                                                .toList())
+                        )
                         .filter(p -> !p.match(tileMap).isEmpty())
                         .count();
         return (float) matchedElements / getElements().size();
+        // spotless:on
     }
 
     @Override

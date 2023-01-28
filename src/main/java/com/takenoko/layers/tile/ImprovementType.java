@@ -12,4 +12,6 @@ public enum ImprovementType {
      * there but in no case eat the bamboo that is there.
      */
     ENCLOSURE,
+    ANY,
+    NONE,
 }

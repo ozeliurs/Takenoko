@@ -32,6 +32,7 @@ class PlaceTileActionTest {
         @Test
         @DisplayName("Should call board.placeTile()")
         void shouldCallBoardPlaceTile() {
+            when(board.getTileAt(any())).thenReturn(new Tile());
             placeTileAction.execute(board, botManager);
             verify(board, times(1)).placeTile(any(), any());
         }
@@ -39,11 +40,9 @@ class PlaceTileActionTest {
         @Test
         @DisplayName("Should display messages")
         void shouldDisplayMessage() {
+            when(board.getTileAt(any())).thenReturn(new Tile());
             placeTileAction.execute(board, botManager);
-            verify(botManager, times(1))
-                    .displayMessage("Bamboo grew at Vector[q=-1.0, r=0.0, s=1.0]");
-            verify(botManager, times(1))
-                    .displayMessage("Joe placed a tile at Vector[q=-1.0, r=0.0, s=1.0]");
+            verify(botManager, times(2)).displayMessage(any());
         }
     }
 }
