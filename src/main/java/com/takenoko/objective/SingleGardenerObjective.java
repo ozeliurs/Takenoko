@@ -78,11 +78,9 @@ public class SingleGardenerObjective extends Objective {
 
     @Override
     public float getCompletion(Board board, BotManager botManager) {
-        return board.getTiles().entrySet().stream()
-                .filter(v -> isTileEligible(board, v.getKey(), v.getValue()))
-                .filter(v -> board.getBambooAt(v.getKey()).getBambooCount() <= targetSize)
-                .max(Comparator.comparingInt(v -> board.getBambooAt(v.getKey()).getBambooCount()))
-                .map(v -> board.getBambooAt(v.getKey()).getBambooCount())
+        return getEligiblePositions(board).stream()
+                .max(Comparator.comparingInt(v -> board.getBambooAt(v).getBambooCount()))
+                .map(v -> board.getBambooAt(v).getBambooCount())
                 .map(integer -> (float) integer / targetSize)
                 .orElse(0f);
     }

@@ -44,10 +44,6 @@ public class MultipleGardenerObjective extends Objective {
     public float getCompletion(Board board, BotManager botManager) {
         List<Integer> bambooCounts =
                 objective.getEligiblePositions(board).stream()
-                        .filter(
-                                v ->
-                                        board.getBambooAt(v).getBambooCount()
-                                                <= objective.getTargetSize())
                         .sorted(
                                 Comparator.comparingInt(
                                                 v ->
