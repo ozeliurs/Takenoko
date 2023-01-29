@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * This class is used to store the number of win for each bot.
- */
+/** This class is used to store the number of win for each bot. */
 public class Scoreboard {
     private final HashMap<BotManager, Integer> numberOfVictoryHashMap;
 
