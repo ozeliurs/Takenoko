@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class is used to store the state of a bot.
+ */
 public class BotState { // DEFAULT VALUES
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
     private static final Objective DEFAULT_OBJECTIVE = new BambooInInventoryObjective(2);

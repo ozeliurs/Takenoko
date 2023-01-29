@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class is used to store the number of win for each bot.
+ */
 public class Scoreboard {
     private final HashMap<BotManager, Integer> numberOfVictoryHashMap;
 
@@ -28,7 +31,7 @@ public class Scoreboard {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("============== Scoreboard ==============\n");
+        stringBuilder.append("============== Scoreboard ==============");
         for (Map.Entry<BotManager, Integer> entry : numberOfVictoryHashMap.entrySet()) {
             stringBuilder
                     .append("< ")
