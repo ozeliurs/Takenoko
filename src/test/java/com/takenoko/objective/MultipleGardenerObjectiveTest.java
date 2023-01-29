@@ -24,12 +24,12 @@ class MultipleGardenerObjectiveTest {
     private static final TileColor TARGET_COLOR = TileColor.PINK;
     private static final ImprovementType TARGET_IMPROVEMENT_TYPE = ImprovementType.ENCLOSURE;
     private static final SingleGardenerObjective SINGLE_GARDENER_OBJECTIVE =
-            new SingleGardenerObjective(TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE);
+            new SingleGardenerObjective(TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, 0);
 
     @BeforeEach
     void setUp() {
         multipleGardenerObjective =
-                new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES);
+                new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES, 0);
     }
 
     @Nested
@@ -39,7 +39,7 @@ class MultipleGardenerObjectiveTest {
         @DisplayName("should return true when the object is equal")
         void shouldReturnTrueWhenTheObjectIsEqual() {
             MultipleGardenerObjective multipleGardenerObjective2 =
-                    new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES);
+                    new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES, 0);
             assertThat(multipleGardenerObjective.equals(multipleGardenerObjective2)).isTrue();
         }
 
@@ -47,7 +47,8 @@ class MultipleGardenerObjectiveTest {
         @DisplayName("should return false when the object is not equal")
         void shouldReturnFalseWhenTheObjectIsNotEqual() {
             MultipleGardenerObjective multipleGardenerObjective2 =
-                    new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES + 1);
+                    new MultipleGardenerObjective(
+                            SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES + 1, 0);
             assertThat(multipleGardenerObjective.equals(multipleGardenerObjective2)).isFalse();
         }
 
@@ -73,7 +74,7 @@ class MultipleGardenerObjectiveTest {
         @DisplayName("should return the same hash code when the object is equal")
         void shouldReturnTheSameHashCodeWhenTheObjectIsEqual() {
             MultipleGardenerObjective multipleGardenerObjective2 =
-                    new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES);
+                    new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES, 0);
             assertThat(multipleGardenerObjective2.hashCode())
                     .hasSameHashCodeAs(multipleGardenerObjective);
         }
@@ -82,7 +83,8 @@ class MultipleGardenerObjectiveTest {
         @DisplayName("should return a different hash code when the object is not equal")
         void shouldReturnADifferentHashCodeWhenTheObjectIsNotEqual() {
             MultipleGardenerObjective multipleGardenerObjective2 =
-                    new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES + 1);
+                    new MultipleGardenerObjective(
+                            SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES + 1, 0);
             assertThat(multipleGardenerObjective.hashCode())
                     .isNotEqualTo(multipleGardenerObjective2.hashCode());
         }

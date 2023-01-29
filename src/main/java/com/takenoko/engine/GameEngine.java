@@ -62,8 +62,9 @@ public class GameEngine {
                                                 2,
                                                 new MultipleGardenerObjective(
                                                         new SingleGardenerObjective(
-                                                                3, TileColor.GREEN),
-                                                        2),
+                                                                3, TileColor.GREEN, 0),
+                                                        2,
+                                                        0),
                                                 new Inventory(),
                                                 List.of(
                                                         MovePandaAction.class,
@@ -76,7 +77,7 @@ public class GameEngine {
                                         new BotState(
                                                 2,
                                                 new PatternObjective(
-                                                        PatternFactory.LINE.createPattern()),
+                                                        PatternFactory.LINE.createPattern(), 0),
                                                 new Inventory(),
                                                 List.of(
                                                         MovePandaAction.class,

@@ -11,17 +11,17 @@ public class PandaObjective extends Objective {
     private final Map<TileColor, Integer> bambooTarget;
 
     @SafeVarargs
-    public PandaObjective(Map.Entry<TileColor, Integer>... bambooTarget) {
-        this(Map.ofEntries(bambooTarget));
+    public PandaObjective(int points, Map.Entry<TileColor, Integer>... bambooTarget) {
+        this(Map.ofEntries(bambooTarget), points);
     }
 
-    public PandaObjective(Map<TileColor, Integer> bambooTarget) {
-        super(ObjectiveTypes.PANDA, ObjectiveState.NOT_ACHIEVED);
+    public PandaObjective(Map<TileColor, Integer> bambooTarget, int points) {
+        super(ObjectiveTypes.PANDA, ObjectiveState.NOT_ACHIEVED, points);
         this.bambooTarget = bambooTarget;
     }
 
     public PandaObjective(PandaObjective pandaObjective) {
-        super(pandaObjective.getType(), pandaObjective.getState());
+        super(pandaObjective.getType(), pandaObjective.getState(), pandaObjective.getPoints());
         this.bambooTarget = new EnumMap<>(pandaObjective.bambooTarget);
     }
 

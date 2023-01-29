@@ -5,8 +5,8 @@ import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.objective.BambooInInventoryObjective;
 import com.takenoko.objective.Objective;
+import com.takenoko.objective.PandaObjective;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,7 +14,7 @@ import java.util.Objects;
 /** This class is used to store the state of a bot. */
 public class BotState { // DEFAULT VALUES
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
-    private static final Objective DEFAULT_OBJECTIVE = new BambooInInventoryObjective(2);
+    private static final Objective DEFAULT_OBJECTIVE = new PandaObjective(0);
 
     private int numberOfActions;
     private Objective objective;

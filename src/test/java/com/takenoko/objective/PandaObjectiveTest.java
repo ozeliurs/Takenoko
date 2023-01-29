@@ -9,7 +9,6 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.layers.tile.TileColor;
-import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -26,8 +25,7 @@ class PandaObjectiveTest {
         board = mock(Board.class);
         botManager = mock(BotManager.class);
         when(botManager.getInventory()).thenReturn(mock(Inventory.class));
-        pandaObjective =
-                new PandaObjective(Map.entry(TileColor.GREEN, 1), Map.entry(TileColor.PINK, 1));
+        pandaObjective = new PandaObjective(0);
     }
 
     @Nested
