@@ -6,9 +6,7 @@ import com.takenoko.layers.tile.TileColor;
 import java.util.EnumMap;
 import java.util.Map;
 
-/**
- * The Panda objective.
- */
+/** The Panda objective. */
 public class PandaObjective extends Objective {
     private final Map<TileColor, Integer> bambooTarget;
 
