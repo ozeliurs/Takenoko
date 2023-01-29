@@ -76,9 +76,19 @@ public class Inventory {
      * @return number of bamboos in Inventory
      */
     public int getBambooCount() {
-        return getBambooStack(TileColor.GREEN).getBambooCount()
-                + getBambooStack(TileColor.YELLOW).getBambooCount()
-                + getBambooStack(TileColor.PINK).getBambooCount();
+        return getBambooCount(TileColor.GREEN)
+                + getBambooCount(TileColor.YELLOW)
+                + getBambooCount(TileColor.PINK);
+    }
+
+    /**
+     * Return the number of bamboo of a specific color
+     *
+     * @param tileColor color of bamboo
+     * @return number of bamboos in Inventory
+     */
+    public int getBambooCount(TileColor tileColor) {
+        return getBambooStack(tileColor).getBambooCount();
     }
 
     /**
