@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/** This class is used to store the state of a bot. */
 public class BotState { // DEFAULT VALUES
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
     private static final Objective DEFAULT_OBJECTIVE = new BambooInInventoryObjective(2);
@@ -19,6 +20,7 @@ public class BotState { // DEFAULT VALUES
     private Objective objective;
     private final Inventory inventory;
     private List<Class<? extends Action>> availableActions;
+    private int objectiveScore;
 
     public BotState(
             int numberOfActions,
@@ -40,6 +42,7 @@ public class BotState { // DEFAULT VALUES
         this.objective = botState.objective.copy();
         this.inventory = botState.getInventory().copy();
         this.availableActions = new ArrayList<>(botState.availableActions);
+        this.objectiveScore = botState.objectiveScore;
     }
 
     public void setNumberOfActions(int numberOfActions) {
@@ -133,6 +136,7 @@ public class BotState { // DEFAULT VALUES
     public void reset() {
         this.objective.reset();
         this.inventory.clear();
+        this.objectiveScore = 0;
     }
 
     public BotState copy() {
@@ -146,7 +150,12 @@ public class BotState { // DEFAULT VALUES
         BotState botState = (BotState) o;
         return getNumberOfActions() == botState.getNumberOfActions()
                 && getObjective().equals(botState.getObjective())
-                && getInventory().equals(botState.getInventory());
+                && getInventory().equals(botState.getInventory())
+                && getObjectiveScore() == botState.getObjectiveScore();
+    }
+
+    public int getObjectiveScore() {
+        return objectiveScore;
     }
 
     @Override
@@ -165,5 +174,9 @@ public class BotState { // DEFAULT VALUES
         this.clearForcedActions();
         this.addAvailableActions(actionResult.availableActions());
         this.setNumberOfActions(this.getNumberOfActions() - actionResult.cost());
+    }
+
+    public void incrementScore(int i) {
+        this.objectiveScore += i;
     }
 }

@@ -158,10 +158,14 @@ class BotManagerTest {
     }
 
     @Test
-    @DisplayName("Method incrementScoreget & Score")
-    void incrementScore() {
-        botManager.incrementScore(2);
-        assertThat(botManager.getScore()).isEqualTo(2);
+    @DisplayName("Method getScore")
+    void getScore() {
+        when(botState.getObjectiveScore()).thenReturn(2);
+
+        botManager.getObjectiveScore();
+        verify(botState, times(1)).getObjectiveScore();
+
+        assertThat(botManager.getObjectiveScore()).isEqualTo(2);
     }
 
     @Test

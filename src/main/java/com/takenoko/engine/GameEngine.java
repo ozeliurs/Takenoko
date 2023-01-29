@@ -156,13 +156,13 @@ public class GameEngine {
                         "===== <" + botManager.getName() + "> is playing =====");
                 botManager.playBot(board);
                 if (botManager.isObjectiveAchieved()) {
-                    botManager.incrementScore(1);
+                    scoreboard.incrementNumberOfVictory(botManager);
                     consoleUserInterface.displayMessage(
                             botManager.getName()
                                     + " has achieved the objective "
                                     + botManager.getObjectiveDescription()
                                     + ", it has won with "
-                                    + botManager.getScore()
+                                    + botManager.getObjectiveScore()
                                     + " points");
                     gameState = GameState.FINISHED;
                     return;
@@ -214,10 +214,6 @@ public class GameEngine {
         newGame();
         startGame();
         playGame();
-        for (BotManager botManager : botManagers) {
-            scoreboard.addScore(botManager.getBotId(), botManager.getScore());
-        }
-        scoreboard.incrementNumberOfGamesPlayed();
         endGame();
     }
 

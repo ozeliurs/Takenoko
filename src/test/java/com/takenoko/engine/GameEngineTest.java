@@ -7,7 +7,6 @@ import static org.mockito.Mockito.*;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -287,26 +286,6 @@ class GameEngineTest {
             verify(gameEngine).startGame();
             verify(gameEngine).playGame();
             verify(gameEngine).endGame();
-        }
-
-        @Test
-        @DisplayName("should update scoreboard")
-        void runGame_shouldUpdateScoreboard() {
-            Scoreboard scoreboard = spy(Scoreboard.class);
-
-            GameEngine gameEngine =
-                    new GameEngine(
-                            1,
-                            new Board(),
-                            new ConsoleUserInterface(),
-                            GameState.INITIALIZED,
-                            new ArrayList<>(List.of(spy(BotManager.class), spy(BotManager.class))),
-                            scoreboard);
-
-            gameEngine.runGame();
-
-            verify(scoreboard, times(2)).addScore(any(UUID.class), anyInt());
-            verify(scoreboard).incrementNumberOfGamesPlayed();
         }
 
         @Test
