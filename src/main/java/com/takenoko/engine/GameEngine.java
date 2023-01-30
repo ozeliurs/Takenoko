@@ -7,6 +7,7 @@ import com.takenoko.bot.FullRandomBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.MultipleGardenerObjective;
+import com.takenoko.objective.Objective;
 import com.takenoko.objective.PatternObjective;
 import com.takenoko.objective.SingleGardenerObjective;
 import com.takenoko.shape.PatternFactory;
@@ -64,11 +65,11 @@ public class GameEngine {
                                         new FullRandomBot(),
                                         new BotState(
                                                 2,
-                                                new MultipleGardenerObjective(
+                                                List.of(new MultipleGardenerObjective(
                                                         new SingleGardenerObjective(
                                                                 3, TileColor.GREEN, 0),
                                                         2,
-                                                        0),
+                                                        0)),
                                                 new Inventory(),
                                                 List.of(
                                                         MovePandaAction.class,
@@ -80,8 +81,8 @@ public class GameEngine {
                                         new FullRandomBot(),
                                         new BotState(
                                                 2,
-                                                new PatternObjective(
-                                                        PatternFactory.LINE.createPattern(), 0),
+                                                List.of(new PatternObjective(
+                                                        PatternFactory.LINE.createPattern(), 0)),
                                                 new Inventory(),
                                                 List.of(
                                                         MovePandaAction.class,

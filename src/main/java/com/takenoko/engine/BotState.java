@@ -144,7 +144,8 @@ public class BotState { // DEFAULT VALUES
     }
 
     public void reset() {
-        this.objectives.clear();
+        this.objectives = new ArrayList<>();
+        this.achievedObjectives = new ArrayList<>();
         this.inventory.clear();
         this.objectiveScore = 0;
     }
