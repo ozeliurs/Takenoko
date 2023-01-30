@@ -35,7 +35,11 @@ public class BotState { // DEFAULT VALUES
     }
 
     public BotState() {
-        this(DEFAULT_NUMBER_OF_ACTIONS, List.of(DEFAULT_OBJECTIVE), new Inventory(), new ArrayList<>());
+        this(
+                DEFAULT_NUMBER_OF_ACTIONS,
+                List.of(DEFAULT_OBJECTIVE),
+                new Inventory(),
+                new ArrayList<>());
     }
 
     public BotState(BotState botState) {

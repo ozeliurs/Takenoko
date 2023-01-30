@@ -123,7 +123,6 @@ public class BotManager {
         consoleUserInterface.displayMessage(message);
     }
 
-
     /**
      * Verify the objective using the game board
      *

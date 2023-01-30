@@ -7,18 +7,14 @@ import com.takenoko.bot.FullRandomBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.MultipleGardenerObjective;
-import com.takenoko.objective.Objective;
 import com.takenoko.objective.PatternObjective;
 import com.takenoko.objective.SingleGardenerObjective;
 import com.takenoko.shape.PatternFactory;
 import com.takenoko.ui.ConsoleUserInterface;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The game engine is responsible for the gameplay throughout the game.
- */
+/** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
     // ATTRIBUTES
     public static final int DEFAULT_NUMBER_OF_ROUNDS = 100;
@@ -65,11 +61,12 @@ public class GameEngine {
                                         new FullRandomBot(),
                                         new BotState(
                                                 2,
-                                                List.of(new MultipleGardenerObjective(
-                                                        new SingleGardenerObjective(
-                                                                3, TileColor.GREEN, 0),
-                                                        2,
-                                                        0)),
+                                                List.of(
+                                                        new MultipleGardenerObjective(
+                                                                new SingleGardenerObjective(
+                                                                        3, TileColor.GREEN, 0),
+                                                                2,
+                                                                0)),
                                                 new Inventory(),
                                                 List.of(
                                                         MovePandaAction.class,
@@ -81,8 +78,10 @@ public class GameEngine {
                                         new FullRandomBot(),
                                         new BotState(
                                                 2,
-                                                List.of(new PatternObjective(
-                                                        PatternFactory.LINE.createPattern(), 0)),
+                                                List.of(
+                                                        new PatternObjective(
+                                                                PatternFactory.LINE.createPattern(),
+                                                                0)),
                                                 new Inventory(),
                                                 List.of(
                                                         MovePandaAction.class,
@@ -132,9 +131,7 @@ public class GameEngine {
                 "The new game has been set up. You can start the game !");
     }
 
-    /**
-     * This method change the game state to playing and add the first tile to the board.
-     */
+    /** This method change the game state to playing and add the first tile to the board. */
     public void startGame() {
         if (gameState == GameState.INITIALIZED) {
             throw new IllegalStateException(
@@ -157,10 +154,14 @@ public class GameEngine {
                         "===== <" + botManager.getName() + "> is playing =====");
                 botManager.playBot(board);
 
-                if (botManager.getAchievedObjectives().size() >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN) {
+                if (botManager.getAchievedObjectives().size()
+                        >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN) {
                     scoreboard.incrementNumberOfVictory(botManager);
                     consoleUserInterface.displayMessage(
-                            botManager.getName() + " has won the game by being the first one to complete " + DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN + " objectives !");
+                            botManager.getName()
+                                    + " has won the game by being the first one to complete "
+                                    + DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN
+                                    + " objectives !");
                     gameState = GameState.FINISHED;
                     return;
                 }
@@ -168,9 +169,7 @@ public class GameEngine {
         }
     }
 
-    /**
-     * This method is used to end the game correctly.
-     */
+    /** This method is used to end the game correctly. */
     public void endGame() {
         if (gameState != GameState.PLAYING && gameState != GameState.FINISHED) {
             throw new IllegalStateException(
@@ -208,9 +207,7 @@ public class GameEngine {
         this.gameState = gameState;
     }
 
-    /**
-     * Run a whole game from initialization to end.
-     */
+    /** Run a whole game from initialization to end. */
     public void runGame() {
         newGame();
         startGame();
