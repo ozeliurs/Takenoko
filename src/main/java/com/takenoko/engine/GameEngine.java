@@ -152,10 +152,11 @@ public class GameEngine {
             for (BotManager botManager : botManagers) {
                 consoleUserInterface.displayMessage(
                         "===== <" + botManager.getName() + "> is playing =====");
-                botManager.playBot(board);
+                boolean gameIsFinished = botManager.playBot(board);
 
-                if (botManager.getAchievedObjectives().size()
-                        >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN) {
+                if (gameIsFinished
+                        || botManager.getAchievedObjectives().size()
+                                >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN) {
                     scoreboard.incrementNumberOfVictory(botManager);
                     consoleUserInterface.displayMessage(
                             botManager.getName()

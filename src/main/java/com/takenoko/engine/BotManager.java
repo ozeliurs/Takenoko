@@ -74,28 +74,17 @@ public class BotManager {
      * action. Objectives are also verified in order to know if the bot has won.
      *
      * @param board the board of the game
+     * @return
      */
-    public void playBot(Board board) {
+    public boolean playBot(Board board) {
         botState.setAvailableActions(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS));
         botState.setNumberOfActions(defaultNumberOfActions);
 
         board.rollWeather();
         botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         while (canPlayBot()) {
-            Action action;
-
-            // Ask the bot to choose an action
-            try {
-                action = bot.chooseAction(board.copy(), botState.copy());
-            }
-            // If the bot doesn't have any action available, then we skip assign him the action to
-            // end his turn
-            catch (IllegalStateException exception) {
-                action = new EndTurnAction();
-            }
-
-            if (action.getClass() != EndTurnAction.class
-                    && !botState.getAvailableActions().contains(action.getClass())) {
+            Action action = bot.chooseAction(board.copy(), botState.copy());
+            if (!botState.getAvailableActions().contains(action.getClass())) {
                 throw new IllegalStateException(
                         "The action "
                                 + action.getClass().getSimpleName()
@@ -114,8 +103,12 @@ public class BotManager {
                     botState.incrementScore(objective.getPoints());
                 }
             }
+            if (actionResult.availableActions().contains(EndGameAction.class)) {
+                return true;
+            }
         }
         board.getWeather().ifPresent(value -> value.revert(board, this));
+        return false;
     }
 
     private boolean canPlayBot() {
