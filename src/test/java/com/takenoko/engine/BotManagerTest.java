@@ -9,6 +9,8 @@ import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+
 class BotManagerTest {
     BotManager botManager;
     ConsoleUserInterface consoleUserInterface;
@@ -29,27 +31,6 @@ class BotManagerTest {
     @AfterEach
     void tearDown() {
         botManager = null;
-    }
-
-    @Nested
-    @DisplayName("Method getObjectiveDescription")
-    class TestGetObjectiveDescription {
-        @Test
-        @DisplayName("should return the objective description")
-        void shouldReturnTheObjectiveDescription() {
-            Objective objective = mock(Objective.class);
-            when(botState.getObjectives()).thenReturn(objective);
-            when(objective.toString()).thenReturn("Objective description");
-
-            assertThat(botManager.getObjectiveDescription()).isEqualTo("Objective description");
-        }
-
-        @Test
-        @DisplayName("When there is no objective, returns correctly")
-        void getObjectiveDescription_WhenThereIsNoObjective_ThenReturnsCorrectly() {
-            botManager.setObjective(null);
-            assertThat(botManager.getObjectiveDescription()).isEqualTo("No current objective");
-        }
     }
 
     @Nested
@@ -75,41 +56,13 @@ class BotManagerTest {
     }
 
     @Nested
-    @DisplayName("Method objectiveIsAchieved")
-    class TestObjectiveIsAchieved {
-        @Test
-        @DisplayName("By default when board does not satisfy objective, objective is not achieved")
-        void verifyObjective_whenObjectiveIsNotAchieved_thenReturnFalse() {
-            when(botState.getObjectives()).thenReturn(mock(Objective.class));
-            when(botState.getObjectives().isAchieved()).thenReturn(false);
-            assertThat(botManager.isObjectiveAchieved()).isFalse();
-        }
-
-        @Test
-        @DisplayName("By default when board satisfies objective, objective is achieved")
-        void verifyObjective_whenObjectiveIsAchieved_thenReturnTrue() {
-            when(botState.getObjectives()).thenReturn(mock(Objective.class));
-            when(botState.getObjectives().isAchieved()).thenReturn(true);
-            assertThat(botManager.isObjectiveAchieved()).isTrue();
-        }
-
-        @Test
-        @DisplayName("When there is no objective, objective is not achieved")
-        void verifyObjective_whenThereIsNoObjective_thenReturnFalse() {
-            botManager.setObjective(null);
-            botManager.verifyObjectives(mock(Board.class));
-            assertThat(botManager.isObjectiveAchieved()).isFalse();
-        }
-    }
-
-    @Nested
     @DisplayName("Method verifyObjective")
     class TestVerifyObjective {
         @Test
         @DisplayName("When called should call verify of objective if not null")
         void verifyObjective_whenCalled_shouldCallVerifyOfObjectiveIfNotNull() {
             Objective objective = mock(Objective.class);
-            when(botState.getObjectives()).thenReturn(objective);
+            when(botState.getObjectives()).thenReturn(List.of(objective));
             botManager.verifyObjectives(board);
             verify(objective, times(1)).verify(board, botManager);
         }
