@@ -94,15 +94,8 @@ public class BotManager {
             }
 
             ActionResult actionResult = action.execute(board, this);
-            botState.updateAvailableActions(action, actionResult);
+            botState.update(board, this, action, actionResult);
 
-            verifyObjectives(board);
-            for (Objective objective : botState.getObjectives()) {
-                if (objective.isAchieved()) {
-                    botState.setObjectiveAchieved(objective);
-                    botState.incrementScore(objective.getPoints());
-                }
-            }
             if (actionResult.availableActions().contains(EndGameAction.class)) {
                 return true;
             }
@@ -127,24 +120,6 @@ public class BotManager {
      */
     public void displayMessage(String message) {
         consoleUserInterface.displayMessage(message);
-    }
-
-    /**
-     * Verify the objective using the game board
-     *
-     * @param board current board game
-     */
-    public void verifyObjectives(Board board) {
-        botState.getObjectives().forEach(objective -> objective.verify(board, this));
-    }
-
-    /**
-     * Change or set the bot objective
-     *
-     * @param objective the new objective
-     */
-    public void setObjective(Objective objective) {
-        this.botState.addObjective(objective);
     }
 
     /**
@@ -186,7 +161,7 @@ public class BotManager {
         return botState.getAchievedObjectives();
     }
 
-    public void addObjective(Objective peekTileDeck) {
-        botState.addObjective(peekTileDeck);
+    public void addObjective(Objective objective) {
+        botState.addObjective(objective);
     }
 }

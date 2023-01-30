@@ -5,9 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.bot.Bot;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
-import java.util.List;
 import org.junit.jupiter.api.*;
 
 class BotManagerTest {
@@ -52,35 +50,6 @@ class BotManagerTest {
             botManager.displayMessage("Message");
             verify(consoleUserInterface, times(1)).displayMessage("Message");
         }
-    }
-
-    @Nested
-    @DisplayName("Method verifyObjective")
-    class TestVerifyObjective {
-        @Test
-        @DisplayName("When called should call verify of objective if not null")
-        void verifyObjective_whenCalled_shouldCallVerifyOfObjectiveIfNotNull() {
-            Objective objective = mock(Objective.class);
-            when(botState.getObjectives()).thenReturn(List.of(objective));
-            botManager.verifyObjectives(board);
-            verify(objective, times(1)).verify(board, botManager);
-        }
-
-        @Test
-        @DisplayName("When called should not call verify of objective if null")
-        void verifyObjective_whenCalled_shouldNotCallVerifyOfObjectiveIfNull() {
-            when(botState.getObjectives()).thenReturn(null);
-            botManager.verifyObjectives(board);
-            verify(botState, times(1)).getObjectives();
-        }
-    }
-
-    @Test
-    @DisplayName("Method setObjectives")
-    void setObjective() {
-        Objective objective = mock(Objective.class);
-        botManager.setObjective(objective);
-        verify(botState, times(1)).addObjective(objective);
     }
 
     @Test
