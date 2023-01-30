@@ -4,12 +4,24 @@ import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.*;
 import com.takenoko.shape.PatternFactory;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
 
+/** The deck containing all the different objectives. */
 public class ObjectiveDeck extends ArrayList<Objective> {
+    private final Random random;
+    private transient Objective lastDrawnObjective;
 
     public ObjectiveDeck() {
+        this(new SecureRandom());
+    }
+
+    public ObjectiveDeck(Random random) {
+        this.random = random;
+        lastDrawnObjective = null;
         // --- Panda objectives ---
         for (int i = 0; i < 5; i++) {
             add(new PandaObjective(3, Map.entry(TileColor.GREEN, 2))); // 2 GREEN
@@ -100,5 +112,28 @@ public class ObjectiveDeck extends ArrayList<Objective> {
         add(
                 new MultipleGardenerObjective(
                         new SingleGardenerObjective(3, TileColor.GREEN, 0), 4, 8)); // 3 GREEN
+    }
+
+    public void draw() {
+        lastDrawnObjective = get(random.nextInt(size()));
+    }
+
+    public Objective peek() {
+        return lastDrawnObjective;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ObjectiveDeck that = (ObjectiveDeck) o;
+        return Objects.equals(random, that.random)
+                && Objects.equals(lastDrawnObjective, that.lastDrawnObjective);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), random, lastDrawnObjective);
     }
 }
