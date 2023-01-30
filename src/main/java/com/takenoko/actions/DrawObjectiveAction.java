@@ -11,10 +11,6 @@ public class DrawObjectiveAction implements Action {
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
-        if (board.isObjectiveDeckEmpty()) {
-            return new ActionResult(List.of(EndGameAction.class), 0);
-        }
-
         board.drawObjective();
         botManager.addObjective(board.peekObjectiveDeck());
         botManager.displayMessage(
