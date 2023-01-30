@@ -11,16 +11,25 @@ public class ObjectiveDeck extends ArrayList<Objective> {
 
     public ObjectiveDeck() {
         // --- Panda objectives ---
-        add(new PandaObjective(3, Map.entry(TileColor.GREEN, 2))); // 2 GREEN
-        add(new PandaObjective(4, Map.entry(TileColor.YELLOW, 2))); // 2 YELLOW
-        add(new PandaObjective(5, Map.entry(TileColor.PINK, 2))); // 2 PINK
-        add(
-                new PandaObjective(
-                        6,
-                        Map.entry(TileColor.GREEN, 1),
-                        Map.entry(TileColor.YELLOW, 1),
-                        Map.entry(TileColor.PINK, 1))); // 1 GREEN, 1 YELLOW, 1 PINK
+        for (int i = 0; i < 5; i++) {
+            add(new PandaObjective(3, Map.entry(TileColor.GREEN, 2))); // 2 GREEN
+        }
+        for (int i = 0; i < 4; i++) {
+            add(new PandaObjective(4, Map.entry(TileColor.YELLOW, 2))); // 2 YELLOW
+        }
 
+        for (int i = 0; i < 3; i++) {
+            add(new PandaObjective(5, Map.entry(TileColor.PINK, 2))); // 2 PINK
+        }
+
+        for (int i = 0; i < 3; i++) {
+            add(
+                    new PandaObjective(
+                            6,
+                            Map.entry(TileColor.GREEN, 1),
+                            Map.entry(TileColor.YELLOW, 1),
+                            Map.entry(TileColor.PINK, 1))); // 1 GREEN, 1 YELLOW, 1 PINK
+        }
         // --- Pattern objectives ---
         // LINE
         add(new PatternObjective(PatternFactory.LINE.createPattern(), 2)); // GREEN
