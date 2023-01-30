@@ -7,9 +7,8 @@ import com.takenoko.bot.Bot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
-import org.junit.jupiter.api.*;
-
 import java.util.List;
+import org.junit.jupiter.api.*;
 
 class BotManagerTest {
     BotManager botManager;
