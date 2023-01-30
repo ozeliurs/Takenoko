@@ -192,4 +192,8 @@ public class BotManager {
     public List<Objective> getAchievedObjectives() {
         return botState.getAchievedObjectives();
     }
+
+    public void addObjective(Objective peekTileDeck) {
+        botState.addObjective(peekTileDeck);
+    }
 }

@@ -309,7 +309,11 @@ public class Board {
         gameAssets.getObjectiveDeck().draw();
     }
 
-    public Objective peekObjective() {
+    public Objective peekObjectiveDeck() {
         return gameAssets.getObjectiveDeck().peek();
+    }
+
+    public boolean isObjectiveDeckEmpty() {
+        return gameAssets.getObjectiveDeck().isEmpty();
     }
 }
