@@ -96,15 +96,13 @@ public class BotManager {
                 action = new EndTurnAction();
             }
 
-            if (action.getClass() != EndTurnAction.class) {
-                if (!botState.getAvailableActions().contains(action.getClass())) {
-                    throw new IllegalStateException(
-                            "The action "
-                                    + action.getClass().getSimpleName()
-                                    + " is not available for the bot "
-                                    + name
-                                    + ". Please choose another action.");
-                }
+            if (action.getClass() != EndTurnAction.class && !botState.getAvailableActions().contains(action.getClass())) {
+                throw new IllegalStateException(
+                        "The action "
+                                + action.getClass().getSimpleName()
+                                + " is not available for the bot "
+                                + name
+                                + ". Please choose another action.");
             }
 
             ActionResult actionResult = action.execute(board, this);
