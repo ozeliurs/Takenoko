@@ -18,6 +18,7 @@ public class BotState { // DEFAULT VALUES
 
     private int numberOfActions;
     private List<Objective> objectives;
+    private List<Objective> achievedObjectives;
     private final Inventory inventory;
     private List<Class<? extends Action>> availableActions;
     private int objectiveScore;
@@ -39,9 +40,15 @@ public class BotState { // DEFAULT VALUES
 
     public BotState(BotState botState) {
         this.numberOfActions = botState.numberOfActions;
+        // Objectives
         this.objectives = new ArrayList<>();
         for (Objective objective : botState.objectives) {
             this.objectives.add(objective.copy());
+        }
+        // Achieved objectives
+        this.achievedObjectives = new ArrayList<>();
+        for (Objective objective : botState.achievedObjectives) {
+            this.achievedObjectives.add(objective.copy());
         }
         this.inventory = botState.getInventory().copy();
         this.availableActions = new ArrayList<>(botState.availableActions);
@@ -64,10 +71,10 @@ public class BotState { // DEFAULT VALUES
     /**
      * Set the current Objective of the bot
      *
-     * @param objectives the objectives
+     * @param objective the objectives
      */
-    public void setObjectives(Objective objectives) {
-        this.objectives = objectives;
+    public void addObjective(Objective objective) {
+        this.objectives.add(objective);
     }
 
     /**
@@ -181,5 +188,10 @@ public class BotState { // DEFAULT VALUES
 
     public void incrementScore(int i) {
         this.objectiveScore += i;
+    }
+
+    public void setObjectiveAchieved(Objective objective) {
+        this.objectives.remove(objective);
+        this.achievedObjectives.add(objective);
     }
 }

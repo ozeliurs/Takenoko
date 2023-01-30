@@ -97,7 +97,7 @@ class BotManagerTest {
         @DisplayName("When there is no objective, objective is not achieved")
         void verifyObjective_whenThereIsNoObjective_thenReturnFalse() {
             botManager.setObjective(null);
-            botManager.verifyObjective(mock(Board.class));
+            botManager.verifyObjectives(mock(Board.class));
             assertThat(botManager.isObjectiveAchieved()).isFalse();
         }
     }
@@ -110,7 +110,7 @@ class BotManagerTest {
         void verifyObjective_whenCalled_shouldCallVerifyOfObjectiveIfNotNull() {
             Objective objective = mock(Objective.class);
             when(botState.getObjectives()).thenReturn(objective);
-            botManager.verifyObjective(board);
+            botManager.verifyObjectives(board);
             verify(objective, times(1)).verify(board, botManager);
         }
 
@@ -118,7 +118,7 @@ class BotManagerTest {
         @DisplayName("When called should not call verify of objective if null")
         void verifyObjective_whenCalled_shouldNotCallVerifyOfObjectiveIfNull() {
             when(botState.getObjectives()).thenReturn(null);
-            botManager.verifyObjective(board);
+            botManager.verifyObjectives(board);
             verify(botState, times(1)).getObjectives();
         }
     }
@@ -128,7 +128,7 @@ class BotManagerTest {
     void setObjective() {
         Objective objective = mock(Objective.class);
         botManager.setObjective(objective);
-        verify(botState, times(1)).setObjectives(objective);
+        verify(botState, times(1)).addObjective(objective);
     }
 
     @Test

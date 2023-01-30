@@ -140,13 +140,6 @@ public class GameEngine {
 
         gameState = GameState.PLAYING;
         consoleUserInterface.displayMessage("The game has started !");
-
-        for (BotManager botManager : botManagers) {
-            consoleUserInterface.displayMessage(
-                    botManager.getName()
-                            + " has the objective : "
-                            + botManager.getObjectiveDescription());
-        }
     }
 
     public void playGame() {
@@ -156,6 +149,7 @@ public class GameEngine {
                 consoleUserInterface.displayMessage(
                         "===== <" + botManager.getName() + "> is playing =====");
                 botManager.playBot(board);
+
                 if (botManager.isObjectiveAchieved()) {
                     scoreboard.incrementNumberOfVictory(botManager);
                     consoleUserInterface.displayMessage(

@@ -94,10 +94,12 @@ public class BotManager {
             ActionResult actionResult = action.execute(board, this);
             botState.updateAvailableActions(action, actionResult);
 
-            verifyObjective(board);
-            if (this.isObjectiveAchieved()) {
-                botState.incrementScore(1);
-                break;
+            verifyObjectives(board);
+            for (Objective objective : botState.getObjectives()) {
+                if (objective.isAchieved()) {
+                    botState.setObjectiveAchieved(objective);
+                    botState.incrementScore(objective.getPoints());
+                }
             }
         }
         board.getWeather().ifPresent(value -> value.revert(board, this));
@@ -127,7 +129,7 @@ public class BotManager {
      *
      * @param board current board game
      */
-    public void verifyObjective(Board board) {
+    public void verifyObjectives(Board board) {
         botState.getObjectives().forEach(objective -> objective.verify(board, this));
     }
 
@@ -137,7 +139,7 @@ public class BotManager {
      * @param objective the new objective
      */
     public void setObjective(Objective objective) {
-        this.botState.setObjectives(objective);
+        this.botState.addObjective(objective);
     }
 
     /**
