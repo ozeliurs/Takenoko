@@ -14,6 +14,34 @@ public enum PatternFactory {
         public Pattern createPattern() {
             return new Adjacent();
         }
+    },
+
+    CURVE {
+        @Override
+        public Pattern createPattern() {
+            return new Curve();
+        }
+    },
+
+    TRIANGLE {
+        @Override
+        public Pattern createPattern() {
+            return new Triangle();
+        }
+    },
+
+    DIAMOND {
+        @Override
+        public Pattern createPattern() {
+            return new Diamond();
+        }
+    },
+
+    MIXED_COLORS_DIAMOND {
+        @Override
+        public Pattern createPattern() {
+            return new MixedColorsDiamond();
+        }
     };
 
     public abstract Pattern createPattern();
