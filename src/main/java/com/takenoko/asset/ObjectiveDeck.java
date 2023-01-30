@@ -116,6 +116,7 @@ public class ObjectiveDeck extends ArrayList<Objective> {
 
     public void draw() {
         lastDrawnObjective = get(random.nextInt(size()));
+        remove(lastDrawnObjective);
     }
 
     public Objective peek() {
