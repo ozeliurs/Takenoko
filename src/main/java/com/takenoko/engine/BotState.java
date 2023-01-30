@@ -17,29 +17,32 @@ public class BotState { // DEFAULT VALUES
     private static final Objective DEFAULT_OBJECTIVE = new PandaObjective(0);
 
     private int numberOfActions;
-    private Objective objective;
+    private List<Objective> objectives;
     private final Inventory inventory;
     private List<Class<? extends Action>> availableActions;
     private int objectiveScore;
 
     public BotState(
             int numberOfActions,
-            Objective objective,
+            List<Objective> objectives,
             Inventory inventory,
             List<Class<? extends Action>> availableActions) {
         this.numberOfActions = numberOfActions;
-        this.objective = objective;
+        this.objectives = objectives;
         this.inventory = inventory;
         this.availableActions = availableActions;
     }
 
     public BotState() {
-        this(DEFAULT_NUMBER_OF_ACTIONS, DEFAULT_OBJECTIVE, new Inventory(), new ArrayList<>());
+        this(DEFAULT_NUMBER_OF_ACTIONS, List.of(DEFAULT_OBJECTIVE), new Inventory(), new ArrayList<>());
     }
 
     public BotState(BotState botState) {
         this.numberOfActions = botState.numberOfActions;
-        this.objective = botState.objective.copy();
+        this.objectives = new ArrayList<>();
+        for (Objective objective : botState.objectives) {
+            this.objectives.add(objective.copy());
+        }
         this.inventory = botState.getInventory().copy();
         this.availableActions = new ArrayList<>(botState.availableActions);
         this.objectiveScore = botState.objectiveScore;
@@ -50,21 +53,21 @@ public class BotState { // DEFAULT VALUES
     }
 
     /**
-     * Get the current Objective of the bot
+     * Get the current Objectives of the bot
      *
-     * @return Objective
+     * @return Objectives
      */
-    public Objective getObjective() {
-        return objective;
+    public List<Objective> getObjectives() {
+        return objectives;
     }
 
     /**
      * Set the current Objective of the bot
      *
-     * @param objective the objective
+     * @param objectives the objectives
      */
-    public void setObjective(Objective objective) {
-        this.objective = objective;
+    public void setObjectives(Objective objectives) {
+        this.objectives = objectives;
     }
 
     /**
@@ -134,7 +137,7 @@ public class BotState { // DEFAULT VALUES
     }
 
     public void reset() {
-        this.objective.reset();
+        this.objectives.clear();
         this.inventory.clear();
         this.objectiveScore = 0;
     }
@@ -149,7 +152,7 @@ public class BotState { // DEFAULT VALUES
         if (o == null || getClass() != o.getClass()) return false;
         BotState botState = (BotState) o;
         return getNumberOfActions() == botState.getNumberOfActions()
-                && getObjective().equals(botState.getObjective())
+                && getObjectives().equals(botState.getObjectives())
                 && getInventory().equals(botState.getInventory())
                 && getObjectiveScore() == botState.getObjectiveScore();
     }
@@ -160,7 +163,7 @@ public class BotState { // DEFAULT VALUES
 
     @Override
     public int hashCode() {
-        return Objects.hash(getNumberOfActions(), getObjective(), getInventory());
+        return Objects.hash(getNumberOfActions(), getObjectives(), getInventory());
     }
 
     private void clearForcedActions() {

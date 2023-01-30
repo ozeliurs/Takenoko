@@ -38,7 +38,7 @@ class BotManagerTest {
         @DisplayName("should return the objective description")
         void shouldReturnTheObjectiveDescription() {
             Objective objective = mock(Objective.class);
-            when(botState.getObjective()).thenReturn(objective);
+            when(botState.getObjectives()).thenReturn(objective);
             when(objective.toString()).thenReturn("Objective description");
 
             assertThat(botManager.getObjectiveDescription()).isEqualTo("Objective description");
@@ -80,16 +80,16 @@ class BotManagerTest {
         @Test
         @DisplayName("By default when board does not satisfy objective, objective is not achieved")
         void verifyObjective_whenObjectiveIsNotAchieved_thenReturnFalse() {
-            when(botState.getObjective()).thenReturn(mock(Objective.class));
-            when(botState.getObjective().isAchieved()).thenReturn(false);
+            when(botState.getObjectives()).thenReturn(mock(Objective.class));
+            when(botState.getObjectives().isAchieved()).thenReturn(false);
             assertThat(botManager.isObjectiveAchieved()).isFalse();
         }
 
         @Test
         @DisplayName("By default when board satisfies objective, objective is achieved")
         void verifyObjective_whenObjectiveIsAchieved_thenReturnTrue() {
-            when(botState.getObjective()).thenReturn(mock(Objective.class));
-            when(botState.getObjective().isAchieved()).thenReturn(true);
+            when(botState.getObjectives()).thenReturn(mock(Objective.class));
+            when(botState.getObjectives().isAchieved()).thenReturn(true);
             assertThat(botManager.isObjectiveAchieved()).isTrue();
         }
 
@@ -109,7 +109,7 @@ class BotManagerTest {
         @DisplayName("When called should call verify of objective if not null")
         void verifyObjective_whenCalled_shouldCallVerifyOfObjectiveIfNotNull() {
             Objective objective = mock(Objective.class);
-            when(botState.getObjective()).thenReturn(objective);
+            when(botState.getObjectives()).thenReturn(objective);
             botManager.verifyObjective(board);
             verify(objective, times(1)).verify(board, botManager);
         }
@@ -117,18 +117,18 @@ class BotManagerTest {
         @Test
         @DisplayName("When called should not call verify of objective if null")
         void verifyObjective_whenCalled_shouldNotCallVerifyOfObjectiveIfNull() {
-            when(botState.getObjective()).thenReturn(null);
+            when(botState.getObjectives()).thenReturn(null);
             botManager.verifyObjective(board);
-            verify(botState, times(1)).getObjective();
+            verify(botState, times(1)).getObjectives();
         }
     }
 
     @Test
-    @DisplayName("Method setObjective")
+    @DisplayName("Method setObjectives")
     void setObjective() {
         Objective objective = mock(Objective.class);
         botManager.setObjective(objective);
-        verify(botState, times(1)).setObjective(objective);
+        verify(botState, times(1)).setObjectives(objective);
     }
 
     @Test

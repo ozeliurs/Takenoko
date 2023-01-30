@@ -296,6 +296,10 @@ public class Board {
         gameAssets.getTileDeck().choose(tile);
     }
 
+    public boolean isTileDeckEmpty() {
+        return gameAssets.getTileDeck().isEmpty();
+    }
+
     public void applyImprovement(ImprovementType improvementType, PositionVector positionVector) {
         tileLayer.applyImprovement(improvementType, positionVector, this);
     }

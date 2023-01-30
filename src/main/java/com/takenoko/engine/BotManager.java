@@ -108,16 +108,6 @@ public class BotManager {
     }
 
     /**
-     * @return the objective description or "No current objective" if there is no objective
-     */
-    public String getObjectiveDescription() {
-        if (botState.getObjective() != null) {
-            return botState.getObjective().toString();
-        }
-        return "No current objective";
-    }
-
-    /**
      * @return number of actions the bot can do in a turn
      */
     protected int getNumberOfActions() {
@@ -131,15 +121,6 @@ public class BotManager {
         consoleUserInterface.displayMessage(message);
     }
 
-    /**
-     * @return boolean to know is the objective is achieved or not
-     */
-    public boolean isObjectiveAchieved() {
-        if (botState.getObjective() != null) {
-            return botState.getObjective().isAchieved();
-        }
-        return false;
-    }
 
     /**
      * Verify the objective using the game board
@@ -147,9 +128,7 @@ public class BotManager {
      * @param board current board game
      */
     public void verifyObjective(Board board) {
-        if (botState.getObjective() != null) {
-            botState.getObjective().verify(board, this);
-        }
+        botState.getObjectives().forEach(objective -> objective.verify(board, this));
     }
 
     /**
@@ -158,7 +137,7 @@ public class BotManager {
      * @param objective the new objective
      */
     public void setObjective(Objective objective) {
-        this.botState.setObjective(objective);
+        this.botState.setObjectives(objective);
     }
 
     /**
