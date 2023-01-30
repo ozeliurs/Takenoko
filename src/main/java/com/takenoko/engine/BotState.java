@@ -194,4 +194,8 @@ public class BotState { // DEFAULT VALUES
         this.objectives.remove(objective);
         this.achievedObjectives.add(objective);
     }
+
+    public List<Objective> getAchievedObjectives() {
+        return achievedObjectives;
+    }
 }

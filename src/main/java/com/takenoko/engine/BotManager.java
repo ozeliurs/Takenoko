@@ -176,4 +176,8 @@ public class BotManager {
     public int getObjectiveScore() {
         return botState.getObjectiveScore();
     }
+
+    public List<Objective> getAchievedObjectives() {
+        return botState.getAchievedObjectives();
+    }
 }
