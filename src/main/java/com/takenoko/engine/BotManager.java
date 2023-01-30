@@ -10,6 +10,7 @@ import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +43,9 @@ public class BotManager {
      * Constructor for the class
      *
      * @param consoleUserInterface the console user interface
-     * @param name the name of the bot
-     * @param bot the bot
-     * @param botState the bot state
+     * @param name                 the name of the bot
+     * @param bot                  the bot
+     * @param botState             the bot state
      */
     protected BotManager(
             ConsoleUserInterface consoleUserInterface, String name, Bot bot, BotState botState) {
@@ -55,7 +56,9 @@ public class BotManager {
         this.defaultNumberOfActions = botState.getNumberOfActions();
     }
 
-    /** Default constructor for the class */
+    /**
+     * Default constructor for the class
+     */
     protected BotManager() {
         this(DEFAULT_CONSOLE_USER_INTERFACE, DEFAULT_NAME, DEFAULT_BOT, new BotState());
     }
@@ -82,15 +85,28 @@ public class BotManager {
         board.rollWeather();
         botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         while (canPlayBot()) {
-            Action action = bot.chooseAction(board.copy(), botState.copy());
-            if (!botState.getAvailableActions().contains(action.getClass())) {
-                throw new IllegalStateException(
-                        "The action "
-                                + action.getClass().getSimpleName()
-                                + " is not available for the bot "
-                                + name
-                                + ". Please choose another action.");
+            Action action;
+
+            // Ask the bot to choose an action
+            try {
+                action = bot.chooseAction(board.copy(), botState.copy());
             }
+            // If the bot doesn't have any action available, then we skip assign him the action to end his turn
+            catch (IllegalStateException exception) {
+                action = new EndTurnAction();
+            }
+
+            if (action.getClass() != EndTurnAction.class) {
+                if (!botState.getAvailableActions().contains(action.getClass())) {
+                    throw new IllegalStateException(
+                            "The action "
+                                    + action.getClass().getSimpleName()
+                                    + " is not available for the bot "
+                                    + name
+                                    + ". Please choose another action.");
+                }
+            }
+
             ActionResult actionResult = action.execute(board, this);
             botState.updateAvailableActions(action, actionResult);
 
