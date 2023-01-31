@@ -5,11 +5,6 @@ import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.tile.PlaceTileAction;
 import com.takenoko.bot.FullRandomBot;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.layers.tile.TileColor;
-import com.takenoko.objective.MultipleGardenerObjective;
-import com.takenoko.objective.PatternObjective;
-import com.takenoko.objective.SingleGardenerObjective;
-import com.takenoko.shape.PatternFactory;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +56,6 @@ public class GameEngine {
                                         new FullRandomBot(),
                                         new BotState(
                                                 2,
-                                                List.of(
-                                                        new MultipleGardenerObjective(
-                                                                new SingleGardenerObjective(
-                                                                        3, TileColor.GREEN, 0),
-                                                                2,
-                                                                0)),
                                                 new Inventory(),
                                                 List.of(
                                                         MovePandaAction.class,
@@ -78,11 +67,6 @@ public class GameEngine {
                                         new FullRandomBot(),
                                         new BotState(
                                                 2,
-                                                List.of(
-                                                        new PatternObjective(
-                                                                PatternFactory.LINE.createPattern(
-                                                                        TileColor.ANY),
-                                                                0)),
                                                 new Inventory(),
                                                 List.of(
                                                         MovePandaAction.class,
@@ -155,15 +139,20 @@ public class GameEngine {
                         "===== <" + botManager.getName() + "> is playing =====");
                 boolean gameIsFinished = botManager.playBot(board);
 
-                if (gameIsFinished
-                        || botManager.getAchievedObjectives().size()
-                                >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN) {
+                if (botManager.getAchievedObjectives().size()
+                        >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN) {
                     scoreboard.incrementNumberOfVictory(botManager);
                     consoleUserInterface.displayMessage(
                             botManager.getName()
                                     + " has won the game by being the first one to complete "
                                     + DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN
                                     + " objectives !");
+                    gameState = GameState.FINISHED;
+                    return;
+                } else if (gameIsFinished) {
+                    consoleUserInterface.displayMessage(
+                            botManager.getName()
+                                    + " has won the game by being the last one to play !");
                     gameState = GameState.FINISHED;
                     return;
                 }

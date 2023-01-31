@@ -4,6 +4,8 @@ import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
+import com.takenoko.actions.objective.DrawObjectiveAction;
+import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
 import java.util.ArrayList;
@@ -18,24 +20,24 @@ public class BotState { // DEFAULT VALUES
     private int numberOfActions;
     private List<Objective> objectives;
     private List<Objective> achievedObjectives;
+    private List<Objective> redeemedObjectives;
     private final Inventory inventory;
     private List<Class<? extends Action>> availableActions;
-    private int objectiveScore;
 
     public BotState(
             int numberOfActions,
-            List<Objective> objectives,
             Inventory inventory,
             List<Class<? extends Action>> availableActions) {
         this.numberOfActions = numberOfActions;
-        this.objectives = objectives;
+        this.objectives = new ArrayList<>();
         this.inventory = inventory;
         this.availableActions = availableActions;
         this.achievedObjectives = new ArrayList<>();
+        this.redeemedObjectives = new ArrayList<>();
     }
 
     public BotState() {
-        this(DEFAULT_NUMBER_OF_ACTIONS, new ArrayList<>(), new Inventory(), new ArrayList<>());
+        this(DEFAULT_NUMBER_OF_ACTIONS, new Inventory(), new ArrayList<>());
     }
 
     public void setNumberOfActions(int numberOfActions) {
@@ -48,7 +50,7 @@ public class BotState { // DEFAULT VALUES
      * @return Objectives
      */
     public List<Objective> getObjectives() {
-        return objectives;
+        return new ArrayList<>(objectives);
     }
 
     /**
@@ -130,7 +132,6 @@ public class BotState { // DEFAULT VALUES
         this.objectives = new ArrayList<>();
         this.achievedObjectives = new ArrayList<>();
         this.inventory.clear();
-        this.objectiveScore = 0;
     }
 
     public BotState copy() {
@@ -147,7 +148,12 @@ public class BotState { // DEFAULT VALUES
                 && getInventory().equals(botState.getInventory())
                 && getObjectiveScore() == botState.getObjectiveScore()
                 && getAchievedObjectives().equals(botState.getAchievedObjectives())
-                && this.availableActions.equals(botState.getAvailableActions());
+                && this.availableActions.equals(botState.getAvailableActions())
+                && this.redeemedObjectives.equals(botState.getRedeemedObjectives());
+    }
+
+    public List<Objective> getRedeemedObjectives() {
+        return new ArrayList<>(redeemedObjectives);
     }
 
     public BotState(BotState botState) {
@@ -163,13 +169,18 @@ public class BotState { // DEFAULT VALUES
             this.achievedObjectives.add(objective.copy());
         }
 
+        // Redeemed objectives
+        this.redeemedObjectives = new ArrayList<>();
+        for (Objective objective : botState.redeemedObjectives) {
+            this.redeemedObjectives.add(objective.copy());
+        }
+
         this.inventory = botState.getInventory().copy();
         this.availableActions = new ArrayList<>(botState.availableActions);
-        this.objectiveScore = botState.objectiveScore;
     }
 
     public int getObjectiveScore() {
-        return objectiveScore;
+        return redeemedObjectives.stream().mapToInt(Objective::getPoints).sum();
     }
 
     @Override
@@ -180,7 +191,8 @@ public class BotState { // DEFAULT VALUES
                 getInventory(),
                 getAchievedObjectives(),
                 getObjectiveScore(),
-                this.availableActions);
+                this.availableActions,
+                this.redeemedObjectives);
     }
 
     private void clearForcedActions() {
@@ -196,17 +208,8 @@ public class BotState { // DEFAULT VALUES
         this.setNumberOfActions(this.getNumberOfActions() - actionResult.cost());
     }
 
-    public void incrementScore(int i) {
-        this.objectiveScore += i;
-    }
-
-    public void setObjectiveAchieved(Objective objective) {
-        this.objectives.remove(objective);
-        this.achievedObjectives.add(objective);
-    }
-
     public List<Objective> getAchievedObjectives() {
-        return achievedObjectives;
+        return new ArrayList<>(achievedObjectives);
     }
 
     public void verifyObjectives(Board board, BotManager botManager) {
@@ -215,20 +218,61 @@ public class BotState { // DEFAULT VALUES
         }
     }
 
-    public void update(
-            Board board, BotManager botManager, Action action, ActionResult actionResult) {
-        updateAvailableActions(action, actionResult);
+    public void update(Board board, BotManager botManager) {
+
         verifyObjectives(board, botManager);
 
+        // If objective is achieved, add it to the list of achieved objectives
+        List<Objective> toAchieve = new ArrayList<>();
         for (Objective objective : objectives) {
             if (objective.isAchieved()) {
-                setObjectiveAchieved(objective);
-                incrementScore(objective.getPoints());
+                toAchieve.add(objective);
             }
         }
+        for (Objective objective : toAchieve) {
+            setObjectiveAchieved(objective);
+        }
+
+        // If objective is no more achievable, remove it from the list of objectives
+        List<Objective> toRemove = new ArrayList<>();
+        for (Objective objective : achievedObjectives) {
+            if (!objective.isAchieved()) {
+                toRemove.add(objective);
+            }
+        }
+        for (Objective objective : toRemove) {
+            setObjectiveNotAchieved(objective);
+        }
+
+        if (canDrawObjective() && !availableActions.contains(DrawObjectiveAction.class)) {
+            addAvailableAction(DrawObjectiveAction.class);
+        }
+
+        if (canRedeemObjective() && !availableActions.contains(RedeemObjectiveAction.class)) {
+            addAvailableAction(RedeemObjectiveAction.class);
+        }
+    }
+
+    public void setObjectiveNotAchieved(Objective objective) {
+        this.achievedObjectives.remove(objective);
+        this.objectives.add(objective);
+    }
+
+    public void setObjectiveAchieved(Objective objective) {
+        this.objectives.remove(objective);
+        this.achievedObjectives.add(objective);
+    }
+
+    public void redeemObjective(Objective objective) {
+        this.achievedObjectives.remove(objective);
+        this.redeemedObjectives.add(objective);
     }
 
     public boolean canDrawObjective() {
         return objectives.size() < MAX_OBJECTIVES;
+    }
+
+    public boolean canRedeemObjective() {
+        return !achievedObjectives.isEmpty();
     }
 }

@@ -3,7 +3,6 @@ package com.takenoko.engine;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import com.takenoko.actions.DrawObjectiveAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.ui.ConsoleUserInterface;
@@ -99,25 +98,5 @@ class BotManagerTest {
 
     @Nested
     @DisplayName("Method playBot()")
-    class TestPlayBot {
-        @Test
-        @DisplayName(
-                "should add DrawObjectiveAction to the list of actions if the botState can draw an"
-                        + " objective")
-        void shouldAddDrawObjectiveActionToTheListOfActionsIfTheBotStateCanDrawAnObjective() {
-            when(botState.canDrawObjective()).thenReturn(true);
-            botManager.playBot(board);
-            verify(botState, times(1)).addAvailableAction(DrawObjectiveAction.class);
-        }
-
-        @Test
-        @DisplayName(
-                "should not add DrawObjectiveAction to the list of actions if the botState can't"
-                        + " draw an objective")
-        void shouldNotAddDrawObjectiveActionToTheListOfActionsIfTheBotStateCanNotDrawAnObjective() {
-            when(botState.canDrawObjective()).thenReturn(false);
-            botManager.playBot(board);
-            verify(botState, times(0)).addAvailableAction(DrawObjectiveAction.class);
-        }
-    }
+    class TestPlayBot {}
 }

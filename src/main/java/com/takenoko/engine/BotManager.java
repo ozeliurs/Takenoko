@@ -78,15 +78,14 @@ public class BotManager {
      */
     public boolean playBot(Board board) {
         botState.setAvailableActions(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS));
-        if (botState.canDrawObjective()) {
-            botState.addAvailableAction(DrawObjectiveAction.class);
-        }
 
         botState.setNumberOfActions(defaultNumberOfActions);
 
         board.rollWeather();
         botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         while (canPlayBot()) {
+            botState.update(board, this);
+
             Action action = bot.chooseAction(board.copy(), botState.copy());
             if (!botState.getAvailableActions().contains(action.getClass())) {
                 throw new IllegalStateException(
@@ -98,7 +97,8 @@ public class BotManager {
             }
 
             ActionResult actionResult = action.execute(board, this);
-            botState.update(board, this, action, actionResult);
+
+            botState.updateAvailableActions(action, actionResult);
 
             if (actionResult.availableActions().contains(EndGameAction.class)) {
                 return true;
@@ -167,5 +167,9 @@ public class BotManager {
 
     public void addObjective(Objective objective) {
         botState.addObjective(objective);
+    }
+
+    public void redeemObjective(Objective objective) {
+        botState.redeemObjective(objective);
     }
 }
