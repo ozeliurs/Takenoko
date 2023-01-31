@@ -8,6 +8,7 @@ import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
+import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class BotManager {
      * action. Objectives are also verified in order to know if the bot has won.
      *
      * @param board the board of the game
-     * @return
+     * @return true if the bot has won, false otherwise
      */
     public boolean playBot(Board board) {
         botState.setAvailableActions(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS));
@@ -97,6 +98,8 @@ public class BotManager {
             botState.update(board, this, action, actionResult);
 
             if (actionResult.availableActions().contains(EndGameAction.class)) {
+                displayMessage("The bot " + name + " has drawn the Emperor Objective!");
+                botState.getAchievedObjectives().add(new EmperorObjective());
                 return true;
             }
         }
