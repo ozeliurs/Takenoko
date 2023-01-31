@@ -229,6 +229,6 @@ public class BotState { // DEFAULT VALUES
     }
 
     public boolean canDrawObjective() {
-        return objectives.size() <= MAX_OBJECTIVES;
+        return objectives.size() < MAX_OBJECTIVES;
     }
 }

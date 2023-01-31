@@ -155,7 +155,7 @@ class BotStateTest {
         @Test
         @DisplayName("should return false if the player can't draw an objective")
         void canDrawObjective_shouldReturnFalseIfCantDrawObjective() {
-            for (int i = 0; i <= BotState.MAX_OBJECTIVES; i++) {
+            for (int i = 0; i < BotState.MAX_OBJECTIVES; i++) {
                 botState.addObjective(mock(Objective.class));
             }
             assertThat(botState.canDrawObjective()).isFalse();
