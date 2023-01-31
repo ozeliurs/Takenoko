@@ -5,8 +5,8 @@ import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.objective.BambooInInventoryObjective;
 import com.takenoko.objective.Objective;
+import com.takenoko.objective.PandaObjective;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,35 +14,33 @@ import java.util.Objects;
 /** This class is used to store the state of a bot. */
 public class BotState { // DEFAULT VALUES
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
-    private static final Objective DEFAULT_OBJECTIVE = new BambooInInventoryObjective(2);
+    private static final Objective DEFAULT_OBJECTIVE = new PandaObjective();
 
     private int numberOfActions;
-    private Objective objective;
+    private List<Objective> objectives;
+    private List<Objective> achievedObjectives;
     private final Inventory inventory;
     private List<Class<? extends Action>> availableActions;
     private int objectiveScore;
 
     public BotState(
             int numberOfActions,
-            Objective objective,
+            List<Objective> objectives,
             Inventory inventory,
             List<Class<? extends Action>> availableActions) {
         this.numberOfActions = numberOfActions;
-        this.objective = objective;
+        this.objectives = objectives;
         this.inventory = inventory;
         this.availableActions = availableActions;
+        this.achievedObjectives = new ArrayList<>();
     }
 
     public BotState() {
-        this(DEFAULT_NUMBER_OF_ACTIONS, DEFAULT_OBJECTIVE, new Inventory(), new ArrayList<>());
-    }
-
-    public BotState(BotState botState) {
-        this.numberOfActions = botState.numberOfActions;
-        this.objective = botState.objective.copy();
-        this.inventory = botState.getInventory().copy();
-        this.availableActions = new ArrayList<>(botState.availableActions);
-        this.objectiveScore = botState.objectiveScore;
+        this(
+                DEFAULT_NUMBER_OF_ACTIONS,
+                List.of(DEFAULT_OBJECTIVE),
+                new Inventory(),
+                new ArrayList<>());
     }
 
     public void setNumberOfActions(int numberOfActions) {
@@ -50,21 +48,21 @@ public class BotState { // DEFAULT VALUES
     }
 
     /**
-     * Get the current Objective of the bot
+     * Get the current Objectives of the bot
      *
-     * @return Objective
+     * @return Objectives
      */
-    public Objective getObjective() {
-        return objective;
+    public List<Objective> getObjectives() {
+        return objectives;
     }
 
     /**
      * Set the current Objective of the bot
      *
-     * @param objective the objective
+     * @param objective the objectives
      */
-    public void setObjective(Objective objective) {
-        this.objective = objective;
+    public void addObjective(Objective objective) {
+        this.objectives.add(objective);
     }
 
     /**
@@ -134,7 +132,8 @@ public class BotState { // DEFAULT VALUES
     }
 
     public void reset() {
-        this.objective.reset();
+        this.objectives = new ArrayList<>();
+        this.achievedObjectives = new ArrayList<>();
         this.inventory.clear();
         this.objectiveScore = 0;
     }
@@ -149,9 +148,29 @@ public class BotState { // DEFAULT VALUES
         if (o == null || getClass() != o.getClass()) return false;
         BotState botState = (BotState) o;
         return getNumberOfActions() == botState.getNumberOfActions()
-                && getObjective().equals(botState.getObjective())
+                && getObjectives().equals(botState.getObjectives())
                 && getInventory().equals(botState.getInventory())
-                && getObjectiveScore() == botState.getObjectiveScore();
+                && getObjectiveScore() == botState.getObjectiveScore()
+                && getAchievedObjectives().equals(botState.getAchievedObjectives())
+                && this.availableActions.equals(botState.getAvailableActions());
+    }
+
+    public BotState(BotState botState) {
+        this.numberOfActions = botState.numberOfActions;
+        // Objectives
+        this.objectives = new ArrayList<>();
+        for (Objective objective : botState.objectives) {
+            this.objectives.add(objective.copy());
+        }
+        // Achieved objectives
+        this.achievedObjectives = new ArrayList<>();
+        for (Objective objective : botState.achievedObjectives) {
+            this.achievedObjectives.add(objective.copy());
+        }
+
+        this.inventory = botState.getInventory().copy();
+        this.availableActions = new ArrayList<>(botState.availableActions);
+        this.objectiveScore = botState.objectiveScore;
     }
 
     public int getObjectiveScore() {
@@ -160,7 +179,13 @@ public class BotState { // DEFAULT VALUES
 
     @Override
     public int hashCode() {
-        return Objects.hash(getNumberOfActions(), getObjective(), getInventory());
+        return Objects.hash(
+                getNumberOfActions(),
+                getObjectives(),
+                getInventory(),
+                getAchievedObjectives(),
+                getObjectiveScore(),
+                this.availableActions);
     }
 
     private void clearForcedActions() {
@@ -178,5 +203,33 @@ public class BotState { // DEFAULT VALUES
 
     public void incrementScore(int i) {
         this.objectiveScore += i;
+    }
+
+    public void setObjectiveAchieved(Objective objective) {
+        this.objectives.remove(objective);
+        this.achievedObjectives.add(objective);
+    }
+
+    public List<Objective> getAchievedObjectives() {
+        return achievedObjectives;
+    }
+
+    public void verifyObjectives(Board board, BotManager botManager) {
+        for (Objective objective : objectives) {
+            objective.verify(board, botManager);
+        }
+    }
+
+    public void update(
+            Board board, BotManager botManager, Action action, ActionResult actionResult) {
+        updateAvailableActions(action, actionResult);
+        verifyObjectives(board, botManager);
+
+        for (Objective objective : objectives) {
+            if (objective.isAchieved()) {
+                setObjectiveAchieved(objective);
+                incrementScore(objective.getPoints());
+            }
+        }
     }
 }

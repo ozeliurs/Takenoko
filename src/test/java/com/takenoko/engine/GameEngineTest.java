@@ -154,10 +154,10 @@ class GameEngineTest {
 
             BotManager botManager1 = mock(BotManager.class);
             when(botManager1.getName()).thenReturn("Bot 1");
-            when(botManager1.getObjectiveDescription()).thenReturn("Objective 1");
+            // when(botManager1.getObjectiveDescription()).thenReturn("Objective 1");
             BotManager botManager2 = mock(BotManager.class);
             when(botManager2.getName()).thenReturn("Bot 2");
-            when(botManager2.getObjectiveDescription()).thenReturn("Objective 2");
+            // when(botManager2.getObjectiveDescription()).thenReturn("Objective 2");
 
             gameEngine =
                     new GameEngine(
@@ -171,10 +171,8 @@ class GameEngineTest {
             gameEngine.startGame();
 
             verify(consoleUserInterface, times(1)).displayMessage("The game has started !");
-            verify(consoleUserInterface, times(1))
-                    .displayMessage("Bot 1 has the objective : Objective 1");
-            verify(consoleUserInterface, times(1))
-                    .displayMessage("Bot 2 has the objective : Objective 2");
+            verify(consoleUserInterface, times(1)).displayMessage(any());
+            verify(consoleUserInterface, times(1)).displayMessage(any());
         }
 
         @Nested

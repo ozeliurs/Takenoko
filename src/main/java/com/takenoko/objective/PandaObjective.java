@@ -5,24 +5,33 @@ import com.takenoko.engine.BotManager;
 import com.takenoko.layers.tile.TileColor;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 
 /** The Panda objective. */
 public class PandaObjective extends Objective {
     private final Map<TileColor, Integer> bambooTarget;
 
-    @SafeVarargs
-    public PandaObjective(Map.Entry<TileColor, Integer>... bambooTarget) {
-        this(Map.ofEntries(bambooTarget));
+    public PandaObjective() {
+        this(
+                Map.ofEntries(
+                        Map.entry(TileColor.GREEN, 0),
+                        Map.entry(TileColor.YELLOW, 0),
+                        Map.entry(TileColor.PINK, 0)),
+                0);
     }
 
-    public PandaObjective(Map<TileColor, Integer> bambooTarget) {
-        super(ObjectiveTypes.PANDA, ObjectiveState.NOT_ACHIEVED);
+    public PandaObjective(Map<TileColor, Integer> bambooTarget, int points) {
+        super(ObjectiveTypes.PANDA, ObjectiveState.NOT_ACHIEVED, points);
         this.bambooTarget = bambooTarget;
+        if (bambooTarget.isEmpty()) {
+            throw new IllegalArgumentException("The bamboo target cannot be empty");
+        }
     }
 
     public PandaObjective(PandaObjective pandaObjective) {
-        super(pandaObjective.getType(), pandaObjective.getState());
-        this.bambooTarget = new EnumMap<>(pandaObjective.bambooTarget);
+        super(pandaObjective.getType(), pandaObjective.getState(), pandaObjective.getPoints());
+        this.bambooTarget = new EnumMap<>(TileColor.class);
+        this.bambooTarget.putAll(pandaObjective.bambooTarget);
     }
 
     @Override
@@ -58,5 +67,18 @@ public class PandaObjective extends Objective {
                                                 / entry.getValue())
                         .reduce(0f, Float::sum)
                 / bambooTarget.size();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PandaObjective that = (PandaObjective) o;
+        return Objects.equals(bambooTarget, that.bambooTarget);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bambooTarget);
     }
 }

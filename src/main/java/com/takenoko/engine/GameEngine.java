@@ -18,6 +18,7 @@ import java.util.List;
 public class GameEngine {
     // ATTRIBUTES
     public static final int DEFAULT_NUMBER_OF_ROUNDS = 100;
+    public static final int DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN = 5;
     private Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
@@ -60,10 +61,12 @@ public class GameEngine {
                                         new FullRandomBot(),
                                         new BotState(
                                                 2,
-                                                new MultipleGardenerObjective(
-                                                        new SingleGardenerObjective(
-                                                                3, TileColor.GREEN),
-                                                        2),
+                                                List.of(
+                                                        new MultipleGardenerObjective(
+                                                                new SingleGardenerObjective(
+                                                                        3, TileColor.GREEN, 0),
+                                                                2,
+                                                                0)),
                                                 new Inventory(),
                                                 List.of(
                                                         MovePandaAction.class,
@@ -75,8 +78,11 @@ public class GameEngine {
                                         new FullRandomBot(),
                                         new BotState(
                                                 2,
-                                                new PatternObjective(
-                                                        PatternFactory.LINE.createPattern()),
+                                                List.of(
+                                                        new PatternObjective(
+                                                                PatternFactory.LINE.createPattern(
+                                                                        TileColor.ANY),
+                                                                0)),
                                                 new Inventory(),
                                                 List.of(
                                                         MovePandaAction.class,
@@ -139,13 +145,6 @@ public class GameEngine {
 
         gameState = GameState.PLAYING;
         consoleUserInterface.displayMessage("The game has started !");
-
-        for (BotManager botManager : botManagers) {
-            consoleUserInterface.displayMessage(
-                    botManager.getName()
-                            + " has the objective : "
-                            + botManager.getObjectiveDescription());
-        }
     }
 
     public void playGame() {
@@ -154,16 +153,17 @@ public class GameEngine {
             for (BotManager botManager : botManagers) {
                 consoleUserInterface.displayMessage(
                         "===== <" + botManager.getName() + "> is playing =====");
-                botManager.playBot(board);
-                if (botManager.isObjectiveAchieved()) {
+                boolean gameIsFinished = botManager.playBot(board);
+
+                if (gameIsFinished
+                        || botManager.getAchievedObjectives().size()
+                                >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN) {
                     scoreboard.incrementNumberOfVictory(botManager);
                     consoleUserInterface.displayMessage(
                             botManager.getName()
-                                    + " has achieved the objective "
-                                    + botManager.getObjectiveDescription()
-                                    + ", it has won with "
-                                    + botManager.getObjectiveScore()
-                                    + " points");
+                                    + " has won the game by being the first one to complete "
+                                    + DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN
+                                    + " objectives !");
                     gameState = GameState.FINISHED;
                     return;
                 }

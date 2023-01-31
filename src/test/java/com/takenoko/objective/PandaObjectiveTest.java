@@ -26,8 +26,7 @@ class PandaObjectiveTest {
         board = mock(Board.class);
         botManager = mock(BotManager.class);
         when(botManager.getInventory()).thenReturn(mock(Inventory.class));
-        pandaObjective =
-                new PandaObjective(Map.entry(TileColor.GREEN, 1), Map.entry(TileColor.PINK, 1));
+        pandaObjective = new PandaObjective(Map.of(TileColor.GREEN, 1, TileColor.PINK, 1), 0);
     }
 
     @Nested

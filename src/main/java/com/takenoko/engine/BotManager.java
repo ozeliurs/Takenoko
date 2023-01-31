@@ -74,8 +74,9 @@ public class BotManager {
      * action. Objectives are also verified in order to know if the bot has won.
      *
      * @param board the board of the game
+     * @return
      */
-    public void playBot(Board board) {
+    public boolean playBot(Board board) {
         botState.setAvailableActions(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS));
         botState.setNumberOfActions(defaultNumberOfActions);
 
@@ -91,30 +92,20 @@ public class BotManager {
                                 + name
                                 + ". Please choose another action.");
             }
-            ActionResult actionResult = action.execute(board, this);
-            botState.updateAvailableActions(action, actionResult);
 
-            verifyObjective(board);
-            if (this.isObjectiveAchieved()) {
-                botState.incrementScore(1);
-                break;
+            ActionResult actionResult = action.execute(board, this);
+            botState.update(board, this, action, actionResult);
+
+            if (actionResult.availableActions().contains(EndGameAction.class)) {
+                return true;
             }
         }
         board.getWeather().ifPresent(value -> value.revert(board, this));
+        return false;
     }
 
     private boolean canPlayBot() {
         return !botState.getAvailableActions().isEmpty() && botState.getNumberOfActions() > 0;
-    }
-
-    /**
-     * @return the objective description or "No current objective" if there is no objective
-     */
-    public String getObjectiveDescription() {
-        if (botState.getObjective() != null) {
-            return botState.getObjective().toString();
-        }
-        return "No current objective";
     }
 
     /**
@@ -129,36 +120,6 @@ public class BotManager {
      */
     public void displayMessage(String message) {
         consoleUserInterface.displayMessage(message);
-    }
-
-    /**
-     * @return boolean to know is the objective is achieved or not
-     */
-    public boolean isObjectiveAchieved() {
-        if (botState.getObjective() != null) {
-            return botState.getObjective().isAchieved();
-        }
-        return false;
-    }
-
-    /**
-     * Verify the objective using the game board
-     *
-     * @param board current board game
-     */
-    public void verifyObjective(Board board) {
-        if (botState.getObjective() != null) {
-            botState.getObjective().verify(board, this);
-        }
-    }
-
-    /**
-     * Change or set the bot objective
-     *
-     * @param objective the new objective
-     */
-    public void setObjective(Objective objective) {
-        this.botState.setObjective(objective);
     }
 
     /**
@@ -194,5 +155,13 @@ public class BotManager {
 
     public int getObjectiveScore() {
         return botState.getObjectiveScore();
+    }
+
+    public List<Objective> getAchievedObjectives() {
+        return botState.getAchievedObjectives();
+    }
+
+    public void addObjective(Objective objective) {
+        botState.addObjective(objective);
     }
 }

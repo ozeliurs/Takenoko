@@ -14,4 +14,5 @@ public enum ImprovementType {
     ENCLOSURE,
     ANY,
     NONE,
+    POOL,
 }

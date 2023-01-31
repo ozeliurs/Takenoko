@@ -8,8 +8,8 @@ import java.util.Objects;
 public class PatternObjective extends Objective {
     private final Pattern pattern;
 
-    public PatternObjective(Pattern pattern) {
-        super(ObjectiveTypes.SHAPE, ObjectiveState.NOT_ACHIEVED);
+    public PatternObjective(Pattern pattern, int points) {
+        super(ObjectiveTypes.SHAPE, ObjectiveState.NOT_ACHIEVED, points);
         this.pattern = pattern;
     }
 
@@ -39,7 +39,7 @@ public class PatternObjective extends Objective {
     }
 
     public PatternObjective copy() {
-        PatternObjective objective = new PatternObjective(pattern);
+        PatternObjective objective = new PatternObjective(pattern, getPoints());
         objective.state = state;
         return objective;
     }
