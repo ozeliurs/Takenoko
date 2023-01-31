@@ -231,17 +231,25 @@ public class BotState { // DEFAULT VALUES
         verifyObjectives(board, botManager);
 
         // If objective is achieved, add it to the list of achieved objectives
+        List<Objective> toAchieve = new ArrayList<>();
         for (Objective objective : objectives) {
             if (objective.isAchieved()) {
-                setObjectiveAchieved(objective);
+                toAchieve.add(objective);
             }
+        }
+        for (Objective objective : toAchieve) {
+            setObjectiveAchieved(objective);
         }
 
         // If objective is no more achievable, remove it from the list of objectives
+        List<Objective> toRemove = new ArrayList<>();
         for (Objective objective : achievedObjectives) {
             if (!objective.isAchieved()) {
-                setObjectiveNotAchieved(objective);
+                toRemove.add(objective);
             }
+        }
+        for (Objective objective : toRemove) {
+            setObjectiveNotAchieved(objective);
         }
 
         if (canDrawObjective() && !availableActions.contains(DrawObjectiveAction.class)) {
@@ -253,7 +261,7 @@ public class BotState { // DEFAULT VALUES
         }
     }
 
-    private void setObjectiveNotAchieved(Objective objective) {
+    public void setObjectiveNotAchieved(Objective objective) {
         this.achievedObjectives.remove(objective);
         this.objectives.add(objective);
     }

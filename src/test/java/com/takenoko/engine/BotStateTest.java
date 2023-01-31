@@ -1,12 +1,14 @@
 package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
+import com.takenoko.actions.objective.DrawObjectiveAction;
+import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.Objective;
@@ -177,5 +179,78 @@ class BotStateTest {
         assertThat(botState.getObjectiveScore()).isEqualTo(10);
         botState.incrementObjectiveScore(10);
         assertThat(botState.getObjectiveScore()).isEqualTo(20);
+    }
+
+    @Nested
+    @DisplayName("Method update()")
+    class TestGetObjectiveScore {
+        @Test
+        @DisplayName("should call verifyObjectives")
+        void update_shouldCallVerifyObjectives() {
+            botState = spy(botState);
+
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+
+            botState.update(board, botManager);
+            verify(botState, times(1)).verifyObjectives(board, botManager);
+        }
+
+        @Test
+        @DisplayName("should call setObjectiveAchieved if some are achieved")
+        void update_should_callSetObjectiveAchievedIfSomeAreAchieved() {
+            Objective objective = mock(Objective.class);
+            when(objective.isAchieved()).thenReturn(true);
+            botState.addObjective(objective);
+            botState = spy(botState);
+
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+
+            botState.update(board, botManager);
+            verify(botState, times(1)).setObjectiveAchieved(objective);
+        }
+
+        @Test
+        @DisplayName("should call setObjectiveNotAchieved if some are not achieved")
+        void update_should_callSetObjectiveNotAchievedIfSomeAreNotAchieved() {
+            Objective objective = mock(Objective.class);
+            when(objective.isAchieved()).thenReturn(false);
+            botState.addObjective(objective);
+            botState.setObjectiveAchieved(objective);
+            botState = spy(botState);
+
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+
+            botState.update(board, botManager);
+            verify(botState, times(1)).setObjectiveNotAchieved(objective);
+        }
+
+        @Test
+        @DisplayName("should add DrawObjectionAction is it can draw an objective")
+        void update_should_addDrawObjectiveActionIfCanDrawObjective() {
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+
+            botState.update(board, botManager);
+            assertThat(botState.getAvailableActions()).containsExactly(DrawObjectiveAction.class);
+        }
+
+        @Test
+        @DisplayName("should add RedeemObjectiveAction if it can redeem an objective")
+        void update_should_addRedeemObjectiveActionIfCanRedeemObjective() {
+            botState = spy(botState);
+
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+
+            botState.addAvailableAction(DrawObjectiveAction.class);
+
+            when(botState.canRedeemObjective()).thenReturn(true);
+
+            botState.update(board, botManager);
+            assertThat(botState.getAvailableActions()).contains(RedeemObjectiveAction.class);
+        }
     }
 }
