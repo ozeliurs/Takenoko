@@ -95,4 +95,8 @@ class BotManagerTest {
         botManager.reset();
         verify(botState, times(1)).reset();
     }
+
+    @Nested
+    @DisplayName("Method playBot()")
+    class TestPlayBot {}
 }
