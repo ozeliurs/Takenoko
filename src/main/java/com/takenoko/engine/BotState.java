@@ -8,14 +8,11 @@ import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * This class is used to store the state of a bot.
- */
+/** This class is used to store the state of a bot. */
 public class BotState { // DEFAULT VALUES
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
     public static final int MAX_OBJECTIVES = 5;
@@ -229,8 +226,7 @@ public class BotState { // DEFAULT VALUES
         }
     }
 
-    public void update(
-            Board board, BotManager botManager) {
+    public void update(Board board, BotManager botManager) {
 
         verifyObjectives(board, botManager);
 
