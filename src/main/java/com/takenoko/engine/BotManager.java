@@ -74,10 +74,14 @@ public class BotManager {
      * action. Objectives are also verified in order to know if the bot has won.
      *
      * @param board the board of the game
-     * @return
+     * @return true if the bot has won, false otherwise
      */
     public boolean playBot(Board board) {
         botState.setAvailableActions(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS));
+        if (botState.canDrawObjective()) {
+            botState.addAvailableAction(DrawObjectiveAction.class);
+        }
+
         botState.setNumberOfActions(defaultNumberOfActions);
 
         board.rollWeather();

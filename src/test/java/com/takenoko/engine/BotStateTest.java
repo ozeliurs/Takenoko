@@ -9,6 +9,7 @@ import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.layers.tile.TileColor;
+import com.takenoko.objective.Objective;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -139,6 +140,25 @@ class BotStateTest {
             botState.updateAvailableActions(
                     new MoveGardenerAction(mock(PositionVector.class)), new ActionResult());
             assertThat(botState.getAvailableActions()).hasSize(1);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method canDrawObjective()")
+    class TestCanDrawObjective {
+        @Test
+        @DisplayName("should return true if the player can draw an objective")
+        void canDrawObjective_shouldReturnTrueIfCanDrawObjective() {
+            assertThat(botState.canDrawObjective()).isTrue();
+        }
+
+        @Test
+        @DisplayName("should return false if the player can't draw an objective")
+        void canDrawObjective_shouldReturnFalseIfCantDrawObjective() {
+            for (int i = 0; i < BotState.MAX_OBJECTIVES; i++) {
+                botState.addObjective(mock(Objective.class));
+            }
+            assertThat(botState.canDrawObjective()).isFalse();
         }
     }
 

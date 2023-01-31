@@ -6,7 +6,6 @@ import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
-import com.takenoko.objective.PandaObjective;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,7 +13,7 @@ import java.util.Objects;
 /** This class is used to store the state of a bot. */
 public class BotState { // DEFAULT VALUES
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
-    private static final Objective DEFAULT_OBJECTIVE = new PandaObjective();
+    public static final int MAX_OBJECTIVES = 5;
 
     private int numberOfActions;
     private List<Objective> objectives;
@@ -36,11 +35,7 @@ public class BotState { // DEFAULT VALUES
     }
 
     public BotState() {
-        this(
-                DEFAULT_NUMBER_OF_ACTIONS,
-                List.of(DEFAULT_OBJECTIVE),
-                new Inventory(),
-                new ArrayList<>());
+        this(DEFAULT_NUMBER_OF_ACTIONS, new ArrayList<>(), new Inventory(), new ArrayList<>());
     }
 
     public void setNumberOfActions(int numberOfActions) {
@@ -231,5 +226,9 @@ public class BotState { // DEFAULT VALUES
                 incrementScore(objective.getPoints());
             }
         }
+    }
+
+    public boolean canDrawObjective() {
+        return objectives.size() < MAX_OBJECTIVES;
     }
 }
