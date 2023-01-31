@@ -166,16 +166,16 @@ class BotStateTest {
     @DisplayName("test getScore")
     void test_getScore() {
         assertThat(botState.getObjectiveScore()).isZero();
-        botState.incrementScore(10);
+        botState.incrementObjectiveScore(10);
         assertThat(botState.getObjectiveScore()).isEqualTo(10);
     }
 
     @Test
     @DisplayName("test incrementScore")
     void test_incrementScore() {
-        botState.incrementScore(10);
+        botState.incrementObjectiveScore(10);
         assertThat(botState.getObjectiveScore()).isEqualTo(10);
-        botState.incrementScore(10);
+        botState.incrementObjectiveScore(10);
         assertThat(botState.getObjectiveScore()).isEqualTo(20);
     }
 }

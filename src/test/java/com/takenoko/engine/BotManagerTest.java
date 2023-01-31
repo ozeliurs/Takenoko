@@ -3,7 +3,7 @@ package com.takenoko.engine;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-import com.takenoko.actions.DrawObjectiveAction;
+import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.ui.ConsoleUserInterface;
