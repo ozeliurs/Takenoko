@@ -125,16 +125,16 @@ class PatternTest {
         @Test
         @DisplayName("should return true when the patterns are equal")
         void equals_shouldReturnTrueWhenPatternsAreEqual() {
-            Pattern pattern1 = PatternFactory.LINE.createPattern();
-            Pattern pattern2 = PatternFactory.LINE.createPattern();
+            Pattern pattern1 = PatternFactory.LINE.createPattern(TileColor.ANY);
+            Pattern pattern2 = PatternFactory.LINE.createPattern(TileColor.ANY);
             assertThat(pattern1.equals(pattern2)).isTrue();
         }
 
         @Test
         @DisplayName("should return false when the patterns are not equal")
         void equals_shouldReturnFalseWhenPatternsAreNotEqual() {
-            Pattern pattern1 = PatternFactory.DIAMOND.createPattern();
-            Pattern pattern2 = PatternFactory.LINE.createPattern();
+            Pattern pattern1 = PatternFactory.DIAMOND.createPattern(TileColor.ANY);
+            Pattern pattern2 = PatternFactory.LINE.createPattern(TileColor.ANY);
             assertThat(pattern1.equals(pattern2)).isFalse();
         }
     }
@@ -145,17 +145,17 @@ class PatternTest {
         @Test
         @DisplayName("should return the same hashcode when the patterns are equal")
         void hashCode_shouldReturnSameHashCodeWhenPatternsAreEqual() {
-            Pattern pattern1 = PatternFactory.LINE.createPattern();
-            Pattern pattern2 = PatternFactory.LINE.createPattern();
+            Pattern pattern1 = PatternFactory.LINE.createPattern(TileColor.ANY);
+            Pattern pattern2 = PatternFactory.LINE.createPattern(TileColor.ANY);
             assertThat(pattern1).hasSameHashCodeAs(pattern2);
         }
 
         @Test
         @DisplayName("should return different hashcode when the patterns are not equal")
         void hashCode_shouldReturnDifferentHashCodeWhenPatternsAreNotEqual() {
-            Pattern pattern1 = PatternFactory.DIAMOND.createPattern();
+            Pattern pattern1 = PatternFactory.DIAMOND.createPattern(TileColor.ANY);
 
-            Pattern pattern2 = PatternFactory.LINE.createPattern();
+            Pattern pattern2 = PatternFactory.LINE.createPattern(TileColor.ANY);
             assertThat(pattern1.hashCode()).isNotEqualTo(pattern2.hashCode());
         }
     }

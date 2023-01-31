@@ -80,7 +80,8 @@ public class GameEngine {
                                                 2,
                                                 List.of(
                                                         new PatternObjective(
-                                                                PatternFactory.LINE.createPattern(),
+                                                                PatternFactory.LINE.createPattern(
+                                                                        TileColor.ANY),
                                                                 0)),
                                                 new Inventory(),
                                                 List.of(

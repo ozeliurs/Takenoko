@@ -45,31 +45,44 @@ public class ObjectiveDeck extends ArrayList<Objective> {
         }
         // --- Pattern objectives ---
         // LINE
-        add(new PatternObjective(PatternFactory.LINE.createPattern(), 2)); // GREEN
-        add(new PatternObjective(PatternFactory.LINE.createPattern(), 3)); // YELLOW
-        add(new PatternObjective(PatternFactory.LINE.createPattern(), 4)); // PINK
+        add(new PatternObjective(PatternFactory.LINE.createPattern(TileColor.GREEN), 2)); // GREEN
+        add(new PatternObjective(PatternFactory.LINE.createPattern(TileColor.YELLOW), 3)); // YELLOW
+        add(new PatternObjective(PatternFactory.LINE.createPattern(TileColor.PINK), 4)); // PINK
         // CURVED LINE
-        add(new PatternObjective(PatternFactory.CURVE.createPattern(), 2)); // GREEN
-        add(new PatternObjective(PatternFactory.CURVE.createPattern(), 3)); // YELLOW
-        add(new PatternObjective(PatternFactory.CURVE.createPattern(), 4)); // PINK
+        add(new PatternObjective(PatternFactory.CURVE.createPattern(TileColor.GREEN), 2)); // GREEN
+        add(
+                new PatternObjective(
+                        PatternFactory.CURVE.createPattern(TileColor.YELLOW), 3)); // YELLOW
+        add(new PatternObjective(PatternFactory.CURVE.createPattern(TileColor.PINK), 4)); // PINK
         // UNIFORM SQUARE
-        add(new PatternObjective(PatternFactory.TRIANGLE.createPattern(), 2)); // GREEN
-        add(new PatternObjective(PatternFactory.TRIANGLE.createPattern(), 3)); // YELLOW
-        add(new PatternObjective(PatternFactory.TRIANGLE.createPattern(), 4)); // PINK
+        add(
+                new PatternObjective(
+                        PatternFactory.TRIANGLE.createPattern(TileColor.GREEN), 2)); // GREEN
+        add(
+                new PatternObjective(
+                        PatternFactory.TRIANGLE.createPattern(TileColor.YELLOW), 3)); // YELLOW
+        add(new PatternObjective(PatternFactory.TRIANGLE.createPattern(TileColor.PINK), 4)); // PINK
         // UNIFORM RECTANGLE
-        add(new PatternObjective(PatternFactory.DIAMOND.createPattern(), 3)); // GREEN
-        add(new PatternObjective(PatternFactory.DIAMOND.createPattern(), 4)); // YELLOW
-        add(new PatternObjective(PatternFactory.DIAMOND.createPattern(), 5)); // PINK
+        add(
+                new PatternObjective(
+                        PatternFactory.DIAMOND.createPattern(TileColor.GREEN), 3)); // GREEN
+        add(
+                new PatternObjective(
+                        PatternFactory.DIAMOND.createPattern(TileColor.YELLOW), 4)); // YELLOW
+        add(new PatternObjective(PatternFactory.DIAMOND.createPattern(TileColor.PINK), 5)); // PINK
         // MIXED COLORS
         add(
                 new PatternObjective(
-                        PatternFactory.MIXED_COLORS_DIAMOND.createPattern(), 3)); // GREEN + YELLOW
+                        PatternFactory.MIXED_COLORS_DIAMOND.createPattern(TileColor.YELLOW),
+                        3)); // GREEN + YELLOW
         add(
                 new PatternObjective(
-                        PatternFactory.MIXED_COLORS_DIAMOND.createPattern(), 4)); // GREEN + PINK
+                        PatternFactory.MIXED_COLORS_DIAMOND.createPattern(TileColor.GREEN),
+                        4)); // GREEN + PINK
         add(
                 new PatternObjective(
-                        PatternFactory.MIXED_COLORS_DIAMOND.createPattern(), 5)); // PINK + YELLOW
+                        PatternFactory.MIXED_COLORS_DIAMOND.createPattern(TileColor.PINK),
+                        5)); // PINK + YELLOW
 
         // --- Gardener objectives ---
         // WITHOUT IMPROVEMENT
