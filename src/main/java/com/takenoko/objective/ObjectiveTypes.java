@@ -9,4 +9,5 @@ public enum ObjectiveTypes {
     NUMBER_OF_BAMBOOS_EATEN,
     GARDENER,
     PANDA,
+    EMPEROR,
 }
