@@ -154,7 +154,7 @@ public class BotState { // DEFAULT VALUES
     }
 
     private List<Objective> getRedeemedObjectives() {
-        return redeemedObjectives;
+        return new ArrayList<>(redeemedObjectives);
     }
 
     public BotState(BotState botState) {
@@ -210,7 +210,7 @@ public class BotState { // DEFAULT VALUES
     }
 
     public List<Objective> getAchievedObjectives() {
-        return achievedObjectives;
+        return new ArrayList<>(achievedObjectives);
     }
 
     public void verifyObjectives(Board board, BotManager botManager) {
