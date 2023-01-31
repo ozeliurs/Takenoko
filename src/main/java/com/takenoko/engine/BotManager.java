@@ -1,6 +1,8 @@
 package com.takenoko.engine;
 
-import com.takenoko.actions.*;
+import com.takenoko.actions.Action;
+import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.EndGameAction;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.tile.DrawTileAction;
@@ -11,6 +13,7 @@ import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,7 +106,10 @@ public class BotManager {
 
             if (actionResult.availableActions().contains(EndGameAction.class)) {
                 displayMessage("The bot " + name + " has drawn the Emperor Objective!");
-                botState.getAchievedObjectives().add(new EmperorObjective());
+                Objective objective = new EmperorObjective();
+                botState.addObjective(objective);
+                botState.setObjectiveAchieved(objective);
+                botState.redeemObjective(objective);
                 return true;
             }
         }
