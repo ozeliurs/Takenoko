@@ -3,9 +3,7 @@ package com.takenoko.objective;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 
-/**
- * This class represents the emperor objective.
- */
+/** This class represents the emperor objective. */
 public class EmperorObjective extends Objective {
     public EmperorObjective() {
         super(ObjectiveTypes.EMPEROR, ObjectiveState.ACHIEVED, 2);
