@@ -13,7 +13,6 @@ import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
-
 import java.util.ArrayList;
 import java.util.List;
 
