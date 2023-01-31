@@ -26,11 +26,10 @@ public class BotState { // DEFAULT VALUES
 
     public BotState(
             int numberOfActions,
-            List<Objective> objectives,
             Inventory inventory,
             List<Class<? extends Action>> availableActions) {
         this.numberOfActions = numberOfActions;
-        this.objectives = objectives;
+        this.objectives = new ArrayList<>();
         this.inventory = inventory;
         this.availableActions = availableActions;
         this.achievedObjectives = new ArrayList<>();
@@ -38,7 +37,7 @@ public class BotState { // DEFAULT VALUES
     }
 
     public BotState() {
-        this(DEFAULT_NUMBER_OF_ACTIONS, new ArrayList<>(), new Inventory(), new ArrayList<>());
+        this(DEFAULT_NUMBER_OF_ACTIONS, new Inventory(), new ArrayList<>());
     }
 
     public void setNumberOfActions(int numberOfActions) {
@@ -51,7 +50,7 @@ public class BotState { // DEFAULT VALUES
      * @return Objectives
      */
     public List<Objective> getObjectives() {
-        return objectives;
+        return new ArrayList<>(objectives);
     }
 
     /**
@@ -153,7 +152,7 @@ public class BotState { // DEFAULT VALUES
                 && this.redeemedObjectives.equals(botState.getRedeemedObjectives());
     }
 
-    private List<Objective> getRedeemedObjectives() {
+    public List<Objective> getRedeemedObjectives() {
         return new ArrayList<>(redeemedObjectives);
     }
 
