@@ -9,13 +9,6 @@ public enum PatternFactory {
         }
     },
 
-    ADJACENT {
-        @Override
-        public Pattern createPattern() {
-            return new Adjacent();
-        }
-    },
-
     CURVE {
         @Override
         public Pattern createPattern() {
