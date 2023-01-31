@@ -23,7 +23,6 @@ public class BotState { // DEFAULT VALUES
     private List<Objective> redeemedObjectives;
     private final Inventory inventory;
     private List<Class<? extends Action>> availableActions;
-    private int objectiveScore;
 
     public BotState(
             int numberOfActions,
@@ -134,7 +133,6 @@ public class BotState { // DEFAULT VALUES
         this.objectives = new ArrayList<>();
         this.achievedObjectives = new ArrayList<>();
         this.inventory.clear();
-        this.objectiveScore = 0;
     }
 
     public BotState copy() {
@@ -180,11 +178,10 @@ public class BotState { // DEFAULT VALUES
 
         this.inventory = botState.getInventory().copy();
         this.availableActions = new ArrayList<>(botState.availableActions);
-        this.objectiveScore = botState.objectiveScore;
     }
 
     public int getObjectiveScore() {
-        return objectiveScore;
+        return redeemedObjectives.stream().mapToInt(Objective::getPoints).sum();
     }
 
     @Override
@@ -210,10 +207,6 @@ public class BotState { // DEFAULT VALUES
         this.clearForcedActions();
         this.addAvailableActions(actionResult.availableActions());
         this.setNumberOfActions(this.getNumberOfActions() - actionResult.cost());
-    }
-
-    public void incrementObjectiveScore(int i) {
-        this.objectiveScore += i;
     }
 
     public List<Objective> getAchievedObjectives() {
@@ -274,7 +267,6 @@ public class BotState { // DEFAULT VALUES
     public void redeemObjective(Objective objective) {
         this.achievedObjectives.remove(objective);
         this.redeemedObjectives.add(objective);
-        incrementObjectiveScore(objective.getPoints());
     }
 
     public boolean canDrawObjective() {

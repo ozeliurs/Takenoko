@@ -169,10 +169,6 @@ public class BotManager {
         botState.addObjective(objective);
     }
 
-    public void incrementObjectiveScore(int points) {
-        botState.incrementObjectiveScore(points);
-    }
-
     public void redeemObjective(Objective objective) {
         botState.redeemObjective(objective);
     }

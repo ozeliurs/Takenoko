@@ -168,17 +168,16 @@ class BotStateTest {
     @DisplayName("test getScore")
     void test_getScore() {
         assertThat(botState.getObjectiveScore()).isZero();
-        botState.incrementObjectiveScore(10);
-        assertThat(botState.getObjectiveScore()).isEqualTo(10);
-    }
 
-    @Test
-    @DisplayName("test incrementScore")
-    void test_incrementScore() {
-        botState.incrementObjectiveScore(10);
+        Objective objective = mock(Objective.class);
+        when(objective.getPoints()).thenReturn(10);
+
+        botState.setObjectiveAchieved(objective);
+        botState.redeemObjective(objective);
+
+        botState.addObjective(objective);
+
         assertThat(botState.getObjectiveScore()).isEqualTo(10);
-        botState.incrementObjectiveScore(10);
-        assertThat(botState.getObjectiveScore()).isEqualTo(20);
     }
 
     @Nested
