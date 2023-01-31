@@ -5,6 +5,7 @@ import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
 import org.apache.commons.lang3.tuple.Pair;
 
+/** Build a solid color Line pattern */
 public class Triangle extends Pattern {
     public Triangle(TileColor tileColor) {
         super(

@@ -6,6 +6,7 @@ import com.takenoko.vector.PositionVector;
 import java.util.List;
 import org.apache.commons.lang3.tuple.Pair;
 
+/** Build a mixed color Diamond pattern */
 public class MixedColorsDiamond extends Pattern {
 
     public MixedColorsDiamond(TileColor tileColor) {

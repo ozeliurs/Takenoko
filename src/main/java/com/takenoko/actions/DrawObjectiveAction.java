@@ -6,6 +6,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import java.util.List;
 
+/** This class is used to draw an objective card. */
 @ActionAnnotation(ActionType.DEFAULT)
 public class DrawObjectiveAction implements Action {
 
