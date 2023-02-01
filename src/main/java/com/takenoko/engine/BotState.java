@@ -23,8 +23,8 @@ public class BotState { // DEFAULT VALUES
     public static final int MAX_OBJECTIVES = 5;
 
     private int numberOfActions;
-    private List<Objective> objectives;
-    private List<Objective> achievedObjectives;
+    private final List<Objective> objectives;
+    private final List<Objective> achievedObjectives;
     private final List<Objective> redeemedObjectives;
     private final Inventory inventory;
     private List<Class<? extends Action>> availableActions;
@@ -135,9 +135,13 @@ public class BotState { // DEFAULT VALUES
     }
 
     public void reset() {
-        this.objectives = new ArrayList<>();
-        this.achievedObjectives = new ArrayList<>();
+        objectives.clear();
+        achievedObjectives.clear();
+        redeemedObjectives.clear();
         this.inventory.clear();
+        this.numberOfActions = DEFAULT_NUMBER_OF_ACTIONS;
+        this.availableActions = new ArrayList<>();
+        this.alreadyDoneActions.clear();
     }
 
     public BotState copy() {

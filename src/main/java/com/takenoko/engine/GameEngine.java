@@ -211,6 +211,9 @@ public class GameEngine {
         for (BotManager botManager : winner.getLeft()) {
             scoreboard.incrementNumberOfVictory(botManager);
         }
+        for (BotManager botManager : botManagers) {
+            botManager.reset();
+        }
 
         consoleUserInterface.displayMessage(scoreboard.toString());
 
