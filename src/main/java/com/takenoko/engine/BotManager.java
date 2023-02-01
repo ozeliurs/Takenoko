@@ -87,6 +87,8 @@ public class BotManager {
             displayMessage(this.getName() + " must complete: " + botState.getObjectives());
             displayMessage(
                     this.getName() + " has already played: " + botState.getAlreadyDoneActions());
+            displayMessage(this.getName() + " has achieved: " + botState.getAchievedObjectives());
+            displayMessage(this.getName() + " has redeemed: " + botState.getRedeemedObjectives());
 
             if (botState.getAvailableActions().isEmpty()) {
                 throw new IllegalStateException(
@@ -167,6 +169,10 @@ public class BotManager {
 
     public List<Objective> getAchievedObjectives() {
         return botState.getAchievedObjectives();
+    }
+
+    public List<Objective> getRedeemedObjectives() {
+        return botState.getRedeemedObjectives();
     }
 
     public void addObjective(Objective objective) {
