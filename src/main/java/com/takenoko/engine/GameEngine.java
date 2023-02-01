@@ -165,7 +165,11 @@ public class GameEngine {
                             + winner.getLeft().get(0).getName()
                             + " with "
                             + winner.getLeft().get(0).getObjectiveScore()
-                            + " points !");
+                            + " points ! "
+                            + "With the following objectives : "
+                            + winner.getLeft().get(0).getAchievedObjectives().stream()
+                                    .map(Object::toString)
+                                    .collect(Collectors.joining(", ")));
             case TIE -> consoleUserInterface.displayMessage(
                     "It's a tie !, the winners are : "
                             + winner.getLeft().stream()
@@ -176,7 +180,11 @@ public class GameEngine {
                             + winner.getLeft().get(0).getName()
                             + " with "
                             + winner.getLeft().get(0).getPandaObjectiveScore()
-                            + " points !");
+                            + " points ! "
+                            + "With the following objectives : "
+                            + winner.getLeft().get(0).getAchievedObjectives().stream()
+                                    .map(Object::toString)
+                                    .collect(Collectors.joining(", ")));
             default -> throw new IllegalStateException("Unexpected value: " + winner.getRight());
         }
 
