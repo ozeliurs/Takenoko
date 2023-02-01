@@ -4,10 +4,13 @@ import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
 import java.util.List;
+import java.util.Objects;
 import org.apache.commons.lang3.tuple.Pair;
 
 /** Build a mixed color Diamond pattern */
 public class MixedColorsDiamond extends Pattern {
+
+    private final TileColor color;
 
     public MixedColorsDiamond(TileColor tileColor) {
         super(
@@ -29,5 +32,37 @@ public class MixedColorsDiamond extends Pattern {
                             Pair.of(new PositionVector(-1, 1, 0), new Tile(TileColor.GREEN)));
                     default -> throw new IllegalArgumentException("Unexpected value: " + tileColor);
                 });
+        this.color = tileColor;
+    }
+
+    @Override
+    public String toString() {
+        switch (color) {
+            case PINK -> {
+                return "MixedColorsDiamond{PINK, YELLOW}";
+            }
+            case GREEN -> {
+                return "MixedColorsDiamond{GREEN, PINK}";
+            }
+            case YELLOW -> {
+                return "MixedColorsDiamond{YELLOW, GREEN}";
+            }
+            default -> throw new IllegalArgumentException("Unexpected value: " + color);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MixedColorsDiamond that = (MixedColorsDiamond) o;
+
+        return color == that.color;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), color);
     }
 }

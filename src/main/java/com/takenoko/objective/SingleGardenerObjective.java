@@ -117,9 +117,9 @@ public class SingleGardenerObjective extends Objective {
     public String toString() {
         return "Single Gardener Objective <"
                 + targetColor
-                + " bamboo,"
+                + " bamboo, "
                 + targetSize
-                + " high,"
+                + " high, "
                 + targetImprovementType
                 + " improvement>";
     }
