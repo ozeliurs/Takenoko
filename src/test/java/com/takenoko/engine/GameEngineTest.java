@@ -304,6 +304,7 @@ class GameEngineTest {
         void getWinner_shouldReturnTheWinner() {
             BotManager botm1 = mock(BotManager.class);
             BotManager botm2 = mock(BotManager.class);
+            Scoreboard scoreboard = mock(Scoreboard.class);
             GameEngine ge =
                     new GameEngine(
                             2,
@@ -311,9 +312,11 @@ class GameEngineTest {
                             mock(ConsoleUserInterface.class),
                             mock(GameState.class),
                             List.of(botm1, botm2),
-                            mock(Scoreboard.class));
+                            scoreboard);
             ge.playGame();
             assertThat(ge.getWinner()).isEqualTo(Pair.of(List.of(botm1, botm2), EndGameState.TIE));
+            verify(scoreboard, times(1)).incrementNumberOfVictory(botm1);
+            verify(scoreboard, times(1)).incrementNumberOfVictory(botm2);
         }
 
         @Test
@@ -321,6 +324,7 @@ class GameEngineTest {
         void getWinner_shouldReturnTheWinnerWithTheHighestScore() {
             BotManager botm1 = mock(BotManager.class);
             BotManager botm2 = mock(BotManager.class);
+            Scoreboard scoreboard = mock(Scoreboard.class);
             when(botm1.getObjectiveScore()).thenReturn(1);
             when(botm2.getObjectiveScore()).thenReturn(2);
             GameEngine ge =
@@ -330,10 +334,11 @@ class GameEngineTest {
                             mock(ConsoleUserInterface.class),
                             mock(GameState.class),
                             List.of(botm1, botm2),
-                            mock(Scoreboard.class));
+                            scoreboard);
             ge.playGame();
             assertThat(ge.getWinner())
                     .isEqualTo(Pair.of(List.of(botm2), EndGameState.WIN_WITH_OBJECTIVE_POINTS));
+            verify(scoreboard, times(1)).incrementNumberOfVictory(botm2);
         }
 
         @Test
@@ -343,18 +348,21 @@ class GameEngineTest {
             BotManager botm2 = mock(BotManager.class);
             when(botm1.getPandaObjectiveScore()).thenReturn(1);
             when(botm2.getPandaObjectiveScore()).thenReturn(2);
+            Scoreboard scoreboard = mock(Scoreboard.class);
+            ConsoleUserInterface consoleUserInterface = mock(ConsoleUserInterface.class);
             GameEngine ge =
                     new GameEngine(
                             2,
                             mock(Board.class),
-                            mock(ConsoleUserInterface.class),
-                            mock(GameState.class),
+                            consoleUserInterface,
+                            GameState.PLAYING,
                             List.of(botm1, botm2),
-                            mock(Scoreboard.class));
-            ge.playGame();
+                            scoreboard);
+            ge.endGame();
             assertThat(ge.getWinner())
                     .isEqualTo(
                             Pair.of(List.of(botm2), EndGameState.WIN_WITH_PANDA_OBJECTIVE_POINTS));
+            verify(scoreboard, times(1)).incrementNumberOfVictory(botm2);
         }
     }
 }
