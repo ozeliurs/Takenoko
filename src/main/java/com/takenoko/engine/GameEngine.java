@@ -16,7 +16,7 @@ import org.apache.commons.lang3.tuple.Pair;
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
     // ATTRIBUTES
-    public static final int DEFAULT_NUMBER_OF_ROUNDS = 100;
+    public static final int DEFAULT_NUMBER_OF_ROUNDS = 100000;
     public static final int DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN = 5;
     private Board board;
     private final ConsoleUserInterface consoleUserInterface;
@@ -136,15 +136,24 @@ public class GameEngine {
     }
 
     public void playGame() {
+        boolean isLastRound = false;
+        BotManager botManagerWithEmperorObjective = null;
+
         for (int i = 0; i < numberOfRounds; i++) {
             consoleUserInterface.displayMessage("===== Round " + (i + 1) + " =====");
             for (BotManager botManager : botManagers) {
+
+                if (isLastRound && botManager.equals(botManagerWithEmperorObjective)) {
+                    gameState = GameState.FINISHED;
+                    consoleUserInterface.displayMessage("===== Game finished =====");
+                    return;
+                }
                 consoleUserInterface.displayMessage(
                         "===== <" + botManager.getName() + "> is playing =====");
                 botManager.playBot(board);
 
-                if (botManager.getAchievedObjectives().size()
-                        >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN) {
+                if (botManager.getRedeemedObjectives().size() >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN
+                        && !isLastRound) {
                     consoleUserInterface.displayMessage(
                             "===== <" + botManager.getName() + "> finished the game =====");
                     Objective objective = new EmperorObjective();
@@ -153,8 +162,10 @@ public class GameEngine {
                     botManager.addObjective(objective);
                     botManager.setObjectiveAchieved(objective);
                     botManager.redeemObjective(objective);
-                    gameState = GameState.FINISHED;
-                    return;
+                    botManagerWithEmperorObjective = botManager;
+                    isLastRound = true;
+                    consoleUserInterface.displayMessage(
+                            "==<Last round>==<Last round>==<Last round>==<Last round>==");
                 }
             }
         }
@@ -176,7 +187,7 @@ public class GameEngine {
                             + winner.getLeft().get(0).getObjectiveScore()
                             + " points ! "
                             + "With the following objectives : "
-                            + winner.getLeft().get(0).getAchievedObjectives().stream()
+                            + winner.getLeft().get(0).getRedeemedObjectives().stream()
                                     .map(Object::toString)
                                     .collect(Collectors.joining(", ")));
             case TIE -> consoleUserInterface.displayMessage(
@@ -191,7 +202,7 @@ public class GameEngine {
                             + winner.getLeft().get(0).getPandaObjectiveScore()
                             + " points ! "
                             + "With the following objectives : "
-                            + winner.getLeft().get(0).getAchievedObjectives().stream()
+                            + winner.getLeft().get(0).getRedeemedObjectives().stream()
                                     .map(Object::toString)
                                     .collect(Collectors.joining(", ")));
             default -> throw new IllegalStateException("Unexpected value: " + winner.getRight());
