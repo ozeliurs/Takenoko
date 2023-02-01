@@ -283,7 +283,7 @@ public class BotState { // DEFAULT VALUES
      * @return the sum of the points of all the panda objectives
      */
     public int getPandaObjectiveScore() {
-        return objectives.stream()
+        return redeemedObjectives.stream()
                 .filter(PandaObjective.class::isInstance)
                 .mapToInt(Objective::getPoints)
                 .sum();
