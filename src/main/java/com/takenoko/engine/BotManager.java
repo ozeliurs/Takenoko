@@ -79,16 +79,22 @@ public class BotManager {
         botState.setNumberOfActions(defaultNumberOfActions);
 
         board.rollWeather();
+        displayMessage(this.getName() + " rolled weather: " + board.peekWeather());
         botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         while (canPlayBot()) {
             botState.update(board, this);
-            displayMessage(this.getName() + " has " + botState.getNumberOfActions() + " actions.");
-            displayMessage(this.getName() + " can play: " + botState.getAvailableActions());
-            displayMessage(this.getName() + " must complete: " + botState.getObjectives());
-            displayMessage(
+            consoleUserInterface.displayDebug(
+                    this.getName() + " has " + botState.getNumberOfActions() + " actions.");
+            consoleUserInterface.displayDebug(
+                    this.getName() + " can play: " + botState.getAvailableActions());
+            consoleUserInterface.displayDebug(
+                    this.getName() + " must complete: " + botState.getObjectives());
+            consoleUserInterface.displayDebug(
                     this.getName() + " has already played: " + botState.getAlreadyDoneActions());
-            displayMessage(this.getName() + " has achieved: " + botState.getAchievedObjectives());
-            displayMessage(this.getName() + " has redeemed: " + botState.getRedeemedObjectives());
+            consoleUserInterface.displayDebug(
+                    this.getName() + " has achieved: " + botState.getAchievedObjectives());
+            consoleUserInterface.displayDebug(
+                    this.getName() + " has redeemed: " + botState.getRedeemedObjectives());
 
             if (botState.getAvailableActions().isEmpty()) {
                 throw new IllegalStateException(

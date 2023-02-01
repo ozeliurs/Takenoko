@@ -11,4 +11,6 @@ public interface UserInterface {
     void displayMessage(String message);
 
     void displayError(String message);
+
+    void displayDebug(String message);
 }
