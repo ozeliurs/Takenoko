@@ -79,4 +79,9 @@ public class MultipleGardenerObjective extends Objective {
     public int hashCode() {
         return Objects.hash(objective, numberOfTimes);
     }
+
+    @Override
+    public String toString() {
+        return "Multiple Gardener Objective";
+    }
 }
