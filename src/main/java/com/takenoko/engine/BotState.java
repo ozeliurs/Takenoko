@@ -8,6 +8,7 @@ import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
+import com.takenoko.objective.PandaObjective;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,7 +21,7 @@ public class BotState { // DEFAULT VALUES
     private int numberOfActions;
     private List<Objective> objectives;
     private List<Objective> achievedObjectives;
-    private List<Objective> redeemedObjectives;
+    private final List<Objective> redeemedObjectives;
     private final Inventory inventory;
     private List<Class<? extends Action>> availableActions;
 
@@ -274,5 +275,17 @@ public class BotState { // DEFAULT VALUES
 
     public boolean canRedeemObjective() {
         return !achievedObjectives.isEmpty();
+    }
+
+    /**
+     * Returns the sum of the points of all the panda objectives
+     *
+     * @return the sum of the points of all the panda objectives
+     */
+    public int getPandaObjectiveScore() {
+        return redeemedObjectives.stream()
+                .filter(PandaObjective.class::isInstance)
+                .mapToInt(Objective::getPoints)
+                .sum();
     }
 }

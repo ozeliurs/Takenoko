@@ -180,4 +180,8 @@ public class BotManager {
     public void redeemObjective(Objective objective) {
         botState.redeemObjective(objective);
     }
+
+    public int getPandaObjectiveScore() {
+        return botState.getPandaObjectiveScore();
+    }
 }

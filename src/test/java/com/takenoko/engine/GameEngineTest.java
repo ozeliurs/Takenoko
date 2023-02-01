@@ -8,6 +8,7 @@ import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -292,6 +293,76 @@ class GameEngineTest {
             GameEngine gameEngine = spy(new GameEngine());
             gameEngine.runGame(2);
             verify(gameEngine, times(2)).runGame();
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getWinner()")
+    class TestGetWinner {
+        @Test
+        @DisplayName("should return the winners if there is a tie")
+        void getWinner_shouldReturnTheWinner() {
+            BotManager botm1 = mock(BotManager.class);
+            BotManager botm2 = mock(BotManager.class);
+            Scoreboard scoreboard = mock(Scoreboard.class);
+            GameEngine ge =
+                    new GameEngine(
+                            2,
+                            mock(Board.class),
+                            mock(ConsoleUserInterface.class),
+                            GameState.PLAYING,
+                            List.of(botm1, botm2),
+                            scoreboard);
+            ge.endGame();
+            assertThat(ge.getWinner()).isEqualTo(Pair.of(List.of(botm1, botm2), EndGameState.TIE));
+            verify(scoreboard, times(1)).incrementNumberOfVictory(botm1);
+            verify(scoreboard, times(1)).incrementNumberOfVictory(botm2);
+        }
+
+        @Test
+        @DisplayName("should return the winner with the highest score")
+        void getWinner_shouldReturnTheWinnerWithTheHighestScore() {
+            BotManager botm1 = mock(BotManager.class);
+            BotManager botm2 = mock(BotManager.class);
+            Scoreboard scoreboard = mock(Scoreboard.class);
+            when(botm1.getObjectiveScore()).thenReturn(1);
+            when(botm2.getObjectiveScore()).thenReturn(2);
+            GameEngine ge =
+                    new GameEngine(
+                            2,
+                            mock(Board.class),
+                            mock(ConsoleUserInterface.class),
+                            GameState.PLAYING,
+                            List.of(botm1, botm2),
+                            scoreboard);
+            ge.endGame();
+            assertThat(ge.getWinner())
+                    .isEqualTo(Pair.of(List.of(botm2), EndGameState.WIN_WITH_OBJECTIVE_POINTS));
+            verify(scoreboard, times(1)).incrementNumberOfVictory(botm2);
+        }
+
+        @Test
+        @DisplayName("should return the winner with the highest panda score")
+        void getWinner_shouldReturnTheWinnerWithTheHighestPandaScore() {
+            BotManager botm1 = mock(BotManager.class);
+            BotManager botm2 = mock(BotManager.class);
+            when(botm1.getPandaObjectiveScore()).thenReturn(1);
+            when(botm2.getPandaObjectiveScore()).thenReturn(2);
+            Scoreboard scoreboard = mock(Scoreboard.class);
+            ConsoleUserInterface consoleUserInterface = mock(ConsoleUserInterface.class);
+            GameEngine ge =
+                    new GameEngine(
+                            2,
+                            mock(Board.class),
+                            consoleUserInterface,
+                            GameState.PLAYING,
+                            List.of(botm1, botm2),
+                            scoreboard);
+            ge.endGame();
+            assertThat(ge.getWinner())
+                    .isEqualTo(
+                            Pair.of(List.of(botm2), EndGameState.WIN_WITH_PANDA_OBJECTIVE_POINTS));
+            verify(scoreboard, times(1)).incrementNumberOfVictory(botm2);
         }
     }
 }
