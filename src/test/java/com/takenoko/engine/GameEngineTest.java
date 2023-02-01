@@ -310,10 +310,10 @@ class GameEngineTest {
                             2,
                             mock(Board.class),
                             mock(ConsoleUserInterface.class),
-                            mock(GameState.class),
+                            GameState.PLAYING,
                             List.of(botm1, botm2),
                             scoreboard);
-            ge.playGame();
+            ge.endGame();
             assertThat(ge.getWinner()).isEqualTo(Pair.of(List.of(botm1, botm2), EndGameState.TIE));
             verify(scoreboard, times(1)).incrementNumberOfVictory(botm1);
             verify(scoreboard, times(1)).incrementNumberOfVictory(botm2);
@@ -332,10 +332,10 @@ class GameEngineTest {
                             2,
                             mock(Board.class),
                             mock(ConsoleUserInterface.class),
-                            mock(GameState.class),
+                            GameState.PLAYING,
                             List.of(botm1, botm2),
                             scoreboard);
-            ge.playGame();
+            ge.endGame();
             assertThat(ge.getWinner())
                     .isEqualTo(Pair.of(List.of(botm2), EndGameState.WIN_WITH_OBJECTIVE_POINTS));
             verify(scoreboard, times(1)).incrementNumberOfVictory(botm2);
