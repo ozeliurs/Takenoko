@@ -81,4 +81,9 @@ public class PandaObjective extends Objective {
     public int hashCode() {
         return Objects.hash(bambooTarget);
     }
+
+    @Override
+    public String toString() {
+        return "Panda Objective <" + bambooTarget + " high>";
+    }
 }

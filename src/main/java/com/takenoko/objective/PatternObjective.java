@@ -2,7 +2,7 @@ package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.shape.Pattern;
+import com.takenoko.shape.*;
 import java.util.Objects;
 
 public class PatternObjective extends Objective {
@@ -47,5 +47,22 @@ public class PatternObjective extends Objective {
     @Override
     public float getCompletion(Board board, BotManager botManager) {
         return pattern.matchRatio(board.getTilesWithoutPond());
+    }
+
+    @Override
+    public String toString() {
+        if (pattern.getClass() == Curve.class) {
+            return "Pattern Objective <Color Curve>";
+        } else if (pattern.getClass() == Diamond.class) {
+            return "Pattern Objective <Color Diamond>";
+        } else if (pattern.getClass() == Line.class) {
+            return "Pattern Objective <Color Line>";
+        } else if (pattern.getClass() == MixedColorsDiamond.class) {
+            return "Pattern Objective <Mixed Colors Diamond>";
+        } else if (pattern.getClass() == Triangle.class) {
+            return "Pattern Objective <Color Triangle>";
+        } else {
+            return "Pattern Objective";
+        }
     }
 }
