@@ -51,18 +51,6 @@ public class PatternObjective extends Objective {
 
     @Override
     public String toString() {
-        if (pattern.getClass() == Curve.class) {
-            return "Pattern Objective <Color Curve>";
-        } else if (pattern.getClass() == Diamond.class) {
-            return "Pattern Objective <Color Diamond>";
-        } else if (pattern.getClass() == Line.class) {
-            return "Pattern Objective <Color Line>";
-        } else if (pattern.getClass() == MixedColorsDiamond.class) {
-            return "Pattern Objective <Mixed Colors Diamond>";
-        } else if (pattern.getClass() == Triangle.class) {
-            return "Pattern Objective <Color Triangle>";
-        } else {
-            return "Pattern Objective";
-        }
+        return "Pattern Objective <" + pattern.toString() + ">";
     }
 }
