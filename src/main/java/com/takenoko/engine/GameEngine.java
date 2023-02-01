@@ -8,6 +8,8 @@ import com.takenoko.inventory.Inventory;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.tuple.Pair;
 
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
@@ -139,20 +141,9 @@ public class GameEngine {
                         "===== <" + botManager.getName() + "> is playing =====");
                 boolean gameIsFinished = botManager.playBot(board);
 
-                if (botManager.getAchievedObjectives().size()
-                        >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN) {
-                    scoreboard.incrementNumberOfVictory(botManager);
-                    consoleUserInterface.displayMessage(
-                            botManager.getName()
-                                    + " has won the game by being the first one to complete "
-                                    + DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN
-                                    + " objectives !");
-                    gameState = GameState.FINISHED;
-                    return;
-                } else if (gameIsFinished) {
-                    consoleUserInterface.displayMessage(
-                            botManager.getName()
-                                    + " has won the game by being the last one to play !");
+                if (gameIsFinished
+                        || botManager.getAchievedObjectives().size()
+                                >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN) {
                     gameState = GameState.FINISHED;
                     return;
                 }
@@ -166,11 +157,86 @@ public class GameEngine {
             throw new IllegalStateException(
                     "The game is not started yet. You must first start the game.");
         }
+        Pair<List<BotManager>, EndGameState> winner = getWinner();
+
+        switch (winner.getRight()) {
+            case WIN_WITH_OBJECTIVE_POINTS -> consoleUserInterface.displayMessage(
+                    "The winner is "
+                            + winner.getLeft().get(0).getName()
+                            + " with "
+                            + winner.getLeft().get(0).getObjectiveScore()
+                            + " points !");
+            case TIE -> consoleUserInterface.displayMessage(
+                    "It's a tie !, the winners are : "
+                            + winner.getLeft().stream()
+                                    .map(BotManager::getName)
+                                    .collect(Collectors.joining(", ")));
+            case WIN_WITH_PANDA_OBJECTIVE_POINTS -> consoleUserInterface.displayMessage(
+                    "The winner is "
+                            + winner.getLeft().get(0).getName()
+                            + " with "
+                            + winner.getLeft().get(0).getPandaObjectiveScore()
+                            + " points !");
+            default -> throw new IllegalStateException("Unexpected value: " + winner.getRight());
+        }
+
+        for (BotManager botManager : winner.getLeft()) {
+            scoreboard.incrementNumberOfVictory(botManager);
+        }
 
         consoleUserInterface.displayMessage(scoreboard.toString());
 
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
+    }
+
+    /**
+     * Return the winner of the game.
+     *
+     * <p>If there is a tie, the reason of the end of the game is {@link EndGameState#TIE}. if there
+     * is only one {@link BotManager} with the maximum number of points, the reason of the win is
+     * {@link EndGameState#WIN_WITH_OBJECTIVE_POINTS}. if there is a tie between {@link BotManager}
+     * with the maximum number of points and if there is a {@link BotManager} with the maximum
+     * number of panda points, the reason of the win is {@link
+     * EndGameState#WIN_WITH_PANDA_OBJECTIVE_POINTS}.
+     *
+     * @return a pair of the winner and the reason of the win.
+     */
+    public Pair<List<BotManager>, EndGameState> getWinner() {
+        List<BotManager> botManagersWithMaxScore =
+                botManagers.stream()
+                        .filter(
+                                botManager ->
+                                        botManager.getObjectiveScore()
+                                                == botManagers.stream()
+                                                        .mapToInt(BotManager::getObjectiveScore)
+                                                        .max()
+                                                        .orElse(0))
+                        .toList();
+        if (botManagersWithMaxScore.size() == 1) {
+            return Pair.of(
+                    List.of(botManagersWithMaxScore.get(0)),
+                    EndGameState.WIN_WITH_OBJECTIVE_POINTS);
+        } else {
+            List<BotManager> botManagersWithMaxPandaObjective =
+                    botManagersWithMaxScore.stream()
+                            .filter(
+                                    botManager ->
+                                            botManager.getPandaObjectiveScore()
+                                                    == botManagersWithMaxScore.stream()
+                                                            .mapToInt(
+                                                                    BotManager
+                                                                            ::getPandaObjectiveScore)
+                                                            .max()
+                                                            .orElse(0))
+                            .toList();
+            if (botManagersWithMaxPandaObjective.size() == 1) {
+                return Pair.of(
+                        List.of(botManagersWithMaxPandaObjective.get(0)),
+                        EndGameState.WIN_WITH_PANDA_OBJECTIVE_POINTS);
+            }
+        }
+        return Pair.of(botManagersWithMaxScore, EndGameState.TIE);
     }
 
     /**
