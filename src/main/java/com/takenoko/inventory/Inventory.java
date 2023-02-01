@@ -138,4 +138,8 @@ public class Inventory {
     public boolean hasImprovement(ImprovementType improvementType) {
         return inventoryImprovements.hasImprovement(improvementType);
     }
+
+    public boolean hasImprovement() {
+        return !inventoryImprovements.isEmpty();
+    }
 }
