@@ -1,15 +1,19 @@
 package com.takenoko.engine;
 
+import static com.takenoko.engine.BotManager.DEFAULT_AVAILABLE_ACTIONS;
+
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
+import com.takenoko.actions.tile.DrawTileAction;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.PandaObjective;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,6 +28,7 @@ public class BotState { // DEFAULT VALUES
     private final List<Objective> redeemedObjectives;
     private final Inventory inventory;
     private List<Class<? extends Action>> availableActions;
+    private List<Class<? extends Action>> alreadyDoneActions = new ArrayList<>();
 
     public BotState(
             int numberOfActions,
@@ -150,7 +155,8 @@ public class BotState { // DEFAULT VALUES
                 && getObjectiveScore() == botState.getObjectiveScore()
                 && getAchievedObjectives().equals(botState.getAchievedObjectives())
                 && this.availableActions.equals(botState.getAvailableActions())
-                && this.redeemedObjectives.equals(botState.getRedeemedObjectives());
+                && this.redeemedObjectives.equals(botState.getRedeemedObjectives())
+                && this.alreadyDoneActions.equals(botState.getAlreadyDoneActions());
     }
 
     public List<Objective> getRedeemedObjectives() {
@@ -178,6 +184,7 @@ public class BotState { // DEFAULT VALUES
 
         this.inventory = botState.getInventory().copy();
         this.availableActions = new ArrayList<>(botState.availableActions);
+        this.alreadyDoneActions = new ArrayList<>(botState.alreadyDoneActions);
     }
 
     public int getObjectiveScore() {
@@ -193,7 +200,8 @@ public class BotState { // DEFAULT VALUES
                 getAchievedObjectives(),
                 getObjectiveScore(),
                 this.availableActions,
-                this.redeemedObjectives);
+                this.redeemedObjectives,
+                this.alreadyDoneActions);
     }
 
     private void clearForcedActions() {
@@ -204,6 +212,7 @@ public class BotState { // DEFAULT VALUES
 
     public void updateAvailableActions(Action action, ActionResult actionResult) {
         this.availableActions.remove(action.getClass());
+        this.alreadyDoneActions.add(action.getClass());
         this.clearForcedActions();
         this.addAvailableActions(actionResult.availableActions());
         this.setNumberOfActions(this.getNumberOfActions() - actionResult.cost());
@@ -220,7 +229,32 @@ public class BotState { // DEFAULT VALUES
     }
 
     public void update(Board board, BotManager botManager) {
+        updateObjectives(board, botManager);
+        updateDefaultActions(board);
+    }
 
+    private void updateDefaultActions(Board board) {
+        if (!canDrawObjective(board)) {
+            availableActions.removeAll(Collections.singleton(DrawObjectiveAction.class));
+        } else if (!alreadyDoneActions.contains(DrawObjectiveAction.class)
+                && !availableActions.contains(DrawObjectiveAction.class)) {
+            availableActions.add(DrawObjectiveAction.class);
+        }
+        if (!canRedeemObjective()) {
+            availableActions.removeAll(Collections.singleton(RedeemObjectiveAction.class));
+        } else if (!alreadyDoneActions.contains(RedeemObjectiveAction.class)
+                && !availableActions.contains(RedeemObjectiveAction.class)) {
+            availableActions.add(RedeemObjectiveAction.class);
+        }
+        if (board.isTileDeckEmpty()) {
+            availableActions.removeAll(Collections.singleton(DrawTileAction.class));
+        } else if (!alreadyDoneActions.contains(DrawTileAction.class)
+                && !availableActions.contains(DrawTileAction.class)) {
+            availableActions.add(DrawTileAction.class);
+        }
+    }
+
+    private void updateObjectives(Board board, BotManager botManager) {
         verifyObjectives(board, botManager);
 
         // If objective is achieved, add it to the list of achieved objectives
@@ -244,14 +278,6 @@ public class BotState { // DEFAULT VALUES
         for (Objective objective : toRemove) {
             setObjectiveNotAchieved(objective);
         }
-
-        if (canDrawObjective() && !availableActions.contains(DrawObjectiveAction.class)) {
-            addAvailableAction(DrawObjectiveAction.class);
-        }
-
-        if (canRedeemObjective() && !availableActions.contains(RedeemObjectiveAction.class)) {
-            addAvailableAction(RedeemObjectiveAction.class);
-        }
     }
 
     public void setObjectiveNotAchieved(Objective objective) {
@@ -269,8 +295,8 @@ public class BotState { // DEFAULT VALUES
         this.redeemedObjectives.add(objective);
     }
 
-    public boolean canDrawObjective() {
-        return objectives.size() < MAX_OBJECTIVES;
+    public boolean canDrawObjective(Board board) {
+        return objectives.size() < MAX_OBJECTIVES && !board.isObjectiveDeckEmpty();
     }
 
     public boolean canRedeemObjective() {
@@ -287,5 +313,15 @@ public class BotState { // DEFAULT VALUES
                 .filter(PandaObjective.class::isInstance)
                 .mapToInt(Objective::getPoints)
                 .sum();
+    }
+
+    public void resetAvailableActions(Board board) {
+        this.availableActions = new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS);
+        this.alreadyDoneActions = new ArrayList<>();
+        updateDefaultActions(board);
+    }
+
+    public List<Class<? extends Action>> getAlreadyDoneActions() {
+        return new ArrayList<>(alreadyDoneActions);
     }
 }

@@ -2,18 +2,14 @@ package com.takenoko.engine;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
-import com.takenoko.actions.EndGameAction;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.actors.MovePandaAction;
-import com.takenoko.actions.tile.DrawTileAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +35,7 @@ public class BotManager {
     private final int defaultNumberOfActions;
 
     public static final List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS =
-            List.of(MovePandaAction.class, MoveGardenerAction.class, DrawTileAction.class);
+            List.of(MovePandaAction.class, MoveGardenerAction.class);
 
     /**
      * Constructor for the class
@@ -80,14 +76,25 @@ public class BotManager {
      * @return true if the bot has won, false otherwise
      */
     public boolean playBot(Board board) {
-        botState.setAvailableActions(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS));
-
+        botState.resetAvailableActions(board);
         botState.setNumberOfActions(defaultNumberOfActions);
 
         board.rollWeather();
         botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         while (canPlayBot()) {
             botState.update(board, this);
+            displayMessage(this.getName() + " has " + botState.getNumberOfActions() + " actions.");
+            displayMessage(this.getName() + " can play: " + botState.getAvailableActions());
+            displayMessage(this.getName() + " must complete: " + botState.getObjectives());
+            displayMessage(
+                    this.getName() + " has already played: " + botState.getAlreadyDoneActions());
+
+            if (botState.getAvailableActions().isEmpty()) {
+                throw new IllegalStateException(
+                        "The bot "
+                                + name
+                                + " has no more actions. Please check the available actions.");
+            }
 
             Action action = bot.chooseAction(board.copy(), botState.copy());
             if (!botState.getAvailableActions().contains(action.getClass())) {
@@ -102,15 +109,6 @@ public class BotManager {
             ActionResult actionResult = action.execute(board, this);
 
             botState.updateAvailableActions(action, actionResult);
-
-            if (actionResult.availableActions().contains(EndGameAction.class)) {
-                displayMessage("The bot " + name + " has drawn the Emperor Objective!");
-                Objective objective = new EmperorObjective();
-                botState.addObjective(objective);
-                botState.setObjectiveAchieved(objective);
-                botState.redeemObjective(objective);
-                return true;
-            }
         }
         board.getWeather().ifPresent(value -> value.revert(board, this));
         return false;
