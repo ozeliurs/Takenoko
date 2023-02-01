@@ -5,6 +5,8 @@ import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.tile.PlaceTileAction;
 import com.takenoko.bot.FullRandomBot;
 import com.takenoko.inventory.Inventory;
+import com.takenoko.objective.EmperorObjective;
+import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
@@ -139,11 +141,18 @@ public class GameEngine {
             for (BotManager botManager : botManagers) {
                 consoleUserInterface.displayMessage(
                         "===== <" + botManager.getName() + "> is playing =====");
-                boolean gameIsFinished = botManager.playBot(board);
+                botManager.playBot(board);
 
-                if (gameIsFinished
-                        || botManager.getAchievedObjectives().size()
-                                >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN) {
+                if (botManager.getAchievedObjectives().size()
+                        >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN) {
+                    consoleUserInterface.displayMessage(
+                            "===== <" + botManager.getName() + "> finished the game =====");
+                    Objective objective = new EmperorObjective();
+                    consoleUserInterface.displayMessage(
+                            botManager.getName() + " received the Emperor objective !");
+                    botManager.addObjective(objective);
+                    botManager.setObjectiveAchieved(objective);
+                    botManager.redeemObjective(objective);
                     gameState = GameState.FINISHED;
                     return;
                 }

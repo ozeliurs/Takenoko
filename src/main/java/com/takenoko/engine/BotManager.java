@@ -73,9 +73,8 @@ public class BotManager {
      * action. Objectives are also verified in order to know if the bot has won.
      *
      * @param board the board of the game
-     * @return true if the bot has won, false otherwise
      */
-    public boolean playBot(Board board) {
+    public void playBot(Board board) {
         botState.resetAvailableActions(board);
         botState.setNumberOfActions(defaultNumberOfActions);
 
@@ -111,7 +110,6 @@ public class BotManager {
             botState.updateAvailableActions(action, actionResult);
         }
         board.getWeather().ifPresent(value -> value.revert(board, this));
-        return false;
     }
 
     private boolean canPlayBot() {
@@ -181,5 +179,9 @@ public class BotManager {
 
     public int getPandaObjectiveScore() {
         return botState.getPandaObjectiveScore();
+    }
+
+    public void setObjectiveAchieved(Objective objective) {
+        botState.setObjectiveAchieved(objective);
     }
 }
