@@ -2,6 +2,7 @@ package com.takenoko.asset;
 
 import com.takenoko.layers.tile.ImprovementType;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 /** The deck containing all the improvement chips you can place on the tiles. */
 public class ImprovementDeck extends HashMap<ImprovementType, Integer> {
@@ -50,5 +51,14 @@ public class ImprovementDeck extends HashMap<ImprovementType, Integer> {
 
     public ImprovementType peek() {
         return lastDrawnImprovement;
+    }
+
+    @Override
+    public String toString() {
+        return "ImprovementDeck{"
+                + this.entrySet().stream()
+                        .map(o -> o.getKey() + "(" + o.getValue() + ")")
+                        .collect(Collectors.joining(", "))
+                + "}";
     }
 }

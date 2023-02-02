@@ -46,4 +46,9 @@ public class IrrigationDeck {
     public int hashCode() {
         return size;
     }
+
+    @Override
+    public String toString() {
+        return "IrrigationDeck{" + "size=" + size + '}';
+    }
 }

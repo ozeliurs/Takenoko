@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /** The deck containing all the different objectives. */
 public class ObjectiveDeck extends ArrayList<Objective> {
@@ -152,5 +153,12 @@ public class ObjectiveDeck extends ArrayList<Objective> {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), lastDrawnObjective);
+    }
+
+    @Override
+    public String toString() {
+        return "ObjectiveDeck{"
+                + this.stream().map(Objects::toString).collect(Collectors.joining(", "))
+                + "}";
     }
 }

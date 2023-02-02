@@ -7,6 +7,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /** The deck containing all the improvement chips you can place on the tiles. */
 public class TileDeck extends ArrayList<Tile> {
@@ -80,5 +81,10 @@ public class TileDeck extends ArrayList<Tile> {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return this.stream().map(Tile::toString).collect(Collectors.joining(", "));
     }
 }
