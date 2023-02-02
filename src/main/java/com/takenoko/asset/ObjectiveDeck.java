@@ -146,12 +146,11 @@ public class ObjectiveDeck extends ArrayList<Objective> {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ObjectiveDeck that = (ObjectiveDeck) o;
-        return Objects.equals(random, that.random)
-                && Objects.equals(lastDrawnObjective, that.lastDrawnObjective);
+        return Objects.equals(lastDrawnObjective, that.lastDrawnObjective);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), random, lastDrawnObjective);
+        return Objects.hash(super.hashCode(), lastDrawnObjective);
     }
 }
