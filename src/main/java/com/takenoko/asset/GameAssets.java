@@ -70,7 +70,11 @@ public class GameAssets {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameAssets that = (GameAssets) o;
-        return Objects.equals(weatherDice, that.weatherDice) && Objects.equals(improvementDeck, that.improvementDeck) && Objects.equals(tileDeck, that.tileDeck) && Objects.equals(objectiveDeck, that.objectiveDeck) && Objects.equals(irrigationDeck, that.irrigationDeck);
+        return Objects.equals(weatherDice, that.weatherDice)
+                && Objects.equals(improvementDeck, that.improvementDeck)
+                && Objects.equals(tileDeck, that.tileDeck)
+                && Objects.equals(objectiveDeck, that.objectiveDeck)
+                && Objects.equals(irrigationDeck, that.irrigationDeck);
     }
 
     @Override

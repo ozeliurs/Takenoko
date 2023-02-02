@@ -25,6 +25,13 @@ public class IrrigationDeck {
         return size > 0;
     }
 
+    /**
+     * @return the number of irrigation left in the deck
+     */
+    public int getSize() {
+        return size;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

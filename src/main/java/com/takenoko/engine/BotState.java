@@ -141,16 +141,12 @@ public class BotState { // DEFAULT VALUES
         this.availableActions.addAll(actions);
     }
 
-    /**
-     * add an action to the number of actions to plau this turn
-     */
+    /** add an action to the number of actions to plau this turn */
     public void addAction() {
         numberOfActions++;
     }
 
-    /**
-     * reset everything to the default values
-     */
+    /** reset everything to the default values */
     public void reset() {
         objectives.clear();
         achievedObjectives.clear();
@@ -187,6 +183,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * Get the list of the redeemed objectives
+     *
      * @return the list of the redeemed objectives
      */
     public List<Objective> getRedeemedObjectives() {
@@ -195,6 +192,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * Copy constructor
+     *
      * @param botState the state to copy
      */
     public BotState(BotState botState) {
@@ -223,6 +221,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * get the score of the achieved objectives
+     *
      * @return the score of the achieved objectives
      */
     public int getObjectiveScore() {
@@ -242,9 +241,7 @@ public class BotState { // DEFAULT VALUES
                 this.alreadyDoneActions);
     }
 
-    /**
-     * clear the list of available actions of the FORCED type
-     */
+    /** clear the list of available actions of the FORCED type */
     private void clearForcedActions() {
         availableActions.removeIf(
                 action ->
@@ -253,6 +250,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * update an action in available actions
+     *
      * @param action the action to update
      * @param actionResult the result of the action
      */
@@ -266,6 +264,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * get the list of achieved objectives
+     *
      * @return the list of achieved objectives
      */
     public List<Objective> getAchievedObjectives() {
@@ -274,6 +273,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * for each objective, check if it is achieved
+     *
      * @param board the board
      * @param botManager the bot manager
      */
@@ -288,6 +288,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * update the objectives
+     *
      * @param board the board
      * @param botManager the bot manager
      */
@@ -298,6 +299,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * update to the defaults actions
+     *
      * @param board the board
      */
     private void updateDefaultActions(Board board) {
@@ -327,6 +329,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * update the objectives
+     *
      * @param board the board
      * @param botManager the bot manager
      */
@@ -358,6 +361,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * set an objective as not achieved
+     *
      * @param objective the objective
      */
     public void setObjectiveNotAchieved(Objective objective) {
@@ -367,6 +371,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * set an objective as achieved
+     *
      * @param objective the objective
      */
     public void setObjectiveAchieved(Objective objective) {
@@ -376,6 +381,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * redeem an objective
+     *
      * @param objective the objective
      */
     public void redeemObjective(Objective objective) {
@@ -388,6 +394,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * can draw an objective
+     *
      * @param board the board
      * @return true if the player can draw an objective
      */
@@ -398,6 +405,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * can redeem an objective
+     *
      * @return true if the player can redeem an objective
      */
     public boolean canRedeemObjective() {
@@ -418,6 +426,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * reset the available actions
+     *
      * @param board the board
      */
     public void resetAvailableActions(Board board) {
@@ -428,6 +437,7 @@ public class BotState { // DEFAULT VALUES
 
     /**
      * get the list of already done actions
+     *
      * @return the list of already done actions
      */
     public List<Class<? extends Action>> getAlreadyDoneActions() {
