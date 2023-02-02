@@ -1,6 +1,7 @@
 package com.takenoko.layers.irrigation;
 
 import com.takenoko.vector.PositionVector;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -19,5 +20,22 @@ public record IrrigationChannelPosition(
         if (leftTilePosition.distance(rightTilePosition) != 1) {
             throw new IllegalArgumentException("The irrigation channel position must be adjacent");
         }
+    }
+
+    public IrrigationChannelPosition copy() {
+        return new IrrigationChannelPosition(leftTilePosition, rightTilePosition);
+    }
+
+    public List<IrrigationChannelPosition> getNeighbours() {
+        return List.of(
+                //                new IrrigationChannelPosition(leftTilePosition,
+                // leftTilePosition.add(Direction.NORTH_EAST.getVector()).toPositionVector()),
+                //                new IrrigationChannelPosition(leftTilePosition,
+                // leftTilePosition.getEast()),
+                //                new IrrigationChannelPosition(rightTilePosition,
+                // rightTilePosition.getNorth()),
+                //                new IrrigationChannelPosition(rightTilePosition,
+                // rightTilePosition.getWest()));
+                );
     }
 }
