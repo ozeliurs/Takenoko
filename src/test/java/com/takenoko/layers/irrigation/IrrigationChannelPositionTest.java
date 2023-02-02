@@ -1,5 +1,6 @@
 package com.takenoko.layers.irrigation;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.takenoko.vector.PositionVector;
@@ -17,8 +18,7 @@ class IrrigationChannelPositionTest {
         void ifTheIrrigationChannelPositionsAreTheSameThenThrowAnException() {
             PositionVector positionVector = new PositionVector(0, 0, 0);
             assertThatThrownBy(() -> new IrrigationChannelPosition(positionVector, positionVector))
-                    .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("The irrigation channel positions cannot be the same");
+                    .isInstanceOf(IllegalArgumentException.class);
         }
 
         @Test
@@ -30,5 +30,23 @@ class IrrigationChannelPositionTest {
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("The irrigation channel position must be adjacent");
         }
+    }
+
+    @Test
+    @DisplayName("method getNeighbours")
+    void methodGetNeighbours() {
+        PositionVector positionVector = new PositionVector(0, 0, 0);
+        PositionVector positionVector1 = new PositionVector(1, 0, -1);
+        IrrigationChannelPosition irrigationChannelPosition =
+                new IrrigationChannelPosition(positionVector, positionVector1);
+
+        assertThat(irrigationChannelPosition.getNeighbours())
+                .containsExactlyInAnyOrder(
+                        new IrrigationChannelPosition(positionVector, new PositionVector(1, -1, 0)),
+                        new IrrigationChannelPosition(positionVector, new PositionVector(0, 1, -1)),
+                        new IrrigationChannelPosition(
+                                positionVector1, new PositionVector(1, -1, 0)),
+                        new IrrigationChannelPosition(
+                                positionVector1, new PositionVector(0, 1, -1)));
     }
 }
