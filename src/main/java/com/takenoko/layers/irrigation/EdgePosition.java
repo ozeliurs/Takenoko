@@ -9,15 +9,15 @@ import java.util.Set;
 import org.jetbrains.annotations.NotNull;
 
 /** This record represents an irrigation channel Position */
-public class IrrigationChannelPosition {
+public class EdgePosition {
     private final Set<PositionVector> positions = new HashSet<>();
 
-    public IrrigationChannelPosition(
+    public EdgePosition(
             @NotNull PositionVector leftTilePosition, @NotNull PositionVector rightTilePosition) {
         this(Set.of(leftTilePosition, rightTilePosition));
     }
 
-    public IrrigationChannelPosition(Set<PositionVector> positions) {
+    public EdgePosition(Set<PositionVector> positions) {
         this.positions.addAll(positions);
         if (positions.size() != 2) {
             throw new IllegalArgumentException("The irrigation channel position must be adjacent");
@@ -35,8 +35,8 @@ public class IrrigationChannelPosition {
         return positions.stream().skip(1).findFirst().orElseThrow();
     }
 
-    public IrrigationChannelPosition copy() {
-        return new IrrigationChannelPosition(positions);
+    public EdgePosition copy() {
+        return new EdgePosition(positions);
     }
 
     /**
@@ -45,7 +45,7 @@ public class IrrigationChannelPosition {
      *
      * @return the list of all the neighbours of the irrigation channel position
      */
-    public List<IrrigationChannelPosition> getNeighbours() {
+    public List<EdgePosition> getNeighbours() {
         PositionVector leftTilePosition = getLeftTilePosition();
         PositionVector rightTilePosition = getRightTilePosition();
         HashSet<Vector> neighboursInCommon = new HashSet<>(leftTilePosition.getNeighbors());
@@ -54,11 +54,17 @@ public class IrrigationChannelPosition {
                 .map(
                         vector ->
                                 List.of(
-                                        new IrrigationChannelPosition(
+                                        new EdgePosition(
                                                 leftTilePosition, vector.toPositionVector()),
-                                        new IrrigationChannelPosition(
+                                        new EdgePosition(
                                                 rightTilePosition, vector.toPositionVector())))
                 .flatMap(List::stream)
+                .toList();
+    }
+
+    static List<EdgePosition> getEdgePositions(PositionVector positionVector) {
+        return positionVector.getNeighbors().stream()
+                .map(vector -> new EdgePosition(positionVector, vector.toPositionVector()))
                 .toList();
     }
 
@@ -66,7 +72,7 @@ public class IrrigationChannelPosition {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        IrrigationChannelPosition that = (IrrigationChannelPosition) o;
+        EdgePosition that = (EdgePosition) o;
         return Objects.equals(positions, that.positions);
     }
 

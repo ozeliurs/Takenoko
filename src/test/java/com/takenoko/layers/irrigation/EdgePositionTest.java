@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-class IrrigationChannelPositionTest {
+class EdgePositionTest {
 
     @Nested
     @DisplayName("test constructor")
@@ -17,7 +17,7 @@ class IrrigationChannelPositionTest {
         @DisplayName("if the irrigation channel positions are the same then throw an exception")
         void ifTheIrrigationChannelPositionsAreTheSameThenThrowAnException() {
             PositionVector positionVector = new PositionVector(0, 0, 0);
-            assertThatThrownBy(() -> new IrrigationChannelPosition(positionVector, positionVector))
+            assertThatThrownBy(() -> new EdgePosition(positionVector, positionVector))
                     .isInstanceOf(IllegalArgumentException.class);
         }
 
@@ -26,7 +26,7 @@ class IrrigationChannelPositionTest {
         void ifTheIrrigationChannelPositionsAreNotAdjacentThenThrowAnException() {
             PositionVector positionVector = new PositionVector(0, 0, 0);
             PositionVector positionVector1 = new PositionVector(2, -1, -1);
-            assertThatThrownBy(() -> new IrrigationChannelPosition(positionVector, positionVector1))
+            assertThatThrownBy(() -> new EdgePosition(positionVector, positionVector1))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("The irrigation channel position must be adjacent");
         }
@@ -37,16 +37,13 @@ class IrrigationChannelPositionTest {
     void methodGetNeighbours() {
         PositionVector positionVector = new PositionVector(0, 0, 0);
         PositionVector positionVector1 = new PositionVector(1, 0, -1);
-        IrrigationChannelPosition irrigationChannelPosition =
-                new IrrigationChannelPosition(positionVector, positionVector1);
+        EdgePosition edgePosition = new EdgePosition(positionVector, positionVector1);
 
-        assertThat(irrigationChannelPosition.getNeighbours())
+        assertThat(edgePosition.getNeighbours())
                 .containsExactlyInAnyOrder(
-                        new IrrigationChannelPosition(positionVector, new PositionVector(1, -1, 0)),
-                        new IrrigationChannelPosition(positionVector, new PositionVector(0, 1, -1)),
-                        new IrrigationChannelPosition(
-                                positionVector1, new PositionVector(1, -1, 0)),
-                        new IrrigationChannelPosition(
-                                positionVector1, new PositionVector(0, 1, -1)));
+                        new EdgePosition(positionVector, new PositionVector(1, -1, 0)),
+                        new EdgePosition(positionVector, new PositionVector(0, 1, -1)),
+                        new EdgePosition(positionVector1, new PositionVector(1, -1, 0)),
+                        new EdgePosition(positionVector1, new PositionVector(0, 1, -1)));
     }
 }
