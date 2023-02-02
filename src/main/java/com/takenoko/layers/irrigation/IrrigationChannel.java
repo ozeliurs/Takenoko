@@ -3,9 +3,9 @@ package com.takenoko.layers.irrigation;
 import com.takenoko.vector.PositionVector;
 import org.jetbrains.annotations.NotNull;
 
-public record IrrigationChannelPosition(
+public record IrrigationChannel(
         @NotNull PositionVector leftTilePosition, @NotNull PositionVector rightTilePosition) {
-    public IrrigationChannelPosition {
+    public IrrigationChannel {
         if (leftTilePosition.equals(rightTilePosition)) {
             throw new IllegalArgumentException(
                     "The irrigation channel positions cannot be the same");
