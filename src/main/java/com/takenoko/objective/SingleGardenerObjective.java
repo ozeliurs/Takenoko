@@ -112,4 +112,15 @@ public class SingleGardenerObjective extends Objective {
     public int getTargetSize() {
         return targetSize;
     }
+
+    @Override
+    public String toString() {
+        return "Single Gardener Objective <"
+                + targetColor
+                + " bamboo, "
+                + targetSize
+                + " high, "
+                + targetImprovementType
+                + " improvement>";
+    }
 }

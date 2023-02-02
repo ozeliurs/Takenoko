@@ -52,7 +52,7 @@ public class MultipleGardenerObjective extends Objective {
         List<Integer> bambooCounts =
                 objective.getEligiblePositions(board).stream()
                         .sorted(Comparator.comparingInt(v -> board.getBambooAt((PositionVector) v).getBambooCount())
-                                        .reversed())
+                                .reversed())
                         .limit(numberOfTimes)
                         .map(v -> board.getBambooAt(v).getBambooCount())
                         .toList();
@@ -61,9 +61,9 @@ public class MultipleGardenerObjective extends Objective {
                         bambooCounts.stream(),
                         Stream.generate(() -> 0).limit((long) numberOfTimes - bambooCounts.size()));
         return 1 - ((float) bambooCountFilled
-                                        .map(v -> Math.abs(v - objective.getTargetSize()))
-                                        .reduce(0, Integer::sum)
-                        / (numberOfTimes * objective.getTargetSize()));
+                .map(v -> Math.abs(v - objective.getTargetSize()))
+                .reduce(0, Integer::sum)
+                / (numberOfTimes * objective.getTargetSize()));
         // spotless:on
     }
 
@@ -78,5 +78,14 @@ public class MultipleGardenerObjective extends Objective {
     @Override
     public int hashCode() {
         return Objects.hash(objective, numberOfTimes);
+    }
+
+    @Override
+    public String toString() {
+        return "Multiple Gardener Objective <"
+                + objective.toString()
+                + ", "
+                + numberOfTimes
+                + " times>";
     }
 }

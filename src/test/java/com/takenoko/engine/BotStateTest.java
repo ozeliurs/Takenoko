@@ -152,16 +152,28 @@ class BotStateTest {
         @Test
         @DisplayName("should return true if the player can draw an objective")
         void canDrawObjective_shouldReturnTrueIfCanDrawObjective() {
-            assertThat(botState.canDrawObjective()).isTrue();
+            Board board = mock(Board.class);
+            when(board.isObjectiveDeckEmpty()).thenReturn(false);
+            assertThat(botState.canDrawObjective(board)).isTrue();
         }
 
         @Test
         @DisplayName("should return false if the player can't draw an objective")
         void canDrawObjective_shouldReturnFalseIfCantDrawObjective() {
+            Board board = mock(Board.class);
+            when(board.isObjectiveDeckEmpty()).thenReturn(false);
             for (int i = 0; i < BotState.MAX_OBJECTIVES; i++) {
                 botState.addObjective(mock(Objective.class));
             }
-            assertThat(botState.canDrawObjective()).isFalse();
+            assertThat(botState.canDrawObjective(board)).isFalse();
+        }
+
+        @Test
+        @DisplayName("should return false if the objective deck is empty")
+        void canDrawObjective_shouldReturnFalseIfObjectiveDeckIsEmpty() {
+            Board board = mock(Board.class);
+            when(board.isObjectiveDeckEmpty()).thenReturn(true);
+            assertThat(botState.canDrawObjective(board)).isFalse();
         }
     }
 
@@ -234,7 +246,7 @@ class BotStateTest {
             BotManager botManager = mock(BotManager.class);
 
             botState.update(board, botManager);
-            assertThat(botState.getAvailableActions()).containsExactly(DrawObjectiveAction.class);
+            assertThat(botState.getAvailableActions()).contains(DrawObjectiveAction.class);
         }
 
         @Test

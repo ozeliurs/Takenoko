@@ -30,4 +30,9 @@ public class MixedColorsDiamond extends Pattern {
                     default -> throw new IllegalArgumentException("Unexpected value: " + tileColor);
                 });
     }
+
+    @Override
+    public String toString() {
+        return "MixedColorsDiamond{" + this.getColorsString() + "}";
+    }
 }

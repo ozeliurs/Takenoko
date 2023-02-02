@@ -2,18 +2,14 @@ package com.takenoko.engine;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
-import com.takenoko.actions.EndGameAction;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.actors.MovePandaAction;
-import com.takenoko.actions.tile.DrawTileAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +35,7 @@ public class BotManager {
     private final int defaultNumberOfActions;
 
     public static final List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS =
-            List.of(MovePandaAction.class, MoveGardenerAction.class, DrawTileAction.class);
+            List.of(MovePandaAction.class, MoveGardenerAction.class);
 
     /**
      * Constructor for the class
@@ -77,17 +73,38 @@ public class BotManager {
      * action. Objectives are also verified in order to know if the bot has won.
      *
      * @param board the board of the game
-     * @return true if the bot has won, false otherwise
      */
-    public boolean playBot(Board board) {
-        botState.setAvailableActions(new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS));
-
+    public void playBot(Board board) {
+        botState.resetAvailableActions(board);
         botState.setNumberOfActions(defaultNumberOfActions);
 
         board.rollWeather();
+        displayMessage(this.getName() + " rolled weather: " + board.peekWeather());
         botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         while (canPlayBot()) {
             botState.update(board, this);
+            consoleUserInterface.displayDebug(
+                    this.getName() + " has " + botState.getNumberOfActions() + " actions.");
+            consoleUserInterface.displayDebug(
+                    this.getName() + " can play: " + botState.getAvailableActions());
+            consoleUserInterface.displayDebug(
+                    this.getName() + " must complete: " + botState.getObjectives());
+            consoleUserInterface.displayDebug(
+                    this.getName() + " has already played: " + botState.getAlreadyDoneActions());
+            consoleUserInterface.displayDebug(
+                    this.getName() + " has achieved: " + botState.getAchievedObjectives());
+            consoleUserInterface.displayDebug(
+                    this.getName() + " has redeemed: " + botState.getRedeemedObjectives());
+
+            consoleUserInterface.displayDebug(
+                    this.getName() + " inventory: " + botState.getInventory());
+
+            if (botState.getAvailableActions().isEmpty()) {
+                throw new IllegalStateException(
+                        "The bot "
+                                + name
+                                + " has no more actions. Please check the available actions.");
+            }
 
             Action action = bot.chooseAction(board.copy(), botState.copy());
             if (!botState.getAvailableActions().contains(action.getClass())) {
@@ -100,20 +117,9 @@ public class BotManager {
             }
 
             ActionResult actionResult = action.execute(board, this);
-
             botState.updateAvailableActions(action, actionResult);
-
-            if (actionResult.availableActions().contains(EndGameAction.class)) {
-                displayMessage("The bot " + name + " has drawn the Emperor Objective!");
-                Objective objective = new EmperorObjective();
-                botState.addObjective(objective);
-                botState.setObjectiveAchieved(objective);
-                botState.redeemObjective(objective);
-                return true;
-            }
         }
         board.getWeather().ifPresent(value -> value.revert(board, this));
-        return false;
     }
 
     private boolean canPlayBot() {
@@ -173,6 +179,10 @@ public class BotManager {
         return botState.getAchievedObjectives();
     }
 
+    public List<Objective> getRedeemedObjectives() {
+        return botState.getRedeemedObjectives();
+    }
+
     public void addObjective(Objective objective) {
         botState.addObjective(objective);
     }
@@ -183,5 +193,9 @@ public class BotManager {
 
     public int getPandaObjectiveScore() {
         return botState.getPandaObjectiveScore();
+    }
+
+    public void setObjectiveAchieved(Objective objective) {
+        botState.setObjectiveAchieved(objective);
     }
 }
