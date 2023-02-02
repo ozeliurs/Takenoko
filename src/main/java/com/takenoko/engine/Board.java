@@ -338,6 +338,7 @@ public class Board {
 
     public boolean hasIrrigation() {
         return gameAssets.getIrrigationDeck().hasIrrigation();
+    }
 
     public void updateAvailableIrrigationChannelPositions(PositionVector position) {
         irrigationLayer.updateAvailableIrrigationChannelPositions(position, this);
