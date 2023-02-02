@@ -316,4 +316,12 @@ public class Board {
     public boolean isObjectiveDeckEmpty() {
         return gameAssets.getObjectiveDeck().isEmpty();
     }
+
+    public void drawIrrigation() {
+        gameAssets.getIrrigationDeck().draw();
+    }
+
+    public boolean hasIrrigation() {
+        return gameAssets.getIrrigationDeck().hasIrrigation();
+    }
 }

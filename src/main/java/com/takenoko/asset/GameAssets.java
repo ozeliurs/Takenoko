@@ -9,6 +9,8 @@ public class GameAssets {
     private final TileDeck tileDeck;
     private final ObjectiveDeck objectiveDeck;
 
+    private final IrrigationDeck irrigationDeck;
+
     public GameAssets() {
         this(new WeatherDice(), new ImprovementDeck());
     }
@@ -22,6 +24,7 @@ public class GameAssets {
         this.improvementDeck = improvementDeck;
         this.tileDeck = new TileDeck();
         this.objectiveDeck = new ObjectiveDeck();
+        this.irrigationDeck = new IrrigationDeck();
     }
 
     public GameAssets(GameAssets gameAssets) {
@@ -29,6 +32,7 @@ public class GameAssets {
         this.improvementDeck = gameAssets.improvementDeck;
         this.tileDeck = gameAssets.tileDeck;
         this.objectiveDeck = gameAssets.objectiveDeck;
+        this.irrigationDeck = gameAssets.irrigationDeck;
     }
 
     /**
@@ -45,21 +49,12 @@ public class GameAssets {
         return improvementDeck;
     }
 
+    public IrrigationDeck getIrrigationDeck() {
+        return irrigationDeck;
+    }
+
     public GameAssets copy() {
         return new GameAssets(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        GameAssets that = (GameAssets) o;
-        return weatherDice.equals(that.weatherDice);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(weatherDice);
     }
 
     public TileDeck getTileDeck() {
@@ -68,5 +63,24 @@ public class GameAssets {
 
     public ObjectiveDeck getObjectiveDeck() {
         return objectiveDeck;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GameAssets that = (GameAssets) o;
+
+        if (!Objects.equals(weatherDice, that.weatherDice)) return false;
+        if (!Objects.equals(improvementDeck, that.improvementDeck)) return false;
+        if (!Objects.equals(tileDeck, that.tileDeck)) return false;
+        if (!Objects.equals(objectiveDeck, that.objectiveDeck)) return false;
+        return Objects.equals(irrigationDeck, that.irrigationDeck);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(weatherDice, improvementDeck, tileDeck, objectiveDeck, irrigationDeck);
     }
 }
