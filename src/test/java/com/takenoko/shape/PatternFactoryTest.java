@@ -22,22 +22,22 @@ public class PatternFactoryTest {
         @Test
         @DisplayName("When the shape is LINE should contain the origin")
         void createShape_shouldReturnLineContainingOrigin() {
-            assertThat(PatternFactory.LINE.createPattern(TileColor.ANY).getElements().keySet())
-                    .contains(new PositionVector(0, 0, 0));
+            assertThat(PatternFactory.LINE.createPattern(TileColor.ANY).getElements())
+                    .containsKey(new PositionVector(0, 0, 0));
         }
 
         @Test
         @DisplayName("When the shape is LINE should contain the adjacent tile")
         void createShape_shouldReturnLineContainingAdjacentTile() {
-            assertThat(PatternFactory.LINE.createPattern(TileColor.ANY).getElements().keySet())
-                    .contains(new PositionVector(1, 0, -1));
+            assertThat(PatternFactory.LINE.createPattern(TileColor.ANY).getElements())
+                    .containsKey(new PositionVector(1, 0, -1));
         }
 
         @Test
         @DisplayName("When the shape is LINE should contain the second adjacent tile")
         void createShape_shouldReturnLineContainingSecondAdjacentTile() {
-            assertThat(PatternFactory.LINE.createPattern(TileColor.ANY).getElements().keySet())
-                    .contains(new PositionVector(2, 0, -2));
+            assertThat(PatternFactory.LINE.createPattern(TileColor.ANY).getElements())
+                    .containsKey(new PositionVector(2, 0, -2));
         }
     }
 }
