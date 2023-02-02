@@ -22,4 +22,9 @@ public class InventoryBambooStack extends BambooStack {
     public InventoryBambooStack copy() {
         return new InventoryBambooStack(this);
     }
+
+    @Override
+    public String toString() {
+        return "InventoryBambooStack{" + "bambooCount=" + bambooCount + '}';
+    }
 }

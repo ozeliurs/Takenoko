@@ -96,6 +96,9 @@ public class BotManager {
             consoleUserInterface.displayDebug(
                     this.getName() + " has redeemed: " + botState.getRedeemedObjectives());
 
+            consoleUserInterface.displayDebug(
+                    this.getName() + " inventory: " + botState.getInventory());
+
             if (botState.getAvailableActions().isEmpty()) {
                 throw new IllegalStateException(
                         "The bot "
@@ -114,7 +117,6 @@ public class BotManager {
             }
 
             ActionResult actionResult = action.execute(board, this);
-
             botState.updateAvailableActions(action, actionResult);
         }
         board.getWeather().ifPresent(value -> value.revert(board, this));

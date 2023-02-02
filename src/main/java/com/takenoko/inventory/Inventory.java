@@ -138,4 +138,18 @@ public class Inventory {
     public boolean hasImprovement(ImprovementType improvementType) {
         return inventoryImprovements.hasImprovement(improvementType);
     }
+
+    public void useBamboo(Map<TileColor, Integer> bambooTarget) {
+        bambooTarget.forEach((tileColor, count) -> getBambooStack(tileColor).useBamboo(count));
+    }
+
+    @Override
+    public String toString() {
+        return "Inventory{"
+                + "bambooStacks="
+                + bambooStacks
+                + ", inventoryImprovements="
+                + inventoryImprovements
+                + '}';
+    }
 }

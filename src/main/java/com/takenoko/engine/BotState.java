@@ -230,6 +230,9 @@ public class BotState { // DEFAULT VALUES
         for (Objective objective : objectives) {
             objective.verify(board, botManager);
         }
+        for (Objective objective : achievedObjectives) {
+            objective.verify(board, botManager);
+        }
     }
 
     public void update(Board board, BotManager botManager) {
@@ -246,8 +249,7 @@ public class BotState { // DEFAULT VALUES
         }
         if (!canRedeemObjective()) {
             availableActions.removeAll(Collections.singleton(RedeemObjectiveAction.class));
-        } else if (!alreadyDoneActions.contains(RedeemObjectiveAction.class)
-                && !availableActions.contains(RedeemObjectiveAction.class)) {
+        } else if (!availableActions.contains(RedeemObjectiveAction.class)) {
             availableActions.add(RedeemObjectiveAction.class);
         }
         if (board.isTileDeckEmpty()) {
@@ -296,11 +298,15 @@ public class BotState { // DEFAULT VALUES
 
     public void redeemObjective(Objective objective) {
         this.achievedObjectives.remove(objective);
+        if (objective instanceof PandaObjective pandaObjective) {
+            this.inventory.useBamboo(pandaObjective.getBambooTarget());
+        }
         this.redeemedObjectives.add(objective);
     }
 
     public boolean canDrawObjective(Board board) {
-        return objectives.size() < MAX_OBJECTIVES && !board.isObjectiveDeckEmpty();
+        return (objectives.size() + achievedObjectives.size()) < MAX_OBJECTIVES
+                && !board.isObjectiveDeckEmpty();
     }
 
     public boolean canRedeemObjective() {

@@ -19,7 +19,6 @@ public class RedeemObjectiveAction implements Action {
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
-        botManager.redeemObjective(objective);
         botManager.displayMessage(
                 botManager.getName()
                         + " redeemed objective"
@@ -27,6 +26,7 @@ public class RedeemObjectiveAction implements Action {
                         + " and gained "
                         + objective.getPoints()
                         + "points");
+        botManager.redeemObjective(objective);
         return new ActionResult();
     }
 }
