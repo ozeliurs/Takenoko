@@ -139,6 +139,20 @@ public class Inventory {
         return inventoryImprovements.hasImprovement(improvementType);
     }
 
+    /**
+     * Method to verify whether the inventory contains any improvement or not
+     *
+     * @return true if the inventory contains any improvement, false otherwise
+     */
+    public boolean hasImprovement() {
+        return !inventoryImprovements.isEmpty();
+    }
+
+    /**
+     * Remove bamboo from the player's inventory when an objective is redeemed
+     *
+     * @param bambooTarget how many bamboo to use
+     */
     public void useBamboo(Map<TileColor, Integer> bambooTarget) {
         bambooTarget.forEach((tileColor, count) -> getBambooStack(tileColor).useBamboo(count));
     }

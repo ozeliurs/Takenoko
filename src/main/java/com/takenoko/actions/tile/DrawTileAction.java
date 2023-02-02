@@ -16,6 +16,10 @@ public class DrawTileAction implements Action {
     public ActionResult execute(Board board, BotManager botManager) {
         board.drawTiles();
         botManager.displayMessage(botManager.getName() + " drew tiles" + board.peekTileDeck());
+        if (botManager.getInventory().hasImprovement()) {
+            return new ActionResult(
+                    List.of(PlaceTileAction.class, PlaceTileWithImprovementAction.class), 0);
+        }
         return new ActionResult(List.of(PlaceTileAction.class), 0);
     }
 }
