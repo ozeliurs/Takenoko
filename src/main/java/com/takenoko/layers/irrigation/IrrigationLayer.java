@@ -2,10 +2,7 @@ package com.takenoko.layers.irrigation;
 
 import com.takenoko.engine.Board;
 import com.takenoko.vector.PositionVector;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class IrrigationLayer {
@@ -88,5 +85,22 @@ public class IrrigationLayer {
 
     public boolean isIrrigated(PositionVector positionVector) {
         return irrigation.get(positionVector);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IrrigationLayer that = (IrrigationLayer) o;
+        return Objects.equals(irrigation, that.irrigation)
+                && Objects.equals(
+                        getIrrigationChannelsPositions(), that.getIrrigationChannelsPositions())
+                && Objects.equals(getAvailableEdgePositions(), that.getAvailableEdgePositions());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                irrigation, getIrrigationChannelsPositions(), getAvailableEdgePositions());
     }
 }
