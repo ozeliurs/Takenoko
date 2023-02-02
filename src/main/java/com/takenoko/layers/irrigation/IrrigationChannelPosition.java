@@ -40,8 +40,8 @@ public class IrrigationChannelPosition {
     }
 
     /**
-     * Return the list of all the neighbours of the irrigation channel position
-     * A neighbour is a position that is connected to the irrigation channel position
+     * Return the list of all the neighbours of the irrigation channel position A neighbour is a
+     * position that is connected to the irrigation channel position
      *
      * @return the list of all the neighbours of the irrigation channel position
      */
