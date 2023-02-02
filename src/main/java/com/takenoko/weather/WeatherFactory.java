@@ -21,6 +21,13 @@ public enum WeatherFactory {
         public Weather createWeather() {
             return new Cloudy();
         }
+    },
+
+    QUESTION_MARK {
+        @Override
+        public Weather createWeather() {
+            return new QuestionMark();
+        }
     };
 
     public abstract Weather createWeather();

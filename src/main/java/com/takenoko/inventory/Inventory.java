@@ -142,4 +142,18 @@ public class Inventory {
     public boolean hasImprovement() {
         return !inventoryImprovements.isEmpty();
     }
+
+    public void useBamboo(Map<TileColor, Integer> bambooTarget) {
+        bambooTarget.forEach((tileColor, count) -> getBambooStack(tileColor).useBamboo(count));
+    }
+
+    @Override
+    public String toString() {
+        return "Inventory{"
+                + "bambooStacks="
+                + bambooStacks
+                + ", inventoryImprovements="
+                + inventoryImprovements
+                + '}';
+    }
 }

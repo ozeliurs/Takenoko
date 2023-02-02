@@ -129,6 +129,9 @@ public class ObjectiveDeck extends ArrayList<Objective> {
     }
 
     public void draw() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Cannot draw from an empty deck");
+        }
         lastDrawnObjective = get(random.nextInt(size()));
         remove(lastDrawnObjective);
     }

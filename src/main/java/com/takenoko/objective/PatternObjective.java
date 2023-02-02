@@ -2,7 +2,7 @@ package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.shape.Pattern;
+import com.takenoko.shape.*;
 import java.util.Objects;
 
 public class PatternObjective extends Objective {
@@ -47,5 +47,10 @@ public class PatternObjective extends Objective {
     @Override
     public float getCompletion(Board board, BotManager botManager) {
         return pattern.matchRatio(board.getTilesWithoutPond());
+    }
+
+    @Override
+    public String toString() {
+        return "Pattern Objective <" + pattern.toString() + ">";
     }
 }

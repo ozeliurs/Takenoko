@@ -28,4 +28,9 @@ public class EmperorObjective extends Objective {
     public float getCompletion(Board board, BotManager botManager) {
         return 1f;
     }
+
+    @Override
+    public String toString() {
+        return "Emperor Objective";
+    }
 }

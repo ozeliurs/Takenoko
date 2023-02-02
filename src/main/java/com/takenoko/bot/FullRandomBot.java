@@ -1,11 +1,13 @@
 package com.takenoko.bot;
 
-import com.takenoko.actions.*;
+import com.takenoko.actions.Action;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.improvement.ApplyImprovementAction;
 import com.takenoko.actions.improvement.DrawImprovementAction;
 import com.takenoko.actions.improvement.StoreImprovementAction;
+import com.takenoko.actions.objective.DrawObjectiveAction;
+import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.tile.DrawTileAction;
 import com.takenoko.actions.tile.PlaceTileAction;
 import com.takenoko.actions.weather.ChooseAndApplyWeatherAction;
@@ -68,6 +70,12 @@ public class FullRandomBot implements Bot {
         if (botState.getAvailableActions().contains(ChooseAndApplyWeatherAction.class)) {
             actions.add(getRandomChooseAndApplyWeatherAction());
         }
+        if (botState.getAvailableActions().contains(DrawObjectiveAction.class)) {
+            actions.add(new DrawObjectiveAction());
+        }
+        if (botState.getAvailableActions().contains(RedeemObjectiveAction.class)) {
+            actions.add(getRandomRedeemObjectiveAction(botState));
+        }
 
         actions.removeIf(Objects::isNull);
 
@@ -78,6 +86,12 @@ public class FullRandomBot implements Bot {
                             + ")");
 
         return actions.get(random.nextInt(actions.size()));
+    }
+
+    private Action getRandomRedeemObjectiveAction(BotState botState) {
+        return new RedeemObjectiveAction(
+                botState.getAchievedObjectives()
+                        .get(random.nextInt(botState.getAchievedObjectives().size())));
     }
 
     private Action getRandomChooseAndApplyWeatherAction() {
@@ -97,7 +111,6 @@ public class FullRandomBot implements Bot {
         if (board.hasImprovementInDeck(ImprovementType.FERTILIZER)) {
             improvements.add(ImprovementType.FERTILIZER);
         }
-
         if (improvements.isEmpty()) return new DrawImprovementAction(ImprovementType.FERTILIZER);
 
         return new DrawImprovementAction(improvements.get(random.nextInt(improvements.size())));

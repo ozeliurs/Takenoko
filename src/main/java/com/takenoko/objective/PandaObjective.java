@@ -11,15 +11,6 @@ import java.util.Objects;
 public class PandaObjective extends Objective {
     private final Map<TileColor, Integer> bambooTarget;
 
-    public PandaObjective() {
-        this(
-                Map.ofEntries(
-                        Map.entry(TileColor.GREEN, 0),
-                        Map.entry(TileColor.YELLOW, 0),
-                        Map.entry(TileColor.PINK, 0)),
-                0);
-    }
-
     public PandaObjective(Map<TileColor, Integer> bambooTarget, int points) {
         super(ObjectiveTypes.PANDA, ObjectiveState.NOT_ACHIEVED, points);
         this.bambooTarget = bambooTarget;
@@ -36,13 +27,15 @@ public class PandaObjective extends Objective {
 
     @Override
     public void verify(Board board, BotManager botManager) {
-        bambooTarget.entrySet().stream()
-                .filter(
-                        entry ->
-                                botManager.getInventory().getBambooCount(entry.getKey())
-                                        >= entry.getValue())
-                .findFirst()
-                .ifPresent(entry -> state = ObjectiveState.ACHIEVED);
+        boolean matched =
+                bambooTarget.entrySet().stream()
+                        .allMatch(
+                                entry ->
+                                        botManager.getInventory().getBambooCount(entry.getKey())
+                                                >= entry.getValue());
+        if (matched) {
+            state = ObjectiveState.ACHIEVED;
+        } else state = ObjectiveState.NOT_ACHIEVED;
     }
 
     @Override
@@ -80,5 +73,14 @@ public class PandaObjective extends Objective {
     @Override
     public int hashCode() {
         return Objects.hash(bambooTarget);
+    }
+
+    @Override
+    public String toString() {
+        return "Panda Objective <" + bambooTarget + " high>";
+    }
+
+    public Map<TileColor, Integer> getBambooTarget() {
+        return new EnumMap<>(bambooTarget);
     }
 }

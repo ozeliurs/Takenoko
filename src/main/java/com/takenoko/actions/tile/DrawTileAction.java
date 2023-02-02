@@ -15,11 +15,6 @@ public class DrawTileAction implements Action {
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
-        if (board.isTileDeckEmpty()) {
-            botManager.displayMessage("Tile deck is empty");
-            return new ActionResult(List.of(EndGameAction.class), 0);
-        }
-
         board.drawTiles();
         botManager.displayMessage(botManager.getName() + " drew tiles" + board.peekTileDeck());
         if (botManager.getInventory().hasImprovement()) {
