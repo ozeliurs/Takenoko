@@ -6,6 +6,7 @@ import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.improvement.ApplyImprovementAction;
 import com.takenoko.actions.improvement.DrawImprovementAction;
 import com.takenoko.actions.improvement.StoreImprovementAction;
+import com.takenoko.actions.irrigation.DrawIrrigationAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.tile.DrawTileAction;
@@ -75,6 +76,9 @@ public class FullRandomBot implements Bot {
         }
         if (botState.getAvailableActions().contains(RedeemObjectiveAction.class)) {
             actions.add(getRandomRedeemObjectiveAction(botState));
+        }
+        if (botState.getAvailableActions().contains(DrawIrrigationAction.class)) {
+            actions.add(new DrawIrrigationAction());
         }
 
         actions.removeIf(Objects::isNull);

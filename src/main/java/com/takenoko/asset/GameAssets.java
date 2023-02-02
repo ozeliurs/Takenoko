@@ -69,14 +69,8 @@ public class GameAssets {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         GameAssets that = (GameAssets) o;
-
-        if (!Objects.equals(weatherDice, that.weatherDice)) return false;
-        if (!Objects.equals(improvementDeck, that.improvementDeck)) return false;
-        if (!Objects.equals(tileDeck, that.tileDeck)) return false;
-        if (!Objects.equals(objectiveDeck, that.objectiveDeck)) return false;
-        return Objects.equals(irrigationDeck, that.irrigationDeck);
+        return Objects.equals(weatherDice, that.weatherDice) && Objects.equals(improvementDeck, that.improvementDeck) && Objects.equals(tileDeck, that.tileDeck) && Objects.equals(objectiveDeck, that.objectiveDeck) && Objects.equals(irrigationDeck, that.irrigationDeck);
     }
 
     @Override
