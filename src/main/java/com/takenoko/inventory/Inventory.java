@@ -125,6 +125,7 @@ public class Inventory {
     public void clear() {
         bambooStacks.clear();
         inventoryImprovements.clear();
+        irrigationChannelsCount = 0;
     }
 
     public Inventory copy() {
