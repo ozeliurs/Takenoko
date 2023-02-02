@@ -5,6 +5,7 @@ import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
+import com.takenoko.layers.irrigation.IrrigationLayer;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
@@ -17,6 +18,7 @@ import java.util.*;
 public class Board {
     private final TileLayer tileLayer;
     private final BambooLayer bambooLayer;
+    private final IrrigationLayer irrigationLayer;
     private final Panda panda;
     private final Gardener gardener;
     private final GameAssets gameAssets;
@@ -30,18 +32,21 @@ public class Board {
      * @param panda the panda
      * @param gardener the gardener
      * @param gameAssets the game assets : dice
+     * @param irrigationLayer the irrigation layer
      */
     public Board(
             TileLayer tileLayer,
             BambooLayer bambooLayer,
             Panda panda,
             Gardener gardener,
-            GameAssets gameAssets) {
+            GameAssets gameAssets,
+            IrrigationLayer irrigationLayer) {
         this.tileLayer = tileLayer;
         this.bambooLayer = bambooLayer;
         this.panda = panda;
         this.gardener = gardener;
         this.gameAssets = gameAssets;
+        this.irrigationLayer = irrigationLayer;
     }
 
     public void rollWeather() {
@@ -54,7 +59,13 @@ public class Board {
 
     /** Constructor for the Board class. */
     public Board() {
-        this(new TileLayer(), new BambooLayer(), new Panda(), new Gardener(), new GameAssets());
+        this(
+                new TileLayer(),
+                new BambooLayer(),
+                new Panda(),
+                new Gardener(),
+                new GameAssets(),
+                new IrrigationLayer());
     }
 
     public Board(Board board) {
@@ -64,6 +75,7 @@ public class Board {
         this.gardener = board.gardener.copy();
         this.gameAssets = board.gameAssets.copy();
         this.weather = board.weather;
+        this.irrigationLayer = board.irrigationLayer.copy();
     }
 
     /**
@@ -227,12 +239,15 @@ public class Board {
                 && bambooLayer.equals(board.bambooLayer)
                 && panda.equals(board.panda)
                 && gardener.equals((board.gardener))
-                && gameAssets.equals(board.gameAssets);
+                && gameAssets.equals(board.gameAssets)
+                && Objects.equals(weather, board.weather)
+                && irrigationLayer.equals(board.irrigationLayer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tileLayer, bambooLayer, panda, gardener, gameAssets);
+        return Objects.hash(
+                tileLayer, bambooLayer, panda, gardener, gameAssets, weather, irrigationLayer);
     }
 
     public Board copy() {
@@ -315,5 +330,9 @@ public class Board {
 
     public boolean isObjectiveDeckEmpty() {
         return gameAssets.getObjectiveDeck().isEmpty();
+    }
+
+    public void updateAvailableIrrigationChannelPositions(PositionVector position) {
+        irrigationLayer.updateAvailableIrrigationChannelPositions(position, this);
     }
 }
