@@ -8,6 +8,7 @@ import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
+import com.takenoko.layers.irrigation.IrrigationLayer;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
@@ -35,7 +36,9 @@ class BoardTest {
         gardener = mock(Gardener.class);
         gameAssets = mock(GameAssets.class);
 
-        board = new Board(tileLayer, bambooLayer, panda, gardener, gameAssets);
+        board =
+                new Board(
+                        tileLayer, bambooLayer, panda, gardener, gameAssets, new IrrigationLayer());
     }
 
     @Test
@@ -236,7 +239,8 @@ class BoardTest {
                             mock(BambooLayer.class),
                             mock(Panda.class),
                             mock(Gardener.class),
-                            mock(GameAssets.class));
+                            mock(GameAssets.class),
+                            new IrrigationLayer());
             assertThat(board).isNotEqualTo(board2);
         }
 
@@ -269,7 +273,8 @@ class BoardTest {
                             mock(BambooLayer.class),
                             mock(Panda.class),
                             mock(Gardener.class),
-                            mock(GameAssets.class));
+                            mock(GameAssets.class),
+                            new IrrigationLayer());
             assertThat(board).doesNotHaveSameHashCodeAs(board2);
         }
     }
