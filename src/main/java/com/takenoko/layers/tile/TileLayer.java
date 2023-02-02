@@ -51,6 +51,7 @@ public class TileLayer {
         tiles.put(position, tile);
         board.chooseTileInTileDeck(tile);
         updateAvailableTilePositions(position);
+        board.updateAvailableIrrigationChannelPositions(position);
         // grow bamboo
         board.growBamboo(position);
         return board.getBambooAt(position);
