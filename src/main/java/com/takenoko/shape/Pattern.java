@@ -104,4 +104,12 @@ public class Pattern extends Shape {
         Pattern pattern = (Pattern) o;
         return getRotatedShapes().equals(pattern.getRotatedShapes());
     }
+
+    String getColorsString() {
+        return this.getElements().values().stream()
+                .map(Tile::getColor)
+                .distinct()
+                .map(Objects::toString)
+                .collect(Collectors.joining(","));
+    }
 }
