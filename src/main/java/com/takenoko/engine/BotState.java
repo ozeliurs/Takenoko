@@ -123,18 +123,34 @@ public class BotState { // DEFAULT VALUES
         this.availableActions = availableActions;
     }
 
+    /**
+     * add an action to the list of available actions
+     *
+     * @param action the action to add
+     */
     public void addAvailableAction(Class<? extends Action> action) {
         this.availableActions.add(action);
     }
 
+    /**
+     * add a list of actions to the list of available actions
+     *
+     * @param actions the list of actions to add
+     */
     public void addAvailableActions(List<Class<? extends Action>> actions) {
         this.availableActions.addAll(actions);
     }
 
+    /**
+     * add an action to the number of actions to plau this turn
+     */
     public void addAction() {
         numberOfActions++;
     }
 
+    /**
+     * reset everything to the default values
+     */
     public void reset() {
         objectives.clear();
         achievedObjectives.clear();
@@ -145,6 +161,11 @@ public class BotState { // DEFAULT VALUES
         this.alreadyDoneActions.clear();
     }
 
+    /**
+     * make a copy of the current state
+     *
+     * @return the copy
+     */
     public BotState copy() {
         return new BotState(this);
     }
@@ -164,10 +185,18 @@ public class BotState { // DEFAULT VALUES
                 && this.alreadyDoneActions.equals(botState.getAlreadyDoneActions());
     }
 
+    /**
+     * Get the list of the redeemed objectives
+     * @return the list of the redeemed objectives
+     */
     public List<Objective> getRedeemedObjectives() {
         return new ArrayList<>(redeemedObjectives);
     }
 
+    /**
+     * Copy constructor
+     * @param botState the state to copy
+     */
     public BotState(BotState botState) {
         this.numberOfActions = botState.numberOfActions;
         // Objectives
@@ -192,6 +221,10 @@ public class BotState { // DEFAULT VALUES
         this.alreadyDoneActions = new ArrayList<>(botState.alreadyDoneActions);
     }
 
+    /**
+     * get the score of the achieved objectives
+     * @return the score of the achieved objectives
+     */
     public int getObjectiveScore() {
         return redeemedObjectives.stream().mapToInt(Objective::getPoints).sum();
     }
@@ -209,12 +242,20 @@ public class BotState { // DEFAULT VALUES
                 this.alreadyDoneActions);
     }
 
+    /**
+     * clear the list of available actions of the FORCED type
+     */
     private void clearForcedActions() {
         availableActions.removeIf(
                 action ->
                         action.getAnnotation(ActionAnnotation.class).value() == ActionType.FORCED);
     }
 
+    /**
+     * update an action in available actions
+     * @param action the action to update
+     * @param actionResult the result of the action
+     */
     public void updateAvailableActions(Action action, ActionResult actionResult) {
         this.availableActions.remove(action.getClass());
         this.alreadyDoneActions.add(action.getClass());
@@ -223,10 +264,19 @@ public class BotState { // DEFAULT VALUES
         this.setNumberOfActions(this.getNumberOfActions() - actionResult.cost());
     }
 
+    /**
+     * get the list of achieved objectives
+     * @return the list of achieved objectives
+     */
     public List<Objective> getAchievedObjectives() {
         return new ArrayList<>(achievedObjectives);
     }
 
+    /**
+     * for each objective, check if it is achieved
+     * @param board the board
+     * @param botManager the bot manager
+     */
     public void verifyObjectives(Board board, BotManager botManager) {
         for (Objective objective : objectives) {
             objective.verify(board, botManager);
@@ -236,11 +286,20 @@ public class BotState { // DEFAULT VALUES
         }
     }
 
+    /**
+     * update the objectives
+     * @param board the board
+     * @param botManager the bot manager
+     */
     public void update(Board board, BotManager botManager) {
         updateObjectives(board, botManager);
         updateDefaultActions(board);
     }
 
+    /**
+     * update to the defaults actions
+     * @param board the board
+     */
     private void updateDefaultActions(Board board) {
         if (!canDrawObjective(board)) {
             availableActions.removeAll(Collections.singleton(DrawObjectiveAction.class));
@@ -266,6 +325,11 @@ public class BotState { // DEFAULT VALUES
         }
     }
 
+    /**
+     * update the objectives
+     * @param board the board
+     * @param botManager the bot manager
+     */
     private void updateObjectives(Board board, BotManager botManager) {
         verifyObjectives(board, botManager);
 
@@ -292,16 +356,28 @@ public class BotState { // DEFAULT VALUES
         }
     }
 
+    /**
+     * set an objective as not achieved
+     * @param objective the objective
+     */
     public void setObjectiveNotAchieved(Objective objective) {
         this.achievedObjectives.remove(objective);
         this.objectives.add(objective);
     }
 
+    /**
+     * set an objective as achieved
+     * @param objective the objective
+     */
     public void setObjectiveAchieved(Objective objective) {
         this.objectives.remove(objective);
         this.achievedObjectives.add(objective);
     }
 
+    /**
+     * redeem an objective
+     * @param objective the objective
+     */
     public void redeemObjective(Objective objective) {
         this.achievedObjectives.remove(objective);
         if (objective instanceof PandaObjective pandaObjective) {
@@ -310,11 +386,20 @@ public class BotState { // DEFAULT VALUES
         this.redeemedObjectives.add(objective);
     }
 
+    /**
+     * can draw an objective
+     * @param board the board
+     * @return true if the player can draw an objective
+     */
     public boolean canDrawObjective(Board board) {
         return (objectives.size() + achievedObjectives.size()) < MAX_OBJECTIVES
                 && !board.isObjectiveDeckEmpty();
     }
 
+    /**
+     * can redeem an objective
+     * @return true if the player can redeem an objective
+     */
     public boolean canRedeemObjective() {
         return !achievedObjectives.isEmpty();
     }
@@ -331,12 +416,20 @@ public class BotState { // DEFAULT VALUES
                 .sum();
     }
 
+    /**
+     * reset the available actions
+     * @param board the board
+     */
     public void resetAvailableActions(Board board) {
         this.availableActions = new ArrayList<>(DEFAULT_AVAILABLE_ACTIONS);
         this.alreadyDoneActions = new ArrayList<>();
         updateDefaultActions(board);
     }
 
+    /**
+     * get the list of already done actions
+     * @return the list of already done actions
+     */
     public List<Class<? extends Action>> getAlreadyDoneActions() {
         return new ArrayList<>(alreadyDoneActions);
     }
