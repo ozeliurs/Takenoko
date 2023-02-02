@@ -16,7 +16,7 @@ import org.apache.commons.lang3.tuple.Pair;
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
     // ATTRIBUTES
-    public static final int DEFAULT_NUMBER_OF_ROUNDS = 100000;
+    public static final int DEFAULT_NUMBER_OF_ROUNDS = 5000;
     public static final int DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN = 5;
     private Board board;
     private final ConsoleUserInterface consoleUserInterface;
