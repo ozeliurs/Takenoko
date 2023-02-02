@@ -7,6 +7,7 @@ public class GameAssets {
     private final WeatherDice weatherDice;
     private final ImprovementDeck improvementDeck;
     private final TileDeck tileDeck;
+    private final ObjectiveDeck objectiveDeck;
 
     public GameAssets() {
         this(new WeatherDice(), new ImprovementDeck());
@@ -20,12 +21,14 @@ public class GameAssets {
         this.weatherDice = weatherDice;
         this.improvementDeck = improvementDeck;
         this.tileDeck = new TileDeck();
+        this.objectiveDeck = new ObjectiveDeck();
     }
 
     public GameAssets(GameAssets gameAssets) {
         this.weatherDice = gameAssets.weatherDice;
         this.improvementDeck = gameAssets.improvementDeck;
         this.tileDeck = gameAssets.tileDeck;
+        this.objectiveDeck = gameAssets.objectiveDeck;
     }
 
     /**
@@ -61,5 +64,9 @@ public class GameAssets {
 
     public TileDeck getTileDeck() {
         return tileDeck;
+    }
+
+    public ObjectiveDeck getObjectiveDeck() {
+        return objectiveDeck;
     }
 }

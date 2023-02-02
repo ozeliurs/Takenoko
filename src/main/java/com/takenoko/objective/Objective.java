@@ -7,10 +7,12 @@ public abstract class Objective {
 
     private final ObjectiveTypes type;
     ObjectiveState state;
+    private final int points;
 
-    protected Objective(ObjectiveTypes type, ObjectiveState state) {
+    protected Objective(ObjectiveTypes type, ObjectiveState state, int points) {
         this.type = type;
         this.state = state;
+        this.points = points;
     }
 
     /** Verify state of the objective. */
@@ -41,4 +43,8 @@ public abstract class Objective {
      * @return the completion of the objective (between 0 and 1)
      */
     public abstract float getCompletion(Board board, BotManager botManager);
+
+    public int getPoints() {
+        return points;
+    }
 }

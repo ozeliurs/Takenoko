@@ -2,14 +2,14 @@ package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.shape.Pattern;
+import com.takenoko.shape.*;
 import java.util.Objects;
 
 public class PatternObjective extends Objective {
     private final Pattern pattern;
 
-    public PatternObjective(Pattern pattern) {
-        super(ObjectiveTypes.SHAPE, ObjectiveState.NOT_ACHIEVED);
+    public PatternObjective(Pattern pattern, int points) {
+        super(ObjectiveTypes.SHAPE, ObjectiveState.NOT_ACHIEVED, points);
         this.pattern = pattern;
     }
 
@@ -39,7 +39,7 @@ public class PatternObjective extends Objective {
     }
 
     public PatternObjective copy() {
-        PatternObjective objective = new PatternObjective(pattern);
+        PatternObjective objective = new PatternObjective(pattern, getPoints());
         objective.state = state;
         return objective;
     }
@@ -47,5 +47,10 @@ public class PatternObjective extends Objective {
     @Override
     public float getCompletion(Board board, BotManager botManager) {
         return pattern.matchRatio(board.getTilesWithoutPond());
+    }
+
+    @Override
+    public String toString() {
+        return "Pattern Objective <" + pattern.toString() + ">";
     }
 }

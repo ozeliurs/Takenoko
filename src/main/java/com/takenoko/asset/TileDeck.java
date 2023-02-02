@@ -44,6 +44,9 @@ public class TileDeck extends ArrayList<Tile> {
 
     /** Draw tiles from the deck. */
     public void draw() {
+        if (isEmpty()) {
+            throw new IllegalStateException("The deck is empty.");
+        }
         lastDrawnTiles.clear();
         for (int i = 0; i < 3; i++) {
             lastDrawnTiles.add(this.get(random.nextInt(this.size())));

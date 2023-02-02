@@ -19,15 +19,18 @@ public class SingleGardenerObjective extends Objective {
     private final ImprovementType targetImprovementType;
 
     public SingleGardenerObjective(
-            int targetSize, TileColor targetColor, ImprovementType targetImprovementType) {
-        super(ObjectiveTypes.GARDENER, ObjectiveState.NOT_ACHIEVED);
+            int targetSize,
+            TileColor targetColor,
+            ImprovementType targetImprovementType,
+            int points) {
+        super(ObjectiveTypes.GARDENER, ObjectiveState.NOT_ACHIEVED, points);
         this.targetSize = targetSize;
         this.targetImprovementType = targetImprovementType;
         this.targetColor = targetColor;
     }
 
-    public SingleGardenerObjective(int targetSize, TileColor targetColor) {
-        this(targetSize, targetColor, ImprovementType.NONE);
+    public SingleGardenerObjective(int targetSize, TileColor targetColor, int points) {
+        this(targetSize, targetColor, ImprovementType.NONE, points);
     }
 
     @Override
@@ -78,7 +81,8 @@ public class SingleGardenerObjective extends Objective {
     }
 
     public SingleGardenerObjective copy() {
-        return new SingleGardenerObjective(targetSize, targetColor, targetImprovementType);
+        return new SingleGardenerObjective(
+                targetSize, targetColor, targetImprovementType, getPoints());
     }
 
     @Override
@@ -107,5 +111,16 @@ public class SingleGardenerObjective extends Objective {
 
     public int getTargetSize() {
         return targetSize;
+    }
+
+    @Override
+    public String toString() {
+        return "Single Gardener Objective <"
+                + targetColor
+                + " bamboo, "
+                + targetSize
+                + " high, "
+                + targetImprovementType
+                + " improvement>";
     }
 }

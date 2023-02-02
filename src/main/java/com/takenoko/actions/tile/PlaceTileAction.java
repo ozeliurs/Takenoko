@@ -12,7 +12,7 @@ import com.takenoko.vector.PositionVector;
 /** This class represents the action of placing a tile on the board. */
 @ActionAnnotation(ActionType.FORCED)
 public class PlaceTileAction implements Action {
-    private final Tile tile;
+    protected final Tile tile;
     private final PositionVector positionVector;
 
     /**
@@ -38,10 +38,7 @@ public class PlaceTileAction implements Action {
         botManager.displayMessage(
                 botManager.getName() + " placed " + tile + " at " + positionVector);
         if (!board.placeTile(tile, positionVector).isEmpty()) {
-            botManager.displayMessage(
-                    board.getTileAt(positionVector).getColor()
-                            + " bamboo grew at "
-                            + positionVector);
+            botManager.displayMessage(tile.getColor() + " bamboo grew at " + positionVector);
         }
         return new ActionResult(1);
     }

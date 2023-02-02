@@ -28,7 +28,7 @@ class SingleGardenerObjectiveTest {
     @BeforeEach
     void setUp() {
         objectiveWithImprovement =
-                new SingleGardenerObjective(TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE);
+                new SingleGardenerObjective(TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, 0);
     }
 
     @Nested
@@ -40,7 +40,7 @@ class SingleGardenerObjectiveTest {
             assertThat(objectiveWithImprovement)
                     .isEqualTo(
                             new SingleGardenerObjective(
-                                    TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE));
+                                    TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, 0));
         }
 
         @Nested
@@ -52,7 +52,7 @@ class SingleGardenerObjectiveTest {
                 assertThat(objectiveWithImprovement)
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
-                                        TARGET_SIZE, TileColor.GREEN, TARGET_IMPROVEMENT_TYPE));
+                                        TARGET_SIZE, TileColor.GREEN, TARGET_IMPROVEMENT_TYPE, 0));
             }
 
             @Test
@@ -61,7 +61,7 @@ class SingleGardenerObjectiveTest {
                 assertThat(objectiveWithImprovement)
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
-                                        TARGET_SIZE, TARGET_COLOR, ImprovementType.NONE));
+                                        TARGET_SIZE, TARGET_COLOR, ImprovementType.NONE, 0));
             }
 
             @Test
@@ -70,7 +70,7 @@ class SingleGardenerObjectiveTest {
                 assertThat(objectiveWithImprovement)
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
-                                        TARGET_SIZE - 1, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE));
+                                        TARGET_SIZE - 1, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, 0));
             }
 
             @Test
@@ -96,7 +96,7 @@ class SingleGardenerObjectiveTest {
         void shouldReturnTheSameHashcodeWhenTheTwoObjectsAreEqual() {
             assertThat(
                             new SingleGardenerObjective(
-                                            TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE)
+                                            TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, 0)
                                     .hashCode())
                     .hasSameHashCodeAs(objectiveWithImprovement);
         }
@@ -112,7 +112,8 @@ class SingleGardenerObjectiveTest {
                                 new SingleGardenerObjective(
                                                 TARGET_SIZE,
                                                 TileColor.GREEN,
-                                                TARGET_IMPROVEMENT_TYPE)
+                                                TARGET_IMPROVEMENT_TYPE,
+                                                0)
                                         .hashCode());
             }
 
@@ -122,7 +123,7 @@ class SingleGardenerObjectiveTest {
                 assertThat(objectiveWithImprovement.hashCode())
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
-                                                TARGET_SIZE, TARGET_COLOR, ImprovementType.NONE)
+                                                TARGET_SIZE, TARGET_COLOR, ImprovementType.NONE, 0)
                                         .hashCode());
             }
 
@@ -134,7 +135,8 @@ class SingleGardenerObjectiveTest {
                                 new SingleGardenerObjective(
                                                 TARGET_SIZE - 1,
                                                 TARGET_COLOR,
-                                                TARGET_IMPROVEMENT_TYPE)
+                                                TARGET_IMPROVEMENT_TYPE,
+                                                0)
                                         .hashCode());
             }
         }

@@ -1,14 +1,18 @@
 package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
+import com.takenoko.actions.objective.DrawObjectiveAction;
+import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.layers.tile.TileColor;
+import com.takenoko.objective.Objective;
+import com.takenoko.objective.PandaObjective;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -139,6 +143,156 @@ class BotStateTest {
             botState.updateAvailableActions(
                     new MoveGardenerAction(mock(PositionVector.class)), new ActionResult());
             assertThat(botState.getAvailableActions()).hasSize(1);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method canDrawObjective()")
+    class TestCanDrawObjective {
+        @Test
+        @DisplayName("should return true if the player can draw an objective")
+        void canDrawObjective_shouldReturnTrueIfCanDrawObjective() {
+            Board board = mock(Board.class);
+            when(board.isObjectiveDeckEmpty()).thenReturn(false);
+            assertThat(botState.canDrawObjective(board)).isTrue();
+        }
+
+        @Test
+        @DisplayName("should return false if the player can't draw an objective")
+        void canDrawObjective_shouldReturnFalseIfCantDrawObjective() {
+            Board board = mock(Board.class);
+            when(board.isObjectiveDeckEmpty()).thenReturn(false);
+            for (int i = 0; i < BotState.MAX_OBJECTIVES; i++) {
+                botState.addObjective(mock(Objective.class));
+            }
+            assertThat(botState.canDrawObjective(board)).isFalse();
+        }
+
+        @Test
+        @DisplayName("should return false if the objective deck is empty")
+        void canDrawObjective_shouldReturnFalseIfObjectiveDeckIsEmpty() {
+            Board board = mock(Board.class);
+            when(board.isObjectiveDeckEmpty()).thenReturn(true);
+            assertThat(botState.canDrawObjective(board)).isFalse();
+        }
+    }
+
+    @Test
+    @DisplayName("test getScore")
+    void test_getScore() {
+        assertThat(botState.getObjectiveScore()).isZero();
+
+        Objective objective = mock(Objective.class);
+        when(objective.getPoints()).thenReturn(10);
+
+        botState.setObjectiveAchieved(objective);
+        botState.redeemObjective(objective);
+
+        botState.addObjective(objective);
+
+        assertThat(botState.getObjectiveScore()).isEqualTo(10);
+    }
+
+    @Nested
+    @DisplayName("Method update()")
+    class TestGetObjectiveScore {
+        @Test
+        @DisplayName("should call verifyObjectives")
+        void update_shouldCallVerifyObjectives() {
+            botState = spy(botState);
+
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+
+            botState.update(board, botManager);
+            verify(botState, times(1)).verifyObjectives(board, botManager);
+        }
+
+        @Test
+        @DisplayName("should call setObjectiveAchieved if some are achieved")
+        void update_should_callSetObjectiveAchievedIfSomeAreAchieved() {
+            Objective objective = mock(Objective.class);
+            when(objective.isAchieved()).thenReturn(true);
+            botState.addObjective(objective);
+            botState = spy(botState);
+
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+
+            botState.update(board, botManager);
+            verify(botState, times(1)).setObjectiveAchieved(objective);
+        }
+
+        @Test
+        @DisplayName("should call setObjectiveNotAchieved if some are not achieved")
+        void update_should_callSetObjectiveNotAchievedIfSomeAreNotAchieved() {
+            Objective objective = mock(Objective.class);
+            when(objective.isAchieved()).thenReturn(false);
+            botState.addObjective(objective);
+            botState.setObjectiveAchieved(objective);
+            botState = spy(botState);
+
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+
+            botState.update(board, botManager);
+            verify(botState, times(1)).setObjectiveNotAchieved(objective);
+        }
+
+        @Test
+        @DisplayName("should add DrawObjectionAction is it can draw an objective")
+        void update_should_addDrawObjectiveActionIfCanDrawObjective() {
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+
+            botState.update(board, botManager);
+            assertThat(botState.getAvailableActions()).contains(DrawObjectiveAction.class);
+        }
+
+        @Test
+        @DisplayName("should add RedeemObjectiveAction if it can redeem an objective")
+        void update_should_addRedeemObjectiveActionIfCanRedeemObjective() {
+            botState = spy(botState);
+
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+
+            botState.addAvailableAction(DrawObjectiveAction.class);
+
+            when(botState.canRedeemObjective()).thenReturn(true);
+
+            botState.update(board, botManager);
+            assertThat(botState.getAvailableActions()).contains(RedeemObjectiveAction.class);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getPandaObjectiveScore()")
+    class TestGetPandaObjectiveScore {
+        @Test
+        @DisplayName("should return 0 if no panda objective")
+        void getPandaObjectiveScore_shouldReturnZeroIfNoPandaObjective() {
+            assertThat(botState.getPandaObjectiveScore()).isZero();
+        }
+
+        @Test
+        @DisplayName("should return 0 if panda objective not achieved")
+        void getPandaObjectiveScore_shouldReturnZeroIfPandaObjectiveNotAchieved() {
+            PandaObjective objective = mock(PandaObjective.class);
+            when(objective.getPoints()).thenReturn(10);
+            botState.addObjective(objective);
+            assertThat(botState.getPandaObjectiveScore()).isZero();
+        }
+
+        @Test
+        @DisplayName("should return the score if panda objective is redeemed")
+        void getPandaObjectiveScore_shouldReturnScoreIfPandaObjectiveIsRedeemed() {
+            PandaObjective objective = mock(PandaObjective.class);
+            when(objective.getPoints()).thenReturn(10);
+            botState.addObjective(objective);
+            botState.setObjectiveAchieved(objective);
+            botState.redeemObjective(objective);
+            assertThat(botState.getPandaObjectiveScore()).isEqualTo(10);
         }
     }
 }

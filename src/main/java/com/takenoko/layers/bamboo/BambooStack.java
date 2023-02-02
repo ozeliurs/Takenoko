@@ -66,4 +66,11 @@ public class BambooStack {
     public void clear() {
         bambooCount = 0;
     }
+
+    public void useBamboo(Integer count) {
+        if (count > bambooCount) {
+            throw new IllegalArgumentException("Not enough bamboo to use");
+        }
+        bambooCount -= count;
+    }
 }

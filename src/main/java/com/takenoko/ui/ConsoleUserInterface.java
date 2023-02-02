@@ -43,6 +43,11 @@ public class ConsoleUserInterface implements UserInterface {
         logger.error(message);
     }
 
+    @Override
+    public void displayDebug(String message) {
+        logger.debug(message);
+    }
+
     public void displayLineSeparator() {
         logger.info("------------------------------------------------------------");
     }
