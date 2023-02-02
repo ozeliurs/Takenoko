@@ -11,6 +11,8 @@ public class Inventory {
     private final Map<TileColor, InventoryBambooStack> bambooStacks;
     private final InventoryImprovements inventoryImprovements;
 
+    private int irrigationChannelsCount = 0;
+
     /**
      * Constructor
      *
@@ -51,6 +53,7 @@ public class Inventory {
         this.bambooStacks.put(TileColor.PINK, inventory.getBambooStack(TileColor.PINK).copy());
 
         this.inventoryImprovements = inventory.getInventoryImprovements().copy();
+        this.irrigationChannelsCount = inventory.getIrrigationChannelsCount();
     }
 
     /** add 1 bamboo to the inventory */
@@ -104,6 +107,18 @@ public class Inventory {
      */
     public InventoryImprovements getInventoryImprovements() {
         return inventoryImprovements;
+    }
+
+    public void collectIrrigationChannel() {
+        irrigationChannelsCount++;
+    }
+
+    public int getIrrigationChannelsCount() {
+        return irrigationChannelsCount;
+    }
+
+    public void useIrrigationChannel() {
+        irrigationChannelsCount--;
     }
 
     /** reset inventory */

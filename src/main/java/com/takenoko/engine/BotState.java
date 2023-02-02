@@ -6,6 +6,7 @@ import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
+import com.takenoko.actions.irrigation.DrawIrrigationAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.tile.DrawTileAction;
@@ -257,6 +258,11 @@ public class BotState { // DEFAULT VALUES
         } else if (!alreadyDoneActions.contains(DrawTileAction.class)
                 && !availableActions.contains(DrawTileAction.class)) {
             availableActions.add(DrawTileAction.class);
+        }
+        if (!board.hasIrrigation()) {
+            availableActions.removeAll(Collections.singleton(DrawIrrigationAction.class));
+        } else if (!availableActions.contains(DrawIrrigationAction.class)) {
+            availableActions.add(DrawIrrigationAction.class);
         }
     }
 
