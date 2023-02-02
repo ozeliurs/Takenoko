@@ -2,7 +2,6 @@ package com.takenoko.actions.tile;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
-import com.takenoko.actions.EndGameAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;

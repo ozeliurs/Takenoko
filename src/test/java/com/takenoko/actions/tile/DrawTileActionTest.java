@@ -1,9 +1,5 @@
 package com.takenoko.actions.tile;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
-
-import com.takenoko.actions.EndGameAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.inventory.Inventory;
@@ -11,23 +7,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
 class DrawTileActionTest {
     @Nested
     class TestExecute {
-        @Test
-        @DisplayName("if the tile deck is empty, return an EndGameAction")
-        void testExecuteTileDeckEmpty() {
-            Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
-            when(board.isTileDeckEmpty()).thenReturn(true);
-            DrawTileAction drawTileAction = new DrawTileAction();
-
-            assertThat(drawTileAction.execute(board, botManager).availableActions())
-                    .containsExactly(EndGameAction.class);
-
-            verify(board).isTileDeckEmpty();
-            verify(botManager).displayMessage(any());
-        }
 
         @Test
         @DisplayName(
