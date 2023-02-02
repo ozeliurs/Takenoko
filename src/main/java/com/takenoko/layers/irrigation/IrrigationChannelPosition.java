@@ -39,6 +39,12 @@ public class IrrigationChannelPosition {
         return new IrrigationChannelPosition(positions);
     }
 
+    /**
+     * Return the list of all the neighbours of the irrigation channel position
+     * A neighbour is a position that is connected to the irrigation channel position
+     *
+     * @return the list of all the neighbours of the irrigation channel position
+     */
     public List<IrrigationChannelPosition> getNeighbours() {
         PositionVector leftTilePosition = getLeftTilePosition();
         PositionVector rightTilePosition = getRightTilePosition();
