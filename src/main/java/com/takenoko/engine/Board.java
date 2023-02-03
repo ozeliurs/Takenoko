@@ -332,6 +332,14 @@ public class Board {
         return gameAssets.getObjectiveDeck().isEmpty();
     }
 
+    public void drawIrrigation() {
+        gameAssets.getIrrigationDeck().draw();
+    }
+
+    public boolean hasIrrigation() {
+        return gameAssets.getIrrigationDeck().hasIrrigation();
+    }
+
     public void updateAvailableIrrigationChannelPositions(PositionVector position) {
         irrigationLayer.updateAvailableIrrigationChannelPositions(position, this);
     }
