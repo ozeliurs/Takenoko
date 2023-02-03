@@ -79,12 +79,12 @@ class TileLayerTest {
         }
 
         @Test
-        @DisplayName("should grow a bamboo on the tile")
+        @DisplayName("should call updateAvailableIrrigationChannelPositions when called")
         void placeTile_WhenCalled_GrowsBambooOnTile() {
             Tile tile = new Tile();
             PositionVector position = tileLayer.getAvailableTilePositions().get(0);
             tileLayer.placeTile(tile, position, board);
-            verify(board).growBamboo(position);
+            verify(board).updateAvailableIrrigationChannelPositions(position);
         }
 
         @Test

@@ -343,4 +343,8 @@ public class Board {
     public void updateAvailableIrrigationChannelPositions(PositionVector position) {
         irrigationLayer.updateAvailableIrrigationChannelPositions(position, this);
     }
+
+    public boolean isIrrigated(PositionVector positionOfTilePlaced) {
+        return irrigationLayer.isIrrigated(positionOfTilePlaced);
+    }
 }

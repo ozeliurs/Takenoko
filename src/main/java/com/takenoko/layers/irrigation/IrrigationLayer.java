@@ -28,8 +28,17 @@ public class IrrigationLayer {
             throw new IllegalArgumentException("The irrigation channel position is not available");
         }
         irrigationChannelsPositions.add(edgePosition);
-        irrigation.put(edgePosition.getLeftTilePosition(), true);
-        irrigation.put(edgePosition.getRightTilePosition(), true);
+        if (board.isTile(edgePosition.getLeftTilePosition())
+                && !board.isIrrigated(edgePosition.getLeftTilePosition())) {
+            irrigation.put(edgePosition.getLeftTilePosition(), true);
+            board.growBamboo(edgePosition.getLeftTilePosition());
+        }
+
+        if (board.isTile(edgePosition.getRightTilePosition())
+                && !board.isIrrigated(edgePosition.getRightTilePosition())) {
+            irrigation.put(edgePosition.getRightTilePosition(), true);
+            board.growBamboo(edgePosition.getRightTilePosition());
+        }
         updateAvailableIrrigationChannelPositions(edgePosition, board);
     }
 
@@ -44,6 +53,9 @@ public class IrrigationLayer {
         // if it is connected to the pond
         updateAvailableIrrigationChannelPositions(
                 EdgePosition.getEdgePositions(positionOfTilePlaced).stream(), board);
+        if (board.isIrrigated(positionOfTilePlaced)) {
+            board.growBamboo(positionOfTilePlaced);
+        }
     }
 
     private void updateAvailableIrrigationChannelPositions(
@@ -84,6 +96,7 @@ public class IrrigationLayer {
     }
 
     public boolean isIrrigated(PositionVector positionVector) {
+        irrigation.putIfAbsent(positionVector, false);
         return irrigation.get(positionVector);
     }
 
