@@ -87,7 +87,6 @@ public class IrrigationLayerTest {
 
     @Nested
     @DisplayName("method updateAvailableIrrigationChannelPosition")
-    @Disabled
     class TestUpdateAvailableIrrigationChannelPosition {
         @BeforeEach
         void setUp() {
