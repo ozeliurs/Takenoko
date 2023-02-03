@@ -352,4 +352,8 @@ public class Board {
     public void placeIrrigation(EdgePosition edgePosition) {
         irrigationLayer.placeIrrigation(edgePosition, this);
     }
+
+    public List<EdgePosition> getAvailableIrrigationPositions() {
+        return irrigationLayer.getAvailableEdgePositions().stream().toList();
+    }
 }
