@@ -6,6 +6,7 @@ import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import java.util.List;
 
 @ActionAnnotation(ActionType.DEFAULT)
 public class DrawIrrigationAction implements Action {
@@ -14,6 +15,6 @@ public class DrawIrrigationAction implements Action {
     public ActionResult execute(Board board, BotManager botManager) {
         board.drawIrrigation();
         botManager.getInventory().collectIrrigationChannel();
-        return new ActionResult(1);
+        return new ActionResult(List.of(PlaceIrrigationAction.class), 1);
     }
 }
