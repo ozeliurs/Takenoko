@@ -322,7 +322,8 @@ public class BotState { // DEFAULT VALUES
         }
         if (!board.hasIrrigation()) {
             availableActions.removeAll(Collections.singleton(DrawIrrigationAction.class));
-        } else if (!availableActions.contains(DrawIrrigationAction.class)) {
+        } else if (!availableActions.contains(DrawIrrigationAction.class)
+                && !alreadyDoneActions.contains(DrawIrrigationAction.class)) {
             availableActions.add(DrawIrrigationAction.class);
         }
     }
