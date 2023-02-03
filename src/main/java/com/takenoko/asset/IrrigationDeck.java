@@ -12,7 +12,7 @@ public class IrrigationDeck {
 
     /** Draws an irrigation from the deck. */
     public void draw() {
-        if (size == 0) {
+        if (size <= 0) {
             throw new IllegalArgumentException("No more irrigation");
         }
         size--;
