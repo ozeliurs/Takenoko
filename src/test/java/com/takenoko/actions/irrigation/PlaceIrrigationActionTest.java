@@ -28,13 +28,6 @@ class PlaceIrrigationActionTest {
     class Execute {
 
         @Test
-        @DisplayName("should call board.drawIrrigation()")
-        void shouldCallBoardDrawIrrigation() {
-            action.execute(board, mock(BotManager.class));
-            verify(board).drawIrrigation();
-        }
-
-        @Test
         @DisplayName("should call board.placeIrrigation()")
         void shouldCallBoardPlaceIrrigation() {
             action.execute(board, mock(BotManager.class));

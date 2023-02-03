@@ -19,10 +19,9 @@ public class PlaceIrrigationAction implements Action {
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
-        board.drawIrrigation();
-        board.placeIrrigation(edgePosition);
         botManager.displayMessage(
                 botManager.getName() + " placed an irrigation channel at " + edgePosition);
+        board.placeIrrigation(edgePosition);
         return new ActionResult(0);
     }
 }
