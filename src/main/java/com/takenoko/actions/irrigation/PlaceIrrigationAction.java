@@ -8,9 +8,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.irrigation.EdgePosition;
 
-/**
- * Action to place an irrigation channel on the board.
- */
+/** Action to place an irrigation channel on the board. */
 @ActionAnnotation(ActionType.FORCED)
 public class PlaceIrrigationAction implements Action {
     EdgePosition edgePosition;
