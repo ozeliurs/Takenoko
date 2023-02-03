@@ -102,7 +102,7 @@ public class IrrigationLayerTest {
         }
 
         @Test
-        @DisplayName("Irrigation lifecyle")
+        @DisplayName("Irrigation lifecycle")
         void irrigationLifecycle() {
             // When the board is created no available edge positions
             assertThat(irrigationLayer.getAvailableEdgePositions()).isEmpty();
