@@ -5,6 +5,7 @@ import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
+import com.takenoko.layers.irrigation.EdgePosition;
 import com.takenoko.layers.irrigation.IrrigationLayer;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
@@ -346,5 +347,9 @@ public class Board {
 
     public boolean isIrrigated(PositionVector positionOfTilePlaced) {
         return irrigationLayer.isIrrigated(positionOfTilePlaced);
+    }
+
+    public void placeIrrigation(EdgePosition edgePosition) {
+        irrigationLayer.placeIrrigation(edgePosition, this);
     }
 }
