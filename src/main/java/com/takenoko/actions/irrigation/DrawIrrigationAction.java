@@ -6,19 +6,18 @@ import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import java.util.List;
 
 @ActionAnnotation(ActionType.DEFAULT)
 public class DrawIrrigationAction implements Action {
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
-        if (!board.hasIrrigation()) {
-            botManager.displayMessage("No more irrigation in deck");
-            return new ActionResult(0);
-        }
-
         board.drawIrrigation();
         botManager.getInventory().collectIrrigationChannel();
+        if (!board.getAvailableIrrigationPositions().isEmpty()) {
+            return new ActionResult(List.of(PlaceIrrigationAction.class), 1);
+        }
         return new ActionResult(1);
     }
 }

@@ -7,6 +7,7 @@ import com.takenoko.actions.improvement.ApplyImprovementAction;
 import com.takenoko.actions.improvement.DrawImprovementAction;
 import com.takenoko.actions.improvement.StoreImprovementAction;
 import com.takenoko.actions.irrigation.DrawIrrigationAction;
+import com.takenoko.actions.irrigation.PlaceIrrigationAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.tile.DrawTileAction;
@@ -15,6 +16,7 @@ import com.takenoko.actions.weather.ChooseAndApplyWeatherAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
+import com.takenoko.layers.irrigation.EdgePosition;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
@@ -80,6 +82,9 @@ public class FullRandomBot implements Bot {
         if (botState.getAvailableActions().contains(DrawIrrigationAction.class)) {
             actions.add(new DrawIrrigationAction());
         }
+        if (botState.getAvailableActions().contains(PlaceIrrigationAction.class)) {
+            actions.add(getRandomPlaceIrrigationAction(board));
+        }
 
         actions.removeIf(Objects::isNull);
 
@@ -90,6 +95,14 @@ public class FullRandomBot implements Bot {
                             + ")");
 
         return actions.get(random.nextInt(actions.size()));
+    }
+
+    private Action getRandomPlaceIrrigationAction(Board board) {
+        List<EdgePosition> positions = board.getAvailableIrrigationPositions();
+
+        if (positions.isEmpty()) return null;
+
+        return new PlaceIrrigationAction(positions.get(random.nextInt(positions.size())));
     }
 
     private Action getRandomRedeemObjectiveAction(BotState botState) {

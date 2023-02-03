@@ -117,6 +117,7 @@ public class BambooLayer {
     public boolean isGrowableAt(PositionVector positionVector, Board board) {
         return board.isTile(positionVector)
                 && board.getTileAt(positionVector).getType() != TileType.POND
-                && board.getBambooAt(positionVector).isGrowable();
+                && board.getBambooAt(positionVector).isGrowable()
+                && board.isIrrigated(positionVector);
     }
 }
