@@ -15,6 +15,9 @@ public class DrawIrrigationAction implements Action {
     public ActionResult execute(Board board, BotManager botManager) {
         board.drawIrrigation();
         botManager.getInventory().collectIrrigationChannel();
-        return new ActionResult(List.of(PlaceIrrigationAction.class), 1);
+        if (!board.getAvailableIrrigationPositions().isEmpty()) {
+            return new ActionResult(List.of(PlaceIrrigationAction.class), 1);
+        }
+        return new ActionResult(1);
     }
 }
