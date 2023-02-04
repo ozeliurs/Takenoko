@@ -3,6 +3,7 @@ package com.takenoko.actions.irrigation;
 import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.DefaultAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
+import com.takenoko.actions.annotations.ActionCanBePlayedMultipleTimesPerTurn;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
@@ -10,6 +11,7 @@ import com.takenoko.engine.BotState;
 import com.takenoko.layers.irrigation.EdgePosition;
 
 @ActionAnnotation(ActionType.DEFAULT)
+@ActionCanBePlayedMultipleTimesPerTurn
 public class PlaceIrrigationFromInventoryAction implements DefaultAction {
     EdgePosition positionVector;
 
@@ -30,6 +32,7 @@ public class PlaceIrrigationFromInventoryAction implements DefaultAction {
     }
 
     public static boolean canBePlayed(Board board, BotState botState) {
-        return board.hasIrrigation();
+        return botState.getInventory().getIrrigationChannelsCount() > 0
+                && !board.getAvailableIrrigationPositions().isEmpty();
     }
 }

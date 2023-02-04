@@ -6,6 +6,7 @@ import com.takenoko.actions.DefaultAction;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
+import com.takenoko.actions.annotations.ActionCanBePlayedMultipleTimesPerTurn;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
 import com.takenoko.actions.irrigation.DrawIrrigationAction;
@@ -319,11 +320,14 @@ public class BotState { // DEFAULT VALUES
         availableActions.removeIf(
                 action ->
                         action.getAnnotation(ActionAnnotation.class).value() == ActionType.DEFAULT);
-        for (Class<? extends DefaultAction> actionClass : DEFAULT_AVAILABLE_ACTIONS) {
-            if (DefaultAction.canBePlayed(board, this, actionClass)) {
-                availableActions.add(actionClass);
-            }
-        }
+        DEFAULT_AVAILABLE_ACTIONS.stream()
+                .filter(
+                        actionClass ->
+                                DefaultAction.canBePlayed(board, this, actionClass)
+                                        && (actionClass.isAnnotationPresent(
+                                                        ActionCanBePlayedMultipleTimesPerTurn.class)
+                                                || !alreadyDoneActions.contains(actionClass)))
+                .forEach(actionClass -> availableActions.add(actionClass));
     }
 
     /**
