@@ -83,11 +83,19 @@ public class BotManager {
             consoleUserInterface.displayDebug(
                     this.getName() + " has " + botState.getNumberOfActions() + " actions.");
             consoleUserInterface.displayDebug(
-                    this.getName() + " can play: " + botState.getAvailableActions());
+                    this.getName()
+                            + " can play: "
+                            + botState.getAvailableActions().stream()
+                                    .map(Class::getSimpleName)
+                                    .toList());
             consoleUserInterface.displayDebug(
                     this.getName() + " must complete: " + botState.getObjectives());
             consoleUserInterface.displayDebug(
-                    this.getName() + " has already played: " + botState.getAlreadyDoneActions());
+                    this.getName()
+                            + " has already played: "
+                            + botState.getAlreadyDoneActions().stream()
+                                    .map(Class::getSimpleName)
+                                    .toList());
             consoleUserInterface.displayDebug(
                     this.getName() + " has achieved: " + botState.getAchievedObjectives());
             consoleUserInterface.displayDebug(
