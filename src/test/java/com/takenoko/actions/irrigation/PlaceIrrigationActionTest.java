@@ -35,10 +35,10 @@ class PlaceIrrigationActionTest {
         }
 
         @Test
-        @DisplayName("should return an ActionResult with 0 cost")
-        void shouldReturnAnActionResultWith0Cost() {
+        @DisplayName("should return an ActionResult with 1 cost")
+        void shouldReturnAnActionResultWith1Cost() {
             ActionResult result = action.execute(board, mock(BotManager.class));
-            assertThat(result.cost()).isZero();
+            assertThat(result.cost()).isEqualTo(1);
         }
     }
 }

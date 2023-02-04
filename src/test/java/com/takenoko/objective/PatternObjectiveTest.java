@@ -20,9 +20,11 @@ class PatternObjectiveTest {
         @DisplayName("When board matches Pattern, state is ACHIEVED")
         void verify_WhenBoardHasTwoTilesNextToEachOther_ThenObjectiveStateIsACHIEVED() {
             Pattern pattern = mock(Pattern.class);
-            when(pattern.match(mock(Board.class))).thenReturn(List.of(mock(Pattern.class)));
+            Board board = mock(Board.class);
+            when(board.isIrrigatedAt(any())).thenReturn(true);
+            when(pattern.match(board)).thenReturn(List.of(mock(Pattern.class)));
             PatternObjective patternObjective = new PatternObjective(pattern, 0);
-            patternObjective.verify(mock(Board.class), mock(BotManager.class));
+            patternObjective.verify(board, mock(BotManager.class));
             assertEquals(ObjectiveState.ACHIEVED, patternObjective.getState());
         }
 

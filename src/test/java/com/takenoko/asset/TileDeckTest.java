@@ -15,11 +15,11 @@ class TileDeckTest {
     @DisplayName("constructor")
     class Constructor {
         @Test
-        @DisplayName("When creating a tile deck, the deck is not empty and contains 23 tiles")
-        void whenCreatingATileDeckTheDeckIsNotEmptyAndContains23Tiles() {
+        @DisplayName("When creating a tile deck, the deck is not empty and contains 27 tiles")
+        void whenCreatingATileDeckTheDeckIsNotEmptyAndContains27Tiles() {
             TileDeck tileDeck = new TileDeck();
             assertFalse(tileDeck.isEmpty());
-            assertThat(tileDeck).hasSize(23);
+            assertThat(tileDeck).hasSize(27);
         }
     }
 

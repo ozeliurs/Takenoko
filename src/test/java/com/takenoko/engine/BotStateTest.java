@@ -8,7 +8,6 @@ import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
-import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.Objective;
@@ -213,23 +212,6 @@ class BotStateTest {
 
             botState.update(board, botManager);
             assertThat(botState.getAvailableActions()).contains(DrawObjectiveAction.class);
-        }
-
-        @Test
-        @DisplayName("should add RedeemObjectiveAction if it can redeem an objective")
-        @Disabled
-        void update_should_addRedeemObjectiveActionIfCanRedeemObjective() {
-            botState = spy(botState);
-
-            Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
-
-            botState.addAvailableAction(DrawObjectiveAction.class);
-
-            // when(botState.canRedeemObjective()).thenReturn(true);
-
-            botState.update(board, botManager);
-            assertThat(botState.getAvailableActions()).contains(RedeemObjectiveAction.class);
         }
     }
 

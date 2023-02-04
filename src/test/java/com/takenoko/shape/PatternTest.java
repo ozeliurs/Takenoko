@@ -8,10 +8,12 @@ import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.Pond;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
+import com.takenoko.layers.tile.TileType;
 import com.takenoko.vector.PositionVector;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.*;
 
@@ -45,6 +47,13 @@ class PatternTest {
             for (PositionVector position : tiles.keySet()) {
                 when(board.isTile(position)).thenReturn(true);
             }
+            when(board.getTilesWithoutPond())
+                    .thenReturn(
+                            tiles.entrySet().stream()
+                                    .filter(o -> o.getValue().getType() != TileType.POND)
+                                    .collect(
+                                            Collectors.toMap(
+                                                    Map.Entry::getKey, Map.Entry::getValue)));
         }
 
         @AfterEach
@@ -78,6 +87,8 @@ class PatternTest {
                 "should return the patterns when the pattern matches a n tile pattern with a"
                         + " specific color")
         void match_shouldReturnTrueWhenPatternMatchesNTilePattern() {
+            when(board.isIrrigatedAt(any())).thenReturn(true);
+
             Pattern pattern =
                     new Pattern(
                             Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.PINK)),

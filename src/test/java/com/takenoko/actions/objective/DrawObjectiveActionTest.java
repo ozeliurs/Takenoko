@@ -56,9 +56,11 @@ class DrawObjectiveActionTest {
         @DisplayName("should return false if the player can't draw an objective")
         void canDrawObjective_shouldReturnFalseIfCantDrawObjective() {
             when(board.isObjectiveDeckEmpty()).thenReturn(false);
+            botState = new BotState();
             for (int i = 0; i < BotState.MAX_OBJECTIVES; i++) {
                 botState.addObjective(mock(Objective.class));
             }
+            System.out.println(botState.getObjectives());
             assertThat(DrawObjectiveAction.canBePlayed(board, botState)).isFalse();
         }
 
