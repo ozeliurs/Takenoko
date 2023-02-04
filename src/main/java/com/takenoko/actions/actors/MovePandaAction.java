@@ -25,8 +25,7 @@ public class MovePandaAction implements DefaultAction {
     }
 
     public static boolean canBePlayed(Board board, BotState botState) {
-        return !board.getTiles().isEmpty()
-                && !botState.getAlreadyDoneActions().contains(MovePandaAction.class);
+        return !board.getTiles().isEmpty();
     }
 
     /**

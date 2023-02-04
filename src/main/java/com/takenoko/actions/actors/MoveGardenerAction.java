@@ -25,8 +25,7 @@ public class MoveGardenerAction implements DefaultAction {
     }
 
     public static boolean canBePlayed(Board board, BotState botState) {
-        return !board.getTiles().isEmpty()
-                && !botState.getAlreadyDoneActions().contains(MoveGardenerAction.class);
+        return !board.getTiles().isEmpty();
     }
 
     /**

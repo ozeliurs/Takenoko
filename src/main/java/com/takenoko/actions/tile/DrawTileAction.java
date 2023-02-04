@@ -14,8 +14,7 @@ import java.util.List;
 public class DrawTileAction implements DefaultAction {
 
     public static boolean canBePlayed(Board board, BotState botState) {
-        return !board.isTileDeckEmpty()
-                && !botState.getAlreadyDoneActions().contains(DrawTileAction.class);
+        return !board.isTileDeckEmpty();
     }
 
     @Override

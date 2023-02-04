@@ -13,8 +13,7 @@ import java.util.List;
 public class DrawIrrigationAction implements DefaultAction {
 
     public static boolean canBePlayed(Board board, BotState botState) {
-        return board.hasIrrigation()
-                && !botState.getAlreadyDoneActions().contains(DrawIrrigationAction.class);
+        return board.hasIrrigation();
     }
 
     @Override
