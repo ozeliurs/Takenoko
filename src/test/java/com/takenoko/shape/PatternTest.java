@@ -61,7 +61,8 @@ class PatternTest {
 
             Pattern pattern = new Pattern(Pair.of(pos0, new Tile(TileColor.GREEN)));
 
-            when(board.isIrrigatedAt(any())).thenReturn(true);
+            when(board.isIrrigatedAt(pos1)).thenReturn(true);
+            when(board.isIrrigatedAt(pos2)).thenReturn(false);
             when(board.getTilesWithoutPond())
                     .thenReturn(
                             Map.of(
@@ -70,8 +71,7 @@ class PatternTest {
 
             assertThat(pattern.match(board))
                     .containsExactlyInAnyOrder(
-                            new Shape(Pair.of(pos1, new Tile(TileColor.GREEN))),
-                            new Shape(Pair.of(pos2, new Tile(TileColor.GREEN))));
+                            new Shape(Pair.of(pos1, new Tile(TileColor.GREEN))));
         }
 
         @Test

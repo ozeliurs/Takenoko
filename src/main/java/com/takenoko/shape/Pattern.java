@@ -4,13 +4,17 @@ import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
+
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import org.apache.commons.lang3.tuple.Pair;
 
-/** Class representing a pattern. */
+/**
+ * Class representing a pattern.
+ */
 public class Pattern extends Shape {
     HashMap<PositionVector, Set<Shape>> cache = new HashMap<>();
 
@@ -53,13 +57,13 @@ public class Pattern extends Shape {
                 // For each tilePosition on the board translate the shape to the tilePosition
                 cache.computeIfAbsent(tilePosition, p -> this.translate(p).getRotatedShapes()).stream()
                         .filter(rotTransShape -> rotTransShape.getElements().entrySet().stream()
-                                .allMatch(e -> tileMap.containsKey(e.getKey()) && (
+                                .allMatch(e ->
+                                        board.isIrrigatedAt(e.getKey()) &&
+                                                tileMap.containsKey(e.getKey()) && (
                                                 tileMap.get(e.getKey()).equals(e.getValue()) || (
                                                         e.getValue().getColor().equals(TileColor.ANY) &&
                                                                 !tileMap.get(e.getKey()).getColor().equals(TileColor.NONE)
                                                 )
-                                                        // Verify that the tile is irrigated
-                                                        && board.isIrrigatedAt(e.getKey())
                                         )
                                 ))
         ).distinct().toList();
