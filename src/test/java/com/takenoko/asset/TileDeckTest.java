@@ -128,6 +128,7 @@ class TileDeckTest {
         void whenComparingTwoTileDecksTheyHaveDifferentHashCodesIfTheyHaveDifferentTiles() {
             TileDeck tileDeck1 = new TileDeck();
             TileDeck tileDeck2 = new TileDeck();
+            tileDeck2.draw();
             tileDeck2.choose(tileDeck2.peek().get(0));
             assertThat(tileDeck1).doesNotHaveSameHashCodeAs(tileDeck2);
         }

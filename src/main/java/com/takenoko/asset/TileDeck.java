@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class TileDeck extends ArrayList<Tile> {
 
     private final Random random;
+    private boolean canPeek;
 
     public TileDeck() {
         this(new SecureRandom());
@@ -20,6 +21,7 @@ public class TileDeck extends ArrayList<Tile> {
 
     public TileDeck(Random random) {
         this.random = random;
+        canPeek = false;
 
         // -------- GREEN TILES --------
         for (int i = 0; i < 6; i++) {
@@ -50,14 +52,9 @@ public class TileDeck extends ArrayList<Tile> {
         shuffle();
     }
 
-    /**
-     * Draw tiles from the deck.
-     *
-     * @deprecated
-     */
-    @Deprecated(since = "04/02/22", forRemoval = true)
+    /** Draw tiles from the deck. */
     public void draw() {
-        // stays here for compatibility with the old code, but not needed
+        canPeek = true;
     }
 
     /**
@@ -77,9 +74,13 @@ public class TileDeck extends ArrayList<Tile> {
         this.removeAll(tiles);
         tiles.remove(tile);
         this.addAll(tiles);
+        canPeek = false;
     }
 
     public List<Tile> peek() {
+        if (!canPeek) {
+            throw new IllegalStateException("You must draw tiles before peeking.");
+        }
         return new ArrayList<>(this.stream().limit(3).toList());
     }
 

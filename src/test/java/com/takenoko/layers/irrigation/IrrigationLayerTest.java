@@ -64,7 +64,8 @@ public class IrrigationLayerTest {
             PositionVector pos2 = new PositionVector(1, 0, -1);
             board.drawTiles();
             board.placeTile(board.peekTileDeck().get(0), pos1);
-            board.placeTile(board.peekTileDeck().get(1), pos2);
+            board.drawTiles();
+            board.placeTile(board.peekTileDeck().get(0), pos2);
 
             irrigationLayer.placeIrrigation(new EdgePosition(pos1, pos2), board);
             assertThat(irrigationLayer.getAvailableEdgePositions()).doesNotContain(edgePosition);
@@ -77,7 +78,8 @@ public class IrrigationLayerTest {
             PositionVector pos2 = new PositionVector(-1, 1, 0);
             board.drawTiles();
             board.placeTile(board.peekTileDeck().get(0), pos1);
-            board.placeTile(board.peekTileDeck().get(1), pos2);
+            board.drawTiles();
+            board.placeTile(board.peekTileDeck().get(0), pos2);
 
             irrigationLayer.placeIrrigation(new EdgePosition(pos1, pos2), board);
             assertThat(irrigationLayer.isIrrigatedAt(pos1)).isTrue();
@@ -112,13 +114,15 @@ public class IrrigationLayerTest {
             board.placeTile(board.peekTileDeck().get(0), new PositionVector(1, -1, 0));
             assertThat(irrigationLayer.getAvailableEdgePositions()).isEmpty();
 
-            board.placeTile(board.peekTileDeck().get(1), new PositionVector(1, 0, -1));
+            board.drawTiles();
+            board.placeTile(board.peekTileDeck().get(0), new PositionVector(1, 0, -1));
             assertThat(irrigationLayer.getAvailableEdgePositions())
                     .containsExactlyInAnyOrder(
                             new EdgePosition(
                                     new PositionVector(1, -1, 0), new PositionVector(1, 0, -1)));
 
-            board.placeTile(board.peekTileDeck().get(2), new PositionVector(0, -1, 1));
+            board.drawTiles();
+            board.placeTile(board.peekTileDeck().get(0), new PositionVector(0, -1, 1));
             assertThat(irrigationLayer.getAvailableEdgePositions())
                     .containsExactlyInAnyOrder(
                             new EdgePosition(
