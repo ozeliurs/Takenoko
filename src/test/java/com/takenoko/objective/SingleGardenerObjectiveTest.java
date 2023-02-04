@@ -11,12 +11,18 @@ import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
+
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class SingleGardenerObjectiveTest {
     private SingleGardenerObjective objectiveWithImprovement;
@@ -82,7 +88,7 @@ class SingleGardenerObjectiveTest {
             @Test
             @DisplayName("because the other object is not a SingleGardenerObjective")
             void
-                    shouldReturnFalseWhenTheTwoObjectsAreNotEqualBecauseTheOtherObjectIsNotASingleGardenerObjective() {
+            shouldReturnFalseWhenTheTwoObjectsAreNotEqualBecauseTheOtherObjectIsNotASingleGardenerObjective() {
                 assertThat(objectiveWithImprovement).isNotEqualTo(new Object());
             }
         }
@@ -95,9 +101,9 @@ class SingleGardenerObjectiveTest {
         @DisplayName("should return the same hashcode when the two objects are equal")
         void shouldReturnTheSameHashcodeWhenTheTwoObjectsAreEqual() {
             assertThat(
-                            new SingleGardenerObjective(
-                                            TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, 0)
-                                    .hashCode())
+                    new SingleGardenerObjective(
+                            TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, 0)
+                            .hashCode())
                     .hasSameHashCodeAs(objectiveWithImprovement);
         }
 
@@ -110,10 +116,10 @@ class SingleGardenerObjectiveTest {
                 assertThat(objectiveWithImprovement.hashCode())
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
-                                                TARGET_SIZE,
-                                                TileColor.GREEN,
-                                                TARGET_IMPROVEMENT_TYPE,
-                                                0)
+                                        TARGET_SIZE,
+                                        TileColor.GREEN,
+                                        TARGET_IMPROVEMENT_TYPE,
+                                        0)
                                         .hashCode());
             }
 
@@ -123,7 +129,7 @@ class SingleGardenerObjectiveTest {
                 assertThat(objectiveWithImprovement.hashCode())
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
-                                                TARGET_SIZE, TARGET_COLOR, ImprovementType.NONE, 0)
+                                        TARGET_SIZE, TARGET_COLOR, ImprovementType.NONE, 0)
                                         .hashCode());
             }
 
@@ -133,10 +139,10 @@ class SingleGardenerObjectiveTest {
                 assertThat(objectiveWithImprovement.hashCode())
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
-                                                TARGET_SIZE - 1,
-                                                TARGET_COLOR,
-                                                TARGET_IMPROVEMENT_TYPE,
-                                                0)
+                                        TARGET_SIZE - 1,
+                                        TARGET_COLOR,
+                                        TARGET_IMPROVEMENT_TYPE,
+                                        0)
                                         .hashCode());
             }
         }
@@ -209,144 +215,81 @@ class SingleGardenerObjectiveTest {
     @Nested
     @DisplayName("method verify")
     class TestVerify {
-        @Nested
-        @DisplayName("should return true")
-        class VerifyShouldReturnTrue {
-            @Test
-            @DisplayName(
-                    "when the bamboo count is equal and the color is the same and the improvement"
-                            + " is the same")
-            void
-                    verify_shouldReturnTrue_whenTheBambooCountIsEqualAndTheColorIsTheSameAndTheImprovementIsTheSame() {
-                // Variables
-                Board board = mock(Board.class);
-                BotManager botManager = mock(BotManager.class);
-                PositionVector position = new PositionVector(1, -1, 0);
-                HashMap<PositionVector, Tile> tiles = new HashMap<>();
-                Tile tile = mock(Tile.class);
-                tiles.put(position, tile);
-                // Behavior
-                when(tile.getColor()).thenReturn(TARGET_COLOR);
-                when(board.getTiles()).thenReturn(tiles);
-                when(tile.getImprovement()).thenReturn(Optional.of(TARGET_IMPROVEMENT_TYPE));
-                when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(TARGET_SIZE));
-                // Test
-                objectiveWithImprovement.verify(board, botManager);
-                assertThat(objectiveWithImprovement.isAchieved()).isTrue();
-            }
 
-            @Test
-            @DisplayName(
-                    "when the bamboo count is equal and the color is the same and the improvement"
-                            + " is any")
-            void
-                    verify_shouldReturnTrue_whenTheBambooCountIsEqualAndTheColorIsTheSameAndTheImprovementIsAny() {
-                // Variables
-                Board board = mock(Board.class);
-                BotManager botManager = mock(BotManager.class);
-                PositionVector position = new PositionVector(1, -1, 0);
-                HashMap<PositionVector, Tile> tiles = new HashMap<>();
-                Tile tile = mock(Tile.class);
-                tiles.put(position, tile);
-                // Behavior
-                when(tile.getColor()).thenReturn(TARGET_COLOR);
-                when(board.getTiles()).thenReturn(tiles);
-                when(tile.getImprovement()).thenReturn(Optional.of(TARGET_IMPROVEMENT_TYPE));
-                when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(TARGET_SIZE));
-                // Test
-                objectiveWithImprovement.verify(board, botManager);
-                assertThat(objectiveWithImprovement.isAchieved()).isTrue();
-            }
-
-            @Test
-            @DisplayName(
-                    "when the bamboo count is equal and the color is any and the improvement is the"
-                            + " same")
-            void
-                    verify_shouldReturnTrue_whenTheBambooCountIsEqualAndTheColorIsAnyAndTheImprovementIsTheSame() {
-                // Variables
-                Board board = mock(Board.class);
-                BotManager botManager = mock(BotManager.class);
-                PositionVector position = new PositionVector(1, -1, 0);
-                HashMap<PositionVector, Tile> tiles = new HashMap<>();
-                Tile tile = mock(Tile.class);
-                tiles.put(position, tile);
-                // Behavior
-                when(tile.getColor()).thenReturn(TARGET_COLOR);
-                when(board.getTiles()).thenReturn(tiles);
-                when(tile.getImprovement()).thenReturn(Optional.of(TARGET_IMPROVEMENT_TYPE));
-                when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(TARGET_SIZE));
-                // Test
-                objectiveWithImprovement.verify(board, botManager);
-                assertThat(objectiveWithImprovement.isAchieved()).isTrue();
-            }
+        private static Stream<Arguments> argumentForVerifyShouldReturnTrue() {
+            return Stream.of(
+                    Arguments.of(
+                            TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, "when the bamboo count is equal and the color and the improvement are the same"),
+                    Arguments.of(
+                            TARGET_SIZE,
+                            TARGET_COLOR,
+                            ImprovementType.ANY,
+                            "when the bamboo count is equal and the color is the same and the improvement is ANY"),
+                    Arguments.of(
+                            TARGET_SIZE,
+                            TileColor.ANY,
+                            TARGET_IMPROVEMENT_TYPE,
+                            "when the bamboo count is equal and the color is ANY and the improvement is the same")
+                    );
         }
 
-        @Nested
+        @ParameterizedTest(name = "{3}")
+        @DisplayName("should return true")
+        @MethodSource("argumentForVerifyShouldReturnTrue")
+        void verify_shouldReturnTrue(int inputSize, TileColor inputColor, ImprovementType inputImprovement, String message) {
+            // Variables
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+            PositionVector position = new PositionVector(1, -1, 0);
+            HashMap<PositionVector, Tile> tiles = new HashMap<>();
+            Tile tile = mock(Tile.class);
+            tiles.put(position, tile);
+            // Behavior
+            when(tile.getColor()).thenReturn(inputColor);
+            when(board.getTiles()).thenReturn(tiles);
+            when(tile.getImprovement()).thenReturn(Optional.of(inputImprovement));
+            when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(inputSize));
+            // Test
+            objectiveWithImprovement.verify(board, botManager);
+            assertThat(objectiveWithImprovement.isAchieved()).isTrue();
+        }
+
+        private static Stream<Arguments> argumentForVerifyShouldReturnFalse() {
+            return Stream.of(
+                    Arguments.of(
+                            TARGET_SIZE-1, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, "when the bamboo count is not equal and the color and the improvement are the same"),
+                    Arguments.of(
+                            TARGET_SIZE,
+                            TileColor.NONE,
+                            TARGET_IMPROVEMENT_TYPE,
+                            "when the bamboo count is equal and the color is different and the improvement is the same"),
+                    Arguments.of(
+                            TARGET_SIZE,
+                            TARGET_COLOR,
+                            ImprovementType.NONE,
+                            "when the bamboo count is equal and the color is the same and the improvement is different")
+            );
+        }
+
+        @ParameterizedTest(name = "{3}")
         @DisplayName("should return false")
-        class VerifyShouldReturnFalse {
-            @Test
-            @DisplayName(
-                    "when the bamboo count is not equal and the color is the same and the"
-                            + " improvement is the same")
-            void
-                    verify_shouldReturnFalse_whenTheBambooCountIsNotEqualAndTheColorIsTheSameAndTheImprovementIsTheSame() {
-                // Variables
-                Board board = mock(Board.class);
-                PositionVector position = new PositionVector(1, -1, 0);
-                HashMap<PositionVector, Tile> tiles = new HashMap<>();
-                Tile tile = mock(Tile.class);
-                tiles.put(position, tile);
-                // Behavior
-                when(tile.getColor()).thenReturn(TARGET_COLOR);
-                when(board.getTiles()).thenReturn(tiles);
-                when(tile.getImprovement()).thenReturn(Optional.of(TARGET_IMPROVEMENT_TYPE));
-                when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(TARGET_SIZE - 1));
-                // Test
-                assertThat(objectiveWithImprovement.isAchieved()).isFalse();
-            }
-
-            @Test
-            @DisplayName(
-                    "when the bamboo count is equal and the color is not the same and the"
-                            + " improvement is the same")
-            void
-                    verify_shouldReturnFalse_whenTheBambooCountIsEqualAndTheColorIsNotTheSameAndTheImprovementIsTheSame() {
-                // Variables
-                Board board = mock(Board.class);
-                PositionVector position = new PositionVector(1, -1, 0);
-                HashMap<PositionVector, Tile> tiles = new HashMap<>();
-                Tile tile = mock(Tile.class);
-                tiles.put(position, tile);
-                // Behavior
-                when(tile.getColor()).thenReturn(TileColor.NONE);
-                when(board.getTiles()).thenReturn(tiles);
-                when(tile.getImprovement()).thenReturn(Optional.of(TARGET_IMPROVEMENT_TYPE));
-                when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(TARGET_SIZE));
-                // Test
-                assertThat(objectiveWithImprovement.isAchieved()).isFalse();
-            }
-
-            @Test
-            @DisplayName(
-                    "when the bamboo count is equal and the color is the same and the improvement"
-                            + " is not the same")
-            void
-                    verify_shouldReturnFalse_whenTheBambooCountIsEqualAndTheColorIsTheSameAndTheImprovementIsNotTheSame() {
-                // Variables
-                Board board = mock(Board.class);
-                PositionVector position = new PositionVector(1, -1, 0);
-                HashMap<PositionVector, Tile> tiles = new HashMap<>();
-                Tile tile = mock(Tile.class);
-                tiles.put(position, tile);
-                // Behavior
-                when(tile.getColor()).thenReturn(TARGET_COLOR);
-                when(board.getTiles()).thenReturn(tiles);
-                when(tile.getImprovement()).thenReturn(Optional.of(ImprovementType.NONE));
-                when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(TARGET_SIZE));
-                // Test
-                assertThat(objectiveWithImprovement.isAchieved()).isFalse();
-            }
+        @MethodSource("argumentForVerifyShouldReturnFalse")
+        void verify_shouldReturnFalse(int inputSize, TileColor inputColor, ImprovementType inputImprovement, String message) {
+            // Variables
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+            PositionVector position = new PositionVector(1, -1, 0);
+            HashMap<PositionVector, Tile> tiles = new HashMap<>();
+            Tile tile = mock(Tile.class);
+            tiles.put(position, tile);
+            // Behavior
+            when(tile.getColor()).thenReturn(inputColor);
+            when(board.getTiles()).thenReturn(tiles);
+            when(tile.getImprovement()).thenReturn(Optional.of(inputImprovement));
+            when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(inputSize));
+            // Test
+            objectiveWithImprovement.verify(board, botManager);
+            assertThat(objectiveWithImprovement.isAchieved()).isFalse();
         }
     }
 
