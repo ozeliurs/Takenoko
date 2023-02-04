@@ -4,8 +4,12 @@ import static com.takenoko.engine.BotManager.DEFAULT_AVAILABLE_ACTIONS;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.NoActionAction;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
+import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
 import com.takenoko.actions.irrigation.DrawIrrigationAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
@@ -305,26 +309,49 @@ public class BotState { // DEFAULT VALUES
     private void updateDefaultActions(Board board) {
         if (!canDrawObjective(board)) {
             availableActions.removeAll(Collections.singleton(DrawObjectiveAction.class));
-        } else if (!alreadyDoneActions.contains(DrawObjectiveAction.class)
-                && !availableActions.contains(DrawObjectiveAction.class)) {
+        } else if (!availableActions.contains(DrawObjectiveAction.class)) {
             availableActions.add(DrawObjectiveAction.class);
         }
+
         if (!canRedeemObjective()) {
             availableActions.removeAll(Collections.singleton(RedeemObjectiveAction.class));
         } else if (!availableActions.contains(RedeemObjectiveAction.class)) {
             availableActions.add(RedeemObjectiveAction.class);
         }
-        if (board.isTileDeckEmpty()) {
+
+        if (canDrawTile(board)) {
             availableActions.removeAll(Collections.singleton(DrawTileAction.class));
-        } else if (!alreadyDoneActions.contains(DrawTileAction.class)
-                && !availableActions.contains(DrawTileAction.class)) {
+        } else if (!availableActions.contains(DrawTileAction.class)) {
             availableActions.add(DrawTileAction.class);
         }
-        if (!board.hasIrrigation()) {
+
+        if (canDrawIrrigation(board)) {
             availableActions.removeAll(Collections.singleton(DrawIrrigationAction.class));
-        } else if (!availableActions.contains(DrawIrrigationAction.class)
-                && !alreadyDoneActions.contains(DrawIrrigationAction.class)) {
+        } else if (!availableActions.contains(DrawIrrigationAction.class)) {
             availableActions.add(DrawIrrigationAction.class);
+        }
+
+        if (canMoveGardener(board)) {
+            availableActions.removeAll(Collections.singleton(MoveGardenerAction.class));
+        } else if (!availableActions.contains(MoveGardenerAction.class)) {
+            availableActions.add(MoveGardenerAction.class);
+        }
+
+        if (canMovePanda(board)) {
+            availableActions.removeAll(Collections.singleton(MovePandaAction.class));
+        } else if (!availableActions.contains(MovePandaAction.class)) {
+            availableActions.add(MovePandaAction.class);
+        }
+
+        if (availableActions.isEmpty()) {
+            availableActions.add(NoActionAction.class);
+        }
+
+        if (!canPlaceImprovement(board)) {
+            availableActions.removeAll(
+                    Collections.singleton(ApplyImprovementFromInventoryAction.class));
+        } else if (!availableActions.contains(ApplyImprovementFromInventoryAction.class)) {
+            availableActions.add(ApplyImprovementFromInventoryAction.class);
         }
     }
 
@@ -401,7 +428,58 @@ public class BotState { // DEFAULT VALUES
      */
     public boolean canDrawObjective(Board board) {
         return (objectives.size() + achievedObjectives.size()) < MAX_OBJECTIVES
-                && !board.isObjectiveDeckEmpty();
+                && !board.isObjectiveDeckEmpty()
+                && !alreadyDoneActions.contains(DrawObjectiveAction.class);
+    }
+
+    /**
+     * can draw a tile
+     *
+     * @param board the board
+     * @return true if the player can draw a tile
+     */
+    private boolean canDrawTile(Board board) {
+        return !board.isTileDeckEmpty() && !alreadyDoneActions.contains(DrawTileAction.class);
+    }
+
+    /**
+     * can place an irrigation
+     *
+     * @param board the board
+     * @return true if the player can place an irrigation
+     */
+    private boolean canDrawIrrigation(Board board) {
+        return board.hasIrrigation() && !alreadyDoneActions.contains(DrawIrrigationAction.class);
+    }
+
+    /**
+     * can move an actor
+     *
+     * @param board the board
+     * @return true if the player can move an actor
+     */
+    private boolean canMoveActors(Board board) {
+        return !board.getTiles().isEmpty();
+    }
+
+    /**
+     * can move a gardener
+     *
+     * @param board the board
+     * @return true if the player can move a gardener
+     */
+    private boolean canMoveGardener(Board board) {
+        return canMoveActors(board) && !alreadyDoneActions.contains(MoveGardenerAction.class);
+    }
+
+    /**
+     * can move a panda
+     *
+     * @param board the board
+     * @return true if the player can move a panda
+     */
+    private boolean canMovePanda(Board board) {
+        return canMoveActors(board) && !alreadyDoneActions.contains(MovePandaAction.class);
     }
 
     /**
@@ -411,6 +489,16 @@ public class BotState { // DEFAULT VALUES
      */
     public boolean canRedeemObjective() {
         return !achievedObjectives.isEmpty();
+    }
+
+    /**
+     * can place an improvement from the inventory
+     *
+     * @param board the board
+     * @return true if the player can place an improvement from the inventory
+     */
+    private boolean canPlaceImprovement(Board board) {
+        return !board.getAvailableImprovementPositions().isEmpty();
     }
 
     /**

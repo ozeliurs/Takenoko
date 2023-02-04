@@ -44,7 +44,9 @@ public class MoveGardenerAction implements Action {
                         + board.getGardenerPosition());
 
         if (!bambooStack.isEmpty()) {
-            botManager.displayMessage(botManager.getName() + " planted one bamboo");
+            botManager.displayMessage("Gardener planted one bamboo");
+        } else {
+            botManager.displayMessage("Gardener didn't plant any bamboo");
         }
         return new ActionResult(1);
     }

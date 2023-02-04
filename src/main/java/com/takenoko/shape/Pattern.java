@@ -50,6 +50,7 @@ public class Pattern extends Shape {
         // spotless:off
         return tileMap.keySet().stream().flatMap(tilePosition ->
                 // For each tilePosition on the board translate the shape to the tilePosition
+                // TODO matching tiles should be irrigated (maybe tileMap should be board)
                 cache.computeIfAbsent(tilePosition, p -> this.translate(p).getRotatedShapes()).stream()
                         .filter(rotTransShape -> rotTransShape.getElements().entrySet().stream()
                                 .allMatch(e -> tileMap.containsKey(e.getKey()) && (
@@ -72,6 +73,7 @@ public class Pattern extends Shape {
      */
     public float matchRatio(Map<PositionVector, Tile> tileMap) {
         // spotless:off
+        // TODO matching tiles should be irrigated
         long matchedElements =
                 IntStream.range(1, getElements().size() + 1)
                         .mapToObj(

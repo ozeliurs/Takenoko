@@ -1,13 +1,17 @@
 package com.takenoko.bot;
 
 import com.takenoko.actions.Action;
+import com.takenoko.actions.NoActionAction;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.improvement.ApplyImprovementAction;
+import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
 import com.takenoko.actions.improvement.DrawImprovementAction;
 import com.takenoko.actions.improvement.StoreImprovementAction;
 import com.takenoko.actions.irrigation.DrawIrrigationAction;
 import com.takenoko.actions.irrigation.PlaceIrrigationAction;
+import com.takenoko.actions.irrigation.PlaceIrrigationFromInventory;
+import com.takenoko.actions.irrigation.StoreIrrigationInInventoryAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.tile.DrawTileAction;
@@ -70,6 +74,10 @@ public class FullRandomBot implements Bot {
             actions.add(getRandomDrawAction(board));
         }
 
+        if (botState.getAvailableActions().contains(ApplyImprovementFromInventoryAction.class)) {
+            actions.add(getRandomApplyImprovementFromInventoryAction(board, botState));
+        }
+
         if (botState.getAvailableActions().contains(ChooseAndApplyWeatherAction.class)) {
             actions.add(getRandomChooseAndApplyWeatherAction());
         }
@@ -85,6 +93,15 @@ public class FullRandomBot implements Bot {
         if (botState.getAvailableActions().contains(PlaceIrrigationAction.class)) {
             actions.add(getRandomPlaceIrrigationAction(board));
         }
+        if (botState.getAvailableActions().contains(PlaceIrrigationFromInventory.class)) {
+            actions.add(getRandomPlaceIrrigationFromInventoryAction(board));
+        }
+        if (botState.getAvailableActions().contains(StoreIrrigationInInventoryAction.class)) {
+            actions.add(new StoreIrrigationInInventoryAction());
+        }
+        if (botState.getAvailableActions().contains(NoActionAction.class)) {
+            actions.add(new NoActionAction());
+        }
 
         actions.removeIf(Objects::isNull);
 
@@ -97,12 +114,34 @@ public class FullRandomBot implements Bot {
         return actions.get(random.nextInt(actions.size()));
     }
 
+    private Action getRandomApplyImprovementFromInventoryAction(Board board, BotState botState) {
+        List<ImprovementType> availableImprovements =
+                botState.getInventory().getInventoryImprovements();
+        List<PositionVector> availablePositions = board.getAvailableImprovementPositions();
+        if (availableImprovements.isEmpty()) {
+            return null;
+        }
+        return new ApplyImprovementFromInventoryAction(
+                availableImprovements.get(random.nextInt(availableImprovements.size())),
+                availablePositions.get(random.nextInt(availablePositions.size())));
+    }
+
     private Action getRandomPlaceIrrigationAction(Board board) {
         List<EdgePosition> positions = board.getAvailableIrrigationPositions();
 
         if (positions.isEmpty()) return null;
 
         return new PlaceIrrigationAction(positions.get(random.nextInt(positions.size())));
+    }
+
+    private Action getRandomPlaceIrrigationFromInventoryAction(Board board) {
+        List<EdgePosition> availableIrrigationPositions = board.getAvailableIrrigationPositions();
+        if (availableIrrigationPositions.isEmpty()) {
+            return null;
+        }
+        return new PlaceIrrigationFromInventory(
+                availableIrrigationPositions.get(
+                        random.nextInt(availableIrrigationPositions.size())));
     }
 
     private Action getRandomRedeemObjectiveAction(BotState botState) {
