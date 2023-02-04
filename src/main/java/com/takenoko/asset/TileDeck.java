@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 public class TileDeck extends ArrayList<Tile> {
 
     private final Random random;
-    private final transient List<Tile> lastDrawnTiles;
 
     public TileDeck() {
         this(new SecureRandom());
@@ -47,18 +46,17 @@ public class TileDeck extends ArrayList<Tile> {
         this.add(new Tile(ImprovementType.ENCLOSURE, TileColor.YELLOW));
         this.add(new Tile(ImprovementType.FERTILIZER, TileColor.YELLOW));
         this.add(new Tile(ImprovementType.WATERSHED, TileColor.YELLOW));
-        lastDrawnTiles = new ArrayList<>();
+
+        shuffle();
     }
 
-    /** Draw tiles from the deck. */
+    /**
+     * Draw tiles from the deck.
+     * @deprecated
+     */
+    @Deprecated(since = "04/02/22", forRemoval = true)
     public void draw() {
-        if (isEmpty()) {
-            throw new IllegalStateException("The deck is empty.");
-        }
-        lastDrawnTiles.clear();
-        for (int i = 0; i < 3; i++) {
-            lastDrawnTiles.add(this.get(random.nextInt(this.size())));
-        }
+        // stays here for compatibility with the old code, but not needed
     }
 
     /**
@@ -67,15 +65,30 @@ public class TileDeck extends ArrayList<Tile> {
      * @param tile the tile to place
      */
     public void choose(Tile tile) {
-        if (lastDrawnTiles.contains(tile)) {
-            this.remove(tile);
-            return;
+        // remove the tile from the deck and put the remaining tiles back at the end of the deck, do
+        // not shuffle
+
+        List<Tile> tiles = peek();
+        if (!tiles.contains(tile)) {
+            throw new IllegalArgumentException("This tile is not in the last drawn tiles.");
         }
-        throw new IllegalArgumentException("This tile is not in the last drawn tiles.");
+
+        this.removeAll(tiles);
+        tiles.remove(tile);
+        this.addAll(tiles);
     }
 
     public List<Tile> peek() {
-        return new ArrayList<>(lastDrawnTiles);
+        return new ArrayList<>(this.stream().limit(3).toList());
+    }
+
+    private void shuffle() {
+        for (int i = 0; i < this.size(); i++) {
+            int j = random.nextInt(this.size());
+            Tile temp = this.get(i);
+            this.set(i, this.get(j));
+            this.set(j, temp);
+        }
     }
 
     @Override

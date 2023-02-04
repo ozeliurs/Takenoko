@@ -224,8 +224,18 @@ class BoardTest {
         @Test
         @DisplayName("When boards are equal, returns true")
         void equals_WhenBoardsAreEqual_ThenReturnsTrue() {
-            Board board = new Board();
-            Board board2 = new Board();
+            TileLayer tileLayer = mock(TileLayer.class);
+            BambooLayer bambooLayer = mock(BambooLayer.class);
+            Panda panda = mock(Panda.class);
+            Gardener gardener = mock(Gardener.class);
+            GameAssets gameAssets = mock(GameAssets.class);
+            IrrigationLayer irrigationLayer = mock(IrrigationLayer.class);
+
+            Board board =
+                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+            Board board2 =
+                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+
             assertThat(board).isEqualTo(board2);
         }
 
@@ -258,8 +268,18 @@ class BoardTest {
         @Test
         @DisplayName("When boards are equal, returns same hash code")
         void hashCode_WhenBoardsAreEqual_ThenReturnsSameHashCode() {
-            Board board = new Board();
-            Board board2 = new Board();
+            TileLayer tileLayer = mock(TileLayer.class);
+            BambooLayer bambooLayer = mock(BambooLayer.class);
+            Panda panda = mock(Panda.class);
+            Gardener gardener = mock(Gardener.class);
+            GameAssets gameAssets = mock(GameAssets.class);
+            IrrigationLayer irrigationLayer = mock(IrrigationLayer.class);
+
+            Board board =
+                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+            Board board2 =
+                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+
             assertThat(board).hasSameHashCodeAs(board2);
         }
 

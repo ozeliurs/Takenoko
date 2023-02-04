@@ -42,7 +42,7 @@ public class FullRandomBot implements Bot {
         List<Action> actions = new ArrayList<>();
 
         if (botState.getAvailableActions().contains(ChooseIfApplyWeatherAction.class)) {
-            actions.add(new ChooseIfApplyWeatherAction(random.nextBoolean()));
+            return new ChooseIfApplyWeatherAction(random.nextBoolean());
         }
 
         if (botState.getAvailableActions().contains(DrawTileAction.class)) {
