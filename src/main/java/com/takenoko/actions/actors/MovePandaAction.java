@@ -1,17 +1,18 @@
 package com.takenoko.actions.actors;
 
-import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.DefaultAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of moving the panda. */
 @ActionAnnotation(ActionType.DEFAULT)
-public class MovePandaAction implements Action {
+public class MovePandaAction implements DefaultAction {
     private final PositionVector relativePositionVector;
 
     /**
@@ -21,6 +22,11 @@ public class MovePandaAction implements Action {
      */
     public MovePandaAction(PositionVector relativePositionVector) {
         this.relativePositionVector = relativePositionVector;
+    }
+
+    public static boolean canBePlayed(Board board, BotState botState) {
+        return !board.getTiles().isEmpty()
+                && !botState.getAlreadyDoneActions().contains(MovePandaAction.class);
     }
 
     /**

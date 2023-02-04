@@ -1,7 +1,6 @@
 package com.takenoko.bot;
 
 import com.takenoko.actions.Action;
-import com.takenoko.actions.NoActionAction;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.improvement.ApplyImprovementAction;
@@ -98,9 +97,6 @@ public class FullRandomBot implements Bot {
         }
         if (botState.getAvailableActions().contains(StoreIrrigationInInventoryAction.class)) {
             actions.add(new StoreIrrigationInInventoryAction());
-        }
-        if (botState.getAvailableActions().contains(NoActionAction.class)) {
-            actions.add(new NoActionAction());
         }
 
         actions.removeIf(Objects::isNull);

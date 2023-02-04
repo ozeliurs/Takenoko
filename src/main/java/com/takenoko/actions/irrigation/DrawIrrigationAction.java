@@ -1,15 +1,21 @@
 package com.takenoko.actions.irrigation;
 
-import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.DefaultAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import java.util.List;
 
 @ActionAnnotation(ActionType.DEFAULT)
-public class DrawIrrigationAction implements Action {
+public class DrawIrrigationAction implements DefaultAction {
+
+    public static boolean canBePlayed(Board board, BotState botState) {
+        return board.hasIrrigation()
+                && !botState.getAlreadyDoneActions().contains(DrawIrrigationAction.class);
+    }
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
