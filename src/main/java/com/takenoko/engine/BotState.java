@@ -7,7 +7,9 @@ import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
+import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
 import com.takenoko.actions.irrigation.DrawIrrigationAction;
+import com.takenoko.actions.irrigation.PlaceIrrigationFromInventoryAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.tile.DrawTileAction;
@@ -38,7 +40,9 @@ public class BotState { // DEFAULT VALUES
                     DrawIrrigationAction.class,
                     MoveGardenerAction.class,
                     MovePandaAction.class,
-                    RedeemObjectiveAction.class);
+                    RedeemObjectiveAction.class,
+                    PlaceIrrigationFromInventoryAction.class,
+                    ApplyImprovementFromInventoryAction.class);
 
     public BotState(
             int numberOfActions,

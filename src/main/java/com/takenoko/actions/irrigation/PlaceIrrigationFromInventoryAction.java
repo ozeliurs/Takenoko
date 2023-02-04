@@ -9,8 +9,8 @@ import com.takenoko.engine.BotManager;
 import com.takenoko.engine.BotState;
 import com.takenoko.layers.irrigation.EdgePosition;
 
-@ActionAnnotation(ActionType.PERSISTENT)
-public class PlaceIrrigationFromInventory implements Action {
+@ActionAnnotation(ActionType.DEFAULT)
+public class PlaceIrrigationFromInventoryAction implements DefaultAction {
     EdgePosition positionVector;
 
     public PlaceIrrigationFromInventoryAction(EdgePosition positionVector) {

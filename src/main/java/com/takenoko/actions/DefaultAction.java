@@ -4,6 +4,7 @@ import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
 import com.takenoko.actions.irrigation.DrawIrrigationAction;
+import com.takenoko.actions.irrigation.PlaceIrrigationFromInventoryAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.tile.DrawTileAction;
@@ -21,6 +22,8 @@ public interface DefaultAction extends Action {
             case "RedeemObjectiveAction" -> RedeemObjectiveAction.canBePlayed(board, botState);
             case "DrawTileAction" -> DrawTileAction.canBePlayed(board, botState);
             case "ApplyImprovementFromInventoryAction" -> ApplyImprovementFromInventoryAction
+                    .canBePlayed(board, botState);
+            case "PlaceIrrigationFromInventoryAction" -> PlaceIrrigationFromInventoryAction
                     .canBePlayed(board, botState);
             default -> throw new IllegalStateException(
                     "Unexpected value: " + actionClass.getSimpleName());
