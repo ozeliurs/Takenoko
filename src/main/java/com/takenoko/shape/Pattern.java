@@ -1,5 +1,6 @@
 package com.takenoko.shape;
 
+import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
@@ -42,11 +43,10 @@ public class Pattern extends Shape {
     /**
      * Method to match a shape on the board.
      *
-     * @param tileMap the tileMap to match the shape on
-     * @return the matching translated/rotated shapes
+     * @param board@return the matching translated/rotated shapes
      */
-    public List<Shape> match(Map<PositionVector, Tile> tileMap) {
-
+    public List<Shape> match(Board board) {
+        Map<PositionVector, Tile> tileMap = board.getTilesWithoutPond();
         // spotless:off
         return tileMap.keySet().stream().flatMap(tilePosition ->
                 // For each tilePosition on the board translate the shape to the tilePosition
@@ -58,6 +58,8 @@ public class Pattern extends Shape {
                                                         e.getValue().getColor().equals(TileColor.ANY) &&
                                                                 !tileMap.get(e.getKey()).getColor().equals(TileColor.NONE)
                                                 )
+                                                // We verify that the tile is irrigated
+                                                && board.isIrrigatedAt(e.getKey())
                                         )
                                 ))
 
@@ -68,10 +70,9 @@ public class Pattern extends Shape {
     /**
      * Returns the ratio of the matching shapes.
      *
-     * @param tileMap the tileMap to match the shape on
-     * @return the ratio of the matching translated/rotated shapes
+     * @param board@return the ratio of the matching translated/rotated shapes
      */
-    public float matchRatio(Map<PositionVector, Tile> tileMap) {
+    public float matchRatio(Board board) {
         // spotless:off
         // TODO matching tiles should be irrigated
         long matchedElements =
@@ -84,7 +85,7 @@ public class Pattern extends Shape {
                                                 .limit(v)
                                                 .toList())
                         )
-                        .filter(p -> !p.match(tileMap).isEmpty())
+                        .filter(p -> !p.match(board).isEmpty())
                         .count();
         return (float) matchedElements / getElements().size();
         // spotless:on

@@ -2,8 +2,7 @@ package com.takenoko.shape;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.Pond;
@@ -55,15 +54,20 @@ class PatternTest {
         @Test
         @DisplayName("should return the patterns when the pattern matches a one tile pattern")
         void match_shouldReturnTrueWhenPatternMatchesSingleTilePattern() {
-            Pattern pattern =
-                    new Pattern(Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.GREEN)));
-            ArrayList<Shape> expected = new ArrayList<>();
-            expected.add(
-                    new Shape(Pair.of(new PositionVector(0, -1, 1), new Tile(TileColor.GREEN))));
-            expected.add(
-                    new Shape(Pair.of(new PositionVector(-1, 0, 1), new Tile(TileColor.GREEN))));
+            PositionVector pos1 = new PositionVector(0, 0, 0);
+            PositionVector pos2 = new PositionVector(1, 0, -1);
+            PositionVector pos3 = new PositionVector(1, -1, 0);
 
-            assertThat(pattern.match(board.getTiles())).isEqualTo(expected);
+            Pattern pattern = new Pattern(Pair.of(pos1, new Tile(TileColor.GREEN)));
+            ArrayList<Shape> expected = new ArrayList<>();
+            expected.add(new Shape(Pair.of(pos2, new Tile(TileColor.GREEN))));
+            expected.add(new Shape(Pair.of(pos3, new Tile(TileColor.GREEN))));
+
+            when(board.isIrrigatedAt(pos1)).thenReturn(true);
+            when(board.isIrrigatedAt(pos2)).thenReturn(true);
+            when(board.isIrrigatedAt(pos3)).thenReturn(true);
+
+            assertThat(pattern.match(board)).isEqualTo(expected);
         }
 
         @Test
@@ -87,7 +91,7 @@ class PatternTest {
                             Pair.of(new PositionVector(1, -2, 1), new Tile(TileColor.PINK)),
                             Pair.of(new PositionVector(0, -1, 1), new Tile(TileColor.GREEN))));
 
-            assertThat(pattern.match(board.getTiles())).isEqualTo(expected);
+            assertThat(pattern.match(board)).isEqualTo(expected);
         }
 
         @Test
@@ -98,7 +102,7 @@ class PatternTest {
                             Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.PINK)),
                             Pair.of(new PositionVector(1, 0, -1), new Tile(TileColor.GREEN)),
                             Pair.of(new PositionVector(1, -1, 0), new Tile(TileColor.GREEN)));
-            assertThat(pattern.match(board.getTiles())).isEmpty();
+            assertThat(pattern.match(board)).isEmpty();
         }
     }
 

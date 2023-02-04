@@ -40,7 +40,7 @@ public class IrrigationLayerTest {
         @Test
         @DisplayName("by default the pond is irrigated")
         void defaultIrrigation() {
-            assertThat(irrigationLayer.isIrrigated(new PositionVector(0, 0, 0))).isTrue();
+            assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(0, 0, 0))).isTrue();
         }
     }
 
@@ -80,8 +80,8 @@ public class IrrigationLayerTest {
             board.placeTile(board.peekTileDeck().get(1), pos2);
 
             irrigationLayer.placeIrrigation(new EdgePosition(pos1, pos2), board);
-            assertThat(irrigationLayer.isIrrigated(pos1)).isTrue();
-            assertThat(irrigationLayer.isIrrigated(pos2)).isTrue();
+            assertThat(irrigationLayer.isIrrigatedAt(pos1)).isTrue();
+            assertThat(irrigationLayer.isIrrigatedAt(pos2)).isTrue();
         }
     }
 
@@ -207,21 +207,21 @@ public class IrrigationLayerTest {
 
             // Final irrigation pattern verification
             // POND
-            assertThat(irrigationLayer.isIrrigated(new PositionVector(0, 0, 0))).isTrue();
+            assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(0, 0, 0))).isTrue();
 
             // Pond neighbors
             for (Vector neighbor : (new PositionVector(0, 0, 0)).getNeighbors()) {
-                assertThat(irrigationLayer.isIrrigated(neighbor.toPositionVector())).isTrue();
+                assertThat(irrigationLayer.isIrrigatedAt(neighbor.toPositionVector())).isTrue();
             }
 
             // With irrigation
             System.out.println(board.getTileAt(new PositionVector(1, -2, 1)));
-            assertThat(irrigationLayer.isIrrigated(new PositionVector(1, -2, 1))).isTrue();
+            assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(1, -2, 1))).isTrue();
 
             // Not irrigated
-            assertThat(irrigationLayer.isIrrigated(new PositionVector(0, -2, 2))).isFalse();
-            assertThat(irrigationLayer.isIrrigated(new PositionVector(2, -2, 0))).isFalse();
-            assertThat(irrigationLayer.isIrrigated(new PositionVector(1, -3, 2))).isFalse();
+            assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(0, -2, 2))).isFalse();
+            assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(2, -2, 0))).isFalse();
+            assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(1, -3, 2))).isFalse();
         }
     }
 
@@ -232,7 +232,7 @@ public class IrrigationLayerTest {
         @DisplayName("should return true for tile next to pond")
         void isIrrigated_shouldReturnTrueForTileNextToPond() {
             IrrigationLayer irrigationLayer = new IrrigationLayer();
-            assertThat(irrigationLayer.isIrrigated(new PositionVector(0, -1, 1))).isTrue();
+            assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(0, -1, 1))).isTrue();
         }
     }
 }

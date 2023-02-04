@@ -345,15 +345,15 @@ public class Board {
         irrigationLayer.updateAvailableIrrigationChannelPositions(position, this);
     }
 
-    public boolean isIrrigated(PositionVector positionOfTilePlaced) {
-        return irrigationLayer.isIrrigated(positionOfTilePlaced);
-    }
-
     public void placeIrrigation(EdgePosition edgePosition) {
         irrigationLayer.placeIrrigation(edgePosition, this);
     }
 
     public List<EdgePosition> getAvailableIrrigationPositions() {
         return irrigationLayer.getAvailableEdgePositions().stream().toList();
+    }
+
+    public boolean isIrrigatedAt(PositionVector position) {
+        return irrigationLayer.isIrrigatedAt(position);
     }
 }
