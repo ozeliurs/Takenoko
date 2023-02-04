@@ -5,10 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
-import com.takenoko.layers.tile.Pond;
-import com.takenoko.layers.tile.Tile;
-import com.takenoko.layers.tile.TileColor;
-import com.takenoko.layers.tile.TileType;
+import com.takenoko.layers.tile.*;
 import com.takenoko.vector.PositionVector;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -182,29 +179,41 @@ class PatternTest {
     @DisplayName("test pattern matching with a curve")
     void testPatternMatching() {
         HashMap<PositionVector, Tile> tiles = new HashMap<>();
-        tiles.put(new PositionVector(2, 1, -3), new Tile(TileColor.GREEN));
+        tiles.put(
+                new PositionVector(2, 1, -3),
+                new Tile(ImprovementType.FERTILIZER, TileColor.GREEN));
         tiles.put(new PositionVector(3, -1, -2), new Tile(TileColor.YELLOW));
         tiles.put(new PositionVector(3, 0, -3), new Tile(TileColor.YELLOW));
         tiles.put(new PositionVector(1, 1, -2), new Tile(TileColor.GREEN));
-        tiles.put(new PositionVector(-1, 1, 0), new Tile(TileColor.PINK));
+        tiles.put(
+                new PositionVector(-1, 1, 0), new Tile(ImprovementType.FERTILIZER, TileColor.PINK));
         tiles.put(new PositionVector(0, 0, 0), new Tile(TileColor.NONE));
         tiles.put(new PositionVector(2, 0, -2), new Tile(TileColor.GREEN));
-        tiles.put(new PositionVector(2, -1, -1), new Tile(TileColor.YELLOW));
+        tiles.put(
+                new PositionVector(2, -1, -1),
+                new Tile(ImprovementType.FERTILIZER, TileColor.YELLOW));
         tiles.put(new PositionVector(-3, 3, 0), new Tile(TileColor.GREEN));
         tiles.put(new PositionVector(1, -1, 0), new Tile(TileColor.YELLOW));
-        tiles.put(new PositionVector(0, 1, -1), new Tile(TileColor.PINK));
+        tiles.put(
+                new PositionVector(0, 1, -1), new Tile(ImprovementType.FERTILIZER, TileColor.PINK));
         tiles.put(new PositionVector(0, -1, 1), new Tile(TileColor.PINK));
         tiles.put(new PositionVector(-2, 2, 0), new Tile(TileColor.GREEN));
         tiles.put(new PositionVector(0, -2, 2), new Tile(TileColor.YELLOW));
-        tiles.put(new PositionVector(2, -2, 0), new Tile(TileColor.GREEN));
+        tiles.put(
+                new PositionVector(2, -2, 0),
+                new Tile(ImprovementType.FERTILIZER, TileColor.GREEN));
         tiles.put(new PositionVector(0, 2, -2), new Tile(TileColor.PINK));
         tiles.put(new PositionVector(0, 3, -3), new Tile(TileColor.YELLOW));
-        tiles.put(new PositionVector(-3, 2, 1), new Tile(TileColor.GREEN));
+        tiles.put(
+                new PositionVector(-3, 2, 1),
+                new Tile(ImprovementType.FERTILIZER, TileColor.GREEN));
         tiles.put(new PositionVector(-4, 3, 1), new Tile(TileColor.PINK));
         tiles.put(new PositionVector(-2, 3, -1), new Tile(TileColor.YELLOW));
         tiles.put(new PositionVector(-1, 3, -2), new Tile(TileColor.PINK));
         tiles.put(new PositionVector(-3, 4, -1), new Tile(TileColor.GREEN));
-        tiles.put(new PositionVector(-1, 4, -3), new Tile(TileColor.GREEN));
+        tiles.put(
+                new PositionVector(-1, 4, -3),
+                new Tile(ImprovementType.FERTILIZER, TileColor.GREEN));
         tiles.put(new PositionVector(4, -1, -3), new Tile(TileColor.PINK));
         tiles.put(new PositionVector(-1, 2, -1), new Tile(TileColor.GREEN));
         tiles.put(new PositionVector(1, 0, -1), new Tile(TileColor.YELLOW));
