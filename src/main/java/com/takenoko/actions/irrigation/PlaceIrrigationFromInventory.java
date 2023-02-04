@@ -1,0 +1,30 @@
+package com.takenoko.actions.irrigation;
+
+import com.takenoko.actions.Action;
+import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.annotations.ActionAnnotation;
+import com.takenoko.actions.annotations.ActionType;
+import com.takenoko.engine.Board;
+import com.takenoko.engine.BotManager;
+import com.takenoko.layers.irrigation.EdgePosition;
+
+@ActionAnnotation(ActionType.PERSISTENT)
+public class PlaceIrrigationFromInventory implements Action {
+    EdgePosition positionVector;
+
+    public PlaceIrrigationFromInventory(EdgePosition positionVector) {
+        this.positionVector = positionVector;
+    }
+
+    @Override
+    public ActionResult execute(Board board, BotManager botManager) {
+        botManager.displayMessage(
+                botManager.getName()
+                        + " placed irrigation at "
+                        + positionVector
+                        + " from inventory");
+        botManager.getInventory().useIrrigationChannel();
+        board.placeIrrigation(positionVector);
+        return new ActionResult(0);
+    }
+}

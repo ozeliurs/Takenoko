@@ -13,11 +13,14 @@ public class DrawIrrigationAction implements Action {
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
+        botManager.displayMessage(botManager.getName() + " drew irrigation");
         board.drawIrrigation();
         botManager.getInventory().collectIrrigationChannel();
         if (!board.getAvailableIrrigationPositions().isEmpty()) {
-            return new ActionResult(List.of(PlaceIrrigationAction.class), 1);
+            return new ActionResult(
+                    List.of(PlaceIrrigationAction.class, StoreIrrigationInInventoryAction.class),
+                    0);
         }
-        return new ActionResult(1);
+        return new ActionResult(List.of(StoreIrrigationInInventoryAction.class), 0);
     }
 }
