@@ -11,11 +11,9 @@ import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
-
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -88,7 +86,7 @@ class SingleGardenerObjectiveTest {
             @Test
             @DisplayName("because the other object is not a SingleGardenerObjective")
             void
-            shouldReturnFalseWhenTheTwoObjectsAreNotEqualBecauseTheOtherObjectIsNotASingleGardenerObjective() {
+                    shouldReturnFalseWhenTheTwoObjectsAreNotEqualBecauseTheOtherObjectIsNotASingleGardenerObjective() {
                 assertThat(objectiveWithImprovement).isNotEqualTo(new Object());
             }
         }
@@ -101,9 +99,9 @@ class SingleGardenerObjectiveTest {
         @DisplayName("should return the same hashcode when the two objects are equal")
         void shouldReturnTheSameHashcodeWhenTheTwoObjectsAreEqual() {
             assertThat(
-                    new SingleGardenerObjective(
-                            TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, 0)
-                            .hashCode())
+                            new SingleGardenerObjective(
+                                            TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, 0)
+                                    .hashCode())
                     .hasSameHashCodeAs(objectiveWithImprovement);
         }
 
@@ -116,10 +114,10 @@ class SingleGardenerObjectiveTest {
                 assertThat(objectiveWithImprovement.hashCode())
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
-                                        TARGET_SIZE,
-                                        TileColor.GREEN,
-                                        TARGET_IMPROVEMENT_TYPE,
-                                        0)
+                                                TARGET_SIZE,
+                                                TileColor.GREEN,
+                                                TARGET_IMPROVEMENT_TYPE,
+                                                0)
                                         .hashCode());
             }
 
@@ -129,7 +127,7 @@ class SingleGardenerObjectiveTest {
                 assertThat(objectiveWithImprovement.hashCode())
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
-                                        TARGET_SIZE, TARGET_COLOR, ImprovementType.NONE, 0)
+                                                TARGET_SIZE, TARGET_COLOR, ImprovementType.NONE, 0)
                                         .hashCode());
             }
 
@@ -139,10 +137,10 @@ class SingleGardenerObjectiveTest {
                 assertThat(objectiveWithImprovement.hashCode())
                         .isNotEqualTo(
                                 new SingleGardenerObjective(
-                                        TARGET_SIZE - 1,
-                                        TARGET_COLOR,
-                                        TARGET_IMPROVEMENT_TYPE,
-                                        0)
+                                                TARGET_SIZE - 1,
+                                                TARGET_COLOR,
+                                                TARGET_IMPROVEMENT_TYPE,
+                                                0)
                                         .hashCode());
             }
         }
@@ -216,27 +214,36 @@ class SingleGardenerObjectiveTest {
     @DisplayName("method verify")
     class TestVerify {
 
-        private static Stream<Arguments> argumentForVerifyShouldReturnTrue() {
+        private static Stream<Arguments> argumentForVerifyShouldSetTheObjectiveAsCompleted() {
             return Stream.of(
                     Arguments.of(
-                            TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, "when the bamboo count is equal and the color and the improvement are the same"),
+                            TARGET_SIZE,
+                            TARGET_COLOR,
+                            TARGET_IMPROVEMENT_TYPE,
+                            "when the bamboo count is equal and the color and the improvement are"
+                                    + " the same"),
                     Arguments.of(
                             TARGET_SIZE,
                             TARGET_COLOR,
                             ImprovementType.ANY,
-                            "when the bamboo count is equal and the color is the same and the improvement is ANY"),
+                            "when the bamboo count is equal and the color is the same and the"
+                                    + " improvement is ANY"),
                     Arguments.of(
                             TARGET_SIZE,
                             TileColor.ANY,
                             TARGET_IMPROVEMENT_TYPE,
-                            "when the bamboo count is equal and the color is ANY and the improvement is the same")
-                    );
+                            "when the bamboo count is equal and the color is ANY and the"
+                                    + " improvement is the same"));
         }
 
         @ParameterizedTest(name = "{3}")
-        @DisplayName("should return true")
-        @MethodSource("argumentForVerifyShouldReturnTrue")
-        void verify_shouldReturnTrue(int inputSize, TileColor inputColor, ImprovementType inputImprovement, String message) {
+        @DisplayName("should set the objective as completed")
+        @MethodSource("argumentForVerifyShouldSetTheObjectiveAsCompleted")
+        void verify_shouldReturnTrue(
+                int inputSize,
+                TileColor inputColor,
+                ImprovementType inputImprovement,
+                String message) {
             // Variables
             Board board = mock(Board.class);
             BotManager botManager = mock(BotManager.class);
@@ -254,27 +261,36 @@ class SingleGardenerObjectiveTest {
             assertThat(objectiveWithImprovement.isAchieved()).isTrue();
         }
 
-        private static Stream<Arguments> argumentForVerifyShouldReturnFalse() {
+        private static Stream<Arguments> argumentForVerifyShouldSetTheObjectiveAsNotCompleted() {
             return Stream.of(
                     Arguments.of(
-                            TARGET_SIZE-1, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, "when the bamboo count is not equal and the color and the improvement are the same"),
+                            TARGET_SIZE - 1,
+                            TARGET_COLOR,
+                            TARGET_IMPROVEMENT_TYPE,
+                            "when the bamboo count is not equal and the color and the improvement"
+                                    + " are the same"),
                     Arguments.of(
                             TARGET_SIZE,
                             TileColor.NONE,
                             TARGET_IMPROVEMENT_TYPE,
-                            "when the bamboo count is equal and the color is different and the improvement is the same"),
+                            "when the bamboo count is equal and the color is different and the"
+                                    + " improvement is the same"),
                     Arguments.of(
                             TARGET_SIZE,
                             TARGET_COLOR,
                             ImprovementType.NONE,
-                            "when the bamboo count is equal and the color is the same and the improvement is different")
-            );
+                            "when the bamboo count is equal and the color is the same and the"
+                                    + " improvement is different"));
         }
 
         @ParameterizedTest(name = "{3}")
-        @DisplayName("should return false")
-        @MethodSource("argumentForVerifyShouldReturnFalse")
-        void verify_shouldReturnFalse(int inputSize, TileColor inputColor, ImprovementType inputImprovement, String message) {
+        @DisplayName("should set the objective as not completed")
+        @MethodSource("argumentForVerifyShouldSetTheObjectiveAsNotCompleted")
+        void verify_shouldReturnFalse(
+                int inputSize,
+                TileColor inputColor,
+                ImprovementType inputImprovement,
+                String message) {
             // Variables
             Board board = mock(Board.class);
             BotManager botManager = mock(BotManager.class);
@@ -340,7 +356,7 @@ class SingleGardenerObjectiveTest {
 
             // Test
             assertThat(objectiveWithImprovement.getEligiblePositions(board))
-                    .containsExactly(position01, position04);
+                    .containsExactly(position01, position04, position05);
         }
     }
 

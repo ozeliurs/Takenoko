@@ -46,24 +46,26 @@ public class SingleGardenerObjective extends Objective {
     }
 
     private boolean match(Board board, PositionVector positionVector, Tile tile) {
-        if (!isTileEligible(board, positionVector, tile)) return false;
-
-        return board.getBambooAt(positionVector).getBambooCount() == targetSize;
+        return board.getBambooAt(positionVector).getBambooCount() == targetSize
+                && isTileEligible(board, positionVector, tile);
     }
 
     private boolean isTileEligible(Board board, PositionVector positionVector, Tile tile) {
-        if ((targetColor.equals(TileColor.NONE) || !tile.getColor().equals(targetColor))
-                && !targetColor.equals(TileColor.ANY)) {
-            return false;
-        }
-        if ((!targetImprovementType.equals(ImprovementType.NONE)
-                && !targetImprovementType.equals(ImprovementType.ANY))) {
-            Optional<ImprovementType> improvementType = tile.getImprovement();
-            return !(improvementType.isPresent()
-                            && !improvementType.get().equals(targetImprovementType))
-                    && board.getBambooAt(positionVector).getBambooCount() <= targetSize;
-        }
-        return board.getBambooAt(positionVector).getBambooCount() <= targetSize;
+        /*
+         * A tile is eligible if:
+         * - It's color matches the target color, or is ANY
+         * - It's improvement type matches the target improvement type, or is NONE
+         * - It's bamboo count is equal to the target size
+         */
+        Optional<ImprovementType> tileImprovement = tile.getImprovement();
+        return (tile.getColor() == targetColor || tile.getColor() == TileColor.ANY)
+                && (tileImprovement.isPresent() && tileImprovement.get() == targetImprovementType
+                        || tileImprovement.isPresent()
+                                && tileImprovement.get() == ImprovementType.ANY)
+                // Condition is true if the tile is <, = or > to the targetSize because a bamboo can
+                // be grown or eaten to validate the targetSize
+                && (board.getBambooAt(positionVector).getBambooCount() <= targetSize
+                        || board.getBambooAt(positionVector).getBambooCount() > targetSize);
     }
 
     public List<PositionVector> getEligiblePositions(Board board) {
