@@ -55,8 +55,7 @@ public class GameAssets {
                 gameAssets.improvementDeck,
                 gameAssets.tileDeck,
                 gameAssets.irrigationDeck,
-                gameAssets.objectiveDeck
-        );
+                gameAssets.objectiveDeck);
     }
 
     /**

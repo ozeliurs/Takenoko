@@ -52,6 +52,7 @@ public class TileDeck extends ArrayList<Tile> {
 
     /**
      * Draw tiles from the deck.
+     *
      * @deprecated
      */
     @Deprecated(since = "04/02/22", forRemoval = true)
