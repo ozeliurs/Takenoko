@@ -1,5 +1,7 @@
 package com.takenoko.objective;
 
+import static java.lang.Math.abs;
+
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.tile.ImprovementType;
@@ -47,30 +49,25 @@ public class SingleGardenerObjective extends Objective {
 
     private boolean match(Board board, PositionVector positionVector, Tile tile) {
         return board.getBambooAt(positionVector).getBambooCount() == targetSize
-                && isTileEligible(board, positionVector, tile);
+                && isTileEligible(tile);
     }
 
-    private boolean isTileEligible(Board board, PositionVector positionVector, Tile tile) {
+    private boolean isTileEligible(Tile tile) {
         /*
          * A tile is eligible if:
          * - It's color matches the target color, or is ANY
-         * - It's improvement type matches the target improvement type, or is NONE
-         * - It's bamboo count is equal to the target size
+         * - It's improvement type matches the target improvement type, or is ANY
          */
         Optional<ImprovementType> tileImprovement = tile.getImprovement();
         return (tile.getColor() == targetColor || tile.getColor() == TileColor.ANY)
                 && (tileImprovement.isPresent() && tileImprovement.get() == targetImprovementType
                         || tileImprovement.isPresent()
-                                && tileImprovement.get() == ImprovementType.ANY)
-                // Condition is true if the tile is <, = or > to the targetSize because a bamboo can
-                // be grown or eaten to validate the targetSize
-                && (board.getBambooAt(positionVector).getBambooCount() <= targetSize
-                        || board.getBambooAt(positionVector).getBambooCount() > targetSize);
+                                && tileImprovement.get() == ImprovementType.ANY);
     }
 
     public List<PositionVector> getEligiblePositions(Board board) {
         return board.getTiles().entrySet().stream()
-                .filter(v -> isTileEligible(board, v.getKey(), v.getValue()))
+                .filter(v -> isTileEligible(v.getValue()))
                 .map(Map.Entry::getKey)
                 .toList();
     }
@@ -92,7 +89,7 @@ public class SingleGardenerObjective extends Objective {
         return getEligiblePositions(board).stream()
                 .max(Comparator.comparingInt(v -> board.getBambooAt(v).getBambooCount()))
                 .map(v -> board.getBambooAt(v).getBambooCount())
-                .map(integer -> (float) integer / targetSize)
+                .map(integer -> 1 - ((float) abs(integer - targetSize) / targetSize))
                 .orElse(0f);
     }
 

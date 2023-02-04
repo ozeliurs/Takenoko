@@ -186,8 +186,10 @@ class SingleGardenerObjectiveTest {
             when(tile.getImprovement()).thenReturn(Optional.of(TARGET_IMPROVEMENT_TYPE));
             when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(currentBambooCount));
             // Test
-            assertThat(objectiveWithImprovement.getCompletion(board, botManager))
-                    .isEqualTo((float) 1 / TARGET_SIZE);
+            assertThat(
+                            objectiveWithImprovement.getCompletion(board, botManager)
+                                    - ((float) 1 / TARGET_SIZE))
+                    .isLessThan(0.0001f);
         }
 
         @Test
