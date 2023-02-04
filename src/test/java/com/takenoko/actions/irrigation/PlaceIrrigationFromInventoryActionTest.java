@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-class PlaceIrrigationFromInventoryTest {
+class PlaceIrrigationFromInventoryActionTest {
     @Nested
     @DisplayName("Method execute()")
     class TestExecute {
@@ -25,8 +25,8 @@ class PlaceIrrigationFromInventoryTest {
 
             when(botManager.getInventory()).thenReturn(mock(Inventory.class));
 
-            PlaceIrrigationFromInventory applyIrrigationFromInventory =
-                    new PlaceIrrigationFromInventory(positionVector);
+            PlaceIrrigationFromInventoryAction applyIrrigationFromInventory =
+                    new PlaceIrrigationFromInventoryAction(positionVector);
 
             assertNotNull(applyIrrigationFromInventory.execute(board, botManager));
 

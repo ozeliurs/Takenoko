@@ -9,7 +9,7 @@ import com.takenoko.actions.improvement.DrawImprovementAction;
 import com.takenoko.actions.improvement.StoreImprovementAction;
 import com.takenoko.actions.irrigation.DrawIrrigationAction;
 import com.takenoko.actions.irrigation.PlaceIrrigationAction;
-import com.takenoko.actions.irrigation.PlaceIrrigationFromInventory;
+import com.takenoko.actions.irrigation.PlaceIrrigationFromInventoryAction;
 import com.takenoko.actions.irrigation.StoreIrrigationInInventoryAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
@@ -92,7 +92,7 @@ public class FullRandomBot implements Bot {
         if (botState.getAvailableActions().contains(PlaceIrrigationAction.class)) {
             actions.add(getRandomPlaceIrrigationAction(board));
         }
-        if (botState.getAvailableActions().contains(PlaceIrrigationFromInventory.class)) {
+        if (botState.getAvailableActions().contains(PlaceIrrigationFromInventoryAction.class)) {
             actions.add(getRandomPlaceIrrigationFromInventoryAction(board));
         }
         if (botState.getAvailableActions().contains(StoreIrrigationInInventoryAction.class)) {
@@ -135,7 +135,7 @@ public class FullRandomBot implements Bot {
         if (availableIrrigationPositions.isEmpty()) {
             return null;
         }
-        return new PlaceIrrigationFromInventory(
+        return new PlaceIrrigationFromInventoryAction(
                 availableIrrigationPositions.get(
                         random.nextInt(availableIrrigationPositions.size())));
     }

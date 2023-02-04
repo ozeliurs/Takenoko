@@ -1,18 +1,19 @@
 package com.takenoko.actions.irrigation;
 
-import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.DefaultAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.layers.irrigation.EdgePosition;
 
 @ActionAnnotation(ActionType.PERSISTENT)
 public class PlaceIrrigationFromInventory implements Action {
     EdgePosition positionVector;
 
-    public PlaceIrrigationFromInventory(EdgePosition positionVector) {
+    public PlaceIrrigationFromInventoryAction(EdgePosition positionVector) {
         this.positionVector = positionVector;
     }
 
@@ -26,5 +27,9 @@ public class PlaceIrrigationFromInventory implements Action {
         botManager.getInventory().useIrrigationChannel();
         board.placeIrrigation(positionVector);
         return new ActionResult(0);
+    }
+
+    public static boolean canBePlayed(Board board, BotState botState) {
+        return board.hasIrrigation();
     }
 }
