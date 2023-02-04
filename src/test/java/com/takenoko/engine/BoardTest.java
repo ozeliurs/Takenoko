@@ -300,4 +300,21 @@ class BoardTest {
             verify(tileLayer).applyImprovement(any(), any(), any());
         }
     }
+
+    @Nested
+    @DisplayName("Methods nextRound && getRoundNumber")
+    class TestNextRound {
+        @Test
+        @DisplayName("By default, round number is 0")
+        void nextRound_ByDefault_RoundNumberIs0() {
+            assertThat(board.getRoundNumber()).isZero();
+        }
+
+        @Test
+        @DisplayName("When nextRound is called, round number is incremented")
+        void nextRound_WhenNextRoundIsCalled_RoundNumberIsIncremented() {
+            board.nextRound();
+            assertThat(board.getRoundNumber()).isEqualTo(1);
+        }
+    }
 }
