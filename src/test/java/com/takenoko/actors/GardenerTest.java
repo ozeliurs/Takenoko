@@ -8,6 +8,7 @@ import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.layers.tile.Pond;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
+import com.takenoko.vector.Vector;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -68,6 +69,24 @@ class GardenerTest {
             Gardener gardener = new Gardener(new PositionVector(1, 0, -1));
             BambooStack bamb = gardener.afterMove(board);
             verify(board, times(1)).growBamboo(gardener.getPositionVector());
+            assertThat(bamb.getBambooCount()).isEqualTo(1);
+        }
+
+        @Test
+        @DisplayName("should grow bamboo on the neighbouring tiles if they are irrigated")
+        void shouldGrowBambooOnTheNeighbouringTilesIfTheyAreIrrigated() {
+            Board board = spy(Board.class);
+            when(board.isTile(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(new Tile());
+            when(board.isIrrigatedAt(any())).thenReturn(true);
+            Gardener gardener = new Gardener(new PositionVector(1, 0, -1));
+            BambooStack bamb = gardener.afterMove(board);
+            verify(board, times(1)).growBamboo(gardener.getPositionVector());
+
+            for (Vector v : gardener.getPositionVector().getNeighbors()) {
+                verify(board, times(1)).growBamboo(v.toPositionVector());
+            }
+
             assertThat(bamb.getBambooCount()).isEqualTo(1);
         }
 
