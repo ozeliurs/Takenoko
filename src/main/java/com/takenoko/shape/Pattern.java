@@ -43,14 +43,14 @@ public class Pattern extends Shape {
     /**
      * Method to match a shape on the board.
      *
-     * @param board@return the matching translated/rotated shapes
+     * @param board the board
+     * @return the matching translated/rotated shapes
      */
     public List<Shape> match(Board board) {
         Map<PositionVector, Tile> tileMap = board.getTilesWithoutPond();
         // spotless:off
         return tileMap.keySet().stream().flatMap(tilePosition ->
                 // For each tilePosition on the board translate the shape to the tilePosition
-                // TODO matching tiles should be irrigated (maybe tileMap should be board)
                 cache.computeIfAbsent(tilePosition, p -> this.translate(p).getRotatedShapes()).stream()
                         .filter(rotTransShape -> rotTransShape.getElements().entrySet().stream()
                                 .allMatch(e -> tileMap.containsKey(e.getKey()) && (
@@ -58,11 +58,10 @@ public class Pattern extends Shape {
                                                         e.getValue().getColor().equals(TileColor.ANY) &&
                                                                 !tileMap.get(e.getKey()).getColor().equals(TileColor.NONE)
                                                 )
-                                                // We verify that the tile is irrigated
-                                                && board.isIrrigatedAt(e.getKey())
+                                                        // Verify that the tile is irrigated
+                                                        && board.isIrrigatedAt(e.getKey())
                                         )
                                 ))
-
         ).distinct().toList();
         // spotless:on
     }
@@ -74,7 +73,6 @@ public class Pattern extends Shape {
      */
     public float matchRatio(Board board) {
         // spotless:off
-        // TODO matching tiles should be irrigated
         long matchedElements =
                 IntStream.range(1, getElements().size() + 1)
                         .mapToObj(

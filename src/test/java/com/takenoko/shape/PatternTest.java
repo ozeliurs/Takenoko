@@ -11,6 +11,7 @@ import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.*;
 
@@ -54,20 +55,23 @@ class PatternTest {
         @Test
         @DisplayName("should return the patterns when the pattern matches a one tile pattern")
         void match_shouldReturnTrueWhenPatternMatchesSingleTilePattern() {
-            PositionVector pos1 = new PositionVector(0, 0, 0);
-            PositionVector pos2 = new PositionVector(1, 0, -1);
-            PositionVector pos3 = new PositionVector(1, -1, 0);
+            PositionVector pos0 = new PositionVector(0, 0, 0);
+            PositionVector pos1 = new PositionVector(1, 0, -1);
+            PositionVector pos2 = new PositionVector(1, -1, 0);
 
-            Pattern pattern = new Pattern(Pair.of(pos1, new Tile(TileColor.GREEN)));
-            ArrayList<Shape> expected = new ArrayList<>();
-            expected.add(new Shape(Pair.of(pos2, new Tile(TileColor.GREEN))));
-            expected.add(new Shape(Pair.of(pos3, new Tile(TileColor.GREEN))));
+            Pattern pattern = new Pattern(Pair.of(pos0, new Tile(TileColor.GREEN)));
 
-            when(board.isIrrigatedAt(pos1)).thenReturn(true);
-            when(board.isIrrigatedAt(pos2)).thenReturn(true);
-            when(board.isIrrigatedAt(pos3)).thenReturn(true);
+            when(board.isIrrigatedAt(any())).thenReturn(true);
+            when(board.getTilesWithoutPond())
+                    .thenReturn(
+                            Map.of(
+                                    pos1, new Tile(TileColor.GREEN),
+                                    pos2, new Tile(TileColor.GREEN)));
 
-            assertThat(pattern.match(board)).isEqualTo(expected);
+            assertThat(pattern.match(board))
+                    .containsExactlyInAnyOrder(
+                            new Shape(Pair.of(pos1, new Tile(TileColor.GREEN))),
+                            new Shape(Pair.of(pos2, new Tile(TileColor.GREEN))));
         }
 
         @Test
