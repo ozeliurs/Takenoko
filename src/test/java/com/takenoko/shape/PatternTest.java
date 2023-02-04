@@ -2,16 +2,18 @@ package com.takenoko.shape;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.Pond;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
+import com.takenoko.layers.tile.TileType;
 import com.takenoko.vector.PositionVector;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.*;
 
@@ -45,6 +47,13 @@ class PatternTest {
             for (PositionVector position : tiles.keySet()) {
                 when(board.isTile(position)).thenReturn(true);
             }
+            when(board.getTilesWithoutPond())
+                    .thenReturn(
+                            tiles.entrySet().stream()
+                                    .filter(o -> o.getValue().getType() != TileType.POND)
+                                    .collect(
+                                            Collectors.toMap(
+                                                    Map.Entry::getKey, Map.Entry::getValue)));
         }
 
         @AfterEach
@@ -55,15 +64,22 @@ class PatternTest {
         @Test
         @DisplayName("should return the patterns when the pattern matches a one tile pattern")
         void match_shouldReturnTrueWhenPatternMatchesSingleTilePattern() {
-            Pattern pattern =
-                    new Pattern(Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.GREEN)));
-            ArrayList<Shape> expected = new ArrayList<>();
-            expected.add(
-                    new Shape(Pair.of(new PositionVector(0, -1, 1), new Tile(TileColor.GREEN))));
-            expected.add(
-                    new Shape(Pair.of(new PositionVector(-1, 0, 1), new Tile(TileColor.GREEN))));
+            PositionVector pos0 = new PositionVector(0, 0, 0);
+            PositionVector pos1 = new PositionVector(1, 0, -1);
+            PositionVector pos2 = new PositionVector(1, -1, 0);
 
-            assertThat(pattern.match(board.getTiles())).isEqualTo(expected);
+            Pattern pattern = new Pattern(Pair.of(pos0, new Tile(TileColor.GREEN)));
+
+            when(board.isIrrigatedAt(pos1)).thenReturn(true);
+            when(board.isIrrigatedAt(pos2)).thenReturn(false);
+            when(board.getTilesWithoutPond())
+                    .thenReturn(
+                            Map.of(
+                                    pos1, new Tile(TileColor.GREEN),
+                                    pos2, new Tile(TileColor.GREEN)));
+
+            assertThat(pattern.match(board))
+                    .containsExactlyInAnyOrder(new Shape(Pair.of(pos1, new Tile(TileColor.GREEN))));
         }
 
         @Test
@@ -71,6 +87,8 @@ class PatternTest {
                 "should return the patterns when the pattern matches a n tile pattern with a"
                         + " specific color")
         void match_shouldReturnTrueWhenPatternMatchesNTilePattern() {
+            when(board.isIrrigatedAt(any())).thenReturn(true);
+
             Pattern pattern =
                     new Pattern(
                             Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.PINK)),
@@ -87,7 +105,7 @@ class PatternTest {
                             Pair.of(new PositionVector(1, -2, 1), new Tile(TileColor.PINK)),
                             Pair.of(new PositionVector(0, -1, 1), new Tile(TileColor.GREEN))));
 
-            assertThat(pattern.match(board.getTiles())).isEqualTo(expected);
+            assertThat(pattern.match(board)).isEqualTo(expected);
         }
 
         @Test
@@ -98,7 +116,7 @@ class PatternTest {
                             Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.PINK)),
                             Pair.of(new PositionVector(1, 0, -1), new Tile(TileColor.GREEN)),
                             Pair.of(new PositionVector(1, -1, 0), new Tile(TileColor.GREEN)));
-            assertThat(pattern.match(board.getTiles())).isEmpty();
+            assertThat(pattern.match(board)).isEmpty();
         }
     }
 

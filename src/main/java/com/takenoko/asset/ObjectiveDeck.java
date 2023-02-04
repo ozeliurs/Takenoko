@@ -97,7 +97,9 @@ public class ObjectiveDeck extends ArrayList<Objective> {
         add(
                 new SingleGardenerObjective(
                         4, TileColor.GREEN, ImprovementType.ENCLOSURE, 4)); // 4 GREEN
-        add(new SingleGardenerObjective(4, TileColor.GREEN, ImprovementType.POOL, 4)); // 4 GREEN
+        add(
+                new SingleGardenerObjective(
+                        4, TileColor.GREEN, ImprovementType.WATERSHED, 4)); // 4 GREEN
         add(
                 new SingleGardenerObjective(
                         4, TileColor.GREEN, ImprovementType.FERTILIZER, 3)); // 4 GREEN
@@ -105,13 +107,15 @@ public class ObjectiveDeck extends ArrayList<Objective> {
         add(
                 new SingleGardenerObjective(
                         4, TileColor.YELLOW, ImprovementType.ENCLOSURE, 5)); // 4 YELLOW
-        add(new SingleGardenerObjective(4, TileColor.YELLOW, ImprovementType.POOL, 5)); // 4 YELLOW
+        add(
+                new SingleGardenerObjective(
+                        4, TileColor.YELLOW, ImprovementType.WATERSHED, 5)); // 4 YELLOW
         add(
                 new SingleGardenerObjective(
                         4, TileColor.YELLOW, ImprovementType.FERTILIZER, 4)); // 4 YELLOW
         // PINK
         add(new SingleGardenerObjective(4, TileColor.PINK, ImprovementType.ENCLOSURE, 6)); // 4 PINK
-        add(new SingleGardenerObjective(4, TileColor.PINK, ImprovementType.POOL, 6)); // 4 PINK
+        add(new SingleGardenerObjective(4, TileColor.PINK, ImprovementType.WATERSHED, 6)); // 4 PINK
         add(
                 new SingleGardenerObjective(
                         4, TileColor.PINK, ImprovementType.FERTILIZER, 5)); // 4 PINK

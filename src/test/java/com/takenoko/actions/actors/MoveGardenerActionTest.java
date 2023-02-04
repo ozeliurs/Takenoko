@@ -29,17 +29,13 @@ public class MoveGardenerActionTest {
     @DisplayName("Method execute()")
     class TestExecute {
         @Test
-        @DisplayName("should move the gardener plant a bamboo and display messages")
-        void shouldMoveTheGardenerPlantBambooAndDisplayMessages() {
+        @DisplayName("should move the gardener plant a bamboo")
+        void shouldMoveTheGardenerPlantBamboo() {
             when(board.getGardenerPosition()).thenReturn(new PositionVector(0, 0, 0));
             when(botManager.getName()).thenReturn("Joe");
+            when(board.isIrrigatedAt(any())).thenReturn(true);
             moveGardenerAction.execute(board, botManager);
             verify(board).moveGardener(new PositionVector(-1, 0, 1));
-            verify(botManager, times(1))
-                    .displayMessage(
-                            "Joe moved the gardener with Vector[q=-1.0, r=0.0, s=1.0] to position"
-                                    + " Vector[q=0.0, r=0.0, s=0.0]");
-            verify(botManager, times(1)).displayMessage("Joe planted one bamboo");
         }
     }
 }

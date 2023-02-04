@@ -1,7 +1,7 @@
 package com.takenoko.actions.tile;
 
-import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.DefaultAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
@@ -10,7 +10,11 @@ import java.util.List;
 
 /** Action to draw a Tile from the deck. */
 @ActionAnnotation(ActionType.DEFAULT)
-public class DrawTileAction implements Action {
+public class DrawTileAction implements DefaultAction {
+
+    public static boolean canBePlayed(Board board) {
+        return !board.isTileDeckEmpty();
+    }
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {

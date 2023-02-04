@@ -311,7 +311,7 @@ class BambooLayerTest {
             when(board.getTileAt(any()).getType()).thenReturn(mock(TileType.class));
             when(board.getBambooAt(any())).thenReturn(mock(LayerBambooStack.class));
             when(board.getBambooAt(any()).isGrowable()).thenReturn(true);
-            when(board.isIrrigated(any())).thenReturn(true);
+            when(board.isIrrigatedAt(any())).thenReturn(true);
             assertThat(bambooLayer.isGrowableAt(new PositionVector(-1, 0, 1), board)).isTrue();
         }
     }

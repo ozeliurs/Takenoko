@@ -1,7 +1,7 @@
 package com.takenoko.actions.actors;
 
-import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.DefaultAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
@@ -11,7 +11,7 @@ import com.takenoko.vector.PositionVector;
 
 /** This class represents the action of moving the panda. */
 @ActionAnnotation(ActionType.DEFAULT)
-public class MovePandaAction implements Action {
+public class MovePandaAction implements DefaultAction {
     private final PositionVector relativePositionVector;
 
     /**
@@ -21,6 +21,10 @@ public class MovePandaAction implements Action {
      */
     public MovePandaAction(PositionVector relativePositionVector) {
         this.relativePositionVector = relativePositionVector;
+    }
+
+    public static boolean canBePlayed(Board board) {
+        return !board.getTiles().isEmpty();
     }
 
     /**
@@ -47,10 +51,13 @@ public class MovePandaAction implements Action {
                     .getInventory()
                     .collectBamboo(board.getTileAt(board.getPandaPosition()).getColor());
             botManager.displayMessage(
-                    botManager.getName()
-                            + " collected one "
+                    "Panda ate one "
                             + board.getTileAt(board.getPandaPosition()).getColor()
-                            + " bamboo");
+                            + " bamboo for "
+                            + botManager.getName());
+        } else {
+            // no bamboo to eat
+            botManager.displayMessage("Panda didn't eat any bamboo");
         }
         return new ActionResult(1);
     }

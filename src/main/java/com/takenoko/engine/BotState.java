@@ -1,12 +1,16 @@
 package com.takenoko.engine;
 
-import static com.takenoko.engine.BotManager.DEFAULT_AVAILABLE_ACTIONS;
-
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.DefaultAction;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
+import com.takenoko.actions.annotations.ActionCanBePlayedMultipleTimesPerTurn;
 import com.takenoko.actions.annotations.ActionType;
+import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
 import com.takenoko.actions.irrigation.DrawIrrigationAction;
+import com.takenoko.actions.irrigation.PlaceIrrigationFromInventoryAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.tile.DrawTileAction;
@@ -14,7 +18,6 @@ import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.PandaObjective;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,6 +33,17 @@ public class BotState { // DEFAULT VALUES
     private final Inventory inventory;
     private List<Class<? extends Action>> availableActions;
     private List<Class<? extends Action>> alreadyDoneActions = new ArrayList<>();
+
+    private static final List<Class<? extends DefaultAction>> DEFAULT_AVAILABLE_ACTIONS =
+            List.of(
+                    DrawObjectiveAction.class,
+                    DrawTileAction.class,
+                    DrawIrrigationAction.class,
+                    MoveGardenerAction.class,
+                    MovePandaAction.class,
+                    RedeemObjectiveAction.class,
+                    PlaceIrrigationFromInventoryAction.class,
+                    ApplyImprovementFromInventoryAction.class);
 
     public BotState(
             int numberOfActions,
@@ -303,29 +317,17 @@ public class BotState { // DEFAULT VALUES
      * @param board the board
      */
     private void updateDefaultActions(Board board) {
-        if (!canDrawObjective(board)) {
-            availableActions.removeAll(Collections.singleton(DrawObjectiveAction.class));
-        } else if (!alreadyDoneActions.contains(DrawObjectiveAction.class)
-                && !availableActions.contains(DrawObjectiveAction.class)) {
-            availableActions.add(DrawObjectiveAction.class);
-        }
-        if (!canRedeemObjective()) {
-            availableActions.removeAll(Collections.singleton(RedeemObjectiveAction.class));
-        } else if (!availableActions.contains(RedeemObjectiveAction.class)) {
-            availableActions.add(RedeemObjectiveAction.class);
-        }
-        if (board.isTileDeckEmpty()) {
-            availableActions.removeAll(Collections.singleton(DrawTileAction.class));
-        } else if (!alreadyDoneActions.contains(DrawTileAction.class)
-                && !availableActions.contains(DrawTileAction.class)) {
-            availableActions.add(DrawTileAction.class);
-        }
-        if (!board.hasIrrigation()) {
-            availableActions.removeAll(Collections.singleton(DrawIrrigationAction.class));
-        } else if (!availableActions.contains(DrawIrrigationAction.class)
-                && !alreadyDoneActions.contains(DrawIrrigationAction.class)) {
-            availableActions.add(DrawIrrigationAction.class);
-        }
+        availableActions.removeIf(
+                action ->
+                        action.getAnnotation(ActionAnnotation.class).value() == ActionType.DEFAULT);
+        DEFAULT_AVAILABLE_ACTIONS.stream()
+                .filter(
+                        actionClass ->
+                                DefaultAction.canBePlayed(board, this, actionClass)
+                                        && (actionClass.isAnnotationPresent(
+                                                        ActionCanBePlayedMultipleTimesPerTurn.class)
+                                                || !alreadyDoneActions.contains(actionClass)))
+                .forEach(actionClass -> availableActions.add(actionClass));
     }
 
     /**
@@ -391,26 +393,6 @@ public class BotState { // DEFAULT VALUES
             this.inventory.useBamboo(pandaObjective.getBambooTarget());
         }
         this.redeemedObjectives.add(objective);
-    }
-
-    /**
-     * can draw an objective
-     *
-     * @param board the board
-     * @return true if the player can draw an objective
-     */
-    public boolean canDrawObjective(Board board) {
-        return (objectives.size() + achievedObjectives.size()) < MAX_OBJECTIVES
-                && !board.isObjectiveDeckEmpty();
-    }
-
-    /**
-     * can redeem an objective
-     *
-     * @return true if the player can redeem an objective
-     */
-    public boolean canRedeemObjective() {
-        return !achievedObjectives.isEmpty();
     }
 
     /**

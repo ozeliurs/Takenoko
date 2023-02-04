@@ -6,22 +6,14 @@ import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.layers.irrigation.EdgePosition;
 
-/** Action to place an irrigation channel on the board. */
 @ActionAnnotation(ActionType.FORCED)
-public class PlaceIrrigationAction implements Action {
-    EdgePosition edgePosition;
-
-    public PlaceIrrigationAction(EdgePosition edgePosition) {
-        this.edgePosition = edgePosition;
-    }
-
+public class StoreIrrigationInInventoryAction implements Action {
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
         botManager.displayMessage(
-                botManager.getName() + " placed an irrigation channel at " + edgePosition);
-        board.placeIrrigation(edgePosition);
+                botManager.getName() + " stored an irrigation channel in inventory");
+        botManager.getInventory().collectIrrigationChannel();
         return new ActionResult(1);
     }
 }

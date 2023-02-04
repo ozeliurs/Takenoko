@@ -1,7 +1,7 @@
 package com.takenoko.actions.actors;
 
-import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.DefaultAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
@@ -11,7 +11,7 @@ import com.takenoko.vector.PositionVector;
 
 /** Action to move a gardener. */
 @ActionAnnotation(ActionType.DEFAULT)
-public class MoveGardenerAction implements Action {
+public class MoveGardenerAction implements DefaultAction {
     private final PositionVector relativePositionVector;
 
     /**
@@ -21,6 +21,10 @@ public class MoveGardenerAction implements Action {
      */
     public MoveGardenerAction(PositionVector relativePositionVector) {
         this.relativePositionVector = relativePositionVector;
+    }
+
+    public static boolean canBePlayed(Board board) {
+        return !board.getTiles().isEmpty();
     }
 
     /**
@@ -44,7 +48,9 @@ public class MoveGardenerAction implements Action {
                         + board.getGardenerPosition());
 
         if (!bambooStack.isEmpty()) {
-            botManager.displayMessage(botManager.getName() + " planted one bamboo");
+            botManager.displayMessage("Gardener planted one bamboo");
+        } else {
+            botManager.displayMessage("Gardener didn't plant any bamboo");
         }
         return new ActionResult(1);
     }

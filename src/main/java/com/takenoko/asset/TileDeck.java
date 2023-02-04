@@ -22,24 +22,31 @@ public class TileDeck extends ArrayList<Tile> {
     public TileDeck(Random random) {
         this.random = random;
 
-        for (int i = 0; i < 6; i++) { // Green Tiles
+        // -------- GREEN TILES --------
+        for (int i = 0; i < 6; i++) {
             this.add(new Tile(TileColor.GREEN));
         }
         this.add(new Tile(ImprovementType.ENCLOSURE, TileColor.GREEN));
         this.add(new Tile(ImprovementType.ENCLOSURE, TileColor.GREEN));
         this.add(new Tile(ImprovementType.FERTILIZER, TileColor.GREEN));
+        this.add(new Tile(ImprovementType.WATERSHED, TileColor.GREEN));
+        this.add(new Tile(ImprovementType.WATERSHED, TileColor.GREEN));
 
-        for (int i = 0; i < 4; i++) { // Pink Tiles
+        // -------- PINK TILES --------
+        for (int i = 0; i < 4; i++) {
             this.add(new Tile());
         }
         this.add(new Tile(ImprovementType.ENCLOSURE, TileColor.PINK));
         this.add(new Tile(ImprovementType.FERTILIZER, TileColor.PINK));
+        this.add(new Tile(ImprovementType.WATERSHED, TileColor.PINK));
 
-        for (int i = 0; i < 6; i++) { // Yellow Tiles
+        // -------- YELLOW TILES --------
+        for (int i = 0; i < 6; i++) {
             this.add(new Tile(TileColor.YELLOW));
         }
         this.add(new Tile(ImprovementType.ENCLOSURE, TileColor.YELLOW));
         this.add(new Tile(ImprovementType.FERTILIZER, TileColor.YELLOW));
+        this.add(new Tile(ImprovementType.WATERSHED, TileColor.YELLOW));
         lastDrawnTiles = new ArrayList<>();
     }
 

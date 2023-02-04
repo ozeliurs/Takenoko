@@ -15,7 +15,7 @@ public class PatternObjective extends Objective {
 
     @Override
     public void verify(Board board, BotManager botManager) {
-        if (!pattern.match(board.getTilesWithoutPond()).isEmpty()) {
+        if (!pattern.match(board).isEmpty()) {
             state = ObjectiveState.ACHIEVED;
         }
     }
@@ -46,7 +46,7 @@ public class PatternObjective extends Objective {
 
     @Override
     public float getCompletion(Board board, BotManager botManager) {
-        return pattern.matchRatio(board.getTilesWithoutPond());
+        return pattern.matchRatio(board);
     }
 
     @Override

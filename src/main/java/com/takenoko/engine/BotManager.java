@@ -2,8 +2,6 @@ package com.takenoko.engine;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
-import com.takenoko.actions.actors.MoveGardenerAction;
-import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
@@ -34,8 +32,7 @@ public class BotManager {
     private final Bot bot;
     private final int defaultNumberOfActions;
 
-    public static final List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS =
-            List.of(MovePandaAction.class, MoveGardenerAction.class);
+    public static final List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS = List.of();
 
     /**
      * Constructor for the class
@@ -86,11 +83,19 @@ public class BotManager {
             consoleUserInterface.displayDebug(
                     this.getName() + " has " + botState.getNumberOfActions() + " actions.");
             consoleUserInterface.displayDebug(
-                    this.getName() + " can play: " + botState.getAvailableActions());
+                    this.getName()
+                            + " can play: "
+                            + botState.getAvailableActions().stream()
+                                    .map(Class::getSimpleName)
+                                    .toList());
             consoleUserInterface.displayDebug(
                     this.getName() + " must complete: " + botState.getObjectives());
             consoleUserInterface.displayDebug(
-                    this.getName() + " has already played: " + botState.getAlreadyDoneActions());
+                    this.getName()
+                            + " has already played: "
+                            + botState.getAlreadyDoneActions().stream()
+                                    .map(Class::getSimpleName)
+                                    .toList());
             consoleUserInterface.displayDebug(
                     this.getName() + " has achieved: " + botState.getAchievedObjectives());
             consoleUserInterface.displayDebug(

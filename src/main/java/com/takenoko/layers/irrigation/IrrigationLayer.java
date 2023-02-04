@@ -29,13 +29,13 @@ public class IrrigationLayer {
         }
         irrigationChannelsPositions.add(edgePosition);
         if (board.isTile(edgePosition.getLeftTilePosition())
-                && !board.isIrrigated(edgePosition.getLeftTilePosition())) {
+                && !board.isIrrigatedAt(edgePosition.getLeftTilePosition())) {
             irrigation.put(edgePosition.getLeftTilePosition(), true);
             board.growBamboo(edgePosition.getLeftTilePosition());
         }
 
         if (board.isTile(edgePosition.getRightTilePosition())
-                && !board.isIrrigated(edgePosition.getRightTilePosition())) {
+                && !board.isIrrigatedAt(edgePosition.getRightTilePosition())) {
             irrigation.put(edgePosition.getRightTilePosition(), true);
             board.growBamboo(edgePosition.getRightTilePosition());
         }
@@ -53,7 +53,7 @@ public class IrrigationLayer {
         // if it is connected to the pond
         updateAvailableIrrigationChannelPositions(
                 EdgePosition.getEdgePositions(positionOfTilePlaced).stream(), board);
-        if (board.isIrrigated(positionOfTilePlaced)) {
+        if (board.isIrrigatedAt(positionOfTilePlaced)) {
             board.growBamboo(positionOfTilePlaced);
         }
     }
@@ -95,7 +95,7 @@ public class IrrigationLayer {
         return new HashSet<>(irrigationChannelsPositions);
     }
 
-    public boolean isIrrigated(PositionVector positionVector) {
+    public boolean isIrrigatedAt(PositionVector positionVector) {
         irrigation.putIfAbsent(positionVector, false);
         return irrigation.get(positionVector);
     }
