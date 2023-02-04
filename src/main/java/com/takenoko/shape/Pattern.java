@@ -4,17 +4,13 @@ import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
-
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import org.apache.commons.lang3.tuple.Pair;
 
-/**
- * Class representing a pattern.
- */
+/** Class representing a pattern. */
 public class Pattern extends Shape {
     HashMap<PositionVector, Set<Shape>> cache = new HashMap<>();
 

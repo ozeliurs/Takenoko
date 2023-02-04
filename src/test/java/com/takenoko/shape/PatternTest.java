@@ -70,8 +70,7 @@ class PatternTest {
                                     pos2, new Tile(TileColor.GREEN)));
 
             assertThat(pattern.match(board))
-                    .containsExactlyInAnyOrder(
-                            new Shape(Pair.of(pos1, new Tile(TileColor.GREEN))));
+                    .containsExactlyInAnyOrder(new Shape(Pair.of(pos1, new Tile(TileColor.GREEN))));
         }
 
         @Test
