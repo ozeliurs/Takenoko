@@ -32,8 +32,6 @@ public class BotManager {
     private final Bot bot;
     private final int defaultNumberOfActions;
 
-    public static final List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS = List.of();
-
     /**
      * Constructor for the class
      *
@@ -75,9 +73,11 @@ public class BotManager {
         botState.resetAvailableActions(board);
         botState.setNumberOfActions(defaultNumberOfActions);
 
-        board.rollWeather();
-        displayMessage(this.getName() + " rolled weather: " + board.peekWeather());
-        botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
+        if (board.getRoundNumber() > 0) {
+            board.rollWeather();
+            displayMessage(this.getName() + " rolled weather: " + board.peekWeather());
+            botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
+        }
         while (canPlayBot()) {
             botState.update(board, this);
             consoleUserInterface.displayDebug(

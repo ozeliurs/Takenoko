@@ -152,6 +152,7 @@ public class GameEngine {
                             "==<Last round>==<Last round>==<Last round>==<Last round>==");
                 }
             }
+            board.nextRound();
         }
     }
 
