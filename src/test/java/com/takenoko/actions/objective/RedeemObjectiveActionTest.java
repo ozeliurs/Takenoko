@@ -41,7 +41,7 @@ class RedeemObjectiveActionTest {
 
             botState.addAvailableAction(DrawObjectiveAction.class);
 
-            assertThat(RedeemObjectiveAction.canBePlayed(board, botState)).isTrue();
+            assertThat(RedeemObjectiveAction.canBePlayed(botState)).isTrue();
 
             botState.update(board, botManager);
             assertThat(botState.getAvailableActions()).contains(RedeemObjectiveAction.class);

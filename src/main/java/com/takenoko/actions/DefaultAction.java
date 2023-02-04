@@ -15,12 +15,12 @@ public interface DefaultAction extends Action {
     static boolean canBePlayed(
             Board board, BotState botState, Class<? extends DefaultAction> actionClass) {
         return switch (actionClass.getSimpleName()) {
-            case "MovePandaAction" -> MovePandaAction.canBePlayed(board, botState);
-            case "MoveGardenerAction" -> MoveGardenerAction.canBePlayed(board, botState);
-            case "DrawIrrigationAction" -> DrawIrrigationAction.canBePlayed(board, botState);
+            case "MovePandaAction" -> MovePandaAction.canBePlayed(board);
+            case "MoveGardenerAction" -> MoveGardenerAction.canBePlayed(board);
+            case "DrawIrrigationAction" -> DrawIrrigationAction.canBePlayed(board);
             case "DrawObjectiveAction" -> DrawObjectiveAction.canBePlayed(board, botState);
-            case "RedeemObjectiveAction" -> RedeemObjectiveAction.canBePlayed(board, botState);
-            case "DrawTileAction" -> DrawTileAction.canBePlayed(board, botState);
+            case "RedeemObjectiveAction" -> RedeemObjectiveAction.canBePlayed(botState);
+            case "DrawTileAction" -> DrawTileAction.canBePlayed(board);
             case "ApplyImprovementFromInventoryAction" -> ApplyImprovementFromInventoryAction
                     .canBePlayed(board, botState);
             case "PlaceIrrigationFromInventoryAction" -> PlaceIrrigationFromInventoryAction

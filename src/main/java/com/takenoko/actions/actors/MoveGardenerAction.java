@@ -6,7 +6,6 @@ import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.engine.BotState;
 import com.takenoko.layers.bamboo.BambooStack;
 import com.takenoko.vector.PositionVector;
 
@@ -24,7 +23,7 @@ public class MoveGardenerAction implements DefaultAction {
         this.relativePositionVector = relativePositionVector;
     }
 
-    public static boolean canBePlayed(Board board, BotState botState) {
+    public static boolean canBePlayed(Board board) {
         return !board.getTiles().isEmpty();
     }
 

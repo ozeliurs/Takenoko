@@ -6,13 +6,12 @@ import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.engine.BotState;
 import java.util.List;
 
 @ActionAnnotation(ActionType.DEFAULT)
 public class DrawIrrigationAction implements DefaultAction {
 
-    public static boolean canBePlayed(Board board, BotState botState) {
+    public static boolean canBePlayed(Board board) {
         return board.hasIrrigation();
     }
 

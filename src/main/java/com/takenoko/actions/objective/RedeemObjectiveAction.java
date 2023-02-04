@@ -20,7 +20,7 @@ public class RedeemObjectiveAction implements DefaultAction {
         this.objective = objective;
     }
 
-    public static boolean canBePlayed(Board board, BotState botState) {
+    public static boolean canBePlayed(BotState botState) {
         return !botState.getAchievedObjectives().isEmpty();
     }
 
