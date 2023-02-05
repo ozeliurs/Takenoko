@@ -1,13 +1,14 @@
 package com.takenoko.asset;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.*;
 
 import com.takenoko.layers.tile.Pond;
 import com.takenoko.layers.tile.Tile;
+import com.takenoko.layers.tile.TileColor;
 import java.security.SecureRandom;
+import java.util.List;
 import java.util.Random;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -131,6 +132,30 @@ class TileDeckTest {
             tileDeck2.draw();
             tileDeck2.choose(tileDeck2.peek().get(0));
             assertThat(tileDeck1).doesNotHaveSameHashCodeAs(tileDeck2);
+        }
+    }
+
+    @Nested
+    @DisplayName("bug1 fix")
+    class Bug1Fix {
+        @Test
+        @DisplayName(
+                "When choosing a tile, the tile is removed from the deck and the tiles that are not"
+                        + " chosen are returned are added to the end of the deck")
+        void
+                whenChoosingATileTheTileIsRemovedFromTheDeckAndTheTilesThatAreNotChosenAreReturnedAreAddedToTheEndOfTheDeck() {
+            SecureRandom random = mock(SecureRandom.class);
+            when(random.nextInt(anyInt())).thenReturn(0);
+            TileDeck tileDeck = new TileDeck(random);
+            tileDeck.draw();
+            Tile tile = new Tile(TileColor.GREEN);
+            long count = tileDeck.stream().filter(v -> v.equals(tile)).count();
+            List<Tile> peek = tileDeck.peek();
+            peek.remove(tile);
+            tileDeck.choose(tile);
+            assertThat(tileDeck).hasSize(26);
+            assertThat(tileDeck.stream().filter(v -> v.equals(tile)).count()).isEqualTo(count - 1);
+            assertThat(tileDeck.subList(24, 26)).containsExactlyElementsOf(peek);
         }
     }
 }
