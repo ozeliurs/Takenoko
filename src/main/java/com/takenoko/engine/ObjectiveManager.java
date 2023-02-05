@@ -59,10 +59,6 @@ public class ObjectiveManager {
         return new ArrayList<>(achievedObjectives);
     }
 
-    public ObjectiveManager getObjectiveManager() {
-        return this.copy();
-    }
-
     /**
      * for each objective, check if it is achieved
      *
