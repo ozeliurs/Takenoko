@@ -226,6 +226,22 @@ public class IrrigationLayerTest {
             assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(0, -2, 2))).isFalse();
             assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(2, -2, 0))).isFalse();
             assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(1, -3, 2))).isFalse();
+            assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(2, -1, -1))).isFalse();
+
+            // When watershed tile is placed, it is irrigated
+            Tile watershedTile;
+            do {
+                board.drawTiles();
+                watershedTile = board.peekTileDeck().get(0);
+                board.chooseTileInTileDeck(watershedTile);
+            } while (watershedTile.getImprovement().isPresent()
+                    && !watershedTile.getImprovement().get().equals(ImprovementType.WATERSHED));
+
+            board.placeTile(watershedTile, new PositionVector(2, -1, -1));
+
+            assertThat(watershedTile.getImprovement()).isPresent();
+            assertThat(watershedTile.getImprovement()).contains(ImprovementType.WATERSHED);
+            assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(2, -1, -1))).isTrue();
         }
     }
 
