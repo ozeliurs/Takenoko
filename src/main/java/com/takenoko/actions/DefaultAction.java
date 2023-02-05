@@ -19,7 +19,7 @@ public interface DefaultAction extends Action {
             case "MoveGardenerAction" -> MoveGardenerAction.canBePlayed(board);
             case "DrawIrrigationAction" -> DrawIrrigationAction.canBePlayed(board);
             case "DrawObjectiveAction" -> DrawObjectiveAction.canBePlayed(board, botState);
-            case "RedeemObjectiveAction" -> RedeemObjectiveAction.canBePlayed(botState);
+            case "RedeemObjectiveAction" -> RedeemObjectiveAction.canBePlayed(botState, board);
             case "DrawTileAction" -> DrawTileAction.canBePlayed(board);
             case "ApplyImprovementFromInventoryAction" -> ApplyImprovementFromInventoryAction
                     .canBePlayed(board, botState);

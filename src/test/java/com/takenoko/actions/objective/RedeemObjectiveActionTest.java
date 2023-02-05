@@ -34,16 +34,17 @@ class RedeemObjectiveActionTest {
         @DisplayName("should add RedeemObjectiveAction if it can redeem an objective")
         void update_should_addRedeemObjectiveActionIfCanRedeemObjective() {
             BotState botState = spy(BotState.class);
-            when(botState.getAchievedObjectives()).thenReturn(List.of(mock(Objective.class)));
+            when(botState.getAchievedObjectives(mock(Board.class), mock(BotState.class)))
+                    .thenReturn(List.of(mock(Objective.class)));
 
             Board board = mock(Board.class);
             BotManager botManager = mock(BotManager.class);
 
             botState.addAvailableAction(DrawObjectiveAction.class);
 
-            assertThat(RedeemObjectiveAction.canBePlayed(botState)).isTrue();
+            assertThat(RedeemObjectiveAction.canBePlayed(botState, board)).isTrue();
 
-            botState.update(board, botManager);
+            botState.update(board);
             assertThat(botState.getAvailableActions()).contains(RedeemObjectiveAction.class);
         }
     }

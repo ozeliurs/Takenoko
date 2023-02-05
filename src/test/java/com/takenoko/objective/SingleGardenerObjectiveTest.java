@@ -5,7 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
@@ -165,8 +165,8 @@ class SingleGardenerObjectiveTest {
         @DisplayName("should return the completion percentage when the objective is not started")
         void getCompletion_shouldReturnTheCompletionPercentageWhenTheObjectiveIsNotStarted() {
             Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
-            assertThat(objectiveWithImprovement.getCompletion(board, botManager)).isZero();
+            BotState botState = mock(BotState.class);
+            assertThat(objectiveWithImprovement.getCompletion(board, botState)).isZero();
         }
 
         @Test
@@ -174,7 +174,7 @@ class SingleGardenerObjectiveTest {
         void getCompletion_shouldReturnTheCompletionPercentageWhenTheObjectiveIsStarted() {
             // Variables
             Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
+            BotState botState = mock(BotState.class);
             PositionVector position = new PositionVector(1, -1, 0);
             HashMap<PositionVector, Tile> tiles = new HashMap<>();
             Tile tile = mock(Tile.class);
@@ -187,7 +187,7 @@ class SingleGardenerObjectiveTest {
             when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(currentBambooCount));
             // Test
             assertThat(
-                            objectiveWithImprovement.getCompletion(board, botManager)
+                            objectiveWithImprovement.getCompletion(board, botState)
                                     - ((float) 1 / TARGET_SIZE))
                     .isLessThan(0.0001f);
         }
@@ -197,7 +197,7 @@ class SingleGardenerObjectiveTest {
         void getCompletion_shouldReturnTheCompletionPercentageWhenTheObjectiveIsCompleted() {
             // Variables
             Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
+            BotState botState = mock(BotState.class);
             PositionVector position = new PositionVector(1, -1, 0);
             HashMap<PositionVector, Tile> tiles = new HashMap<>();
             Tile tile = mock(Tile.class);
@@ -208,7 +208,7 @@ class SingleGardenerObjectiveTest {
             when(tile.getImprovement()).thenReturn(Optional.of(TARGET_IMPROVEMENT_TYPE));
             when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(TARGET_SIZE));
             // Test
-            assertThat(objectiveWithImprovement.getCompletion(board, botManager)).isEqualTo(1);
+            assertThat(objectiveWithImprovement.getCompletion(board, botState)).isEqualTo(1);
         }
     }
 
@@ -248,7 +248,7 @@ class SingleGardenerObjectiveTest {
                 String message) {
             // Variables
             Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
+            BotState botState = mock(BotState.class);
             PositionVector position = new PositionVector(1, -1, 0);
             HashMap<PositionVector, Tile> tiles = new HashMap<>();
             Tile tile = mock(Tile.class);
@@ -259,7 +259,7 @@ class SingleGardenerObjectiveTest {
             when(tile.getImprovement()).thenReturn(Optional.of(inputImprovement));
             when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(inputSize));
             // Test
-            objectiveWithImprovement.verify(board, botManager);
+            objectiveWithImprovement.verify(board, botState);
             assertThat(objectiveWithImprovement.isAchieved()).isTrue();
         }
 
@@ -295,7 +295,7 @@ class SingleGardenerObjectiveTest {
                 String message) {
             // Variables
             Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
+            BotState botState = mock(BotState.class);
             PositionVector position = new PositionVector(1, -1, 0);
             HashMap<PositionVector, Tile> tiles = new HashMap<>();
             Tile tile = mock(Tile.class);
@@ -306,7 +306,7 @@ class SingleGardenerObjectiveTest {
             when(tile.getImprovement()).thenReturn(Optional.of(inputImprovement));
             when(board.getBambooAt(position)).thenReturn(new LayerBambooStack(inputSize));
             // Test
-            objectiveWithImprovement.verify(board, botManager);
+            objectiveWithImprovement.verify(board, botState);
             assertThat(objectiveWithImprovement.isAchieved()).isFalse();
         }
     }

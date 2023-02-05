@@ -1,7 +1,7 @@
 package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 
 public abstract class Objective {
 
@@ -16,7 +16,7 @@ public abstract class Objective {
     }
 
     /** Verify state of the objective. */
-    public abstract void verify(Board board, BotManager botManager);
+    public abstract void verify(Board board, BotState botState);
 
     /**
      * Whether the objective has been achieved.
@@ -42,7 +42,7 @@ public abstract class Objective {
     /*
      * @return the completion of the objective (between 0 and 1)
      */
-    public abstract float getCompletion(Board board, BotManager botManager);
+    public abstract float getCompletion(Board board, BotState botState);
 
     public int getPoints() {
         return points;

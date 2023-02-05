@@ -1,7 +1,7 @@
 package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 
 /** This class represents the emperor objective. */
 public class EmperorObjective extends Objective {
@@ -10,7 +10,7 @@ public class EmperorObjective extends Objective {
     }
 
     @Override
-    public void verify(Board board, BotManager botManager) {
+    public void verify(Board board, BotState botState) {
         // Do nothing as the objective is always achieved.
     }
 
@@ -25,7 +25,7 @@ public class EmperorObjective extends Objective {
     }
 
     @Override
-    public float getCompletion(Board board, BotManager botManager) {
+    public float getCompletion(Board board, BotState botState) {
         return 1f;
     }
 
