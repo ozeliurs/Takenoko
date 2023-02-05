@@ -13,10 +13,13 @@ class GameAssetsTest {
     private GameAssets gameAssets;
     private WeatherDice weatherDice;
 
+    private TileDeck tileDeck;
+
     @BeforeEach
     void setUp() {
         weatherDice = mock(WeatherDice.class);
-        gameAssets = new GameAssets(weatherDice);
+        tileDeck = mock(TileDeck.class);
+        gameAssets = new GameAssets(weatherDice, tileDeck);
     }
 
     @Nested
@@ -32,7 +35,7 @@ class GameAssetsTest {
         @Test
         @DisplayName("When gameAssets-s are equal, returns true")
         void equals_WhenGameAssets_S_AreEqual_ThenReturnsTrue() {
-            GameAssets gameAssets1 = new GameAssets(weatherDice);
+            GameAssets gameAssets1 = new GameAssets(weatherDice, tileDeck);
             assertThat(gameAssets1).isEqualTo(gameAssets);
         }
 
@@ -56,7 +59,7 @@ class GameAssetsTest {
         @Test
         @DisplayName("When gameAssets-s are equal, returns same hash code")
         void hashCode_WhenGameAssets_S_AreEqual_ThenReturnsSameHashCode() {
-            GameAssets gameAssets1 = new GameAssets(weatherDice);
+            GameAssets gameAssets1 = new GameAssets(weatherDice, tileDeck);
             assertThat(gameAssets1).hasSameHashCodeAs(gameAssets);
         }
 
