@@ -3,7 +3,7 @@ package com.takenoko.actors;
 import com.takenoko.engine.Board;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
-import com.takenoko.weather.Storm;
+import com.takenoko.weather.Stormy;
 import com.takenoko.weather.Weather;
 import java.util.Map;
 import java.util.Optional;
@@ -46,7 +46,7 @@ public class Panda extends Actor {
     @Override
     protected boolean isMovePossible(PositionVector vector, Board board) {
         Optional<Weather> weather = board.getWeather();
-        if (weather.isPresent() && weather.get().getClass().equals(Storm.class)) {
+        if (weather.isPresent() && weather.get().getClass().equals(Stormy.class)) {
             return true;
         }
         return super.isMovePossible(vector, board);

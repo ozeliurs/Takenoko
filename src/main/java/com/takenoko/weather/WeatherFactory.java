@@ -34,10 +34,10 @@ public enum WeatherFactory {
      * The sky rumbles and lightning strikes, frightening the panda. The player can put the panda on
      * the plot of his choice. To recover from his fear, the shy animal eats a section of bamboo.
      */
-    STORM {
+    STORMY {
         @Override
         public Weather createWeather() {
-            return new Storm();
+            return new Stormy();
         }
     };
 

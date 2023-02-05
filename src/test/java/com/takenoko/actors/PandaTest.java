@@ -144,7 +144,7 @@ class PandaTest {
         @DisplayName("should return all position if weather is storm")
         void shouldReturnAllPositionIfWeatherIsStorm() {
             Panda panda = new Panda();
-            when(board.getWeather()).thenReturn(Optional.of(WeatherFactory.STORM.createWeather()));
+            when(board.getWeather()).thenReturn(Optional.of(WeatherFactory.STORMY.createWeather()));
             assertThat(panda.getPossibleMoves(board))
                     .containsExactlyInAnyOrder(
                             new PositionVector(1, 0, -1),
