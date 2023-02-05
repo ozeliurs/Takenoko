@@ -230,12 +230,16 @@ public class IrrigationLayerTest {
 
             // When watershed tile is placed, it is irrigated
             Tile watershedTile;
-            do {
+
+            while (true) {
                 board.drawTiles();
                 watershedTile = board.peekTileDeck().get(0);
+                if (watershedTile.getImprovement().isPresent()
+                        && watershedTile.getImprovement().get().equals(ImprovementType.WATERSHED)) {
+                    break;
+                }
                 board.chooseTileInTileDeck(watershedTile);
-            } while (watershedTile.getImprovement().isPresent()
-                    && !watershedTile.getImprovement().get().equals(ImprovementType.WATERSHED));
+            }
 
             board.placeTile(watershedTile, new PositionVector(2, -1, -1));
 
