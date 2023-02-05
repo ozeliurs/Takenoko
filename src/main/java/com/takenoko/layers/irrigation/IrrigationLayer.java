@@ -1,6 +1,7 @@
 package com.takenoko.layers.irrigation;
 
 import com.takenoko.engine.Board;
+import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.vector.PositionVector;
 import java.util.*;
 import java.util.stream.Stream;
@@ -53,6 +54,17 @@ public class IrrigationLayer {
         // if it is connected to the pond
         updateAvailableIrrigationChannelPositions(
                 EdgePosition.getEdgePositions(positionOfTilePlaced).stream(), board);
+
+        // if the tile has a watershed improvement, it is irrigated
+        board.getTileAt(positionOfTilePlaced)
+                .getImprovement()
+                .ifPresent(
+                        improvement -> {
+                            if (improvement.equals(ImprovementType.WATERSHED)) {
+                                irrigation.put(positionOfTilePlaced, true);
+                            }
+                        });
+
         if (board.isIrrigatedAt(positionOfTilePlaced)) {
             board.growBamboo(positionOfTilePlaced);
         }
