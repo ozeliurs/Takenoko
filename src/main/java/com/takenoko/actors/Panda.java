@@ -5,7 +5,7 @@ import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 
 /** Panda class. The panda is an actor that can move on the board. */
-public class Panda extends com.takenoko.actors.Actor {
+public class Panda extends Actor {
     /**
      * Constructor for the Panda class.
      *

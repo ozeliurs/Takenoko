@@ -6,7 +6,7 @@ import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 
 /** Gardener class. The gardener is an actor that can move on the board. */
-public class Gardener extends com.takenoko.actors.Actor {
+public class Gardener extends Actor {
 
     /**
      * Constructor for the Gardener class.
