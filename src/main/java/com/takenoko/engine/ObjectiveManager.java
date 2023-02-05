@@ -162,6 +162,15 @@ public class ObjectiveManager {
     }
 
     /**
+     * Set the starting deck for a bot
+     *
+     * @param objectives list of objectives
+     */
+    public void setStartingDeck(List<Objective> objectives) {
+        this.objectives.addAll(objectives);
+    }
+
+    /**
      * Return a copy of the current ObjectiveManager
      *
      * @return ObjectiveManager

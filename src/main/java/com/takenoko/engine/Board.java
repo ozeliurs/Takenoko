@@ -378,4 +378,13 @@ public class Board {
     public List<PositionVector> getGrowablePositions() {
         return bambooLayer.getGrowablePositions(this);
     }
+
+    /**
+     * Return the list of objectives for the starting deck
+     *
+     * @return list of objectives
+     */
+    public List<Objective> getStarterDeck() {
+        return gameAssets.getStarterDeck();
+    }
 }

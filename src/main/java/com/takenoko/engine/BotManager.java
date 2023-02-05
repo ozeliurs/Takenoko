@@ -202,4 +202,13 @@ public class BotManager {
     public void setObjectiveAchieved(Objective objective) {
         botState.setObjectiveAchieved(objective);
     }
+
+    /**
+     * Set the starting deck
+     *
+     * @param objectives list of objectives
+     */
+    public void setStartingDeck(List<Objective> objectives) {
+        botState.setStartingDeck(objectives);
+    }
 }

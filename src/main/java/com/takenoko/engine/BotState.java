@@ -261,4 +261,13 @@ public class BotState {
     public int getPandaObjectiveScore() {
         return this.objectiveManager.getPandaObjectiveScore();
     }
+
+    /**
+     * Set the starting deck
+     *
+     * @param objectives list of objectives
+     */
+    public void setStartingDeck(List<Objective> objectives) {
+        this.objectiveManager.setStartingDeck(objectives);
+    }
 }
