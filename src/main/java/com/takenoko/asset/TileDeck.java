@@ -71,8 +71,13 @@ public class TileDeck extends ArrayList<Tile> {
             throw new IllegalArgumentException("This tile is not in the last drawn tiles.");
         }
 
-        this.removeAll(tiles);
+        // remove the first 3 tiles from the deck
+        for (int i = 0; i < 3 && !this.isEmpty(); i++) {
+            this.remove(0);
+        }
+
         tiles.remove(tile);
+        // put the remaining tiles back at the end of the deck
         this.addAll(tiles);
         canPeek = false;
     }

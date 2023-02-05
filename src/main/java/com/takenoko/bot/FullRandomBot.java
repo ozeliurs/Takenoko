@@ -4,6 +4,7 @@ import com.takenoko.actions.Action;
 import com.takenoko.actions.actors.ForcedMovePandaAction;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.actors.MovePandaAction;
+import com.takenoko.actions.bamboo.GrowBambooAction;
 import com.takenoko.actions.improvement.ApplyImprovementAction;
 import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
 import com.takenoko.actions.improvement.DrawImprovementAction;
@@ -103,6 +104,10 @@ public class FullRandomBot implements Bot {
             actions.add(getRandomForcedMovePandaAction(board));
         }
 
+        if (botState.getAvailableActions().contains(GrowBambooAction.class)) {
+            actions.add(getRandomGrowBambooAction(board));
+        }
+
         actions.removeIf(Objects::isNull);
 
         if (actions.isEmpty())
@@ -112,6 +117,12 @@ public class FullRandomBot implements Bot {
                             + ")");
 
         return actions.get(random.nextInt(actions.size()));
+    }
+
+    private Action getRandomGrowBambooAction(Board board) {
+        List<PositionVector> positions = board.getGrowablePositions();
+        if (positions.isEmpty()) return null;
+        return new GrowBambooAction(positions.get(random.nextInt(positions.size())));
     }
 
     private Action getRandomForcedMovePandaAction(Board board) {

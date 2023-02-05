@@ -31,6 +31,17 @@ public enum WeatherFactory {
     },
 
     /**
+     * A fine rain nourishes the young bamboo shoots. The player may place a Bamboo section on the
+     * irrigated plot of his choice, up to a limit of four sections per plot.
+     */
+    RAINY {
+        @Override
+        public Weather createWeather() {
+            return new Rainy();
+        }
+    },
+
+    /**
      * The sky rumbles and lightning strikes, frightening the panda. The player can put the panda on
      * the plot of his choice. To recover from his fear, the shy animal eats a section of bamboo.
      */
