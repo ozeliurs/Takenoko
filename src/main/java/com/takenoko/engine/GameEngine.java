@@ -4,7 +4,6 @@ import com.takenoko.bot.FullRandomBot;
 import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
@@ -13,9 +12,8 @@ import org.apache.commons.lang3.tuple.Pair;
 public class GameEngine {
     // ATTRIBUTES
     public static final int DEFAULT_NUMBER_OF_ROUNDS = 5000;
-    protected static final Map<Integer, Integer> DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN = new HashMap<>(
-            Map.of(2, 9, 3, 8, 4, 7)
-    );
+    protected static final Map<Integer, Integer> DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN =
+            new HashMap<>(Map.of(2, 9, 3, 8, 4, 7));
     private Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
@@ -139,7 +137,8 @@ public class GameEngine {
                         "===== <" + botManager.getName() + "> is playing =====");
                 botManager.playBot(board);
 
-                if (botManager.getRedeemedObjectives().size() >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(botManagers.size())
+                if (botManager.getRedeemedObjectives().size()
+                                >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(botManagers.size())
                         && !isLastRound) {
                     consoleUserInterface.displayMessage(
                             "===== <" + botManager.getName() + "> finished the game =====");
