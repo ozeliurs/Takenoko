@@ -7,11 +7,14 @@ import static org.mockito.Mockito.*;
 import com.takenoko.actors.Gardener;
 import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
+import com.takenoko.asset.TileDeck;
 import com.takenoko.engine.Board;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.tile.*;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
+
+import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
@@ -23,6 +26,7 @@ public class IrrigationLayerTest {
     IrrigationLayer irrigationLayer;
     EdgePosition edgePosition;
     Board board;
+    TileDeck tileDeck;
 
     @BeforeEach
     void setUp() {
@@ -97,6 +101,13 @@ public class IrrigationLayerTest {
     class TestUpdateAvailableIrrigationChannelPosition {
         @BeforeEach
         void setUp() {
+            irrigationLayer = new IrrigationLayer();
+            edgePosition = mock(EdgePosition.class);
+
+            GameAssets gameAssets = mock(GameAssets.class);
+            tileDeck = mock(TileDeck.class);
+            when(gameAssets.getTileDeck()).thenReturn(tileDeck);
+
             board =
                     spy(
                             new Board(
@@ -104,8 +115,10 @@ public class IrrigationLayerTest {
                                     new BambooLayer(),
                                     new Panda(),
                                     new Gardener(),
-                                    new GameAssets(),
+                                    gameAssets,
                                     irrigationLayer));
+
+            when(tileDeck.peek()).thenReturn(List.of(new Tile(), new Tile(), new Tile()));
         }
 
         private static Stream<Arguments> lifecycle() {
@@ -260,17 +273,9 @@ public class IrrigationLayerTest {
             if (step <= 11) return;
 
             // When watershed tile is placed, it is irrigated
-            Tile watershedTile;
+            when(tileDeck.peek()).thenReturn(List.of(new Tile(ImprovementType.WATERSHED)));
 
-            while (true) {
-                board.drawTiles();
-                watershedTile = board.peekTileDeck().get(0);
-                if (watershedTile.getImprovement().isPresent()
-                        && watershedTile.getImprovement().get().equals(ImprovementType.WATERSHED)) {
-                    break;
-                }
-                board.chooseTileInTileDeck(watershedTile);
-            }
+            Tile watershedTile = board.peekTileDeck().get(0);
 
             board.placeTile(watershedTile, new PositionVector(2, -1, -1));
 
