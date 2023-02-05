@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/** This class is used to manage the actions of a bot. */
 public class ActionManager {
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
 
@@ -53,6 +54,11 @@ public class ActionManager {
         this.availableActions = availableActions;
     }
 
+    /**
+     * Set the number of actions the bot can do in a turn.
+     *
+     * @param numberOfActions
+     */
     public void setNumberOfActions(int numberOfActions) {
         this.numberOfActions = numberOfActions;
     }

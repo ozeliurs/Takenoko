@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/** This class is used to manage the objectives of the bot. */
 public class ObjectiveManager {
     private final List<Objective> objectives;
     private final List<Objective> achievedObjectives;
