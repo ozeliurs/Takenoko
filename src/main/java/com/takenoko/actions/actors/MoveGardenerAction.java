@@ -6,8 +6,9 @@ import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.layers.bamboo.BambooStack;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
+import java.util.Map;
 
 /** Action to move a gardener. */
 @ActionAnnotation(ActionType.DEFAULT)
@@ -38,7 +39,8 @@ public class MoveGardenerAction implements DefaultAction {
     public ActionResult execute(Board board, BotManager botManager) {
         // move the Gardener
 
-        BambooStack bambooStack = board.moveGardener(relativePositionVector);
+        Map<PositionVector, LayerBambooStack> bambooStacks =
+                board.moveGardener(relativePositionVector);
         botManager.displayMessage(
                 botManager.getName()
                         + " moved the gardener"
@@ -47,11 +49,19 @@ public class MoveGardenerAction implements DefaultAction {
                         + " to position "
                         + board.getGardenerPosition());
 
-        if (!bambooStack.isEmpty()) {
-            botManager.displayMessage("Gardener planted one bamboo");
-        } else {
+        if (bambooStacks.isEmpty()) {
             botManager.displayMessage("Gardener didn't plant any bamboo");
         }
+
+        bambooStacks.forEach(
+                (positionVector, layerBambooStack) ->
+                        botManager.displayMessage(
+                                "Gardener planted bamboo at "
+                                        + positionVector
+                                        + ", the stack is now "
+                                        + layerBambooStack.getBambooCount()
+                                        + "high"));
+
         return new ActionResult(1);
     }
 }

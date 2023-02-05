@@ -105,10 +105,9 @@ public class BotManager {
                     this.getName() + " inventory: " + botState.getInventory());
 
             if (botState.getAvailableActions().isEmpty()) {
-                throw new IllegalStateException(
-                        "The bot "
-                                + name
-                                + " has no more actions. Please check the available actions.");
+                consoleUserInterface.displayError(
+                        "The bot " + name + " has no available actions. This turn is skipped.");
+                break;
             }
 
             Action action = bot.chooseAction(board.copy(), botState.copy());
@@ -128,7 +127,7 @@ public class BotManager {
     }
 
     private boolean canPlayBot() {
-        return !botState.getAvailableActions().isEmpty() && botState.getNumberOfActions() > 0;
+        return botState.getNumberOfActions() > 0;
     }
 
     /**

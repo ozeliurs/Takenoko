@@ -15,6 +15,7 @@ import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -193,22 +194,22 @@ class BoardTest {
     @DisplayName("Method movePanda")
     void shouldMovePandaToAGivenPosition() {
         PositionVector position = new PositionVector(0, 0, 0);
-        when(panda.move(position, board)).thenReturn(new LayerBambooStack(1));
+        when(panda.move(position, board)).thenReturn(Map.of(position, new LayerBambooStack(1)));
 
         board.movePanda(position);
         verify(panda, times(1)).move(position, board);
-        assertThat(board.movePanda(position)).isEqualTo(new LayerBambooStack(1));
+        assertThat(board.movePanda(position)).containsEntry(position, new LayerBambooStack(1));
     }
 
     @Test
     @DisplayName("Method moveGardener")
     void shouldMoveGardenerToAGivenPosition() {
         PositionVector position = new PositionVector(0, 0, 0);
-        when(gardener.move(position, board)).thenReturn(new LayerBambooStack(1));
+        when(panda.move(position, board)).thenReturn(Map.of(position, new LayerBambooStack(1)));
 
         board.moveGardener(position);
         verify(gardener, times(1)).move(position, board);
-        assertThat(board.moveGardener(position)).isEqualTo(new LayerBambooStack(1));
+        assertThat(board.movePanda(position)).containsEntry(position, new LayerBambooStack(1));
     }
 
     @Nested

@@ -6,8 +6,9 @@ import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.layers.bamboo.BambooStack;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
+import java.util.Map;
 
 /** This class represents the action of moving the panda. */
 @ActionAnnotation(ActionType.DEFAULT)
@@ -37,7 +38,7 @@ public class MovePandaAction implements DefaultAction {
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
         // move the panda
-        BambooStack bambooStack = board.movePanda(relativePositionVector);
+        Map<PositionVector, LayerBambooStack> bambooStack = board.movePanda(relativePositionVector);
         botManager.displayMessage(
                 botManager.getName()
                         + " moved the panda with "
