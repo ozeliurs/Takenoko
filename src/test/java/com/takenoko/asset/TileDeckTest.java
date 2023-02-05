@@ -2,9 +2,13 @@ package com.takenoko.asset;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.takenoko.layers.tile.Pond;
 import com.takenoko.layers.tile.Tile;
+import java.security.SecureRandom;
+import java.util.Random;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -64,10 +68,14 @@ class TileDeckTest {
     @DisplayName("equals")
     class Equals {
         @Test
-        @DisplayName("When comparing two tile decks, they are equal if they have the same tiles")
+        @DisplayName(
+                "When comparing two tile decks, they are equal if they have the same tiles and the"
+                        + " same random seed")
         void whenComparingTwoTileDecksTheyAreEqualIfTheyHaveTheSameTiles() {
-            TileDeck tileDeck1 = new TileDeck();
-            TileDeck tileDeck2 = new TileDeck();
+            Random random = mock(SecureRandom.class);
+            when(random.nextInt()).thenReturn(0);
+            TileDeck tileDeck1 = new TileDeck(random);
+            TileDeck tileDeck2 = new TileDeck(random);
             assertThat(tileDeck1).isEqualTo(tileDeck2);
         }
 
@@ -104,10 +112,12 @@ class TileDeckTest {
         @Test
         @DisplayName(
                 "When comparing two tile decks, they have the same hash code if they have the same"
-                        + " tiles")
+                        + " tiles and the same random seed")
         void whenComparingTwoTileDecksTheyHaveTheSameHashCodeIfTheyHaveTheSameTiles() {
-            TileDeck tileDeck1 = new TileDeck();
-            TileDeck tileDeck2 = new TileDeck();
+            Random random = mock(Random.class);
+            when(random.nextInt()).thenReturn(0);
+            TileDeck tileDeck1 = new TileDeck(random);
+            TileDeck tileDeck2 = new TileDeck(random);
             assertThat(tileDeck1).hasSameHashCodeAs(tileDeck2);
         }
 

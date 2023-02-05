@@ -19,6 +19,28 @@ public class GameAssets {
         this(weatherDice, new ImprovementDeck());
     }
 
+    public GameAssets(WeatherDice weatherDice, TileDeck tileDeck) {
+        this(
+                weatherDice,
+                new ImprovementDeck(),
+                tileDeck,
+                new IrrigationDeck(),
+                new ObjectiveDeck());
+    }
+
+    public GameAssets(
+            WeatherDice weatherDice,
+            ImprovementDeck improvementDeck,
+            TileDeck tileDeck,
+            IrrigationDeck irrigationDeck,
+            ObjectiveDeck objectiveDeck) {
+        this.weatherDice = weatherDice;
+        this.improvementDeck = improvementDeck;
+        this.tileDeck = tileDeck;
+        this.objectiveDeck = objectiveDeck;
+        this.irrigationDeck = irrigationDeck;
+    }
+
     public GameAssets(WeatherDice weatherDice, ImprovementDeck improvementDeck) {
         this.weatherDice = weatherDice;
         this.improvementDeck = improvementDeck;
@@ -28,11 +50,12 @@ public class GameAssets {
     }
 
     public GameAssets(GameAssets gameAssets) {
-        this.weatherDice = gameAssets.weatherDice;
-        this.improvementDeck = gameAssets.improvementDeck;
-        this.tileDeck = gameAssets.tileDeck;
-        this.objectiveDeck = gameAssets.objectiveDeck;
-        this.irrigationDeck = gameAssets.irrigationDeck;
+        this(
+                gameAssets.weatherDice,
+                gameAssets.improvementDeck,
+                gameAssets.tileDeck,
+                gameAssets.irrigationDeck,
+                gameAssets.objectiveDeck);
     }
 
     /**

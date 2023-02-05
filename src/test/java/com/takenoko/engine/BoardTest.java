@@ -225,8 +225,18 @@ class BoardTest {
         @Test
         @DisplayName("When boards are equal, returns true")
         void equals_WhenBoardsAreEqual_ThenReturnsTrue() {
-            Board board = new Board();
-            Board board2 = new Board();
+            TileLayer tileLayer = mock(TileLayer.class);
+            BambooLayer bambooLayer = mock(BambooLayer.class);
+            Panda panda = mock(Panda.class);
+            Gardener gardener = mock(Gardener.class);
+            GameAssets gameAssets = mock(GameAssets.class);
+            IrrigationLayer irrigationLayer = mock(IrrigationLayer.class);
+
+            Board board =
+                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+            Board board2 =
+                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+
             assertThat(board).isEqualTo(board2);
         }
 
@@ -259,8 +269,18 @@ class BoardTest {
         @Test
         @DisplayName("When boards are equal, returns same hash code")
         void hashCode_WhenBoardsAreEqual_ThenReturnsSameHashCode() {
-            Board board = new Board();
-            Board board2 = new Board();
+            TileLayer tileLayer = mock(TileLayer.class);
+            BambooLayer bambooLayer = mock(BambooLayer.class);
+            Panda panda = mock(Panda.class);
+            Gardener gardener = mock(Gardener.class);
+            GameAssets gameAssets = mock(GameAssets.class);
+            IrrigationLayer irrigationLayer = mock(IrrigationLayer.class);
+
+            Board board =
+                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+            Board board2 =
+                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+
             assertThat(board).hasSameHashCodeAs(board2);
         }
 
@@ -299,6 +319,23 @@ class BoardTest {
         void applyImprovement_WhenImprovementIsApplied_CallsApplyImprovementOnTileLayer() {
             board.applyImprovement(mock(ImprovementType.class), mock(PositionVector.class));
             verify(tileLayer).applyImprovement(any(), any(), any());
+        }
+    }
+
+    @Nested
+    @DisplayName("Methods nextRound && getRoundNumber")
+    class TestNextRound {
+        @Test
+        @DisplayName("By default, round number is 0")
+        void nextRound_ByDefault_RoundNumberIs0() {
+            assertThat(board.getRoundNumber()).isZero();
+        }
+
+        @Test
+        @DisplayName("When nextRound is called, round number is incremented")
+        void nextRound_WhenNextRoundIsCalled_RoundNumberIsIncremented() {
+            board.nextRound();
+            assertThat(board.getRoundNumber()).isEqualTo(1);
         }
     }
 }
