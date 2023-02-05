@@ -329,8 +329,8 @@ public class BotState { // DEFAULT VALUES
                                                         ActionCanBePlayedMultipleTimesPerTurn.class)
                                                 || !alreadyDoneActions.contains(actionClass)
                                                 || board.getWeather()
-                                                        .getClass()
-                                                        .equals(Windy.class)))
+                                                        .map(v -> v.getClass().equals(Windy.class))
+                                                        .orElse(false)))
                 .forEach(actionClass -> availableActions.add(actionClass));
     }
 
