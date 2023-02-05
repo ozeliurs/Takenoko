@@ -8,6 +8,9 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.vector.PositionVector;
 
+/**
+ * Action that grows bamboo at a given position.
+ */
 @ActionAnnotation(ActionType.FORCED)
 public class GrowBambooAction implements Action {
 
