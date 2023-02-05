@@ -6,6 +6,7 @@ import com.takenoko.layers.tile.TileColor;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -101,13 +102,15 @@ public class TileDeck extends ArrayList<Tile> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TileDeck)) return false;
-        return super.equals(o);
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        TileDeck tiles = (TileDeck) o;
+        return canPeek == tiles.canPeek;
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(super.hashCode(), canPeek);
     }
 
     @Override

@@ -37,13 +37,12 @@ class RedeemObjectiveActionTest {
             when(botState.getAchievedObjectives()).thenReturn(List.of(mock(Objective.class)));
 
             Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
 
             botState.addAvailableAction(DrawObjectiveAction.class);
 
             assertThat(RedeemObjectiveAction.canBePlayed(botState)).isTrue();
 
-            botState.update(board, botManager);
+            botState.update(board);
             assertThat(botState.getAvailableActions()).contains(RedeemObjectiveAction.class);
         }
     }

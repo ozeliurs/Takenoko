@@ -1,7 +1,7 @@
 package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.vector.PositionVector;
 import java.util.Comparator;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 /** Objective is to complete a certain number of single gardener objectives. */
 public class MultipleGardenerObjective extends Objective {
 
-    SingleGardenerObjective objective;
+    final SingleGardenerObjective objective;
     private final int numberOfTimes;
 
     public MultipleGardenerObjective(
@@ -30,7 +30,7 @@ public class MultipleGardenerObjective extends Objective {
     }
 
     @Override
-    public void verify(Board board, BotManager botManager) {
+    public void verify(Board board, BotState botState) {
         if (this.objective.getMatchingPositions(board).size() >= numberOfTimes) {
             this.state = ObjectiveState.ACHIEVED;
         }
@@ -47,7 +47,7 @@ public class MultipleGardenerObjective extends Objective {
     }
 
     @Override
-    public float getCompletion(Board board, BotManager botManager) {
+    public float getCompletion(Board board, BotState botState) {
         // spotless:off
         List<Integer> bambooCounts =
                 objective.getEligiblePositions(board).stream()

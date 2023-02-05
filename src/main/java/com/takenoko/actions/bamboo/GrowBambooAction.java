@@ -12,7 +12,7 @@ import com.takenoko.vector.PositionVector;
 @ActionAnnotation(ActionType.FORCED)
 public class GrowBambooAction implements Action {
 
-    PositionVector position;
+    final PositionVector position;
 
     public GrowBambooAction(PositionVector position) {
         this.position = position;

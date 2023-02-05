@@ -1,7 +1,6 @@
 package com.takenoko.layers.bamboo;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;

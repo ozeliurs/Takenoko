@@ -1,7 +1,7 @@
 package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.shape.*;
 import java.util.Objects;
 
@@ -14,7 +14,7 @@ public class PatternObjective extends Objective {
     }
 
     @Override
-    public void verify(Board board, BotManager botManager) {
+    public void verify(Board board, BotState botState) {
         if (!pattern.match(board).isEmpty()) {
             state = ObjectiveState.ACHIEVED;
         }
@@ -45,7 +45,7 @@ public class PatternObjective extends Objective {
     }
 
     @Override
-    public float getCompletion(Board board, BotManager botManager) {
+    public float getCompletion(Board board, BotState botState) {
         return pattern.matchRatio(board);
     }
 

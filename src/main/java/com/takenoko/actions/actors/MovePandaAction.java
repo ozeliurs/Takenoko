@@ -25,7 +25,7 @@ public class MovePandaAction implements DefaultAction {
     }
 
     public static boolean canBePlayed(Board board) {
-        return !board.getTiles().isEmpty();
+        return !board.getTilesWithoutPond().isEmpty();
     }
 
     /**

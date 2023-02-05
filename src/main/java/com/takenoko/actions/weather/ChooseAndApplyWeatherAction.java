@@ -11,7 +11,7 @@ import com.takenoko.weather.Weather;
 /** Action to choose a weather and apply it. */
 @ActionAnnotation(ActionType.FORCED)
 public class ChooseAndApplyWeatherAction implements Action {
-    Weather weather;
+    final Weather weather;
 
     public ChooseAndApplyWeatherAction(Weather weather) {
         this.weather = weather;

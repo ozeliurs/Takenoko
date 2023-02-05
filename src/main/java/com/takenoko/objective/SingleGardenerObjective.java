@@ -3,7 +3,7 @@ package com.takenoko.objective;
 import static java.lang.Math.abs;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
@@ -36,7 +36,7 @@ public class SingleGardenerObjective extends Objective {
     }
 
     @Override
-    public void verify(Board board, BotManager botManager) {
+    public void verify(Board board, BotState botState) {
         if (!getMatchingPositions(board).isEmpty()) {
             this.state = ObjectiveState.ACHIEVED;
         }
@@ -85,7 +85,7 @@ public class SingleGardenerObjective extends Objective {
     }
 
     @Override
-    public float getCompletion(Board board, BotManager botManager) {
+    public float getCompletion(Board board, BotState botState) {
         return getEligiblePositions(board).stream()
                 .max(Comparator.comparingInt(v -> board.getBambooAt(v).getBambooCount()))
                 .map(v -> board.getBambooAt(v).getBambooCount())

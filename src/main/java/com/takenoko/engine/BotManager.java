@@ -79,7 +79,7 @@ public class BotManager {
             botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         }
         while (canPlayBot()) {
-            botState.update(board, this);
+            botState.update(board);
             consoleUserInterface.displayDebug(
                     this.getName() + " has " + botState.getNumberOfActions() + " actions.");
             consoleUserInterface.displayDebug(

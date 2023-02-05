@@ -1,7 +1,7 @@
 package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.layers.tile.TileColor;
 import java.util.EnumMap;
 import java.util.Map;
@@ -26,12 +26,12 @@ public class PandaObjective extends Objective {
     }
 
     @Override
-    public void verify(Board board, BotManager botManager) {
+    public void verify(Board board, BotState botState) {
         boolean matched =
                 bambooTarget.entrySet().stream()
                         .allMatch(
                                 entry ->
-                                        botManager.getInventory().getBambooCount(entry.getKey())
+                                        botState.getInventory().getBambooCount(entry.getKey())
                                                 >= entry.getValue());
         if (matched) {
             state = ObjectiveState.ACHIEVED;
@@ -49,13 +49,12 @@ public class PandaObjective extends Objective {
     }
 
     @Override
-    public float getCompletion(Board board, BotManager botManager) {
+    public float getCompletion(Board board, BotState botState) {
         return bambooTarget.entrySet().stream()
                         .map(
                                 entry ->
                                         (float)
-                                                        botManager
-                                                                .getInventory()
+                                                        botState.getInventory()
                                                                 .getBambooCount(entry.getKey())
                                                 / entry.getValue())
                         .reduce(0f, Float::sum)

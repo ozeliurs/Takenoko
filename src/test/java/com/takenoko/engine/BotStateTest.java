@@ -142,7 +142,7 @@ class BotStateTest {
             botState.addAvailableAction(MoveGardenerAction.class);
             botState.addAvailableAction(DrawObjectiveAction.class);
             when(board.getWeather()).thenReturn(Optional.of(WeatherFactory.WINDY.createWeather()));
-            botState.update(board, mock(BotManager.class));
+            botState.update(board);
             assertThat(botState.getAvailableActions()).hasSize(2);
         }
 
@@ -186,55 +186,11 @@ class BotStateTest {
     @DisplayName("Method update()")
     class TestGetObjectiveScore {
         @Test
-        @DisplayName("should call verifyObjectives")
-        void update_shouldCallVerifyObjectives() {
-            botState = spy(botState);
-
-            Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
-
-            botState.update(board, botManager);
-            verify(botState, times(1)).verifyObjectives(board, botManager);
-        }
-
-        @Test
-        @DisplayName("should call setObjectiveAchieved if some are achieved")
-        void update_should_callSetObjectiveAchievedIfSomeAreAchieved() {
-            Objective objective = mock(Objective.class);
-            when(objective.isAchieved()).thenReturn(true);
-            botState.addObjective(objective);
-            botState = spy(botState);
-
-            Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
-
-            botState.update(board, botManager);
-            verify(botState, times(1)).setObjectiveAchieved(objective);
-        }
-
-        @Test
-        @DisplayName("should call setObjectiveNotAchieved if some are not achieved")
-        void update_should_callSetObjectiveNotAchievedIfSomeAreNotAchieved() {
-            Objective objective = mock(Objective.class);
-            when(objective.isAchieved()).thenReturn(false);
-            botState.addObjective(objective);
-            botState.setObjectiveAchieved(objective);
-            botState = spy(botState);
-
-            Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
-
-            botState.update(board, botManager);
-            verify(botState, times(1)).setObjectiveNotAchieved(objective);
-        }
-
-        @Test
         @DisplayName("should add DrawObjectionAction is it can draw an objective")
         void update_should_addDrawObjectiveActionIfCanDrawObjective() {
             Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
 
-            botState.update(board, botManager);
+            botState.update(board);
             assertThat(botState.getAvailableActions()).contains(DrawObjectiveAction.class);
         }
     }

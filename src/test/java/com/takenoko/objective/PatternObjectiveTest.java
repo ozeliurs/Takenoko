@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.shape.Pattern;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +24,7 @@ class PatternObjectiveTest {
             when(board.isIrrigatedAt(any())).thenReturn(true);
             when(pattern.match(board)).thenReturn(List.of(mock(Pattern.class)));
             PatternObjective patternObjective = new PatternObjective(pattern, 0);
-            patternObjective.verify(board, mock(BotManager.class));
+            patternObjective.verify(board, mock(BotState.class));
             assertEquals(ObjectiveState.ACHIEVED, patternObjective.getState());
         }
 
@@ -34,7 +34,7 @@ class PatternObjectiveTest {
             Pattern pattern = mock(Pattern.class);
             when(pattern.match(mock(Board.class))).thenReturn(List.of());
             PatternObjective patternObjective = new PatternObjective(pattern, 0);
-            patternObjective.verify(mock(Board.class), mock(BotManager.class));
+            patternObjective.verify(mock(Board.class), mock(BotState.class));
             assertEquals(ObjectiveState.NOT_ACHIEVED, patternObjective.getState());
         }
     }
@@ -154,11 +154,11 @@ class PatternObjectiveTest {
         void getCompletion_WhenPatternObjectiveIsCalled_CallsGetCompletionOnPattern() {
             Pattern pattern = mock(Pattern.class);
             PatternObjective patternObjective = new PatternObjective(pattern, 0);
-            patternObjective.getCompletion(mock(Board.class), mock(BotManager.class));
+            patternObjective.getCompletion(mock(Board.class), mock(BotState.class));
             verify(pattern).matchRatio(any());
             // then verify that it returns the same value as the pattern
             when(pattern.matchRatio(any())).thenReturn(1f);
-            assertThat(patternObjective.getCompletion(mock(Board.class), mock(BotManager.class)))
+            assertThat(patternObjective.getCompletion(mock(Board.class), mock(BotState.class)))
                     .isEqualTo(1f);
         }
     }
