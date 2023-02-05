@@ -12,12 +12,11 @@ import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.tile.*;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.stream.Stream;
 
 public class IrrigationLayerTest {
     IrrigationLayer irrigationLayer;
@@ -121,8 +120,7 @@ public class IrrigationLayerTest {
                     Arguments.of(9),
                     Arguments.of(10),
                     Arguments.of(11),
-                    Arguments.of(12)
-            );
+                    Arguments.of(12));
         }
 
         @ParameterizedTest(name = "{0}")
@@ -290,8 +288,6 @@ public class IrrigationLayerTest {
             assertThat(watershedTile.getImprovement()).isPresent();
             assertThat(watershedTile.getImprovement()).contains(ImprovementType.WATERSHED);
             assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(2, -1, -1))).isTrue();
-
-            if (step <= 12) return;
         }
     }
 
