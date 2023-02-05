@@ -16,21 +16,18 @@ import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.tile.DrawTileAction;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
-import com.takenoko.objective.PandaObjective;
 import com.takenoko.weather.Windy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /** This class is used to store the state of a bot. */
-public class BotState { // DEFAULT VALUES
+public class BotState {
     private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
     public static final int MAX_OBJECTIVES = 5;
+    private final ObjectiveManager objectiveManager;
 
     private int numberOfActions;
-    private final List<Objective> objectives;
-    private final List<Objective> achievedObjectives;
-    private final List<Objective> redeemedObjectives;
     private final Inventory inventory;
     private List<Class<? extends Action>> availableActions;
     private List<Class<? extends Action>> alreadyDoneActions = new ArrayList<>();
@@ -49,47 +46,80 @@ public class BotState { // DEFAULT VALUES
     public BotState(
             int numberOfActions,
             Inventory inventory,
-            List<Class<? extends Action>> availableActions) {
+            List<Class<? extends Action>> availableActions,
+            ObjectiveManager objectiveManager) {
         this.numberOfActions = numberOfActions;
-        this.objectives = new ArrayList<>();
         this.inventory = inventory;
         this.availableActions = availableActions;
-        this.achievedObjectives = new ArrayList<>();
-        this.redeemedObjectives = new ArrayList<>();
+        this.objectiveManager = objectiveManager;
     }
 
     public BotState() {
-        this(DEFAULT_NUMBER_OF_ACTIONS, new Inventory(), new ArrayList<>());
-    }
-
-    public void setNumberOfActions(int numberOfActions) {
-        this.numberOfActions = numberOfActions;
+        this(DEFAULT_NUMBER_OF_ACTIONS, new Inventory(), new ArrayList<>(), new ObjectiveManager());
     }
 
     /**
-     * Get the current Objectives of the bot
+     * Copy constructor
      *
-     * @return Objectives
+     * @param botState the state to copy
      */
-    public List<Objective> getObjectives() {
-        return new ArrayList<>(objectives);
+    public BotState(BotState botState) {
+        this.numberOfActions = botState.numberOfActions;
+        this.inventory = botState.getInventory().copy();
+        this.availableActions = new ArrayList<>(botState.availableActions);
+        this.alreadyDoneActions = new ArrayList<>(botState.alreadyDoneActions);
+        this.objectiveManager = new ObjectiveManager(botState.objectiveManager);
+    }
+
+    // ------------------------------------------------------ //
+    // ------------------- OBJECT METHODS ------------------- //
+    // ------------------------------------------------------ //
+
+    /** reset everything to the default values */
+    public void reset() {
+        this.objectiveManager.reset();
+        this.inventory.clear();
+        this.numberOfActions = DEFAULT_NUMBER_OF_ACTIONS;
+        this.availableActions = new ArrayList<>();
+        this.alreadyDoneActions.clear();
     }
 
     /**
-     * Set the current Objective of the bot
+     * make a copy of the current state
      *
-     * @param objective the objectives
+     * @return the copy
      */
-    public void addObjective(Objective objective) {
-        this.objectives.add(objective);
+    public BotState copy() {
+        return new BotState(this);
     }
 
-    /**
-     * @return number of actions the bot can do in a turn
-     */
-    protected int getNumberOfActions() {
-        return numberOfActions;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BotState botState = (BotState) o;
+        return getNumberOfActions() == botState.getNumberOfActions()
+                && getObjectives().equals(botState.getObjectives())
+                && getInventory().equals(botState.getInventory())
+                && getObjectiveScore() == botState.getObjectiveScore()
+                && getAchievedObjectives().equals(botState.getAchievedObjectives())
+                && getObjectiveManager().equals(botState.getObjectiveManager());
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                getNumberOfActions(),
+                getObjectives(),
+                getInventory(),
+                getAchievedObjectives(),
+                getObjectiveScore(),
+                getObjectiveManager());
+    }
+
+    // ------------------------------------------------------ //
+    // ----------------- INVENTORY METHODS ------------------ //
+    // ------------------------------------------------------ //
 
     /**
      * @return the number of bamboo eaten by the bot
@@ -106,6 +136,22 @@ public class BotState { // DEFAULT VALUES
     public Inventory getInventory() {
         return inventory;
     }
+
+    // ------------------------------------------------------ //
+    // -------------- METHOD RELATED TO ACTIONS ------------- //
+    // ------------------------------------------------------ //
+
+    public void setNumberOfActions(int numberOfActions) {
+        this.numberOfActions = numberOfActions;
+    }
+
+    /**
+     * @return number of actions the bot can do in a turn
+     */
+    protected int getNumberOfActions() {
+        return numberOfActions;
+    }
+
 
     /**
      * Return the list of available actions. If actions of FORCED type are available, only these
@@ -161,101 +207,6 @@ public class BotState { // DEFAULT VALUES
         numberOfActions++;
     }
 
-    /** reset everything to the default values */
-    public void reset() {
-        objectives.clear();
-        achievedObjectives.clear();
-        redeemedObjectives.clear();
-        this.inventory.clear();
-        this.numberOfActions = DEFAULT_NUMBER_OF_ACTIONS;
-        this.availableActions = new ArrayList<>();
-        this.alreadyDoneActions.clear();
-    }
-
-    /**
-     * make a copy of the current state
-     *
-     * @return the copy
-     */
-    public BotState copy() {
-        return new BotState(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BotState botState = (BotState) o;
-        return getNumberOfActions() == botState.getNumberOfActions()
-                && getObjectives().equals(botState.getObjectives())
-                && getInventory().equals(botState.getInventory())
-                && getObjectiveScore() == botState.getObjectiveScore()
-                && getAchievedObjectives().equals(botState.getAchievedObjectives())
-                && this.availableActions.equals(botState.getAvailableActions())
-                && this.redeemedObjectives.equals(botState.getRedeemedObjectives())
-                && this.alreadyDoneActions.equals(botState.getAlreadyDoneActions());
-    }
-
-    /**
-     * Get the list of the redeemed objectives
-     *
-     * @return the list of the redeemed objectives
-     */
-    public List<Objective> getRedeemedObjectives() {
-        return new ArrayList<>(redeemedObjectives);
-    }
-
-    /**
-     * Copy constructor
-     *
-     * @param botState the state to copy
-     */
-    public BotState(BotState botState) {
-        this.numberOfActions = botState.numberOfActions;
-        // Objectives
-        this.objectives = new ArrayList<>();
-        for (Objective objective : botState.objectives) {
-            this.objectives.add(objective.copy());
-        }
-        // Achieved objectives
-        this.achievedObjectives = new ArrayList<>();
-        for (Objective objective : botState.achievedObjectives) {
-            this.achievedObjectives.add(objective.copy());
-        }
-
-        // Redeemed objectives
-        this.redeemedObjectives = new ArrayList<>();
-        for (Objective objective : botState.redeemedObjectives) {
-            this.redeemedObjectives.add(objective.copy());
-        }
-
-        this.inventory = botState.getInventory().copy();
-        this.availableActions = new ArrayList<>(botState.availableActions);
-        this.alreadyDoneActions = new ArrayList<>(botState.alreadyDoneActions);
-    }
-
-    /**
-     * get the score of the achieved objectives
-     *
-     * @return the score of the achieved objectives
-     */
-    public int getObjectiveScore() {
-        return redeemedObjectives.stream().mapToInt(Objective::getPoints).sum();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(
-                getNumberOfActions(),
-                getObjectives(),
-                getInventory(),
-                getAchievedObjectives(),
-                getObjectiveScore(),
-                this.availableActions,
-                this.redeemedObjectives,
-                this.alreadyDoneActions);
-    }
-
     /** clear the list of available actions of the FORCED type */
     private void clearForcedActions() {
         availableActions.removeIf(
@@ -278,37 +229,13 @@ public class BotState { // DEFAULT VALUES
     }
 
     /**
-     * get the list of achieved objectives
-     *
-     * @return the list of achieved objectives
-     */
-    public List<Objective> getAchievedObjectives() {
-        return new ArrayList<>(achievedObjectives);
-    }
-
-    /**
-     * for each objective, check if it is achieved
-     *
-     * @param board the board
-     * @param botManager the bot manager
-     */
-    public void verifyObjectives(Board board, BotManager botManager) {
-        for (Objective objective : objectives) {
-            objective.verify(board, botManager);
-        }
-        for (Objective objective : achievedObjectives) {
-            objective.verify(board, botManager);
-        }
-    }
-
-    /**
      * update the objectives
      *
      * @param board the board
      * @param botManager the bot manager
      */
     public void update(Board board, BotManager botManager) {
-        updateObjectives(board, botManager);
+        this.objectiveManager.updateObjectives(board, botManager);
         updateDefaultActions(board);
     }
 
@@ -335,83 +262,6 @@ public class BotState { // DEFAULT VALUES
     }
 
     /**
-     * update the objectives
-     *
-     * @param board the board
-     * @param botManager the bot manager
-     */
-    private void updateObjectives(Board board, BotManager botManager) {
-        verifyObjectives(board, botManager);
-
-        // If objective is achieved, add it to the list of achieved objectives
-        List<Objective> toAchieve = new ArrayList<>();
-        for (Objective objective : objectives) {
-            if (objective.isAchieved()) {
-                toAchieve.add(objective);
-            }
-        }
-        for (Objective objective : toAchieve) {
-            setObjectiveAchieved(objective);
-        }
-
-        // If objective is no more achievable, remove it from the list of objectives
-        List<Objective> toRemove = new ArrayList<>();
-        for (Objective objective : achievedObjectives) {
-            if (!objective.isAchieved()) {
-                toRemove.add(objective);
-            }
-        }
-        for (Objective objective : toRemove) {
-            setObjectiveNotAchieved(objective);
-        }
-    }
-
-    /**
-     * set an objective as not achieved
-     *
-     * @param objective the objective
-     */
-    public void setObjectiveNotAchieved(Objective objective) {
-        this.achievedObjectives.remove(objective);
-        this.objectives.add(objective);
-    }
-
-    /**
-     * set an objective as achieved
-     *
-     * @param objective the objective
-     */
-    public void setObjectiveAchieved(Objective objective) {
-        this.objectives.remove(objective);
-        this.achievedObjectives.add(objective);
-    }
-
-    /**
-     * redeem an objective
-     *
-     * @param objective the objective
-     */
-    public void redeemObjective(Objective objective) {
-        this.achievedObjectives.remove(objective);
-        if (objective instanceof PandaObjective pandaObjective) {
-            this.inventory.useBamboo(pandaObjective.getBambooTarget());
-        }
-        this.redeemedObjectives.add(objective);
-    }
-
-    /**
-     * Returns the sum of the points of all the panda objectives
-     *
-     * @return the sum of the points of all the panda objectives
-     */
-    public int getPandaObjectiveScore() {
-        return redeemedObjectives.stream()
-                .filter(PandaObjective.class::isInstance)
-                .mapToInt(Objective::getPoints)
-                .sum();
-    }
-
-    /**
      * reset the available actions
      *
      * @param board the board
@@ -429,5 +279,108 @@ public class BotState { // DEFAULT VALUES
      */
     public List<Class<? extends Action>> getAlreadyDoneActions() {
         return new ArrayList<>(alreadyDoneActions);
+    }
+
+    // ------------------------------------------------------ //
+    // ------------ METHOD RELATED TO OBJECTIVES ------------ //
+    // ------------------------------------------------------ //
+
+    /**
+     * Get the objective manager
+     * @return ObjectiveManager
+     */
+    private ObjectiveManager getObjectiveManager() {
+        return objectiveManager;
+    }
+
+    /**
+     * Get the current Objectives of the bot
+     *
+     * @return Objectives
+     */
+    public List<Objective> getObjectives() {
+        return objectiveManager.getObjectives();
+    }
+
+    /**
+     * Set the current Objective of the bot
+     *
+     * @param objective the objectives
+     */
+    public void addObjective(Objective objective) {
+        this.objectiveManager.addObjective(objective);
+    }
+
+    /**
+     * get the score of the achieved objectives
+     *
+     * @return the score of the achieved objectives
+     */
+    public int getObjectiveScore() {
+        return objectiveManager.getObjectiveScore();
+    }
+
+    /**
+     * Get the list of the redeemed objectives
+     *
+     * @return the list of the redeemed objectives
+     */
+    public List<Objective> getRedeemedObjectives() {
+        return objectiveManager.getRedeemedObjectives();
+    }
+
+    /**
+     * get the list of achieved objectives
+     *
+     * @return the list of achieved objectives
+     */
+    public List<Objective> getAchievedObjectives() {
+        return objectiveManager.getAchievedObjectives();
+    }
+
+    /**
+     * for each objective, check if it is achieved
+     *
+     * @param board the board
+     * @param botManager the bot manager
+     */
+    public void verifyObjectives(Board board, BotManager botManager) {
+        objectiveManager.verifyObjectives(board, botManager);
+    }
+
+    /**
+     * set an objective as not achieved
+     *
+     * @param objective the objective
+     */
+    public void setObjectiveNotAchieved(Objective objective) {
+        this.objectiveManager.setObjectiveNotAchieved(objective);
+    }
+
+    /**
+     * set an objective as achieved
+     *
+     * @param objective the objective
+     */
+    public void setObjectiveAchieved(Objective objective) {
+        this.objectiveManager.setObjectiveAchieved(objective);
+    }
+
+    /**
+     * redeem an objective
+     *
+     * @param objective the objective
+     */
+    public void redeemObjective(Objective objective) {
+        this.objectiveManager.redeemObjective(objective, this);
+    }
+
+    /**
+     * Returns the sum of the points of all the panda objectives
+     *
+     * @return the sum of the points of all the panda objectives
+     */
+    public int getPandaObjectiveScore() {
+        return this.objectiveManager.getPandaObjectiveScore();
     }
 }
