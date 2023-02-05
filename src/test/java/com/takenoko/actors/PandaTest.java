@@ -3,7 +3,6 @@ package com.takenoko.actors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
@@ -198,7 +197,7 @@ class PandaTest {
     }
 
     @Nested
-    @DisplayName("Method hashCode()")
+    @DisplayName("Method hashCode")
     class TestHashCode {
         @Test
         @DisplayName("should return the same hashcode if the two objects are equal")
