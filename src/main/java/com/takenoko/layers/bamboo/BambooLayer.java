@@ -5,6 +5,7 @@ import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.TileType;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -119,5 +120,11 @@ public class BambooLayer {
                 && board.getTileAt(positionVector).getType() != TileType.POND
                 && board.getBambooAt(positionVector).isGrowable()
                 && board.isIrrigatedAt(positionVector);
+    }
+
+    public List<PositionVector> getGrowablePositions(Board board) {
+        return board.getTiles().keySet().stream()
+                .filter(positionVector -> isGrowableAt(positionVector, board))
+                .toList();
     }
 }

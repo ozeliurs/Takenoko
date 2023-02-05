@@ -28,6 +28,17 @@ public enum WeatherFactory {
         public Weather createWeather() {
             return new QuestionMark();
         }
+    },
+
+    /**
+     * A fine rain nourishes the young bamboo shoots. The player may place a Bamboo section on the
+     * irrigated plot of his choice, up to a limit of four sections per plot.
+     */
+    RAINY {
+        @Override
+        public Weather createWeather() {
+            return new Rainy();
+        }
     };
 
     public abstract Weather createWeather();

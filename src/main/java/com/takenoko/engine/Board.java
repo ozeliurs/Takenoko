@@ -374,4 +374,8 @@ public class Board {
     public void nextRound() {
         roundNumber++;
     }
+
+    public List<PositionVector> getGrowablePositions() {
+        return bambooLayer.getGrowablePositions(this);
+    }
 }
