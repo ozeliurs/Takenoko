@@ -11,8 +11,10 @@ import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Pond;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
+import com.takenoko.weather.WeatherFactory;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -136,6 +138,23 @@ class PandaTest {
                             new PositionVector(1, -1, 0),
                             new PositionVector(2, -2, 0),
                             new PositionVector(1, 0, -1));
+        }
+
+        @Test
+        @DisplayName("should return all position if weather is storm")
+        void shouldReturnAllPositionIfWeatherIsStorm() {
+            Panda panda = new Panda();
+            when(board.getWeather()).thenReturn(Optional.of(WeatherFactory.STORM.createWeather()));
+            assertThat(panda.getPossibleMoves(board))
+                    .containsExactlyInAnyOrder(
+                            new PositionVector(1, 0, -1),
+                            new PositionVector(1, -1, 0),
+                            new PositionVector(2, -1, -1),
+                            new PositionVector(2, -2, 0),
+                            new PositionVector(1, -2, 1),
+                            new PositionVector(2, -3, 1),
+                            new PositionVector(1, -3, 2),
+                            new PositionVector(0, -2, 2));
         }
     }
 
