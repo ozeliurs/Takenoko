@@ -204,8 +204,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <timeoutConstant>10000</timeoutConstant>
-                    <timeoutFactor>1.25</timeoutFactor>
                     <threads>16</threads>
                     <outputFormats>
                         <format>HTML</format>
