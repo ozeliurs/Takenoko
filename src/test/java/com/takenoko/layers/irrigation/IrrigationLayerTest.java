@@ -7,17 +7,25 @@ import static org.mockito.Mockito.*;
 import com.takenoko.actors.Gardener;
 import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
+import com.takenoko.asset.TileDeck;
 import com.takenoko.engine.Board;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.tile.*;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class IrrigationLayerTest {
     IrrigationLayer irrigationLayer;
     EdgePosition edgePosition;
     Board board;
+    TileDeck tileDeck;
 
     @BeforeEach
     void setUp() {
@@ -92,6 +100,13 @@ public class IrrigationLayerTest {
     class TestUpdateAvailableIrrigationChannelPosition {
         @BeforeEach
         void setUp() {
+            irrigationLayer = new IrrigationLayer();
+            edgePosition = mock(EdgePosition.class);
+
+            GameAssets gameAssets = mock(GameAssets.class);
+            tileDeck = mock(TileDeck.class);
+            when(gameAssets.getTileDeck()).thenReturn(tileDeck);
+
             board =
                     spy(
                             new Board(
@@ -99,15 +114,23 @@ public class IrrigationLayerTest {
                                     new BambooLayer(),
                                     new Panda(),
                                     new Gardener(),
-                                    new GameAssets(),
+                                    gameAssets,
                                     irrigationLayer));
+
+            when(tileDeck.peek()).thenReturn(List.of(new Tile(), new Tile(), new Tile()));
         }
 
-        @Test
+        private static Stream<Arguments> lifecycle() {
+            return IntStream.range(0, 13).mapToObj(Arguments::of); // from 0 to 12
+        }
+
+        @ParameterizedTest(name = "{0}")
+        @MethodSource("lifecycle")
         @DisplayName("Irrigation lifecycle")
-        void irrigationLifecycle() {
+        void irrigationLifecycle(int step) {
             // When the board is created no available edge positions
             assertThat(irrigationLayer.getAvailableEdgePositions()).isEmpty();
+            if (step <= 1) return;
 
             // When tiles are placed near the pond, the edge positions are available
             board.drawTiles();
@@ -141,6 +164,8 @@ public class IrrigationLayerTest {
                             new EdgePosition(
                                     new PositionVector(0, -1, 1), new PositionVector(-1, 0, 1)));
 
+            if (step <= 2) return;
+
             // Place irrigation on the edge position should remove them from the available edge
             // positions and does not add new ones
             irrigationLayer.placeIrrigation(
@@ -166,6 +191,8 @@ public class IrrigationLayerTest {
                     board);
             assertThat(irrigationLayer.getAvailableEdgePositions()).isEmpty();
 
+            if (step <= 3) return;
+
             // Assert that no available edge positions are available
             assertThat(irrigationLayer.getAvailableEdgePositions())
                     .doesNotContain(
@@ -173,6 +200,8 @@ public class IrrigationLayerTest {
                                     new PositionVector(0, -1, 1), new PositionVector(1, -2, 1)),
                             new EdgePosition(
                                     new PositionVector(1, -1, 0), new PositionVector(1, -2, 1)));
+
+            if (step <= 4) return;
 
             // When a new tile is placed, the available edge positions are updated
             board.drawTiles();
@@ -184,6 +213,8 @@ public class IrrigationLayerTest {
                             new EdgePosition(
                                     new PositionVector(0, -1, 1), new PositionVector(1, -2, 1)));
 
+            if (step <= 5) return;
+
             // When a tile is placed but no irrigation is placed, the available edge positions are
             // correctly updated
             board.drawTiles();
@@ -194,6 +225,8 @@ public class IrrigationLayerTest {
                                     new PositionVector(1, -1, 0), new PositionVector(1, -2, 1)),
                             new EdgePosition(
                                     new PositionVector(0, -1, 1), new PositionVector(1, -2, 1)));
+
+            if (step <= 6) return;
 
             // When a tile is placed and irrigation is placed, the available edge positions are
             // correctly updated
@@ -209,23 +242,45 @@ public class IrrigationLayerTest {
                             new EdgePosition(
                                     new PositionVector(1, -2, 1), new PositionVector(0, -2, 2)));
 
+            if (step <= 7) return;
+
             // Final irrigation pattern verification
             // POND
             assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(0, 0, 0))).isTrue();
+
+            if (step <= 8) return;
 
             // Pond neighbors
             for (Vector neighbor : (new PositionVector(0, 0, 0)).getNeighbors()) {
                 assertThat(irrigationLayer.isIrrigatedAt(neighbor.toPositionVector())).isTrue();
             }
 
+            if (step <= 9) return;
+
             // With irrigation
             System.out.println(board.getTileAt(new PositionVector(1, -2, 1)));
             assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(1, -2, 1))).isTrue();
+
+            if (step <= 10) return;
 
             // Not irrigated
             assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(0, -2, 2))).isFalse();
             assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(2, -2, 0))).isFalse();
             assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(1, -3, 2))).isFalse();
+            assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(2, -1, -1))).isFalse();
+
+            if (step <= 11) return;
+
+            // When watershed tile is placed, it is irrigated
+            when(tileDeck.peek()).thenReturn(List.of(new Tile(ImprovementType.WATERSHED)));
+
+            Tile watershedTile = board.peekTileDeck().get(0);
+
+            board.placeTile(watershedTile, new PositionVector(2, -1, -1));
+
+            assertThat(watershedTile.getImprovement()).isPresent();
+            assertThat(watershedTile.getImprovement()).contains(ImprovementType.WATERSHED);
+            assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(2, -1, -1))).isTrue();
         }
     }
 
