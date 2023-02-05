@@ -58,21 +58,20 @@ class GameEngineTest {
 
         @Test
         @DisplayName("Should recreate the board and reset the bot managers")
-        @Disabled // You cannot compare two boards, as when initialized they have a diffrerent
-        // tiledeck order.
         void shouldRecreateBoardAndResetBotManagers() {
 
             BotManager botManager1 = spy(BotManager.class);
             BotManager botManager2 = spy(BotManager.class);
 
             gameEngine = spy(new GameEngine(List.of(botManager1, botManager2)));
+            Board board = gameEngine.getBoard();
 
             gameEngine.newGame();
 
             verify(botManager1, times(1)).reset();
             verify(botManager2, times(1)).reset();
 
-            assertThat(gameEngine.getBoard()).isEqualTo(new Board());
+            assertThat(gameEngine.getBoard()).isNotSameAs(board);
         }
 
         @Test
