@@ -183,7 +183,9 @@ public class ActionManager {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ActionManager that = (ActionManager) o;
-        return numberOfActions == that.numberOfActions && Objects.equals(availableActions, that.availableActions) && Objects.equals(alreadyDoneActions, that.alreadyDoneActions);
+        return numberOfActions == that.numberOfActions
+                && Objects.equals(availableActions, that.availableActions)
+                && Objects.equals(alreadyDoneActions, that.alreadyDoneActions);
     }
 
     @Override

@@ -23,8 +23,7 @@ public class DrawObjectiveAction implements DefaultAction {
     }
 
     public static boolean canBePlayed(Board board, BotState botState) {
-        return (botState.getObjectives().size()
-                                + botState.getAchievedObjectives(board, botState).size())
+        return (botState.getObjectives().size() + botState.getAchievedObjectives().size())
                         < BotState.MAX_OBJECTIVES
                 && !board.isObjectiveDeckEmpty();
     }

@@ -4,13 +4,10 @@ import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
-
 import java.util.List;
 import java.util.Objects;
 
-/**
- * This class is used to store the state of a bot.
- */
+/** This class is used to store the state of a bot. */
 public class BotState {
     public static final int MAX_OBJECTIVES = 5;
     private final ObjectiveManager objectiveManager;
@@ -43,9 +40,7 @@ public class BotState {
     // ------------------- OBJECT METHODS ------------------- //
     // ------------------------------------------------------ //
 
-    /**
-     * reset everything to the default values
-     */
+    /** reset everything to the default values */
     public void reset() {
         this.objectiveManager.reset();
         this.actionManager.reset();
@@ -73,10 +68,7 @@ public class BotState {
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                getInventory(),
-                getObjectiveManager(),
-                getActionManager());
+        return Objects.hash(getInventory(), getObjectiveManager(), getActionManager());
     }
 
     /**
@@ -156,9 +148,7 @@ public class BotState {
         this.actionManager.addAvailableActions(actions);
     }
 
-    /**
-     * add an action to the number of actions to plau this turn
-     */
+    /** add an action to the number of actions to plau this turn */
     public void addAction() {
         this.actionManager.addAction();
     }
@@ -166,7 +156,7 @@ public class BotState {
     /**
      * update an action in available actions
      *
-     * @param action       the action to update
+     * @param action the action to update
      * @param actionResult the result of the action
      */
     public void updateAvailableActions(Action action, ActionResult actionResult) {

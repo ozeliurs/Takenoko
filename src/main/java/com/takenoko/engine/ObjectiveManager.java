@@ -2,7 +2,6 @@ package com.takenoko.engine;
 
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.PandaObjective;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -68,14 +67,14 @@ public class ObjectiveManager {
      * for each objective, check if it is achieved
      *
      * @param board the board
-     * @param botManager the bot manager
+     * @param botState the bot manager
      */
-    public void verifyObjectives(Board board, BotManager botManager) {
+    public void verifyObjectives(Board board, BotState botState) {
         for (Objective objective : objectives) {
-            objective.verify(board, botManager);
+            objective.verify(board, botState);
         }
         for (Objective objective : achievedObjectives) {
-            objective.verify(board, botManager);
+            objective.verify(board, botState);
         }
     }
 
@@ -92,10 +91,10 @@ public class ObjectiveManager {
      * update the objectives
      *
      * @param board the board
-     * @param botManager the bot manager
+     * @param botState the bot manager
      */
-    public void updateObjectives(Board board, BotManager botManager) {
-        verifyObjectives(board, botManager);
+    public void updateObjectives(Board board, BotState botState) {
+        verifyObjectives(board, botState);
 
         // If objective is achieved, add it to the list of achieved objectives
         List<Objective> toAchieve = new ArrayList<>();
@@ -167,15 +166,14 @@ public class ObjectiveManager {
 
     /**
      * Return a copy of the current ObjectiveManager
+     *
      * @return ObjectiveManager
      */
     public ObjectiveManager copy() {
         return new ObjectiveManager(this);
     }
 
-    /**
-     * Reset all the attributes of the ObjectiveManager
-     */
+    /** Reset all the attributes of the ObjectiveManager */
     public void reset() {
         this.objectives.clear();
         this.achievedObjectives.clear();
@@ -187,7 +185,9 @@ public class ObjectiveManager {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ObjectiveManager that = (ObjectiveManager) o;
-        return Objects.equals(objectives, that.objectives) && Objects.equals(achievedObjectives, that.achievedObjectives) && Objects.equals(redeemedObjectives, that.redeemedObjectives);
+        return Objects.equals(objectives, that.objectives)
+                && Objects.equals(achievedObjectives, that.achievedObjectives)
+                && Objects.equals(redeemedObjectives, that.redeemedObjectives);
     }
 
     @Override
