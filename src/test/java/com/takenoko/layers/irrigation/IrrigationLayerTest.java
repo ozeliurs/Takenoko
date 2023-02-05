@@ -12,6 +12,7 @@ import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.tile.*;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -108,19 +109,7 @@ public class IrrigationLayerTest {
         }
 
         private static Stream<Arguments> lifecycle() {
-            return Stream.of(
-                    Arguments.of(1),
-                    Arguments.of(2),
-                    Arguments.of(3),
-                    Arguments.of(4),
-                    Arguments.of(5),
-                    Arguments.of(6),
-                    Arguments.of(7),
-                    Arguments.of(8),
-                    Arguments.of(9),
-                    Arguments.of(10),
-                    Arguments.of(11),
-                    Arguments.of(12));
+            return IntStream.range(0, 13).mapToObj(Arguments::of); // from 0 to 12
         }
 
         @ParameterizedTest(name = "{0}")
