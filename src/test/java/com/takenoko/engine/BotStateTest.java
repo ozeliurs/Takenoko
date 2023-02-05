@@ -13,13 +13,17 @@ import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.PandaObjective;
 import com.takenoko.vector.PositionVector;
+import com.takenoko.weather.WeatherFactory;
+import java.util.Optional;
 import org.junit.jupiter.api.*;
 
 class BotStateTest {
     private BotState botState;
+    Board board;
 
     @BeforeEach
     void setUp() {
+        board = mock(Board.class);
         botState = new BotState();
     }
 
@@ -120,6 +124,26 @@ class BotStateTest {
             botState.updateAvailableActions(
                     new ChooseIfApplyWeatherAction(false), new ActionResult());
             assertThat(botState.getAvailableActions()).isEmpty();
+        }
+
+        @Test
+        @DisplayName("should remove already executed actions")
+        void updateAvailableActions_shouldRemoveAlreadyExecutedActions() {
+            botState.addAvailableAction(MoveGardenerAction.class);
+            botState.addAvailableAction(DrawObjectiveAction.class);
+            botState.updateAvailableActions(
+                    new MoveGardenerAction(mock(PositionVector.class)), new ActionResult());
+            assertThat(botState.getAvailableActions()).hasSize(1);
+        }
+
+        @Test
+        @DisplayName("shouldn't remove already executed actions if windy")
+        void updateAvailableActions_shouldNotRemoveAlreadyExecutedActionsIfWindy() {
+            botState.addAvailableAction(MoveGardenerAction.class);
+            botState.addAvailableAction(DrawObjectiveAction.class);
+            when(board.getWeather()).thenReturn(Optional.of(WeatherFactory.WINDY.createWeather()));
+            botState.update(board, mock(BotManager.class));
+            assertThat(botState.getAvailableActions()).hasSize(2);
         }
 
         @Test
