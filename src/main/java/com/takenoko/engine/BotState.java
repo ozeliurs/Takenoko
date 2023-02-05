@@ -62,13 +62,13 @@ public class BotState {
         if (o == null || getClass() != o.getClass()) return false;
         BotState botState = (BotState) o;
         return getInventory().equals(botState.getInventory())
-                && getObjectiveManager().equals(botState.getObjectiveManager())
-                && getActionManager().equals(botState.getActionManager());
+                && objectiveManager.equals(botState.objectiveManager)
+                && actionManager.equals(botState.actionManager);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getInventory(), getObjectiveManager(), getActionManager());
+        return Objects.hash(getInventory(), objectiveManager, actionManager);
     }
 
     /**
@@ -105,10 +105,6 @@ public class BotState {
     // -------------- METHOD RELATED TO ACTIONS ------------- //
     // ------------------------------------------------------ //
 
-    private ActionManager getActionManager() {
-        return actionManager;
-    }
-
     public void setNumberOfActions(int numberOfActions) {
         this.actionManager.setNumberOfActions(numberOfActions);
     }
@@ -137,15 +133,6 @@ public class BotState {
      */
     public void addAvailableAction(Class<? extends Action> action) {
         this.actionManager.addAvailableAction(action);
-    }
-
-    /**
-     * add a list of actions to the list of available actions
-     *
-     * @param actions the list of actions to add
-     */
-    public void addAvailableActions(List<Class<? extends Action>> actions) {
-        this.actionManager.addAvailableActions(actions);
     }
 
     /** add an action to the number of actions to plau this turn */
@@ -184,15 +171,6 @@ public class BotState {
     // ------------------------------------------------------ //
     // ------------ METHOD RELATED TO OBJECTIVES ------------ //
     // ------------------------------------------------------ //
-
-    /**
-     * Get the objective manager
-     *
-     * @return ObjectiveManager
-     */
-    private ObjectiveManager getObjectiveManager() {
-        return objectiveManager;
-    }
 
     /**
      * Get the current Objectives of the bot
