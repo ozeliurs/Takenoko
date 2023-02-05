@@ -13,7 +13,6 @@ import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.tile.*;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
-
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
