@@ -4,6 +4,9 @@ import com.takenoko.engine.Board;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 /** Gardener class. The gardener is an actor that can move on the board. */
 public class Gardener extends Actor {
@@ -29,29 +32,28 @@ public class Gardener extends Actor {
         return "The gardener is at " + this.getPositionVector();
     }
 
-    public LayerBambooStack afterMove(Board board) {
+    public Map<PositionVector, LayerBambooStack> afterMove(Board board) {
+        Map<PositionVector, LayerBambooStack> growBambooMap = new HashMap<>();
 
-        // check if the gardener can grow bamboo on adjacent tiles
-        for (Vector adjacent : this.getPositionVector().getNeighbors()) {
-            tryToGrowBambooAt(board, adjacent.toPositionVector());
-        }
-
-        // check if the gardener can grow bamboo on the tile he's on
-        if (tryToGrowBambooAt(board, this.getPositionVector())) {
-            return new LayerBambooStack(1);
-        } else {
-            return new LayerBambooStack(0);
-        }
-    }
-
-    private boolean tryToGrowBambooAt(Board board, PositionVector position) {
-        // check if the gardener can grow bamboo
-        if (board.isBambooGrowableAt(position)) {
-            // grow bamboo
-            board.growBamboo(position);
-            return true;
-        }
-        return false;
+        Stream.concat(
+                        this.getPositionVector().getNeighbors().stream(),
+                        Stream.of(this.getPositionVector()))
+                .map(Vector::toPositionVector)
+                .filter(board::isTile)
+                .filter(
+                        v ->
+                                board.getTileAt(v)
+                                        .getColor()
+                                        .equals(
+                                                board.getTileAt(this.getPositionVector())
+                                                        .getColor()))
+                .filter(board::isBambooGrowableAt)
+                .forEach(
+                        v -> {
+                            board.growBamboo(v);
+                            growBambooMap.put(v, board.getBambooAt(v));
+                        });
+        return growBambooMap;
     }
 
     public Gardener copy() {

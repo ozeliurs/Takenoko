@@ -12,6 +12,7 @@ import com.takenoko.layers.tile.Pond;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -104,9 +105,10 @@ class PandaTest {
         void shouldEatABambooIfThereIsOne() {
             Panda panda = new Panda();
             when(board.isBambooEatableAt(any())).thenReturn(true);
-            LayerBambooStack stack = panda.move(new PositionVector(1, 0, -1), board);
+            Map<PositionVector, LayerBambooStack> stack =
+                    panda.move(new PositionVector(1, 0, -1), board);
             verify(board, times(1)).eatBamboo(any());
-            assertThat(stack.getBambooCount()).isEqualTo(1);
+            assertThat(stack).hasSize(1);
         }
 
         @Test
@@ -116,8 +118,9 @@ class PandaTest {
 
             when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
 
-            LayerBambooStack stack = panda.move(new PositionVector(1, 0, -1), board);
-            assertThat(stack.getBambooCount()).isZero();
+            Map<PositionVector, LayerBambooStack> stack =
+                    panda.move(new PositionVector(1, 0, -1), board);
+            assertThat(stack).isEmpty();
         }
     }
 

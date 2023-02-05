@@ -6,6 +6,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -22,7 +23,8 @@ public class MoveGardenerActionTest {
         moveGardenerAction = new MoveGardenerAction(new PositionVector(-1, 0, 1));
         botManager = mock(BotManager.class);
         board = mock(Board.class);
-        when(board.moveGardener(any())).thenReturn(new LayerBambooStack(1));
+        when(board.moveGardener(any()))
+                .thenReturn(Map.of(new PositionVector(-1, 0, 1), new LayerBambooStack(1)));
     }
 
     @Nested

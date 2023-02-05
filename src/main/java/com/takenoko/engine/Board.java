@@ -217,7 +217,7 @@ public class Board {
      * @param vector the vector to move the panda
      * @return bamboo stack of one if the panda ate bamboo
      */
-    public LayerBambooStack movePanda(PositionVector vector) {
+    public Map<PositionVector, LayerBambooStack> movePanda(PositionVector vector) {
         return panda.move(vector, this);
     }
 
@@ -227,7 +227,7 @@ public class Board {
      * @param vector the vector to move the gardener
      * @return bamboo stack of one if the gardener planted bamboo
      */
-    public LayerBambooStack moveGardener(PositionVector vector) {
+    public Map<PositionVector, LayerBambooStack> moveGardener(PositionVector vector) {
         return gardener.move(vector, this);
     }
 
