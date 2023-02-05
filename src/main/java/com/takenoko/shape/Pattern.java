@@ -56,7 +56,7 @@ public class Pattern extends Shape {
                                 .allMatch(e ->
                                         board.isIrrigatedAt(e.getKey()) &&
                                                 tileMap.containsKey(e.getKey()) && (
-                                                tileMap.get(e.getKey()).equals(e.getValue()) || (
+                                                tileMap.get(e.getKey()).getColor().equals(e.getValue().getColor()) || (
                                                         e.getValue().getColor().equals(TileColor.ANY) &&
                                                                 !tileMap.get(e.getKey()).getColor().equals(TileColor.NONE)
                                                 )
