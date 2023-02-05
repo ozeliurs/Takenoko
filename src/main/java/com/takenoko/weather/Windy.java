@@ -5,6 +5,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import java.util.List;
 
+/** Weather that allows the player to play the same action twice. */
 public class Windy implements Weather {
     @Override
     public List<Class<? extends Action>> apply(Board board, BotManager botManager) {
