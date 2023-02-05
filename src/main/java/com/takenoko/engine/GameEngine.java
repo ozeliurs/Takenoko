@@ -124,7 +124,8 @@ public class GameEngine {
         BotManager botManagerWithEmperorObjective = null;
 
         for (int i = 0; i < numberOfRounds; i++) {
-            consoleUserInterface.displayMessage("===== Round " + (i + 1) + " =====");
+            consoleUserInterface.displayMessage(
+                    "===== Round " + (board.getRoundNumber() + 1) + " =====");
             for (BotManager botManager : botManagers) {
 
                 if (isLastRound && botManager.equals(botManagerWithEmperorObjective)) {
@@ -152,6 +153,7 @@ public class GameEngine {
                             "==<Last round>==<Last round>==<Last round>==<Last round>==");
                 }
             }
+            board.nextRound();
         }
     }
 

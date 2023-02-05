@@ -24,6 +24,7 @@ public class Board {
     private final Gardener gardener;
     private final GameAssets gameAssets;
     private Weather weather = null;
+    int roundNumber = 0;
 
     /**
      * Constructor for the Board class.
@@ -77,6 +78,7 @@ public class Board {
         this.gameAssets = board.gameAssets.copy();
         this.weather = board.weather;
         this.irrigationLayer = board.irrigationLayer.copy();
+        this.roundNumber = board.roundNumber;
     }
 
     /**
@@ -242,13 +244,21 @@ public class Board {
                 && gardener.equals((board.gardener))
                 && gameAssets.equals(board.gameAssets)
                 && Objects.equals(weather, board.weather)
-                && irrigationLayer.equals(board.irrigationLayer);
+                && irrigationLayer.equals(board.irrigationLayer)
+                && roundNumber == board.roundNumber;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-                tileLayer, bambooLayer, panda, gardener, gameAssets, weather, irrigationLayer);
+                tileLayer,
+                bambooLayer,
+                panda,
+                gardener,
+                gameAssets,
+                weather,
+                irrigationLayer,
+                roundNumber);
     }
 
     public Board copy() {
@@ -355,5 +365,13 @@ public class Board {
 
     public boolean isIrrigatedAt(PositionVector position) {
         return irrigationLayer.isIrrigatedAt(position);
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    public void nextRound() {
+        roundNumber++;
     }
 }
