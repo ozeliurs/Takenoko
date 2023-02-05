@@ -28,6 +28,17 @@ public enum WeatherFactory {
         public Weather createWeather() {
             return new QuestionMark();
         }
+    },
+
+    /**
+     * A refreshing breeze 💨 blows through the bamboo garden. The player may, but is not required
+     * to, take two identical actions in this round (instead of two different actions).
+     */
+    WINDY {
+        @Override
+        public Weather createWeather() {
+            return new Windy();
+        }
     };
 
     public abstract Weather createWeather();

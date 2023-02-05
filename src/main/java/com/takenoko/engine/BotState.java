@@ -17,6 +17,7 @@ import com.takenoko.actions.tile.DrawTileAction;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.PandaObjective;
+import com.takenoko.weather.Windy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -326,7 +327,10 @@ public class BotState { // DEFAULT VALUES
                                 DefaultAction.canBePlayed(board, this, actionClass)
                                         && (actionClass.isAnnotationPresent(
                                                         ActionCanBePlayedMultipleTimesPerTurn.class)
-                                                || !alreadyDoneActions.contains(actionClass)))
+                                                || !alreadyDoneActions.contains(actionClass)
+                                                || board.getWeather()
+                                                        .getClass()
+                                                        .equals(Windy.class)))
                 .forEach(actionClass -> availableActions.add(actionClass));
     }
 
