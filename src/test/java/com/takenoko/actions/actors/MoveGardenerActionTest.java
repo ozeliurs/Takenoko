@@ -51,9 +51,8 @@ public class MoveGardenerActionTest {
         @DisplayName("should return true if the gardener can move")
         void shouldReturnTrueIfGardenerCanMove() {
             HashMap<PositionVector, Tile> tiles = new HashMap<>();
-            tiles.put(new PositionVector(0, 0, 0), new Tile());
             tiles.put(new PositionVector(1, 0, -1), new Tile());
-            when(board.getTiles()).thenReturn(tiles);
+            when(board.getTilesWithoutPond()).thenReturn(tiles);
             assertThat(MoveGardenerAction.canBePlayed(board)).isTrue();
         }
 
@@ -61,9 +60,8 @@ public class MoveGardenerActionTest {
         @DisplayName("should return false if the gardener cant move")
         void shouldReturnFalseIfGardenerCantMove() {
             HashMap<PositionVector, Tile> tiles = new HashMap<>();
-            tiles.put(new PositionVector(0, 0, 0), new Tile());
-            when(board.getTiles()).thenReturn(tiles);
-            assertThat(MoveGardenerAction.canBePlayed(board)).isTrue();
+            when(board.getTilesWithoutPond()).thenReturn(tiles);
+            assertThat(MoveGardenerAction.canBePlayed(board)).isFalse();
         }
     }
 }
