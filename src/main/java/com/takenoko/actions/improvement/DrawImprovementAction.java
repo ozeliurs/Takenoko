@@ -17,7 +17,7 @@ import java.util.List;
 @ActionAnnotation(ActionType.FORCED)
 public class DrawImprovementAction implements Action {
 
-    ImprovementType improvementType;
+    final ImprovementType improvementType;
 
     public DrawImprovementAction(ImprovementType improvementType) {
         this.improvementType = improvementType;

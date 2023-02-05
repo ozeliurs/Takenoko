@@ -12,7 +12,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 /** Class representing a pattern. */
 public class Pattern extends Shape {
-    HashMap<PositionVector, Set<Shape>> cache = new HashMap<>();
+    final HashMap<PositionVector, Set<Shape>> cache = new HashMap<>();
 
     /**
      * Constructor for the Pattern class. The origin is the element the closest to the origin of the

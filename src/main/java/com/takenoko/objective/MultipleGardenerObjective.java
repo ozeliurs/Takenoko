@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 /** Objective is to complete a certain number of single gardener objectives. */
 public class MultipleGardenerObjective extends Objective {
 
-    SingleGardenerObjective objective;
+    final SingleGardenerObjective objective;
     private final int numberOfTimes;
 
     public MultipleGardenerObjective(

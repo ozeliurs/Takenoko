@@ -14,7 +14,7 @@ import com.takenoko.objective.Objective;
 @ActionAnnotation(ActionType.DEFAULT)
 @ActionCanBePlayedMultipleTimesPerTurn()
 public class RedeemObjectiveAction implements DefaultAction {
-    Objective objective;
+    final Objective objective;
 
     public RedeemObjectiveAction(Objective objective) {
         this.objective = objective;

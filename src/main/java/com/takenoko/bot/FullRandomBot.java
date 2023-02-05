@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class FullRandomBot implements Bot {
-    SecureRandom random;
+    final SecureRandom random;
 
     public FullRandomBot() {
         random = new SecureRandom();

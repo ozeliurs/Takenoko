@@ -13,7 +13,7 @@ import com.takenoko.layers.irrigation.EdgePosition;
 @ActionAnnotation(ActionType.DEFAULT)
 @ActionCanBePlayedMultipleTimesPerTurn
 public class PlaceIrrigationFromInventoryAction implements DefaultAction {
-    EdgePosition positionVector;
+    final EdgePosition positionVector;
 
     public PlaceIrrigationFromInventoryAction(EdgePosition positionVector) {
         this.positionVector = positionVector;
