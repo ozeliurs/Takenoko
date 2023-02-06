@@ -1,6 +1,7 @@
 package com.takenoko.engine;
 
 import com.takenoko.bot.FullRandomBot;
+import com.takenoko.bot.GeneralTacticBot;
 import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
@@ -61,7 +62,7 @@ public class GameEngine {
                                 new BotManager(
                                         new ConsoleUserInterface(),
                                         "Bob",
-                                        new FullRandomBot(),
+                                        new GeneralTacticBot(),
                                         new BotState()))),
                 new Scoreboard(),
                 new History());
