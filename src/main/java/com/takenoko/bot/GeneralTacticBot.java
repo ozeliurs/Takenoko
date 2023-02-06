@@ -10,12 +10,19 @@ import com.takenoko.actions.irrigation.DrawIrrigationAction;
 import com.takenoko.actions.irrigation.PlaceIrrigationFromInventoryAction;
 import com.takenoko.actions.irrigation.StoreIrrigationInInventoryAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
+import com.takenoko.actions.tile.PlaceTileAction;
+import com.takenoko.actions.tile.PlaceTileWithImprovementAction;
 import com.takenoko.actions.weather.ChooseAndApplyWeatherAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.engine.*;
 import com.takenoko.layers.irrigation.EdgePosition;
 import com.takenoko.layers.tile.Tile;
+import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.*;
+import com.takenoko.objective.EmperorObjective;
+import com.takenoko.objective.Objective;
+import com.takenoko.objective.PandaObjective;
+import com.takenoko.objective.PatternObjective;
 import com.takenoko.shape.Shape;
 import com.takenoko.ui.ConsoleUserInterface;
 import com.takenoko.vector.PositionVector;
@@ -56,14 +63,15 @@ public class GeneralTacticBot implements Bot {
          */
         if (botState.getAvailableActions().contains(PlaceTileAction.class)
                 || botState.getAvailableActions().contains(PlaceTileWithImprovementAction.class)) {
-            console.displayDebug("BIG BRAIN MODE - PlaceTileAction");
+            console.displayDebug("BIG BRAIN MODE - PlaceTileAction analysis");
             // We analyze the board to find the best tile to place
-            Pair<Tile, PositionVector> tileWithPosition =
-                    analyzeTileToPlaceToCompleteShapeOfPatternObjective(board, botState);
+            Pair<PositionVector, Tile> pairPositionWithTileColor =
+                    analyzeBoardToFindPlaceToCompleteShapeOfPatternObjective(board, botState);
             // If there is a tile to place, we place it
-            if (tileWithPosition != null) {
+            if (pairPositionWithTileColor != null) {
                 console.displayDebug("BIG BRAIN MODE - chose to place a tile");
-                return new PlaceTileAction(tileWithPosition.getLeft(), tileWithPosition.getRight());
+                return new PlaceTileAction(
+                        pairPositionWithTileColor.getRight(), pairPositionWithTileColor.getLeft());
             }
         }
 
@@ -296,8 +304,6 @@ public class GeneralTacticBot implements Bot {
      */
     public void analyzeIrrigationToPlaceToCompletePatternObjective(Board board, BotState botState) {
         // Verify that the bot has
-        // - a place irrigation action in its inventory
-        // - at least one irrigation to place
         // - at least one pattern objective that is not already completed
         if (!allPatternObjectivesAreCompleted(botState)) {
             // Get all the shapes that could be completed by placing an irrigation
@@ -345,9 +351,10 @@ public class GeneralTacticBot implements Bot {
      * @param botState the bot state
      * @return the list of pattern objectives
      */
-    public List<Objective> getCurrentPatternObjectives(BotState botState) {
+    public List<PatternObjective> getCurrentPatternObjectives(BotState botState) {
         return botState.getObjectives().stream()
                 .filter(PatternObjective.class::isInstance)
+                .map(PatternObjective.class::cast)
                 .toList();
     }
 
@@ -359,11 +366,7 @@ public class GeneralTacticBot implements Bot {
      * @return the list of shapes matching the pattern objectives
      */
     public List<List<Shape>> getCandidateShapes(Board board, BotState botState) {
-        List<PatternObjective> patternObjectives =
-                botState.getObjectives().stream()
-                        .filter(PatternObjective.class::isInstance)
-                        .map(PatternObjective.class::cast)
-                        .toList();
+        List<PatternObjective> patternObjectives = getCurrentPatternObjectives(botState);
 
         console.displayDebug("BIG BRAIN MODE - patternObjectives: " + patternObjectives);
 
@@ -373,17 +376,6 @@ public class GeneralTacticBot implements Bot {
         }
 
         return matchedPatterns;
-    }
-
-    public List<Shape> getIncompleteCandidateShapes(
-            Board board, BotState botState, PatternObjective patternObjective) {
-        console.displayDebug(
-                "BIG BRAIN MODE - getIncompleteCandidateShapes - patternObjective: "
-                        + patternObjective);
-
-        // List<Shape> incompleteMatchingShape = patternObjective.getPattern().matchRatio(board,
-        // true);
-        return null;
     }
 
     /**
@@ -405,27 +397,66 @@ public class GeneralTacticBot implements Bot {
     // ----- Methods related to shape completion analysis -----
     // --------------------------------------------------------
 
-    public Pair<Tile, PositionVector> analyzeTileToPlaceToCompleteShapeOfPatternObjective(
+    public Pair<PositionVector, Tile> analyzeBoardToFindPlaceToCompleteShapeOfPatternObjective(
             Board board, BotState botState) {
-        List<Tile> availableTilesFromDeck = board.peekTileDeck();
-        List<PatternObjective> patternObjectives =
+        // Get all the pattern objectives of the bot
+        Stream<PatternObjective> patternObjectives =
                 getCurrentPatternObjectives(botState).stream()
-                        .map(PatternObjective.class::cast)
+                        .filter(patternObjective -> !patternObjective.isAchieved())
+                        .sorted(Comparator.comparing(Objective::getPoints).reversed());
+
+        // Get all the shapes that could be completed by placing a tile
+        List<Shape> uncompletedSubsetOfShapes =
+                patternObjectives
+                        .map(
+                                patternObjective ->
+                                        patternObjective
+                                                .getShapeToCompletePatternObjective(board)
+                                                .stream()
+                                                .min(
+                                                        Comparator.comparingInt(
+                                                                v -> v.getElements().size())))
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
                         .toList();
 
-        List<Shape> candidateShapesToComplete = new ArrayList<>();
-        for (PatternObjective patternObjective : patternObjectives) {
-            List<Shape> incompleteShapes =
-                    getIncompleteCandidateShapes(board, botState, patternObjective);
-            int patternObjectiveSize = patternObjective.getPattern().getElements().size();
+        // Get the available tiles to place
+        List<Tile> deckAvailableTiles = board.peekTileDeck();
+        List<TileColor> deckAvailableColors =
+                deckAvailableTiles.stream().map(Tile::getColor).toList();
 
-            for (Shape shape : incompleteShapes) {
-                if (shape.getElements().size() == patternObjectiveSize - 1) {
-                    candidateShapesToComplete.add(shape);
-                }
-            }
+        Optional<Shape> bestSubsetThanCanBeFurtherCompleted =
+                uncompletedSubsetOfShapes.stream()
+                        .filter(
+                                shape ->
+                                        shape.getElements().values().stream()
+                                                .anyMatch(
+                                                        tile ->
+                                                                deckAvailableColors.contains(
+                                                                        tile.getColor())))
+                        .findFirst();
+
+        if (bestSubsetThanCanBeFurtherCompleted.isPresent()) {
+            Shape bestSubset = bestSubsetThanCanBeFurtherCompleted.get();
+            return bestSubset.getElements().entrySet().stream()
+                    .map(
+                            entrySet ->
+                                    Pair.of(
+                                            entrySet.getKey(),
+                                            board.peekTileDeck().stream()
+                                                    .filter(
+                                                            tile2 ->
+                                                                    entrySet.getValue()
+                                                                            .getColor()
+                                                                            .equals(
+                                                                                    tile2
+                                                                                            .getColor()))
+                                                    .findFirst()))
+                    .filter(pair -> pair.getRight().isPresent())
+                    .map(pair -> Pair.of(pair.getLeft(), pair.getRight().get()))
+                    .findFirst()
+                    .orElseThrow();
         }
-
         return null;
     }
 }

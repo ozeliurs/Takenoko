@@ -3,6 +3,7 @@ package com.takenoko.objective;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.shape.*;
+import java.util.List;
 import java.util.Objects;
 
 public class PatternObjective extends Objective {
@@ -44,9 +45,13 @@ public class PatternObjective extends Objective {
         return objective;
     }
 
+    public List<Shape> getShapeToCompletePatternObjective(Board board) {
+        return pattern.getShapesToCompletePatternObjective(board);
+    }
+
     @Override
     public float getCompletion(Board board, BotState botState) {
-        return pattern.matchRatio(board);
+        return pattern.getSubsetMatchPattern(board);
     }
 
     @Override

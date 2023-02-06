@@ -75,25 +75,27 @@ public class Pattern extends Shape {
      *
      * @param board@return the ratio of the matching translated/rotated shapes
      */
-    public float matchRatio(Board board) {
-        return matchRatio(board, 1);
+    public float getSubsetMatchPattern(Board board) {
+        return 0f;
+        // return matchRatio(board, 1, false);
     }
 
-    public float matchRatio(Board board, int startingSize) {
+    public List<Shape> getSubsetMatchPattern(
+            Board board, int startingSize, boolean ignoreIrrigation) {
         // spotless:off
-        long matchedElements =
-                IntStream.range(startingSize, getElements().size() + 1)
-                        .mapToObj(
-                                v -> new Pattern(
-                                        getElements().entrySet().stream()
-                                                .sorted(Comparator.comparingDouble(e -> e.getKey()
-                                                        .distance(new PositionVector(0, 0, 0))))
-                                                .limit(v)
-                                                .toList())
-                        )
-                        .filter(p -> !p.match(board).isEmpty())
-                        .count();
-        return (float) matchedElements / getElements().size();
+        return IntStream.range(startingSize, getElements().size())
+                .mapToObj(
+                        v -> new Pattern(
+                                getElements().entrySet().stream()
+                                        .sorted(Comparator.comparingDouble(e -> e.getKey()
+                                                .distance(new PositionVector(0, 0, 0))))
+                                        .limit(v)
+                                        .toList())
+                )
+                .map(p -> p.match(board, ignoreIrrigation))
+                .filter(p -> !p.isEmpty())
+                .flatMap(List::stream)
+                .toList();
         // spotless:on
     }
 
@@ -111,5 +113,31 @@ public class Pattern extends Shape {
                 .distinct()
                 .map(Objects::toString)
                 .collect(Collectors.joining(","));
+    }
+
+    public List<Shape> getShapesToCompletePatternObjective(Board board) {
+        List<Shape> matchedShapes = getSubsetMatchPattern(board, 1, true);
+
+        List<Shape> missingShapes = new ArrayList<>();
+        for (Shape subset : matchedShapes) {
+            // Translate the shape from the origin to a tile of the pattern
+            for (PositionVector positionVector : subset.getElements().keySet()) {
+                Set<Shape> rotatedShapes = this.translate(positionVector).getRotatedShapes();
+                // For each rotation, check if the shape is matching the board
+                for (Shape rotatedShape : rotatedShapes) {
+                    // Missing conditions
+                    Shape missingShape = rotatedShape.getMissingShape(subset);
+                    missingShapes.add(missingShape);
+                }
+            }
+        }
+
+        return missingShapes.stream()
+                .filter(
+                        shape ->
+                                new HashSet<>(board.getAvailableTilePositions())
+                                        .containsAll(shape.getElements().keySet()))
+                .sorted(Comparator.comparingInt(v -> v.getElements().size()))
+                .toList();
     }
 }

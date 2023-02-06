@@ -72,6 +72,11 @@ public class Shape {
         }
     }
 
+    public Shape(Shape shape) {
+        this.elements = new HashMap<>(shape.elements);
+        this.defaultRotationOrigin = shape.defaultRotationOrigin;
+    }
+
     /**
      * Constructor of the Shape class. To facilitate the creation of the shape, the shape is defined
      * by a list of Pair of vectors and tiles. The rotation origin is the element the closest to the
@@ -182,5 +187,16 @@ public class Shape {
     @Override
     public String toString() {
         return "Shape{" + "pattern=" + elements + ", rotationOrigin=" + defaultRotationOrigin + '}';
+    }
+
+    public Shape getMissingShape(Shape other) {
+        return new Shape(
+                this.elements.entrySet().stream()
+                        .filter(e -> !other.elements.containsKey(e.getKey()))
+                        .collect(
+                                HashMap::new,
+                                (m, v) -> m.put(v.getKey(), v.getValue()),
+                                HashMap::putAll),
+                this.defaultRotationOrigin);
     }
 }
