@@ -61,7 +61,7 @@ public class MoveGardenerAction implements DefaultAction {
                                         + positionVector
                                         + ", the stack is now "
                                         + layerBambooStack.getBambooCount()
-                                        + "high"));
+                                        + " high"));
 
         return new ActionResult(1);
     }
