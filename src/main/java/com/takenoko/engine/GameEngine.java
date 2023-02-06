@@ -7,6 +7,7 @@ import com.takenoko.ui.ConsoleUserInterface;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.Level;
 
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
@@ -200,13 +201,23 @@ public class GameEngine {
             scoreboard.incrementNumberOfVictory(botManager);
         }
         for (BotManager botManager : botManagers) {
+            scoreboard.updateScore(botManager,botManager.getObjectiveScore());
             botManager.reset();
         }
 
-        consoleUserInterface.displayMessage(scoreboard.toString());
-
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
+    }
+
+    public StringBuilder statSummary(int numberOfGames){
+        StringBuilder summary= new StringBuilder();
+        for(BotManager botManager:botManagers){
+            summary.append(botManager.getName())
+                    .append(" has average score per game of :")
+                    .append(scoreboard.getTotalScore().get(botManager)/numberOfGames)
+                    .append("|||");
+        }
+        return summary;
     }
 
     /**
@@ -284,16 +295,33 @@ public class GameEngine {
     }
 
     /** Run a whole game from initialization to end. */
-    public void runGame() {
+    public void runGame(Level level) {
+        consoleUserInterface.getLogger().setLevel(level);
         newGame();
         startGame();
         playGame();
         endGame();
     }
 
-    public void runGame(int numberOfGames) {
+    public void runGame(){
+        runGame(Level.INFO);
+    }
+
+    public void runGame(int numberOfGames,Level level) {
         for (int i = 0; i < numberOfGames; i++) {
-            runGame();
+            runGame(level);
         }
+        consoleUserInterface.getLogger().setLevel(Level.INFO);
+        consoleUserInterface.displayMessage(scoreboard.toString());
+        consoleUserInterface.displayMessage(statSummary(numberOfGames).toString());
+
+    }
+
+    public void runGame(int numberOfGames){
+        runGame(numberOfGames,Level.INFO);
+    }
+
+    public ConsoleUserInterface getConsoleUserInterface() {
+        return consoleUserInterface;
     }
 }
