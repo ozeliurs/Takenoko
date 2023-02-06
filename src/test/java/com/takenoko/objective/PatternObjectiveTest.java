@@ -155,9 +155,9 @@ class PatternObjectiveTest {
             Pattern pattern = mock(Pattern.class);
             PatternObjective patternObjective = new PatternObjective(pattern, 0);
             patternObjective.getCompletion(mock(Board.class), mock(BotState.class));
-            verify(pattern).matchRatio(any());
+            verify(pattern).getSubsetMatchPattern(any());
             // then verify that it returns the same value as the pattern
-            when(pattern.matchRatio(any())).thenReturn(1f);
+            when(pattern.getSubsetMatchPattern(any())).thenReturn(1f);
             assertThat(patternObjective.getCompletion(mock(Board.class), mock(BotState.class)))
                     .isEqualTo(1f);
         }
