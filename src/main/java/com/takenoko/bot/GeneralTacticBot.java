@@ -20,7 +20,6 @@ import com.takenoko.shape.Shape;
 import com.takenoko.ui.ConsoleUserInterface;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.WeatherFactory;
-
 import java.util.*;
 
 public class GeneralTacticBot implements Bot {
@@ -134,8 +133,8 @@ public class GeneralTacticBot implements Bot {
     /**
      * This method is used to calculate if the bot can win by redeeming its last panda objective
      *
-     * @param botState       the bot state
-     * @param history        the history
+     * @param botState the bot state
+     * @param history the history
      * @param pandaObjective the panda objective to redeem
      * @return true if it is worth redeeming the panda objective, false otherwise
      */
@@ -178,7 +177,7 @@ public class GeneralTacticBot implements Bot {
      * This method will add the edge position to the irrigationToPlace list so that the bot knows
      * that he has to place them in order to complete is pattern objectiv
      *
-     * @param board    the board
+     * @param board the board
      * @param botState the bot state
      */
     public void analyzeIrrigationToPlaceToCompletePatternObjective(Board board, BotState botState) {
@@ -241,7 +240,7 @@ public class GeneralTacticBot implements Bot {
     /**
      * Get all the shape matching the patterns on the current pattern objectives
      *
-     * @param board    the board
+     * @param board the board
      * @param botState the bot state
      * @return the list of shapes matching the pattern objectives
      */
