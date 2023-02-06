@@ -53,4 +53,13 @@ public class PatternObjective extends Objective {
     public String toString() {
         return "Pattern Objective <" + pattern.toString() + ">";
     }
+
+    /**
+     * Return the pattern of the objective.
+     *
+     * @return the pattern of the objective
+     */
+    public Pattern getPattern() {
+        return pattern;
+    }
 }

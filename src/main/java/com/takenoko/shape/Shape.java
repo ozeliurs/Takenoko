@@ -89,7 +89,7 @@ public class Shape {
         }
     }
 
-    Map<PositionVector, Tile> getElements() {
+    public Map<PositionVector, Tile> getElements() {
         return this.elements;
     }
 
