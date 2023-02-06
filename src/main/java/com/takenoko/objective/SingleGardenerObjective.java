@@ -2,6 +2,9 @@ package com.takenoko.objective;
 
 import static java.lang.Math.abs;
 
+import com.takenoko.actions.Action;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.layers.tile.ImprovementType;
@@ -82,6 +85,62 @@ public class SingleGardenerObjective extends Objective {
     public SingleGardenerObjective copy() {
         return new SingleGardenerObjective(
                 targetSize, targetColor, targetImprovementType, getPoints());
+    }
+
+    public List<Action> getActionsToComplete(Board board) {
+        ArrayList<Action> toDoActions = new ArrayList<>();
+
+        // PANDA Filter panda moves to only have the ones that are eligible and the moves
+        List<PositionVector> pandaMoves =
+                board.getPandaPossibleMoves().stream()
+                        .filter(
+                                p ->
+                                        this.isTileEligible(
+                                                board.getTileAt(
+                                                        board.getPandaPosition()
+                                                                .add(p)
+                                                                .toPositionVector())))
+                        .filter(
+                                p ->
+                                        board.isBambooEatableAt(
+                                                board.getPandaPosition().add(p).toPositionVector()))
+                        .toList();
+
+        for (PositionVector pandaMove : pandaMoves) {
+            if (board.getBambooAt(board.getPandaPosition().add(pandaMove).toPositionVector())
+                                    .getBambooCount()
+                            + 1
+                    == targetSize) {
+                toDoActions.add(new MovePandaAction(pandaMove));
+            }
+        }
+
+        // GARDENER Filter the gardener moves to only have the ones that are eligible
+        List<PositionVector> gardenerMoves =
+                board.getGardenerPossibleMoves().stream()
+                        .filter(
+                                v ->
+                                        isTileEligible(
+                                                board.getTileAt(
+                                                        board.getGardenerPosition()
+                                                                .add(v)
+                                                                .toPositionVector())))
+                        .filter(
+                                p ->
+                                        board.isBambooGrowableAt(
+                                                board.getPandaPosition().add(p).toPositionVector()))
+                        .toList();
+
+        for (PositionVector gardenerMove : gardenerMoves) {
+            if (board.getBambooAt(board.getGardenerPosition().add(gardenerMove).toPositionVector())
+                                    .getBambooCount()
+                            - 1
+                    == targetSize) {
+                toDoActions.add(new MoveGardenerAction(gardenerMove));
+            }
+        }
+
+        return toDoActions;
     }
 
     @Override
