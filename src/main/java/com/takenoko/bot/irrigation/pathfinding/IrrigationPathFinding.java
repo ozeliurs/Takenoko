@@ -2,6 +2,7 @@ package com.takenoko.bot.irrigation.pathfinding;
 
 import com.takenoko.engine.Board;
 import com.takenoko.layers.irrigation.EdgePosition;
+import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.vector.PositionVector;
 import java.util.*;
 
@@ -10,7 +11,9 @@ public class IrrigationPathFinding {
     private IrrigationPathFinding() {}
 
     private static int calculateHCost(Board board, List<PositionVector> tilesToIrrigate) {
-        return tilesToIrrigate.stream().filter(tile -> !board.isIrrigatedAt(tile)).toList().size();
+        return tilesToIrrigate.stream()
+                .filter(tilePosition -> !board.getTileAt(tilePosition).getImprovement().map(improvementType -> improvementType.equals(ImprovementType.WATERSHED)).orElse(false))
+                .filter(tile -> !board.isIrrigatedAt(tile)).toList().size();
     }
 
     public static List<EdgePosition> getShortestIrrigationPath(

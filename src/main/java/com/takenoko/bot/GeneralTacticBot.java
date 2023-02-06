@@ -7,6 +7,8 @@ import com.takenoko.actions.irrigation.DrawIrrigationAction;
 import com.takenoko.actions.irrigation.PlaceIrrigationFromInventoryAction;
 import com.takenoko.actions.irrigation.StoreIrrigationInInventoryAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
+import com.takenoko.actions.tile.PlaceTileAction;
+import com.takenoko.actions.tile.PlaceTileWithImprovementAction;
 import com.takenoko.actions.weather.ChooseAndApplyWeatherAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.engine.*;
@@ -20,6 +22,8 @@ import com.takenoko.shape.Shape;
 import com.takenoko.ui.ConsoleUserInterface;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.WeatherFactory;
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.*;
 
 public class GeneralTacticBot implements Bot {
@@ -45,6 +49,20 @@ public class GeneralTacticBot implements Bot {
             if (!irrigationToPlace.isEmpty()) {
                 console.displayDebug("BIG BRAIN MODE - chose irrigationToPlace");
                 return new PlaceIrrigationFromInventoryAction(irrigationToPlace.remove(0));
+            }
+        }
+
+        /*
+         * Intelligence to complete the shape of the current PatternObjective
+         */
+        if (botState.getAvailableActions().contains(PlaceTileAction.class) || botState.getAvailableActions().contains(PlaceTileWithImprovementAction.class)) {
+            console.displayDebug("BIG BRAIN MODE - PlaceTileAction");
+            // We analyze the board to find the best tile to place
+            Pair<Tile, PositionVector> tileWithPosition = analyzeTileToPlaceToCompleteShapeOfPatternObjective(board, botState);
+            // If there is a tile to place, we place it
+            if (tileWithPosition != null) {
+                console.displayDebug("BIG BRAIN MODE - chose to place a tile");
+                return new PlaceTileAction(tileWithPosition.getLeft(), tileWithPosition.getRight());
             }
         }
 
@@ -130,8 +148,8 @@ public class GeneralTacticBot implements Bot {
     /**
      * This method is used to calculate if the bot can win by redeeming its last panda objective
      *
-     * @param botState the bot state
-     * @param history the history
+     * @param botState       the bot state
+     * @param history        the history
      * @param pandaObjective the panda objective to redeem
      * @return true if it is worth redeeming the panda objective, false otherwise
      */
@@ -174,7 +192,7 @@ public class GeneralTacticBot implements Bot {
      * This method will add the edge position to the irrigationToPlace list so that the bot knows
      * that he has to place them in order to complete is pattern objectiv
      *
-     * @param board the board
+     * @param board    the board
      * @param botState the bot state
      */
     public void analyzeIrrigationToPlaceToCompletePatternObjective(Board board, BotState botState) {
@@ -237,7 +255,7 @@ public class GeneralTacticBot implements Bot {
     /**
      * Get all the shape matching the patterns on the current pattern objectives
      *
-     * @param board the board
+     * @param board    the board
      * @param botState the bot state
      * @return the list of shapes matching the pattern objectives
      */
@@ -258,6 +276,13 @@ public class GeneralTacticBot implements Bot {
         return matchedPatterns;
     }
 
+    public List<Shape> getIncompleteCandidateShapes(Board board, BotState botState, PatternObjective patternObjective) {
+        console.displayDebug("BIG BRAIN MODE - getIncompleteCandidateShapes - patternObjective: " + patternObjective);
+
+        // List<Shape> incompleteMatchingShape = patternObjective.getPattern().matchRatio(board, true);
+        return null;
+    }
+
     /**
      * Check if any of the pattern objectives are completed
      *
@@ -271,5 +296,28 @@ public class GeneralTacticBot implements Bot {
             }
         }
         return true;
+    }
+
+    // --------------------------------------------------------
+    // ----- Methods related to shape completion analysis -----
+    // --------------------------------------------------------
+
+    public Pair<Tile, PositionVector> analyzeTileToPlaceToCompleteShapeOfPatternObjective(Board board, BotState botState) {
+        List<Tile> availableTilesFromDeck = board.peekTileDeck();
+        List<PatternObjective> patternObjectives = getCurrentPatternObjectives(botState).stream().map(PatternObjective.class::cast).toList();
+
+        List<Shape> candidateShapesToComplete = new ArrayList<>();
+        for (PatternObjective patternObjective : patternObjectives) {
+            List<Shape> incompleteShapes = getIncompleteCandidateShapes(board, botState, patternObjective);
+            int patternObjectiveSize = patternObjective.getPattern().getElements().size();
+
+            for (Shape shape : incompleteShapes) {
+                if (shape.getElements().size() == patternObjectiveSize - 1) {
+                    candidateShapesToComplete.add(shape);
+                }
+            }
+        }
+
+        return null;
     }
 }

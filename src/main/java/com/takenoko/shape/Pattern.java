@@ -76,9 +76,13 @@ public class Pattern extends Shape {
      * @param board@return the ratio of the matching translated/rotated shapes
      */
     public float matchRatio(Board board) {
+        return matchRatio(board, 1);
+    }
+
+    public float matchRatio(Board board, int startingSize) {
         // spotless:off
         long matchedElements =
-                IntStream.range(1, getElements().size() + 1)
+                IntStream.range(startingSize, getElements().size() + 1)
                         .mapToObj(
                                 v -> new Pattern(
                                         getElements().entrySet().stream()
