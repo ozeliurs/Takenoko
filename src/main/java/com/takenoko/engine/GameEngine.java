@@ -100,6 +100,8 @@ public class GameEngine {
 
         // Reset all the attributes that needs to be
         this.board = new Board();
+        this.history = new History();
+
         for (BotManager botManager : botManagers) {
             botManager.reset();
             botManager.setStartingDeck(board.getStarterDeck());
