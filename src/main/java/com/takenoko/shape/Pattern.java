@@ -47,6 +47,10 @@ public class Pattern extends Shape {
      * @return the matching translated/rotated shapes
      */
     public List<Shape> match(Board board) {
+        return match(board, false);
+    }
+
+    public List<Shape> match(Board board, boolean ignoreIrrigation) {
         Map<PositionVector, Tile> tileMap = board.getTilesWithoutPond();
         // spotless:off
         return tileMap.keySet().stream().flatMap(tilePosition ->
@@ -54,7 +58,7 @@ public class Pattern extends Shape {
                 cache.computeIfAbsent(tilePosition, p -> this.translate(p).getRotatedShapes()).stream()
                         .filter(rotTransShape -> rotTransShape.getElements().entrySet().stream()
                                 .allMatch(e ->
-                                        board.isIrrigatedAt(e.getKey()) &&
+                                        (ignoreIrrigation || board.isIrrigatedAt(e.getKey())) &&
                                                 tileMap.containsKey(e.getKey()) && (
                                                 tileMap.get(e.getKey()).getColor().equals(e.getValue().getColor()) || (
                                                         e.getValue().getColor().equals(TileColor.ANY) &&
