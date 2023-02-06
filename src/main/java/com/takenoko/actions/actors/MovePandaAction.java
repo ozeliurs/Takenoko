@@ -1,17 +1,18 @@
 package com.takenoko.actions.actors;
 
-import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.DefaultAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.layers.bamboo.BambooStack;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
+import java.util.Map;
 
 /** This class represents the action of moving the panda. */
 @ActionAnnotation(ActionType.DEFAULT)
-public class MovePandaAction implements Action {
+public class MovePandaAction implements DefaultAction {
     private final PositionVector relativePositionVector;
 
     /**
@@ -21,6 +22,10 @@ public class MovePandaAction implements Action {
      */
     public MovePandaAction(PositionVector relativePositionVector) {
         this.relativePositionVector = relativePositionVector;
+    }
+
+    public static boolean canBePlayed(Board board) {
+        return !board.getTilesWithoutPond().isEmpty();
     }
 
     /**
@@ -33,7 +38,7 @@ public class MovePandaAction implements Action {
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
         // move the panda
-        BambooStack bambooStack = board.movePanda(relativePositionVector);
+        Map<PositionVector, LayerBambooStack> bambooStack = board.movePanda(relativePositionVector);
         botManager.displayMessage(
                 botManager.getName()
                         + " moved the panda with "
@@ -47,10 +52,13 @@ public class MovePandaAction implements Action {
                     .getInventory()
                     .collectBamboo(board.getTileAt(board.getPandaPosition()).getColor());
             botManager.displayMessage(
-                    botManager.getName()
-                            + " collected one "
+                    "Panda ate one "
                             + board.getTileAt(board.getPandaPosition()).getColor()
-                            + " bamboo");
+                            + " bamboo for "
+                            + botManager.getName());
+        } else {
+            // no bamboo to eat
+            botManager.displayMessage("Panda didn't eat any bamboo");
         }
         return new ActionResult(1);
     }

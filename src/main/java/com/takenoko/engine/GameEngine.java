@@ -1,23 +1,19 @@
 package com.takenoko.engine;
 
-import com.takenoko.actions.actors.MoveGardenerAction;
-import com.takenoko.actions.actors.MovePandaAction;
-import com.takenoko.actions.tile.PlaceTileAction;
 import com.takenoko.bot.FullRandomBot;
-import com.takenoko.inventory.Inventory;
-import com.takenoko.layers.tile.TileColor;
-import com.takenoko.objective.MultipleGardenerObjective;
-import com.takenoko.objective.PatternObjective;
-import com.takenoko.objective.SingleGardenerObjective;
-import com.takenoko.shape.PatternFactory;
+import com.takenoko.objective.EmperorObjective;
+import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.tuple.Pair;
 
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
     // ATTRIBUTES
-    public static final int DEFAULT_NUMBER_OF_ROUNDS = 100;
+    public static final int DEFAULT_NUMBER_OF_ROUNDS = 5000;
+    protected static final Map<Integer, Integer> DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN =
+            new HashMap<>(Map.of(2, 9, 3, 8, 4, 7));
     private Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
@@ -58,30 +54,12 @@ public class GameEngine {
                                         new ConsoleUserInterface(),
                                         "Joe",
                                         new FullRandomBot(),
-                                        new BotState(
-                                                2,
-                                                new MultipleGardenerObjective(
-                                                        new SingleGardenerObjective(
-                                                                3, TileColor.GREEN),
-                                                        2),
-                                                new Inventory(),
-                                                List.of(
-                                                        MovePandaAction.class,
-                                                        MoveGardenerAction.class,
-                                                        PlaceTileAction.class))),
+                                        new BotState()),
                                 new BotManager(
                                         new ConsoleUserInterface(),
                                         "Bob",
                                         new FullRandomBot(),
-                                        new BotState(
-                                                2,
-                                                new PatternObjective(
-                                                        PatternFactory.LINE.createPattern()),
-                                                new Inventory(),
-                                                List.of(
-                                                        MovePandaAction.class,
-                                                        MoveGardenerAction.class,
-                                                        PlaceTileAction.class))))),
+                                        new BotState()))),
                 new Scoreboard());
     }
 
@@ -118,6 +96,7 @@ public class GameEngine {
         this.board = new Board();
         for (BotManager botManager : botManagers) {
             botManager.reset();
+            botManager.setStartingDeck(board.getStarterDeck());
         }
 
         // Game is now ready to be started
@@ -139,35 +118,44 @@ public class GameEngine {
 
         gameState = GameState.PLAYING;
         consoleUserInterface.displayMessage("The game has started !");
-
-        for (BotManager botManager : botManagers) {
-            consoleUserInterface.displayMessage(
-                    botManager.getName()
-                            + " has the objective : "
-                            + botManager.getObjectiveDescription());
-        }
     }
 
     public void playGame() {
+        boolean isLastRound = false;
+        BotManager botManagerWithEmperorObjective = null;
+
         for (int i = 0; i < numberOfRounds; i++) {
-            consoleUserInterface.displayMessage("===== Round " + (i + 1) + " =====");
+            consoleUserInterface.displayMessage(
+                    "===== Round " + (board.getRoundNumber() + 1) + " =====");
             for (BotManager botManager : botManagers) {
+
+                if (isLastRound && botManager.equals(botManagerWithEmperorObjective)) {
+                    gameState = GameState.FINISHED;
+                    consoleUserInterface.displayMessage("===== Game finished =====");
+                    return;
+                }
                 consoleUserInterface.displayMessage(
                         "===== <" + botManager.getName() + "> is playing =====");
                 botManager.playBot(board);
-                if (botManager.isObjectiveAchieved()) {
-                    botManager.incrementScore(1);
+
+                if (botManager.getRedeemedObjectives().size()
+                                >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(botManagers.size())
+                        && !isLastRound) {
                     consoleUserInterface.displayMessage(
-                            botManager.getName()
-                                    + " has achieved the objective "
-                                    + botManager.getObjectiveDescription()
-                                    + ", it has won with "
-                                    + botManager.getScore()
-                                    + " points");
-                    gameState = GameState.FINISHED;
-                    return;
+                            "===== <" + botManager.getName() + "> finished the game =====");
+                    Objective objective = new EmperorObjective();
+                    consoleUserInterface.displayMessage(
+                            botManager.getName() + " received the Emperor objective !");
+                    botManager.addObjective(objective);
+                    botManager.setObjectiveAchieved(objective);
+                    botManager.redeemObjective(objective);
+                    botManagerWithEmperorObjective = botManager;
+                    isLastRound = true;
+                    consoleUserInterface.displayMessage(
+                            "==<Last round>==<Last round>==<Last round>==<Last round>==");
                 }
             }
+            board.nextRound();
         }
     }
 
@@ -177,11 +165,97 @@ public class GameEngine {
             throw new IllegalStateException(
                     "The game is not started yet. You must first start the game.");
         }
+        Pair<List<BotManager>, EndGameState> winner = getWinner();
+
+        switch (winner.getRight()) {
+            case WIN_WITH_OBJECTIVE_POINTS -> consoleUserInterface.displayMessage(
+                    "The winner is "
+                            + winner.getLeft().get(0).getName()
+                            + " with "
+                            + winner.getLeft().get(0).getObjectiveScore()
+                            + " points ! "
+                            + "With the following objectives : "
+                            + winner.getLeft().get(0).getRedeemedObjectives().stream()
+                                    .map(Object::toString)
+                                    .collect(Collectors.joining(", ")));
+            case TIE -> consoleUserInterface.displayMessage(
+                    "It's a tie !, the winners are : "
+                            + winner.getLeft().stream()
+                                    .map(BotManager::getName)
+                                    .collect(Collectors.joining(", ")));
+            case WIN_WITH_PANDA_OBJECTIVE_POINTS -> consoleUserInterface.displayMessage(
+                    "The winner is "
+                            + winner.getLeft().get(0).getName()
+                            + " with "
+                            + winner.getLeft().get(0).getPandaObjectiveScore()
+                            + " points ! "
+                            + "With the following objectives : "
+                            + winner.getLeft().get(0).getRedeemedObjectives().stream()
+                                    .map(Object::toString)
+                                    .collect(Collectors.joining(", ")));
+            default -> throw new IllegalStateException("Unexpected value: " + winner.getRight());
+        }
+
+        for (BotManager botManager : winner.getLeft()) {
+            scoreboard.incrementNumberOfVictory(botManager);
+        }
+        for (BotManager botManager : botManagers) {
+            botManager.reset();
+        }
 
         consoleUserInterface.displayMessage(scoreboard.toString());
 
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
+    }
+
+    /**
+     * Return the winner of the game.
+     *
+     * <p>If there is a tie, the reason of the end of the game is {@link EndGameState#TIE}. if there
+     * is only one {@link BotManager} with the maximum number of points, the reason of the win is
+     * {@link EndGameState#WIN_WITH_OBJECTIVE_POINTS}. if there is a tie between {@link BotManager}
+     * with the maximum number of points and if there is a {@link BotManager} with the maximum
+     * number of panda points, the reason of the win is {@link
+     * EndGameState#WIN_WITH_PANDA_OBJECTIVE_POINTS}.
+     *
+     * @return a pair of the winner and the reason of the win.
+     */
+    public Pair<List<BotManager>, EndGameState> getWinner() {
+        List<BotManager> botManagersWithMaxScore =
+                botManagers.stream()
+                        .filter(
+                                botManager ->
+                                        botManager.getObjectiveScore()
+                                                == botManagers.stream()
+                                                        .mapToInt(BotManager::getObjectiveScore)
+                                                        .max()
+                                                        .orElse(0))
+                        .toList();
+        if (botManagersWithMaxScore.size() == 1) {
+            return Pair.of(
+                    List.of(botManagersWithMaxScore.get(0)),
+                    EndGameState.WIN_WITH_OBJECTIVE_POINTS);
+        } else {
+            List<BotManager> botManagersWithMaxPandaObjective =
+                    botManagersWithMaxScore.stream()
+                            .filter(
+                                    botManager ->
+                                            botManager.getPandaObjectiveScore()
+                                                    == botManagersWithMaxScore.stream()
+                                                            .mapToInt(
+                                                                    BotManager
+                                                                            ::getPandaObjectiveScore)
+                                                            .max()
+                                                            .orElse(0))
+                            .toList();
+            if (botManagersWithMaxPandaObjective.size() == 1) {
+                return Pair.of(
+                        List.of(botManagersWithMaxPandaObjective.get(0)),
+                        EndGameState.WIN_WITH_PANDA_OBJECTIVE_POINTS);
+            }
+        }
+        return Pair.of(botManagersWithMaxScore, EndGameState.TIE);
     }
 
     /**
@@ -214,10 +288,6 @@ public class GameEngine {
         newGame();
         startGame();
         playGame();
-        for (BotManager botManager : botManagers) {
-            scoreboard.addScore(botManager.getBotId(), botManager.getScore());
-        }
-        scoreboard.incrementNumberOfGamesPlayed();
         endGame();
     }
 

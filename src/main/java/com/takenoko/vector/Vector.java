@@ -1,7 +1,7 @@
 package com.takenoko.vector;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /** The Vector class represents a vector in a 2D hexagonal grid. */
@@ -93,7 +93,7 @@ public class Vector {
      *
      * @return The neighbors around the vector.
      */
-    public Collection<Vector> getNeighbors() {
+    public List<Vector> getNeighbors() {
         ArrayList<Vector> neighbors = new ArrayList<>();
         for (Direction direction : Direction.values()) {
             neighbors.add(add(direction.getVector()));

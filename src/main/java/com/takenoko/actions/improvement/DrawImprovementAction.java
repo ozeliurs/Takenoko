@@ -17,7 +17,7 @@ import java.util.List;
 @ActionAnnotation(ActionType.FORCED)
 public class DrawImprovementAction implements Action {
 
-    ImprovementType improvementType;
+    final ImprovementType improvementType;
 
     public DrawImprovementAction(ImprovementType improvementType) {
         this.improvementType = improvementType;
@@ -27,11 +27,11 @@ public class DrawImprovementAction implements Action {
     public ActionResult execute(Board board, BotManager botManager) {
         if (!board.hasImprovementInDeck(improvementType)) {
             botManager.displayMessage("No more " + improvementType + " in the deck");
-            return new ActionResult(List.of(ChooseAndApplyWeatherAction.class));
+            return new ActionResult(List.of(ChooseAndApplyWeatherAction.class), 0);
         }
         board.drawImprovement(improvementType);
         botManager.displayMessage(botManager.getName() + " drew improvement " + improvementType);
         return new ActionResult(
-                List.of(ApplyImprovementAction.class, StoreImprovementAction.class), 1);
+                List.of(ApplyImprovementAction.class, StoreImprovementAction.class), 0);
     }
 }

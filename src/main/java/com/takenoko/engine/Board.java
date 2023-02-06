@@ -5,9 +5,12 @@ import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
+import com.takenoko.layers.irrigation.EdgePosition;
+import com.takenoko.layers.irrigation.IrrigationLayer;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
+import com.takenoko.objective.Objective;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.Weather;
 import java.util.*;
@@ -16,10 +19,12 @@ import java.util.*;
 public class Board {
     private final TileLayer tileLayer;
     private final BambooLayer bambooLayer;
+    private final IrrigationLayer irrigationLayer;
     private final Panda panda;
     private final Gardener gardener;
     private final GameAssets gameAssets;
     private Weather weather = null;
+    int roundNumber = 0;
 
     /**
      * Constructor for the Board class.
@@ -29,18 +34,21 @@ public class Board {
      * @param panda the panda
      * @param gardener the gardener
      * @param gameAssets the game assets : dice
+     * @param irrigationLayer the irrigation layer
      */
     public Board(
             TileLayer tileLayer,
             BambooLayer bambooLayer,
             Panda panda,
             Gardener gardener,
-            GameAssets gameAssets) {
+            GameAssets gameAssets,
+            IrrigationLayer irrigationLayer) {
         this.tileLayer = tileLayer;
         this.bambooLayer = bambooLayer;
         this.panda = panda;
         this.gardener = gardener;
         this.gameAssets = gameAssets;
+        this.irrigationLayer = irrigationLayer;
     }
 
     public void rollWeather() {
@@ -53,7 +61,13 @@ public class Board {
 
     /** Constructor for the Board class. */
     public Board() {
-        this(new TileLayer(), new BambooLayer(), new Panda(), new Gardener(), new GameAssets());
+        this(
+                new TileLayer(),
+                new BambooLayer(),
+                new Panda(),
+                new Gardener(),
+                new GameAssets(),
+                new IrrigationLayer());
     }
 
     public Board(Board board) {
@@ -63,6 +77,8 @@ public class Board {
         this.gardener = board.gardener.copy();
         this.gameAssets = board.gameAssets.copy();
         this.weather = board.weather;
+        this.irrigationLayer = board.irrigationLayer.copy();
+        this.roundNumber = board.roundNumber;
     }
 
     /**
@@ -203,7 +219,7 @@ public class Board {
      * @param vector the vector to move the panda
      * @return bamboo stack of one if the panda ate bamboo
      */
-    public LayerBambooStack movePanda(PositionVector vector) {
+    public Map<PositionVector, LayerBambooStack> movePanda(PositionVector vector) {
         return panda.move(vector, this);
     }
 
@@ -213,7 +229,7 @@ public class Board {
      * @param vector the vector to move the gardener
      * @return bamboo stack of one if the gardener planted bamboo
      */
-    public LayerBambooStack moveGardener(PositionVector vector) {
+    public Map<PositionVector, LayerBambooStack> moveGardener(PositionVector vector) {
         return gardener.move(vector, this);
     }
 
@@ -226,12 +242,23 @@ public class Board {
                 && bambooLayer.equals(board.bambooLayer)
                 && panda.equals(board.panda)
                 && gardener.equals((board.gardener))
-                && gameAssets.equals(board.gameAssets);
+                && gameAssets.equals(board.gameAssets)
+                && Objects.equals(weather, board.weather)
+                && irrigationLayer.equals(board.irrigationLayer)
+                && roundNumber == board.roundNumber;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tileLayer, bambooLayer, panda, gardener, gameAssets);
+        return Objects.hash(
+                tileLayer,
+                bambooLayer,
+                panda,
+                gardener,
+                gameAssets,
+                weather,
+                irrigationLayer,
+                roundNumber);
     }
 
     public Board copy() {
@@ -296,7 +323,68 @@ public class Board {
         gameAssets.getTileDeck().choose(tile);
     }
 
+    public boolean isTileDeckEmpty() {
+        return gameAssets.getTileDeck().isEmpty();
+    }
+
     public void applyImprovement(ImprovementType improvementType, PositionVector positionVector) {
         tileLayer.applyImprovement(improvementType, positionVector, this);
+    }
+
+    public void drawObjective() {
+        gameAssets.getObjectiveDeck().draw();
+    }
+
+    public Objective peekObjectiveDeck() {
+        return gameAssets.getObjectiveDeck().peek();
+    }
+
+    public boolean isObjectiveDeckEmpty() {
+        return gameAssets.getObjectiveDeck().isEmpty();
+    }
+
+    public void drawIrrigation() {
+        gameAssets.getIrrigationDeck().draw();
+    }
+
+    public boolean hasIrrigation() {
+        return gameAssets.getIrrigationDeck().hasIrrigation();
+    }
+
+    public void updateAvailableIrrigationChannelPositions(PositionVector position) {
+        irrigationLayer.updateAvailableIrrigationChannelPositions(position, this);
+    }
+
+    public void placeIrrigation(EdgePosition edgePosition) {
+        irrigationLayer.placeIrrigation(edgePosition, this);
+    }
+
+    public List<EdgePosition> getAvailableIrrigationPositions() {
+        return irrigationLayer.getAvailableEdgePositions().stream().toList();
+    }
+
+    public boolean isIrrigatedAt(PositionVector position) {
+        return irrigationLayer.isIrrigatedAt(position);
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    public void nextRound() {
+        roundNumber++;
+    }
+
+    public List<PositionVector> getGrowablePositions() {
+        return bambooLayer.getGrowablePositions(this);
+    }
+
+    /**
+     * Return the list of objectives for the starting deck
+     *
+     * @return list of objectives
+     */
+    public List<Objective> getStarterDeck() {
+        return gameAssets.getStarterDeck();
     }
 }

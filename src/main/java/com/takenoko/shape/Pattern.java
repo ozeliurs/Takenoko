@@ -1,5 +1,6 @@
 package com.takenoko.shape;
 
+import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 /** Class representing a pattern. */
 public class Pattern extends Shape {
+    final HashMap<PositionVector, Set<Shape>> cache = new HashMap<>();
 
     /**
      * Constructor for the Pattern class. The origin is the element the closest to the origin of the
@@ -41,45 +43,35 @@ public class Pattern extends Shape {
     /**
      * Method to match a shape on the board.
      *
-     * @param tileMap the tileMap to match the shape on
+     * @param board the board
      * @return the matching translated/rotated shapes
      */
-    public List<Shape> match(Map<PositionVector, Tile> tileMap) {
-        HashSet<Shape> matches = new HashSet<>();
+    public List<Shape> match(Board board) {
+        Map<PositionVector, Tile> tileMap = board.getTilesWithoutPond();
         // spotless:off
-        for (PositionVector tilePosition : tileMap.keySet()) {
-            // For each tilePosition on the board translate the shape to the tilePosition
-            for (Shape rotTransShape : this.translate(tilePosition).getRotatedShapes()) {
-                // Check if the translated shape matches the board
-                boolean fullMatch =
-                        rotTransShape.getElements().entrySet().stream()
+        return tileMap.keySet().stream().flatMap(tilePosition ->
+                // For each tilePosition on the board translate the shape to the tilePosition
+                cache.computeIfAbsent(tilePosition, p -> this.translate(p).getRotatedShapes()).stream()
+                        .filter(rotTransShape -> rotTransShape.getElements().entrySet().stream()
                                 .allMatch(e ->
-                                        tileMap.containsKey(e.getKey()) &&
-                                                (
-                                                        tileMap.get(e.getKey()).equals(e.getValue()) ||
-                                                                (
-                                                                        e.getValue().getColor().equals(TileColor.ANY) &&
-                                                                                !tileMap.get(e.getKey()).getColor().equals(TileColor.NONE)
-                                                                )
+                                        board.isIrrigatedAt(e.getKey()) &&
+                                                tileMap.containsKey(e.getKey()) && (
+                                                tileMap.get(e.getKey()).getColor().equals(e.getValue().getColor()) || (
+                                                        e.getValue().getColor().equals(TileColor.ANY) &&
+                                                                !tileMap.get(e.getKey()).getColor().equals(TileColor.NONE)
                                                 )
-                                );
-
-                if (fullMatch) {
-                    matches.add(rotTransShape);
-                }
-            }
-        }
+                                        )
+                                ))
+        ).distinct().toList();
         // spotless:on
-        return matches.stream().toList();
     }
 
     /**
      * Returns the ratio of the matching shapes.
      *
-     * @param tileMap the tileMap to match the shape on
-     * @return the ratio of the matching translated/rotated shapes
+     * @param board@return the ratio of the matching translated/rotated shapes
      */
-    public float matchRatio(Map<PositionVector, Tile> tileMap) {
+    public float matchRatio(Board board) {
         // spotless:off
         long matchedElements =
                 IntStream.range(1, getElements().size() + 1)
@@ -91,7 +83,7 @@ public class Pattern extends Shape {
                                                 .limit(v)
                                                 .toList())
                         )
-                        .filter(p -> !p.match(tileMap).isEmpty())
+                        .filter(p -> !p.match(board).isEmpty())
                         .count();
         return (float) matchedElements / getElements().size();
         // spotless:on
@@ -103,5 +95,13 @@ public class Pattern extends Shape {
         if (o == null || getClass() != o.getClass()) return false;
         Pattern pattern = (Pattern) o;
         return getRotatedShapes().equals(pattern.getRotatedShapes());
+    }
+
+    String getColorsString() {
+        return this.getElements().values().stream()
+                .map(Tile::getColor)
+                .distinct()
+                .map(Objects::toString)
+                .collect(Collectors.joining(","));
     }
 }

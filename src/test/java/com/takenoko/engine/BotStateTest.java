@@ -1,25 +1,29 @@
 package com.takenoko.engine;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
+import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.layers.tile.TileColor;
+import com.takenoko.objective.Objective;
+import com.takenoko.objective.PandaObjective;
 import com.takenoko.vector.PositionVector;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import com.takenoko.weather.WeatherFactory;
+import java.util.Optional;
+import org.junit.jupiter.api.*;
 
 class BotStateTest {
     private BotState botState;
+    Board board;
 
     @BeforeEach
     void setUp() {
+        board = mock(Board.class);
         botState = new BotState();
     }
 
@@ -123,6 +127,26 @@ class BotStateTest {
         }
 
         @Test
+        @DisplayName("should remove already executed actions")
+        void updateAvailableActions_shouldRemoveAlreadyExecutedActions() {
+            botState.addAvailableAction(MoveGardenerAction.class);
+            botState.addAvailableAction(DrawObjectiveAction.class);
+            botState.updateAvailableActions(
+                    new MoveGardenerAction(mock(PositionVector.class)), new ActionResult());
+            assertThat(botState.getAvailableActions()).hasSize(1);
+        }
+
+        @Test
+        @DisplayName("shouldn't remove already executed actions if windy")
+        void updateAvailableActions_shouldNotRemoveAlreadyExecutedActionsIfWindy() {
+            botState.addAvailableAction(MoveGardenerAction.class);
+            botState.addAvailableAction(DrawObjectiveAction.class);
+            when(board.getWeather()).thenReturn(Optional.of(WeatherFactory.WINDY.createWeather()));
+            botState.update(board);
+            assertThat(botState.getAvailableActions()).hasSize(2);
+        }
+
+        @Test
         @DisplayName("should remove the current action")
         void updateAvailableActions_shouldRemoveCurrentAction() {
             botState.addAvailableAction(MoveGardenerAction.class);
@@ -139,6 +163,65 @@ class BotStateTest {
             botState.updateAvailableActions(
                     new MoveGardenerAction(mock(PositionVector.class)), new ActionResult());
             assertThat(botState.getAvailableActions()).hasSize(1);
+        }
+    }
+
+    @Test
+    @DisplayName("test getScore")
+    void test_getScore() {
+        assertThat(botState.getObjectiveScore()).isZero();
+
+        Objective objective = mock(Objective.class);
+        when(objective.getPoints()).thenReturn(10);
+
+        botState.setObjectiveAchieved(objective);
+        botState.redeemObjective(objective);
+
+        botState.addObjective(objective);
+
+        assertThat(botState.getObjectiveScore()).isEqualTo(10);
+    }
+
+    @Nested
+    @DisplayName("Method update()")
+    class TestGetObjectiveScore {
+        @Test
+        @DisplayName("should add DrawObjectionAction is it can draw an objective")
+        void update_should_addDrawObjectiveActionIfCanDrawObjective() {
+            Board board = mock(Board.class);
+
+            botState.update(board);
+            assertThat(botState.getAvailableActions()).contains(DrawObjectiveAction.class);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getPandaObjectiveScore()")
+    class TestGetPandaObjectiveScore {
+        @Test
+        @DisplayName("should return 0 if no panda objective")
+        void getPandaObjectiveScore_shouldReturnZeroIfNoPandaObjective() {
+            assertThat(botState.getPandaObjectiveScore()).isZero();
+        }
+
+        @Test
+        @DisplayName("should return 0 if panda objective not achieved")
+        void getPandaObjectiveScore_shouldReturnZeroIfPandaObjectiveNotAchieved() {
+            PandaObjective objective = mock(PandaObjective.class);
+            when(objective.getPoints()).thenReturn(10);
+            botState.addObjective(objective);
+            assertThat(botState.getPandaObjectiveScore()).isZero();
+        }
+
+        @Test
+        @DisplayName("should return the score if panda objective is redeemed")
+        void getPandaObjectiveScore_shouldReturnScoreIfPandaObjectiveIsRedeemed() {
+            PandaObjective objective = mock(PandaObjective.class);
+            when(objective.getPoints()).thenReturn(10);
+            botState.addObjective(objective);
+            botState.setObjectiveAchieved(objective);
+            botState.redeemObjective(objective);
+            assertThat(botState.getPandaObjectiveScore()).isEqualTo(10);
         }
     }
 }

@@ -5,9 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.shape.Pattern;
-import java.util.HashMap;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -21,9 +20,11 @@ class PatternObjectiveTest {
         @DisplayName("When board matches Pattern, state is ACHIEVED")
         void verify_WhenBoardHasTwoTilesNextToEachOther_ThenObjectiveStateIsACHIEVED() {
             Pattern pattern = mock(Pattern.class);
-            when(pattern.match(new HashMap<>())).thenReturn(List.of(mock(Pattern.class)));
-            PatternObjective patternObjective = new PatternObjective(pattern);
-            patternObjective.verify(mock(Board.class), mock(BotManager.class));
+            Board board = mock(Board.class);
+            when(board.isIrrigatedAt(any())).thenReturn(true);
+            when(pattern.match(board)).thenReturn(List.of(mock(Pattern.class)));
+            PatternObjective patternObjective = new PatternObjective(pattern, 0);
+            patternObjective.verify(board, mock(BotState.class));
             assertEquals(ObjectiveState.ACHIEVED, patternObjective.getState());
         }
 
@@ -31,9 +32,9 @@ class PatternObjectiveTest {
         @DisplayName("When board doesn't match Pattern, state is NOT_ACHIEVED")
         void verify_WhenBoardHasTwoTilesNextToEachOther_ThenObjectiveStateIsNOT_ACHIEVED() {
             Pattern pattern = mock(Pattern.class);
-            when(pattern.match(new HashMap<>())).thenReturn(List.of());
-            PatternObjective patternObjective = new PatternObjective(pattern);
-            patternObjective.verify(mock(Board.class), mock(BotManager.class));
+            when(pattern.match(mock(Board.class))).thenReturn(List.of());
+            PatternObjective patternObjective = new PatternObjective(pattern, 0);
+            patternObjective.verify(mock(Board.class), mock(BotState.class));
             assertEquals(ObjectiveState.NOT_ACHIEVED, patternObjective.getState());
         }
     }
@@ -47,7 +48,7 @@ class PatternObjectiveTest {
         @SuppressWarnings("EqualsWithItself")
         void equals_WhenPatternObjectiveIsComparedToItself_ThenItIsEqual() {
             Pattern pattern = mock(Pattern.class);
-            PatternObjective patternObjective = new PatternObjective(pattern);
+            PatternObjective patternObjective = new PatternObjective(pattern, 0);
             assertThat(patternObjective.equals(patternObjective)).isTrue();
         }
 
@@ -56,7 +57,7 @@ class PatternObjectiveTest {
         @SuppressWarnings("ConstantConditions")
         void equals_WhenPatternObjectiveIsComparedToNull_ThenItIsNotEqual() {
             Pattern pattern = mock(Pattern.class);
-            PatternObjective patternObjective = new PatternObjective(pattern);
+            PatternObjective patternObjective = new PatternObjective(pattern, 0);
             assertThat(patternObjective.equals(null)).isFalse();
         }
 
@@ -65,7 +66,7 @@ class PatternObjectiveTest {
                 "When PatternObjective is compared to an object of another class, it is not equal")
         void equals_WhenPatternObjectiveIsComparedToAnObjectOfAnotherClass_ThenItIsNotEqual() {
             Pattern pattern = mock(Pattern.class);
-            PatternObjective patternObjective = new PatternObjective(pattern);
+            PatternObjective patternObjective = new PatternObjective(pattern, 0);
             assertThat(patternObjective.equals(new Object())).isFalse();
         }
 
@@ -76,8 +77,8 @@ class PatternObjectiveTest {
         void
                 equals_WhenPatternObjectiveIsComparedToAnotherPatternObjectiveWithTheSamePattern_ThenItIsEqual() {
             Pattern pattern = mock(Pattern.class);
-            PatternObjective patternObjective = new PatternObjective(pattern);
-            PatternObjective patternObjective2 = new PatternObjective(pattern);
+            PatternObjective patternObjective = new PatternObjective(pattern, 0);
+            PatternObjective patternObjective2 = new PatternObjective(pattern, 0);
             assertThat(patternObjective.equals(patternObjective2)).isTrue();
         }
 
@@ -89,8 +90,8 @@ class PatternObjectiveTest {
                 equals_WhenPatternObjectiveIsComparedToAnotherPatternObjectiveWithADifferentPattern_ThenItIsNotEqual() {
             Pattern pattern = mock(Pattern.class);
             Pattern pattern2 = mock(Pattern.class);
-            PatternObjective patternObjective = new PatternObjective(pattern);
-            PatternObjective patternObjective2 = new PatternObjective(pattern2);
+            PatternObjective patternObjective = new PatternObjective(pattern, 0);
+            PatternObjective patternObjective2 = new PatternObjective(pattern2, 0);
             assertThat(patternObjective.equals(patternObjective2)).isFalse();
         }
     }
@@ -102,7 +103,7 @@ class PatternObjectiveTest {
         @DisplayName("When PatternObjective is compared to itself, it has the same hash code")
         void hashCode_WhenPatternObjectiveIsComparedToItself_ThenItHasTheSameHashCode() {
             Pattern pattern = mock(Pattern.class);
-            PatternObjective patternObjective = new PatternObjective(pattern);
+            PatternObjective patternObjective = new PatternObjective(pattern, 0);
             assertThat(patternObjective).hasSameHashCodeAs(patternObjective);
         }
 
@@ -113,8 +114,8 @@ class PatternObjectiveTest {
         void
                 hashCode_WhenPatternObjectiveIsComparedToAnotherPatternObjectiveWithTheSamePattern_ThenItHasTheSameHashCode() {
             Pattern pattern = mock(Pattern.class);
-            PatternObjective patternObjective = new PatternObjective(pattern);
-            PatternObjective patternObjective2 = new PatternObjective(pattern);
+            PatternObjective patternObjective = new PatternObjective(pattern, 0);
+            PatternObjective patternObjective2 = new PatternObjective(pattern, 0);
             assertThat(patternObjective).hasSameHashCodeAs(patternObjective2);
         }
 
@@ -126,8 +127,8 @@ class PatternObjectiveTest {
                 hashCode_WhenPatternObjectiveIsComparedToAnotherPatternObjectiveWithADifferentPattern_ThenItHasADifferentHashCode() {
             Pattern pattern = mock(Pattern.class);
             Pattern pattern2 = mock(Pattern.class);
-            PatternObjective patternObjective = new PatternObjective(pattern);
-            PatternObjective patternObjective2 = new PatternObjective(pattern2);
+            PatternObjective patternObjective = new PatternObjective(pattern, 0);
+            PatternObjective patternObjective2 = new PatternObjective(pattern2, 0);
             assertThat(patternObjective).doesNotHaveSameHashCodeAs(patternObjective2);
         }
     }
@@ -139,7 +140,7 @@ class PatternObjectiveTest {
         @DisplayName("When PatternObjective is copied, it is equal to the original")
         void copy_WhenPatternObjectiveIsCopied_ThenItIsEqualToTheOriginal() {
             Pattern pattern = mock(Pattern.class);
-            PatternObjective patternObjective = new PatternObjective(pattern);
+            PatternObjective patternObjective = new PatternObjective(pattern, 0);
             PatternObjective patternObjective2 = patternObjective.copy();
             assertThat(patternObjective).isEqualTo(patternObjective2);
         }
@@ -152,12 +153,12 @@ class PatternObjectiveTest {
         @DisplayName("When PatternObjective is called calls getCompletion on Pattern")
         void getCompletion_WhenPatternObjectiveIsCalled_CallsGetCompletionOnPattern() {
             Pattern pattern = mock(Pattern.class);
-            PatternObjective patternObjective = new PatternObjective(pattern);
-            patternObjective.getCompletion(mock(Board.class), mock(BotManager.class));
+            PatternObjective patternObjective = new PatternObjective(pattern, 0);
+            patternObjective.getCompletion(mock(Board.class), mock(BotState.class));
             verify(pattern).matchRatio(any());
             // then verify that it returns the same value as the pattern
             when(pattern.matchRatio(any())).thenReturn(1f);
-            assertThat(patternObjective.getCompletion(mock(Board.class), mock(BotManager.class)))
+            assertThat(patternObjective.getCompletion(mock(Board.class), mock(BotState.class)))
                     .isEqualTo(1f);
         }
     }

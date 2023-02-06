@@ -8,4 +8,6 @@ public enum ObjectiveTypes {
     SHAPE,
     NUMBER_OF_BAMBOOS_EATEN,
     GARDENER,
+    PANDA,
+    EMPEROR,
 }

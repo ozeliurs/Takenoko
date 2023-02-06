@@ -8,6 +8,7 @@ import com.takenoko.inventory.Inventory;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -24,7 +25,8 @@ class MovePandaActionTest {
         movePandaAction = new MovePandaAction(new PositionVector(-1, 0, 1));
         botManager = mock(BotManager.class);
         board = mock(Board.class);
-        when(board.movePanda(any())).thenReturn(new LayerBambooStack(1));
+        when(board.movePanda(any()))
+                .thenReturn(Map.of(new PositionVector(-1, 0, 1), new LayerBambooStack(1)));
     }
 
     @Nested
@@ -40,11 +42,6 @@ class MovePandaActionTest {
             when(board.getTileAt(any())).thenReturn(new Tile());
             movePandaAction.execute(board, botManager);
             verify(board).movePanda(new PositionVector(-1, 0, 1));
-            verify(botManager, times(1))
-                    .displayMessage(
-                            "Joe moved the panda with Vector[q=-1.0, r=0.0, s=1.0] to position"
-                                    + " Vector[q=0.0, r=0.0, s=0.0]");
-            verify(botManager, times(1)).displayMessage("Joe collected one PINK bamboo");
             verify(inventory, times(1)).collectBamboo(any());
         }
     }

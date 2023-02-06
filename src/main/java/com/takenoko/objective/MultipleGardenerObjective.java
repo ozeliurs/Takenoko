@@ -1,7 +1,7 @@
 package com.takenoko.objective;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.vector.PositionVector;
 import java.util.Comparator;
 import java.util.List;
@@ -11,21 +11,26 @@ import java.util.stream.Stream;
 /** Objective is to complete a certain number of single gardener objectives. */
 public class MultipleGardenerObjective extends Objective {
 
-    SingleGardenerObjective objective;
+    final SingleGardenerObjective objective;
     private final int numberOfTimes;
 
-    public MultipleGardenerObjective(SingleGardenerObjective objective, int numberOfTimes) {
-        super(ObjectiveTypes.BAMBOO_STACK, ObjectiveState.NOT_ACHIEVED);
+    public MultipleGardenerObjective(
+            SingleGardenerObjective objective, int numberOfTimes, int points) {
+        super(ObjectiveTypes.BAMBOO_STACK, ObjectiveState.NOT_ACHIEVED, points);
         this.objective = objective;
         this.numberOfTimes = numberOfTimes;
     }
 
-    public MultipleGardenerObjective(MultipleGardenerObjective multipleGardenerObjective) {
-        this(multipleGardenerObjective.objective.copy(), multipleGardenerObjective.numberOfTimes);
+    public MultipleGardenerObjective(
+            MultipleGardenerObjective multipleGardenerObjective, int points) {
+        this(
+                multipleGardenerObjective.objective.copy(),
+                multipleGardenerObjective.numberOfTimes,
+                points);
     }
 
     @Override
-    public void verify(Board board, BotManager botManager) {
+    public void verify(Board board, BotState botState) {
         if (this.objective.getMatchingPositions(board).size() >= numberOfTimes) {
             this.state = ObjectiveState.ACHIEVED;
         }
@@ -38,16 +43,16 @@ public class MultipleGardenerObjective extends Objective {
 
     @Override
     public MultipleGardenerObjective copy() {
-        return new MultipleGardenerObjective(this);
+        return new MultipleGardenerObjective(this, 0);
     }
 
     @Override
-    public float getCompletion(Board board, BotManager botManager) {
+    public float getCompletion(Board board, BotState botState) {
         // spotless:off
         List<Integer> bambooCounts =
                 objective.getEligiblePositions(board).stream()
                         .sorted(Comparator.comparingInt(v -> board.getBambooAt((PositionVector) v).getBambooCount())
-                                        .reversed())
+                                .reversed())
                         .limit(numberOfTimes)
                         .map(v -> board.getBambooAt(v).getBambooCount())
                         .toList();
@@ -56,9 +61,9 @@ public class MultipleGardenerObjective extends Objective {
                         bambooCounts.stream(),
                         Stream.generate(() -> 0).limit((long) numberOfTimes - bambooCounts.size()));
         return 1 - ((float) bambooCountFilled
-                                        .map(v -> Math.abs(v - objective.getTargetSize()))
-                                        .reduce(0, Integer::sum)
-                        / (numberOfTimes * objective.getTargetSize()));
+                .map(v -> Math.abs(v - objective.getTargetSize()))
+                .reduce(0, Integer::sum)
+                / (numberOfTimes * objective.getTargetSize()));
         // spotless:on
     }
 
@@ -73,5 +78,14 @@ public class MultipleGardenerObjective extends Objective {
     @Override
     public int hashCode() {
         return Objects.hash(objective, numberOfTimes);
+    }
+
+    @Override
+    public String toString() {
+        return "Multiple Gardener Objective <"
+                + objective.toString()
+                + ", "
+                + numberOfTimes
+                + " times>";
     }
 }

@@ -5,7 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
@@ -24,12 +24,12 @@ class MultipleGardenerObjectiveTest {
     private static final TileColor TARGET_COLOR = TileColor.PINK;
     private static final ImprovementType TARGET_IMPROVEMENT_TYPE = ImprovementType.ENCLOSURE;
     private static final SingleGardenerObjective SINGLE_GARDENER_OBJECTIVE =
-            new SingleGardenerObjective(TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE);
+            new SingleGardenerObjective(TARGET_SIZE, TARGET_COLOR, TARGET_IMPROVEMENT_TYPE, 0);
 
     @BeforeEach
     void setUp() {
         multipleGardenerObjective =
-                new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES);
+                new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES, 0);
     }
 
     @Nested
@@ -39,7 +39,7 @@ class MultipleGardenerObjectiveTest {
         @DisplayName("should return true when the object is equal")
         void shouldReturnTrueWhenTheObjectIsEqual() {
             MultipleGardenerObjective multipleGardenerObjective2 =
-                    new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES);
+                    new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES, 0);
             assertThat(multipleGardenerObjective.equals(multipleGardenerObjective2)).isTrue();
         }
 
@@ -47,7 +47,8 @@ class MultipleGardenerObjectiveTest {
         @DisplayName("should return false when the object is not equal")
         void shouldReturnFalseWhenTheObjectIsNotEqual() {
             MultipleGardenerObjective multipleGardenerObjective2 =
-                    new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES + 1);
+                    new MultipleGardenerObjective(
+                            SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES + 1, 0);
             assertThat(multipleGardenerObjective.equals(multipleGardenerObjective2)).isFalse();
         }
 
@@ -73,7 +74,7 @@ class MultipleGardenerObjectiveTest {
         @DisplayName("should return the same hash code when the object is equal")
         void shouldReturnTheSameHashCodeWhenTheObjectIsEqual() {
             MultipleGardenerObjective multipleGardenerObjective2 =
-                    new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES);
+                    new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES, 0);
             assertThat(multipleGardenerObjective2.hashCode())
                     .hasSameHashCodeAs(multipleGardenerObjective);
         }
@@ -82,7 +83,8 @@ class MultipleGardenerObjectiveTest {
         @DisplayName("should return a different hash code when the object is not equal")
         void shouldReturnADifferentHashCodeWhenTheObjectIsNotEqual() {
             MultipleGardenerObjective multipleGardenerObjective2 =
-                    new MultipleGardenerObjective(SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES + 1);
+                    new MultipleGardenerObjective(
+                            SINGLE_GARDENER_OBJECTIVE, NUMBER_OF_TIMES + 1, 0);
             assertThat(multipleGardenerObjective.hashCode())
                     .isNotEqualTo(multipleGardenerObjective2.hashCode());
         }
@@ -106,8 +108,8 @@ class MultipleGardenerObjectiveTest {
         @DisplayName("should return the completion percentage when the objective is not started")
         void shouldReturnTheCompletionPercentageWhenTheObjectiveIsNotStarted() {
             Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
-            assertThat(multipleGardenerObjective.getCompletion(board, botManager)).isZero();
+            BotState botState = mock(BotState.class);
+            assertThat(multipleGardenerObjective.getCompletion(board, botState)).isZero();
         }
 
         @Test
@@ -115,7 +117,7 @@ class MultipleGardenerObjectiveTest {
         void shouldReturnTheCompletionPercentageWhenTheObjectiveIsStarted() {
             // Variables
             Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
+            BotState botState = mock(BotState.class);
             PositionVector positionVector01 = new PositionVector(1, -1, 0);
             PositionVector positionVector02 = new PositionVector(2, -2, 0);
             HashMap<PositionVector, Tile> tiles = new HashMap<>();
@@ -130,7 +132,7 @@ class MultipleGardenerObjectiveTest {
             // Test
             assertThat(
                             Math.abs(
-                                    multipleGardenerObjective.getCompletion(board, botManager)
+                                    multipleGardenerObjective.getCompletion(board, botState)
                                             - (float) 1 / TARGET_SIZE))
                     .isLessThan(0.0001f);
         }
@@ -140,7 +142,7 @@ class MultipleGardenerObjectiveTest {
         void shouldReturnTheCompletionPercentageWhenTheObjectiveIsCompleted() {
             // Variables
             Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
+            BotState botState = mock(BotState.class);
             PositionVector positionVector01 = new PositionVector(1, -1, 0);
             PositionVector positionVector02 = new PositionVector(2, -2, 0);
             HashMap<PositionVector, Tile> tiles = new HashMap<>();
@@ -153,7 +155,7 @@ class MultipleGardenerObjectiveTest {
             when(board.getBambooAt(positionVector01)).thenReturn(new LayerBambooStack(TARGET_SIZE));
             when(board.getBambooAt(positionVector02)).thenReturn(new LayerBambooStack(TARGET_SIZE));
             // Test
-            assertThat(multipleGardenerObjective.getCompletion(board, botManager)).isEqualTo(1);
+            assertThat(multipleGardenerObjective.getCompletion(board, botState)).isEqualTo(1);
         }
     }
 
@@ -165,7 +167,7 @@ class MultipleGardenerObjectiveTest {
         void verify_shouldReturnTrueWhenTheObjectiveIsCompleted() {
             // Variables
             Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
+            BotState botState = mock(BotState.class);
             PositionVector positionVector01 = new PositionVector(1, -1, 0);
             PositionVector positionVector02 = new PositionVector(2, -2, 0);
             HashMap<PositionVector, Tile> tiles = new HashMap<>();
@@ -178,7 +180,7 @@ class MultipleGardenerObjectiveTest {
             when(board.getBambooAt(positionVector01)).thenReturn(new LayerBambooStack(TARGET_SIZE));
             when(board.getBambooAt(positionVector02)).thenReturn(new LayerBambooStack(TARGET_SIZE));
             // Test
-            multipleGardenerObjective.verify(board, botManager);
+            multipleGardenerObjective.verify(board, botState);
             assertThat(multipleGardenerObjective.isAchieved()).isTrue();
         }
 
@@ -187,7 +189,7 @@ class MultipleGardenerObjectiveTest {
         void verify_shouldReturnFalseWhenTheObjectiveIsNotCompleted() {
             // Variables
             Board board = mock(Board.class);
-            BotManager botManager = mock(BotManager.class);
+            BotState botState = mock(BotState.class);
             PositionVector positionVector01 = new PositionVector(1, -1, 0);
             PositionVector positionVector02 = new PositionVector(2, -2, 0);
             HashMap<PositionVector, Tile> tiles = new HashMap<>();
@@ -200,7 +202,7 @@ class MultipleGardenerObjectiveTest {
             when(board.getBambooAt(positionVector01)).thenReturn(new LayerBambooStack(1));
             when(board.getBambooAt(positionVector02)).thenReturn(new LayerBambooStack(1));
             // Test
-            multipleGardenerObjective.verify(board, botManager);
+            multipleGardenerObjective.verify(board, botState);
             assertThat(multipleGardenerObjective.isAchieved()).isFalse();
         }
     }

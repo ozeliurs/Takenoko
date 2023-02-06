@@ -3,7 +3,6 @@ package com.takenoko.actors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
@@ -11,7 +10,10 @@ import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Pond;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
+import com.takenoko.weather.WeatherFactory;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -104,9 +106,10 @@ class PandaTest {
         void shouldEatABambooIfThereIsOne() {
             Panda panda = new Panda();
             when(board.isBambooEatableAt(any())).thenReturn(true);
-            LayerBambooStack stack = panda.move(new PositionVector(1, 0, -1), board);
+            Map<PositionVector, LayerBambooStack> stack =
+                    panda.move(new PositionVector(1, 0, -1), board);
             verify(board, times(1)).eatBamboo(any());
-            assertThat(stack.getBambooCount()).isEqualTo(1);
+            assertThat(stack).hasSize(1);
         }
 
         @Test
@@ -116,8 +119,9 @@ class PandaTest {
 
             when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(0));
 
-            LayerBambooStack stack = panda.move(new PositionVector(1, 0, -1), board);
-            assertThat(stack.getBambooCount()).isZero();
+            Map<PositionVector, LayerBambooStack> stack =
+                    panda.move(new PositionVector(1, 0, -1), board);
+            assertThat(stack).isEmpty();
         }
     }
 
@@ -133,6 +137,23 @@ class PandaTest {
                             new PositionVector(1, -1, 0),
                             new PositionVector(2, -2, 0),
                             new PositionVector(1, 0, -1));
+        }
+
+        @Test
+        @DisplayName("should return all position if weather is storm")
+        void shouldReturnAllPositionIfWeatherIsStorm() {
+            Panda panda = new Panda();
+            when(board.getWeather()).thenReturn(Optional.of(WeatherFactory.STORMY.createWeather()));
+            assertThat(panda.getPossibleMoves(board))
+                    .containsExactlyInAnyOrder(
+                            new PositionVector(1, 0, -1),
+                            new PositionVector(1, -1, 0),
+                            new PositionVector(2, -1, -1),
+                            new PositionVector(2, -2, 0),
+                            new PositionVector(1, -2, 1),
+                            new PositionVector(2, -3, 1),
+                            new PositionVector(1, -3, 2),
+                            new PositionVector(0, -2, 2));
         }
     }
 
@@ -176,7 +197,7 @@ class PandaTest {
     }
 
     @Nested
-    @DisplayName("Method hashCode()")
+    @DisplayName("Method hashCode")
     class TestHashCode {
         @Test
         @DisplayName("should return the same hashcode if the two objects are equal")

@@ -11,6 +11,8 @@ public class Inventory {
     private final Map<TileColor, InventoryBambooStack> bambooStacks;
     private final InventoryImprovements inventoryImprovements;
 
+    private int irrigationChannelsCount = 0;
+
     /**
      * Constructor
      *
@@ -51,6 +53,7 @@ public class Inventory {
         this.bambooStacks.put(TileColor.PINK, inventory.getBambooStack(TileColor.PINK).copy());
 
         this.inventoryImprovements = inventory.getInventoryImprovements().copy();
+        this.irrigationChannelsCount = inventory.getIrrigationChannelsCount();
     }
 
     /** add 1 bamboo to the inventory */
@@ -76,9 +79,19 @@ public class Inventory {
      * @return number of bamboos in Inventory
      */
     public int getBambooCount() {
-        return getBambooStack(TileColor.GREEN).getBambooCount()
-                + getBambooStack(TileColor.YELLOW).getBambooCount()
-                + getBambooStack(TileColor.PINK).getBambooCount();
+        return getBambooCount(TileColor.GREEN)
+                + getBambooCount(TileColor.YELLOW)
+                + getBambooCount(TileColor.PINK);
+    }
+
+    /**
+     * Return the number of bamboo of a specific color
+     *
+     * @param tileColor color of bamboo
+     * @return number of bamboos in Inventory
+     */
+    public int getBambooCount(TileColor tileColor) {
+        return getBambooStack(tileColor).getBambooCount();
     }
 
     /**
@@ -96,10 +109,23 @@ public class Inventory {
         return inventoryImprovements;
     }
 
+    public void collectIrrigationChannel() {
+        irrigationChannelsCount++;
+    }
+
+    public int getIrrigationChannelsCount() {
+        return irrigationChannelsCount;
+    }
+
+    public void useIrrigationChannel() {
+        irrigationChannelsCount--;
+    }
+
     /** reset inventory */
     public void clear() {
         bambooStacks.clear();
         inventoryImprovements.clear();
+        irrigationChannelsCount = 0;
     }
 
     public Inventory copy() {
@@ -127,5 +153,33 @@ public class Inventory {
      */
     public boolean hasImprovement(ImprovementType improvementType) {
         return inventoryImprovements.hasImprovement(improvementType);
+    }
+
+    /**
+     * Method to verify whether the inventory contains any improvement or not
+     *
+     * @return true if the inventory contains any improvement, false otherwise
+     */
+    public boolean hasImprovement() {
+        return !inventoryImprovements.isEmpty();
+    }
+
+    /**
+     * Remove bamboo from the player's inventory when an objective is redeemed
+     *
+     * @param bambooTarget how many bamboo to use
+     */
+    public void useBamboo(Map<TileColor, Integer> bambooTarget) {
+        bambooTarget.forEach((tileColor, count) -> getBambooStack(tileColor).useBamboo(count));
+    }
+
+    @Override
+    public String toString() {
+        return "Inventory{"
+                + "bambooStacks="
+                + bambooStacks
+                + ", inventoryImprovements="
+                + inventoryImprovements
+                + '}';
     }
 }

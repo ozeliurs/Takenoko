@@ -2,74 +2,88 @@ package com.takenoko.engine;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
-import com.takenoko.actions.annotations.ActionAnnotation;
-import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.objective.BambooInInventoryObjective;
 import com.takenoko.objective.Objective;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class BotState { // DEFAULT VALUES
-    private static final int DEFAULT_NUMBER_OF_ACTIONS = 2;
-    private static final Objective DEFAULT_OBJECTIVE = new BambooInInventoryObjective(2);
-
-    private int numberOfActions;
-    private Objective objective;
+/** This class is used to store the state of a bot. */
+public class BotState {
+    public static final int MAX_OBJECTIVES = 5;
+    private final ObjectiveManager objectiveManager;
+    private final ActionManager actionManager;
     private final Inventory inventory;
-    private List<Class<? extends Action>> availableActions;
 
     public BotState(
-            int numberOfActions,
-            Objective objective,
-            Inventory inventory,
-            List<Class<? extends Action>> availableActions) {
-        this.numberOfActions = numberOfActions;
-        this.objective = objective;
+            Inventory inventory, ObjectiveManager objectiveManager, ActionManager actionManager) {
         this.inventory = inventory;
-        this.availableActions = availableActions;
+        this.objectiveManager = objectiveManager;
+        this.actionManager = actionManager;
     }
 
     public BotState() {
-        this(DEFAULT_NUMBER_OF_ACTIONS, DEFAULT_OBJECTIVE, new Inventory(), new ArrayList<>());
+        this(new Inventory(), new ObjectiveManager(), new ActionManager());
     }
 
+    /**
+     * Copy constructor
+     *
+     * @param botState the state to copy
+     */
     public BotState(BotState botState) {
-        this.numberOfActions = botState.numberOfActions;
-        this.objective = botState.objective.copy();
         this.inventory = botState.getInventory().copy();
-        this.availableActions = new ArrayList<>(botState.availableActions);
+        this.actionManager = new ActionManager(botState.actionManager);
+        this.objectiveManager = new ObjectiveManager(botState.objectiveManager);
     }
 
-    public void setNumberOfActions(int numberOfActions) {
-        this.numberOfActions = numberOfActions;
+    // ------------------------------------------------------ //
+    // ------------------- OBJECT METHODS ------------------- //
+    // ------------------------------------------------------ //
+
+    /** reset everything to the default values */
+    public void reset() {
+        this.objectiveManager.reset();
+        this.actionManager.reset();
+        this.inventory.clear();
     }
 
     /**
-     * Get the current Objective of the bot
+     * make a copy of the current state
      *
-     * @return Objective
+     * @return the copy
      */
-    public Objective getObjective() {
-        return objective;
+    public BotState copy() {
+        return new BotState(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BotState botState = (BotState) o;
+        return getInventory().equals(botState.getInventory())
+                && objectiveManager.equals(botState.objectiveManager)
+                && actionManager.equals(botState.actionManager);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getInventory(), objectiveManager, actionManager);
     }
 
     /**
-     * Set the current Objective of the bot
+     * update the objectives
      *
-     * @param objective the objective
+     * @param board the board
      */
-    public void setObjective(Objective objective) {
-        this.objective = objective;
+    public void update(Board board) {
+        this.objectiveManager.updateObjectives(board, this);
+        this.actionManager.updateDefaultActions(board, this);
     }
 
-    /**
-     * @return number of actions the bot can do in a turn
-     */
-    protected int getNumberOfActions() {
-        return numberOfActions;
-    }
+    // ------------------------------------------------------ //
+    // ----------------- INVENTORY METHODS ------------------ //
+    // ------------------------------------------------------ //
 
     /**
      * @return the number of bamboo eaten by the bot
@@ -87,6 +101,21 @@ public class BotState { // DEFAULT VALUES
         return inventory;
     }
 
+    // ------------------------------------------------------ //
+    // -------------- METHOD RELATED TO ACTIONS ------------- //
+    // ------------------------------------------------------ //
+
+    public void setNumberOfActions(int numberOfActions) {
+        this.actionManager.setNumberOfActions(numberOfActions);
+    }
+
+    /**
+     * @return number of actions the bot can do in a turn
+     */
+    protected int getNumberOfActions() {
+        return this.actionManager.getNumberOfActions();
+    }
+
     /**
      * Return the list of available actions. If actions of FORCED type are available, only these
      * actions are returned else all available actions are returned.
@@ -94,76 +123,151 @@ public class BotState { // DEFAULT VALUES
      * @return the list of available actions
      */
     public List<Class<? extends Action>> getAvailableActions() {
-        List<Class<? extends Action>> forcedActions =
-                availableActions.stream()
-                        .filter(
-                                action ->
-                                        action.getAnnotation(ActionAnnotation.class).value()
-                                                == ActionType.FORCED)
-                        .toList();
-
-        if (forcedActions.isEmpty()) {
-            return availableActions;
-        } else {
-            return forcedActions;
-        }
+        return this.actionManager.getAvailableActions();
     }
 
     /**
-     * Set the list of available actions
+     * add an action to the list of available actions
      *
-     * @param availableActions the list of available actions
+     * @param action the action to add
      */
-    public void setAvailableActions(List<Class<? extends Action>> availableActions) {
-        this.availableActions = availableActions;
-    }
-
     public void addAvailableAction(Class<? extends Action> action) {
-        this.availableActions.add(action);
+        this.actionManager.addAvailableAction(action);
     }
 
-    public void addAvailableActions(List<Class<? extends Action>> actions) {
-        this.availableActions.addAll(actions);
-    }
-
+    /** add an action to the number of actions to plau this turn */
     public void addAction() {
-        numberOfActions++;
+        this.actionManager.addAction();
     }
 
-    public void reset() {
-        this.objective.reset();
-        this.inventory.clear();
-    }
-
-    public BotState copy() {
-        return new BotState(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BotState botState = (BotState) o;
-        return getNumberOfActions() == botState.getNumberOfActions()
-                && getObjective().equals(botState.getObjective())
-                && getInventory().equals(botState.getInventory());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getNumberOfActions(), getObjective(), getInventory());
-    }
-
-    private void clearForcedActions() {
-        availableActions.removeIf(
-                action ->
-                        action.getAnnotation(ActionAnnotation.class).value() == ActionType.FORCED);
-    }
-
+    /**
+     * update an action in available actions
+     *
+     * @param action the action to update
+     * @param actionResult the result of the action
+     */
     public void updateAvailableActions(Action action, ActionResult actionResult) {
-        this.availableActions.remove(action.getClass());
-        this.clearForcedActions();
-        this.addAvailableActions(actionResult.availableActions());
-        this.setNumberOfActions(this.getNumberOfActions() - actionResult.cost());
+        this.actionManager.updateAvailableActions(action, actionResult);
+    }
+
+    /**
+     * reset the available actions
+     *
+     * @param board the board
+     */
+    public void resetAvailableActions(Board board) {
+        this.actionManager.resetAvailableActions(board, this);
+    }
+
+    /**
+     * get the list of already done actions
+     *
+     * @return the list of already done actions
+     */
+    public List<Class<? extends Action>> getAlreadyDoneActions() {
+        return this.actionManager.getAlreadyDoneActions();
+    }
+
+    // ------------------------------------------------------ //
+    // ------------ METHOD RELATED TO OBJECTIVES ------------ //
+    // ------------------------------------------------------ //
+
+    /**
+     * Get the current Objectives of the bot
+     *
+     * @return Objectives
+     */
+    public List<Objective> getObjectives() {
+        return objectiveManager.getObjectives();
+    }
+
+    /**
+     * Set the current Objective of the bot
+     *
+     * @param objective the objectives
+     */
+    public void addObjective(Objective objective) {
+        this.objectiveManager.addObjective(objective);
+    }
+
+    /**
+     * get the score of the achieved objectives
+     *
+     * @return the score of the achieved objectives
+     */
+    public int getObjectiveScore() {
+        return objectiveManager.getObjectiveScore();
+    }
+
+    /**
+     * Get the list of the redeemed objectives
+     *
+     * @return the list of the redeemed objectives
+     */
+    public List<Objective> getRedeemedObjectives() {
+        return objectiveManager.getRedeemedObjectives();
+    }
+
+    /**
+     * get the list of achieved objectives
+     *
+     * @return the list of achieved objectives
+     */
+    public List<Objective> getAchievedObjectives() {
+        return objectiveManager.getAchievedObjectives();
+    }
+
+    /**
+     * for each objective, check if it is achieved
+     *
+     * @param board the board
+     */
+    public void verifyObjectives(Board board) {
+        objectiveManager.verifyObjectives(board, this);
+    }
+
+    /**
+     * set an objective as not achieved
+     *
+     * @param objective the objective
+     */
+    public void setObjectiveNotAchieved(Objective objective) {
+        this.objectiveManager.setObjectiveNotAchieved(objective);
+    }
+
+    /**
+     * set an objective as achieved
+     *
+     * @param objective the objective
+     */
+    public void setObjectiveAchieved(Objective objective) {
+        this.objectiveManager.setObjectiveAchieved(objective);
+    }
+
+    /**
+     * redeem an objective
+     *
+     * @param objective the objective
+     */
+    public void redeemObjective(Objective objective) {
+        this.objectiveManager.redeemObjective(objective, this);
+    }
+
+    /**
+     * Returns the sum of the points of all the panda objectives
+     *
+     * @return the sum of the points of all the panda objectives
+     */
+    public int getPandaObjectiveScore() {
+        return this.objectiveManager.getPandaObjectiveScore();
+    }
+
+    /**
+     * Set the starting deck
+     *
+     * @param objectives list of objectives
+     */
+    public void setStartingDeck(List<Objective> objectives) {
+        this.objectiveManager.setStartingDeck(objectives);
     }
 }

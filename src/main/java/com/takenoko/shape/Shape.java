@@ -89,8 +89,8 @@ public class Shape {
         }
     }
 
-    public Map<PositionVector, Tile> getElements() {
-        return new HashMap<>(this.elements);
+    Map<PositionVector, Tile> getElements() {
+        return this.elements;
     }
 
     /**
@@ -132,7 +132,7 @@ public class Shape {
 
     public Set<Shape> getRotatedShapes() {
         // return a list of shapes rotated in all directions
-        return IntStream.range(0, 5)
+        return IntStream.range(0, 6) // From 0 to 5
                 .mapToObj(this::getRotatedShape)
                 .collect(HashSet::new, HashSet::add, HashSet::addAll);
     }

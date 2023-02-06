@@ -18,4 +18,9 @@ public class Sunny implements Weather {
     public void revert(Board board, BotManager botManager) {
         board.resetWeather();
     }
+
+    @Override
+    public String toString() {
+        return "Sunny";
+    }
 }
