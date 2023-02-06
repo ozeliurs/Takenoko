@@ -26,7 +26,7 @@ public class GeneralTacticBot implements Bot {
 
     private final FullRandomBot fullRandomBot = new FullRandomBot();
     private final List<EdgePosition> irrigationToPlace = new ArrayList<>();
-    private static final int ARBITRARY_MARGIN = 5;
+    private static final int ARBITRARY_MARGIN = 0;
     private static final ConsoleUserInterface console = new ConsoleUserInterface();
 
     @Override
@@ -89,7 +89,8 @@ public class GeneralTacticBot implements Bot {
         /*
          * Always draw an irrigation if nothing else worked
          */
-        if (botState.getAvailableActions().contains(DrawIrrigationAction.class)) {
+        if (botState.getAvailableActions().contains(DrawIrrigationAction.class)
+                && botState.getInventory().getIrrigationChannelsCount() < 3) {
             console.displayDebug("BIG BRAIN MODE - DrawIrrigationAction");
             return new DrawIrrigationAction();
         }

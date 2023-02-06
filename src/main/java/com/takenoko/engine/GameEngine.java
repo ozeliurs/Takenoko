@@ -21,7 +21,7 @@ public class GameEngine {
     private final int numberOfRounds;
     private final List<BotManager> botManagers;
     private final Scoreboard scoreboard;
-    private final History history;
+    private History history;
 
     public GameEngine(
             int numberOfRounds,
