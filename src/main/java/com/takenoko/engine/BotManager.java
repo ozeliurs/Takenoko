@@ -4,7 +4,7 @@ import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.bot.Bot;
-import com.takenoko.bot.TilePlacingBot;
+import com.takenoko.bot.FullRandomBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
@@ -24,7 +24,7 @@ public class BotManager {
     private static final ConsoleUserInterface DEFAULT_CONSOLE_USER_INTERFACE =
             new ConsoleUserInterface();
     private static final String DEFAULT_NAME = "Joe";
-    private static final Bot DEFAULT_BOT = new TilePlacingBot();
+    private static final Bot DEFAULT_BOT = new FullRandomBot();
     // ATTRIBUTES
     private final ConsoleUserInterface consoleUserInterface;
     private final BotState botState;
