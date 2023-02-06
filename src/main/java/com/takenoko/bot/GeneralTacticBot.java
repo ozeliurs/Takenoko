@@ -112,10 +112,6 @@ public class GeneralTacticBot implements Bot {
                         .filter(PandaObjective.class::isInstance)
                         .toList();
 
-        // GetAchievedObjectives -> [PandaObjective]
-        // Décide de pas le faire
-        // ?
-
         if (pandaObjectives.size() > 1) {
             return new RedeemObjectiveAction(pandaObjectives.get(0));
         } else if (pandaObjectives.size() == 1) {
