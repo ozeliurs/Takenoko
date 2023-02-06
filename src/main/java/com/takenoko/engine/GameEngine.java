@@ -13,7 +13,7 @@ public class GameEngine {
     // ATTRIBUTES
     public static final int DEFAULT_NUMBER_OF_ROUNDS = 5000;
     public static final Map<Integer, Integer> DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN =
-            new HashMap<>(Map.of(2, 9, 3, 8, 4, 7));
+            Map.of(2, 9, 3, 8, 4, 7);
     private Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;

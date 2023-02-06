@@ -31,7 +31,9 @@ public class History {
     }
 
     public void addHistoryItem(BotManager botManager, HistoryItem historyItem) {
-        historyMap.computeIfAbsent(botManager.getUniqueID(), k -> new ArrayList<>()).add(historyItem);
+        historyMap
+                .computeIfAbsent(botManager.getUniqueID(), k -> new ArrayList<>())
+                .add(historyItem);
     }
 
     public List<HistoryItem> getHistory(UUID uniqueID) {
