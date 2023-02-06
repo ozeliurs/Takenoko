@@ -12,7 +12,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public class GameEngine {
     // ATTRIBUTES
     public static final int DEFAULT_NUMBER_OF_ROUNDS = 5000;
-    protected static final Map<Integer, Integer> DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN =
+    public static final Map<Integer, Integer> DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN =
             new HashMap<>(Map.of(2, 9, 3, 8, 4, 7));
     private Board board;
     private final ConsoleUserInterface consoleUserInterface;
@@ -20,6 +20,7 @@ public class GameEngine {
     private final int numberOfRounds;
     private final List<BotManager> botManagers;
     private final Scoreboard scoreboard;
+    private final History history;
 
     public GameEngine(
             int numberOfRounds,
@@ -27,7 +28,8 @@ public class GameEngine {
             ConsoleUserInterface consoleUserInterface,
             GameState gameState,
             List<BotManager> botManagerList,
-            Scoreboard scoreboard) {
+            Scoreboard scoreboard,
+            History history) {
         // Assign values to the attributes
         this.numberOfRounds = numberOfRounds;
         this.board = board;
@@ -35,6 +37,7 @@ public class GameEngine {
         this.gameState = gameState;
         this.botManagers = botManagerList;
         this.scoreboard = scoreboard;
+        this.history = history;
         scoreboard.addBotManager(botManagerList);
     }
 
@@ -60,7 +63,8 @@ public class GameEngine {
                                         "Bob",
                                         new FullRandomBot(),
                                         new BotState()))),
-                new Scoreboard());
+                new Scoreboard(),
+                new History());
     }
 
     public GameEngine(List<BotManager> botManagers) {
@@ -70,7 +74,8 @@ public class GameEngine {
                 new ConsoleUserInterface(),
                 GameState.INITIALIZED,
                 botManagers,
-                new Scoreboard());
+                new Scoreboard(),
+                new History());
     }
 
     /**
@@ -97,6 +102,7 @@ public class GameEngine {
         for (BotManager botManager : botManagers) {
             botManager.reset();
             botManager.setStartingDeck(board.getStarterDeck());
+            history.addBotManager(botManager);
         }
 
         // Game is now ready to be started
@@ -136,7 +142,7 @@ public class GameEngine {
                 }
                 consoleUserInterface.displayMessage(
                         "===== <" + botManager.getName() + "> is playing =====");
-                botManager.playBot(board);
+                botManager.playBot(board, history.getHistoryWithoutCurrentBotManager(botManager));
 
                 if (botManager.getRedeemedObjectives().size()
                                 >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(botManagers.size())
