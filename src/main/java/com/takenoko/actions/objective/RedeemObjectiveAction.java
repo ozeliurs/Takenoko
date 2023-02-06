@@ -1,20 +1,27 @@
 package com.takenoko.actions.objective;
 
-import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
+import com.takenoko.actions.DefaultAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
+import com.takenoko.actions.annotations.ActionCanBePlayedMultipleTimesPerTurn;
 import com.takenoko.actions.annotations.ActionType;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.objective.Objective;
 
 /** This class is an action to redeem an objective. */
 @ActionAnnotation(ActionType.DEFAULT)
-public class RedeemObjectiveAction implements Action {
-    Objective objective;
+@ActionCanBePlayedMultipleTimesPerTurn()
+public class RedeemObjectiveAction implements DefaultAction {
+    final Objective objective;
 
     public RedeemObjectiveAction(Objective objective) {
         this.objective = objective;
+    }
+
+    public static boolean canBePlayed(BotState botState) {
+        return !botState.getAchievedObjectives().isEmpty();
     }
 
     @Override

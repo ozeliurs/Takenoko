@@ -1,15 +1,10 @@
 package com.takenoko.engine;
 
-import com.takenoko.actions.actors.MoveGardenerAction;
-import com.takenoko.actions.actors.MovePandaAction;
-import com.takenoko.actions.tile.PlaceTileAction;
 import com.takenoko.bot.FullRandomBot;
-import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -17,7 +12,8 @@ import org.apache.commons.lang3.tuple.Pair;
 public class GameEngine {
     // ATTRIBUTES
     public static final int DEFAULT_NUMBER_OF_ROUNDS = 5000;
-    public static final int DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN = 5;
+    protected static final Map<Integer, Integer> DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN =
+            new HashMap<>(Map.of(2, 9, 3, 8, 4, 7));
     private Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
@@ -58,24 +54,12 @@ public class GameEngine {
                                         new ConsoleUserInterface(),
                                         "Joe",
                                         new FullRandomBot(),
-                                        new BotState(
-                                                2,
-                                                new Inventory(),
-                                                List.of(
-                                                        MovePandaAction.class,
-                                                        MoveGardenerAction.class,
-                                                        PlaceTileAction.class))),
+                                        new BotState()),
                                 new BotManager(
                                         new ConsoleUserInterface(),
                                         "Bob",
                                         new FullRandomBot(),
-                                        new BotState(
-                                                2,
-                                                new Inventory(),
-                                                List.of(
-                                                        MovePandaAction.class,
-                                                        MoveGardenerAction.class,
-                                                        PlaceTileAction.class))))),
+                                        new BotState()))),
                 new Scoreboard());
     }
 
@@ -112,6 +96,7 @@ public class GameEngine {
         this.board = new Board();
         for (BotManager botManager : botManagers) {
             botManager.reset();
+            botManager.setStartingDeck(board.getStarterDeck());
         }
 
         // Game is now ready to be started
@@ -140,7 +125,8 @@ public class GameEngine {
         BotManager botManagerWithEmperorObjective = null;
 
         for (int i = 0; i < numberOfRounds; i++) {
-            consoleUserInterface.displayMessage("===== Round " + (i + 1) + " =====");
+            consoleUserInterface.displayMessage(
+                    "===== Round " + (board.getRoundNumber() + 1) + " =====");
             for (BotManager botManager : botManagers) {
 
                 if (isLastRound && botManager.equals(botManagerWithEmperorObjective)) {
@@ -152,7 +138,8 @@ public class GameEngine {
                         "===== <" + botManager.getName() + "> is playing =====");
                 botManager.playBot(board);
 
-                if (botManager.getRedeemedObjectives().size() >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN
+                if (botManager.getRedeemedObjectives().size()
+                                >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(botManagers.size())
                         && !isLastRound) {
                     consoleUserInterface.displayMessage(
                             "===== <" + botManager.getName() + "> finished the game =====");
@@ -168,6 +155,7 @@ public class GameEngine {
                             "==<Last round>==<Last round>==<Last round>==<Last round>==");
                 }
             }
+            board.nextRound();
         }
     }
 

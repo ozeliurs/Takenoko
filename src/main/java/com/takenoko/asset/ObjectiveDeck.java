@@ -5,10 +5,9 @@ import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.*;
 import com.takenoko.shape.PatternFactory;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** The deck containing all the different objectives. */
 public class ObjectiveDeck extends ArrayList<Objective> {
@@ -96,7 +95,9 @@ public class ObjectiveDeck extends ArrayList<Objective> {
         add(
                 new SingleGardenerObjective(
                         4, TileColor.GREEN, ImprovementType.ENCLOSURE, 4)); // 4 GREEN
-        add(new SingleGardenerObjective(4, TileColor.GREEN, ImprovementType.POOL, 4)); // 4 GREEN
+        add(
+                new SingleGardenerObjective(
+                        4, TileColor.GREEN, ImprovementType.WATERSHED, 4)); // 4 GREEN
         add(
                 new SingleGardenerObjective(
                         4, TileColor.GREEN, ImprovementType.FERTILIZER, 3)); // 4 GREEN
@@ -104,13 +105,15 @@ public class ObjectiveDeck extends ArrayList<Objective> {
         add(
                 new SingleGardenerObjective(
                         4, TileColor.YELLOW, ImprovementType.ENCLOSURE, 5)); // 4 YELLOW
-        add(new SingleGardenerObjective(4, TileColor.YELLOW, ImprovementType.POOL, 5)); // 4 YELLOW
+        add(
+                new SingleGardenerObjective(
+                        4, TileColor.YELLOW, ImprovementType.WATERSHED, 5)); // 4 YELLOW
         add(
                 new SingleGardenerObjective(
                         4, TileColor.YELLOW, ImprovementType.FERTILIZER, 4)); // 4 YELLOW
         // PINK
         add(new SingleGardenerObjective(4, TileColor.PINK, ImprovementType.ENCLOSURE, 6)); // 4 PINK
-        add(new SingleGardenerObjective(4, TileColor.PINK, ImprovementType.POOL, 6)); // 4 PINK
+        add(new SingleGardenerObjective(4, TileColor.PINK, ImprovementType.WATERSHED, 6)); // 4 PINK
         add(
                 new SingleGardenerObjective(
                         4, TileColor.PINK, ImprovementType.FERTILIZER, 5)); // 4 PINK
@@ -146,12 +149,48 @@ public class ObjectiveDeck extends ArrayList<Objective> {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ObjectiveDeck that = (ObjectiveDeck) o;
-        return Objects.equals(random, that.random)
-                && Objects.equals(lastDrawnObjective, that.lastDrawnObjective);
+        return Objects.equals(lastDrawnObjective, that.lastDrawnObjective);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), random, lastDrawnObjective);
+        return Objects.hash(super.hashCode(), lastDrawnObjective);
+    }
+
+    @Override
+    public String toString() {
+        return "ObjectiveDeck{"
+                + this.stream().map(Objects::toString).collect(Collectors.joining(", "))
+                + "}";
+    }
+
+    /**
+     * Create the starter deck for a player
+     *
+     * @return List of objectives
+     */
+    public List<Objective> getStarterDeck() {
+        List<Objective> drawnObjective =
+                Stream.concat(
+                                this.stream().filter(PandaObjective.class::isInstance).limit(1),
+                                Stream.concat(
+                                        this.stream()
+                                                .filter(PatternObjective.class::isInstance)
+                                                .limit(1),
+                                        this.stream()
+                                                .filter(
+                                                        o ->
+                                                                o instanceof SingleGardenerObjective
+                                                                        || o
+                                                                                instanceof
+                                                                                MultipleGardenerObjective)
+                                                .limit(1)))
+                        .toList();
+
+        for (Objective objective : drawnObjective) {
+            this.remove(objective);
+        }
+
+        return drawnObjective;
     }
 }

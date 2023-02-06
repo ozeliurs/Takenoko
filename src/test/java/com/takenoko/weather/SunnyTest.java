@@ -1,8 +1,6 @@
 package com.takenoko.weather;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;

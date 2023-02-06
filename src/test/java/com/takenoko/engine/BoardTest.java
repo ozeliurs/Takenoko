@@ -8,12 +8,14 @@ import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.bamboo.LayerBambooStack;
+import com.takenoko.layers.irrigation.IrrigationLayer;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -35,7 +37,9 @@ class BoardTest {
         gardener = mock(Gardener.class);
         gameAssets = mock(GameAssets.class);
 
-        board = new Board(tileLayer, bambooLayer, panda, gardener, gameAssets);
+        board =
+                new Board(
+                        tileLayer, bambooLayer, panda, gardener, gameAssets, new IrrigationLayer());
     }
 
     @Test
@@ -190,22 +194,22 @@ class BoardTest {
     @DisplayName("Method movePanda")
     void shouldMovePandaToAGivenPosition() {
         PositionVector position = new PositionVector(0, 0, 0);
-        when(panda.move(position, board)).thenReturn(new LayerBambooStack(1));
+        when(panda.move(position, board)).thenReturn(Map.of(position, new LayerBambooStack(1)));
 
         board.movePanda(position);
         verify(panda, times(1)).move(position, board);
-        assertThat(board.movePanda(position)).isEqualTo(new LayerBambooStack(1));
+        assertThat(board.movePanda(position)).containsEntry(position, new LayerBambooStack(1));
     }
 
     @Test
     @DisplayName("Method moveGardener")
     void shouldMoveGardenerToAGivenPosition() {
         PositionVector position = new PositionVector(0, 0, 0);
-        when(gardener.move(position, board)).thenReturn(new LayerBambooStack(1));
+        when(panda.move(position, board)).thenReturn(Map.of(position, new LayerBambooStack(1)));
 
         board.moveGardener(position);
         verify(gardener, times(1)).move(position, board);
-        assertThat(board.moveGardener(position)).isEqualTo(new LayerBambooStack(1));
+        assertThat(board.movePanda(position)).containsEntry(position, new LayerBambooStack(1));
     }
 
     @Nested
@@ -221,8 +225,18 @@ class BoardTest {
         @Test
         @DisplayName("When boards are equal, returns true")
         void equals_WhenBoardsAreEqual_ThenReturnsTrue() {
-            Board board = new Board();
-            Board board2 = new Board();
+            TileLayer tileLayer = mock(TileLayer.class);
+            BambooLayer bambooLayer = mock(BambooLayer.class);
+            Panda panda = mock(Panda.class);
+            Gardener gardener = mock(Gardener.class);
+            GameAssets gameAssets = mock(GameAssets.class);
+            IrrigationLayer irrigationLayer = mock(IrrigationLayer.class);
+
+            Board board =
+                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+            Board board2 =
+                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+
             assertThat(board).isEqualTo(board2);
         }
 
@@ -236,7 +250,8 @@ class BoardTest {
                             mock(BambooLayer.class),
                             mock(Panda.class),
                             mock(Gardener.class),
-                            mock(GameAssets.class));
+                            mock(GameAssets.class),
+                            new IrrigationLayer());
             assertThat(board).isNotEqualTo(board2);
         }
 
@@ -254,8 +269,18 @@ class BoardTest {
         @Test
         @DisplayName("When boards are equal, returns same hash code")
         void hashCode_WhenBoardsAreEqual_ThenReturnsSameHashCode() {
-            Board board = new Board();
-            Board board2 = new Board();
+            TileLayer tileLayer = mock(TileLayer.class);
+            BambooLayer bambooLayer = mock(BambooLayer.class);
+            Panda panda = mock(Panda.class);
+            Gardener gardener = mock(Gardener.class);
+            GameAssets gameAssets = mock(GameAssets.class);
+            IrrigationLayer irrigationLayer = mock(IrrigationLayer.class);
+
+            Board board =
+                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+            Board board2 =
+                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+
             assertThat(board).hasSameHashCodeAs(board2);
         }
 
@@ -269,7 +294,8 @@ class BoardTest {
                             mock(BambooLayer.class),
                             mock(Panda.class),
                             mock(Gardener.class),
-                            mock(GameAssets.class));
+                            mock(GameAssets.class),
+                            new IrrigationLayer());
             assertThat(board).doesNotHaveSameHashCodeAs(board2);
         }
     }
@@ -293,6 +319,23 @@ class BoardTest {
         void applyImprovement_WhenImprovementIsApplied_CallsApplyImprovementOnTileLayer() {
             board.applyImprovement(mock(ImprovementType.class), mock(PositionVector.class));
             verify(tileLayer).applyImprovement(any(), any(), any());
+        }
+    }
+
+    @Nested
+    @DisplayName("Methods nextRound && getRoundNumber")
+    class TestNextRound {
+        @Test
+        @DisplayName("By default, round number is 0")
+        void nextRound_ByDefault_RoundNumberIs0() {
+            assertThat(board.getRoundNumber()).isZero();
+        }
+
+        @Test
+        @DisplayName("When nextRound is called, round number is incremented")
+        void nextRound_WhenNextRoundIsCalled_RoundNumberIsIncremented() {
+            board.nextRound();
+            assertThat(board.getRoundNumber()).isEqualTo(1);
         }
     }
 }

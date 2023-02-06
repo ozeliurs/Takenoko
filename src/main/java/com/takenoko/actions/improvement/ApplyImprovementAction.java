@@ -15,7 +15,7 @@ import com.takenoko.vector.PositionVector;
  */
 @ActionAnnotation(ActionType.FORCED)
 public class ApplyImprovementAction implements Action {
-    protected PositionVector positionVector;
+    protected final PositionVector positionVector;
 
     public ApplyImprovementAction(PositionVector positionVector) {
         this.positionVector = positionVector;

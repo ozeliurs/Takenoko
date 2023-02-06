@@ -11,7 +11,7 @@ import com.takenoko.weather.Weather;
 /** Action to choose a weather and apply it. */
 @ActionAnnotation(ActionType.FORCED)
 public class ChooseAndApplyWeatherAction implements Action {
-    Weather weather;
+    final Weather weather;
 
     public ChooseAndApplyWeatherAction(Weather weather) {
         this.weather = weather;
@@ -19,7 +19,7 @@ public class ChooseAndApplyWeatherAction implements Action {
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
-        botManager.displayMessage(botManager.getName() + " applied weather " + weather);
-        return new ActionResult(weather.apply(board, botManager));
+        botManager.displayMessage(botManager.getName() + " chose and applied weather " + weather);
+        return new ActionResult(weather.apply(board, botManager), 0);
     }
 }

@@ -4,9 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
+import com.takenoko.objective.EmperorObjective;
+import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.*;
@@ -64,13 +68,14 @@ class GameEngineTest {
             BotManager botManager2 = spy(BotManager.class);
 
             gameEngine = spy(new GameEngine(List.of(botManager1, botManager2)));
+            Board board = gameEngine.getBoard();
 
             gameEngine.newGame();
 
             verify(botManager1, times(1)).reset();
             verify(botManager2, times(1)).reset();
 
-            assertThat(gameEngine.getBoard()).isEqualTo(new Board());
+            assertThat(gameEngine.getBoard()).isNotSameAs(board);
         }
 
         @Test
@@ -213,6 +218,51 @@ class GameEngineTest {
             ge.playGame();
             verify(botm1, times(2)).playBot(any());
             verify(botm2, times(2)).playBot(any());
+        }
+
+        private static Stream<Arguments> numberOfObjectives() {
+            HashMap<Integer, Integer> m = new HashMap<>();
+            m.put(2, 9);
+            m.put(3, 8);
+            m.put(4, 7);
+            return IntStream.range(2, 5).mapToObj(v -> Arguments.of(v, m.get(v)));
+        }
+
+        @ParameterizedTest(
+                name = "When {0} players should end the game when {1} objectives are redeemed.")
+        @DisplayName("objectives redeemed")
+        @MethodSource("numberOfObjectives")
+        void shouldEndGameWhen9ObjectivesAreRedeemed(int playerCount, int objectiveCount) {
+            BotManager botm1 = mock(BotManager.class);
+            when(botm1.getRedeemedObjectives())
+                    .thenReturn(
+                            IntStream.range(0, objectiveCount)
+                                    .mapToObj(v -> (Objective) new EmperorObjective())
+                                    .toList());
+
+            List<BotManager> players =
+                    new ArrayList<>(
+                            IntStream.range(0, playerCount - 1)
+                                    .mapToObj(v -> mock(BotManager.class))
+                                    .toList());
+            players.add(botm1);
+
+            ConsoleUserInterface cui = mock(ConsoleUserInterface.class);
+
+            GameEngine ge =
+                    new GameEngine(
+                            1,
+                            mock(Board.class),
+                            cui,
+                            mock(GameState.class),
+                            players,
+                            mock(Scoreboard.class));
+            ge.playGame();
+
+            verify(cui, times(1))
+                    .displayMessage("==<Last round>==<Last round>==<Last round>==<Last round>==");
+            verify(cui, times(1)).displayMessage("===== Round 1 =====");
+            verify(cui, times(0)).displayMessage("===== Round 2 =====");
         }
     }
 

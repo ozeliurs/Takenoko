@@ -21,10 +21,10 @@ public class ChooseIfApplyWeatherAction implements Action {
         if (applyWeather) {
             botManager.displayMessage(
                     botManager.getName() + " applied the weather " + board.peekWeather());
-            return new ActionResult(board.peekWeather().apply(board, botManager));
+            return new ActionResult(board.peekWeather().apply(board, botManager), 0);
         }
         botManager.displayMessage(
                 botManager.getName() + " did not apply the weather " + board.peekWeather());
-        return new ActionResult();
+        return new ActionResult(0);
     }
 }

@@ -12,7 +12,13 @@ public enum ImprovementType {
      * there but in no case eat the bamboo that is there.
      */
     ENCLOSURE,
+    /**
+     * The watershed 🌊 provides the bamboo in its plot all the water it needs. Therefore this plot
+     * does not need to be irrigated and automatically benefits from the addition of first growth
+     * related to irrigation (see Irrigation). Warning: a watershed cannot under any circumstances
+     * be used as the beginning of a new irrigation system.
+     */
+    WATERSHED,
     ANY,
     NONE,
-    POOL,
 }

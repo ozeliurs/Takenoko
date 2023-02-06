@@ -6,7 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BotManager;
+import com.takenoko.engine.BotState;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.layers.tile.TileColor;
 import java.util.Map;
@@ -19,13 +19,13 @@ class PandaObjectiveTest {
 
     Board board;
     PandaObjective pandaObjective;
-    BotManager botManager;
+    BotState botState;
 
     @BeforeEach
     void setUp() {
         board = mock(Board.class);
-        botManager = mock(BotManager.class);
-        when(botManager.getInventory()).thenReturn(mock(Inventory.class));
+        botState = mock(BotState.class);
+        when(botState.getInventory()).thenReturn(mock(Inventory.class));
         pandaObjective = new PandaObjective(Map.of(TileColor.GREEN, 1, TileColor.PINK, 1), 0);
     }
 
@@ -35,17 +35,17 @@ class PandaObjectiveTest {
         @Test
         @DisplayName("When the objective is not achieved, returns NOT_ACHIEVED")
         void verify_WhenObjectiveIsNotAchieved_ThenReturnsNOT_ACHIEVED() {
-            when(botManager.getInventory().getBambooCount(any())).thenReturn(0);
-            pandaObjective.verify(board, botManager);
+            when(botState.getInventory().getBambooCount(any())).thenReturn(0);
+            pandaObjective.verify(board, botState);
             assertThat(pandaObjective.isAchieved()).isFalse();
         }
 
         @Test
         @DisplayName("When the objective is achieved, returns ACHIEVED")
         void verify_WhenObjectiveIsAchieved_ThenReturnsACHIEVED() {
-            when(botManager.getInventory().getBambooCount(TileColor.GREEN)).thenReturn(1);
-            when(botManager.getInventory().getBambooCount(TileColor.PINK)).thenReturn(1);
-            pandaObjective.verify(board, botManager);
+            when(botState.getInventory().getBambooCount(TileColor.GREEN)).thenReturn(1);
+            when(botState.getInventory().getBambooCount(TileColor.PINK)).thenReturn(1);
+            pandaObjective.verify(board, botState);
             assertThat(pandaObjective.isAchieved()).isTrue();
         }
     }
@@ -56,24 +56,24 @@ class PandaObjectiveTest {
         @Test
         @DisplayName("When the objective is not achieved, returns 0")
         void getCompletion_WhenObjectiveIsNotAchieved_ThenReturns0() {
-            when(botManager.getInventory().getBambooCount(any())).thenReturn(0);
-            assertThat(pandaObjective.getCompletion(board, botManager)).isZero();
+            when(botState.getInventory().getBambooCount(any())).thenReturn(0);
+            assertThat(pandaObjective.getCompletion(board, botState)).isZero();
         }
 
         @Test
         @DisplayName("When the objective is achieved, returns 1")
         void getCompletion_WhenObjectiveIsAchieved_ThenReturns1() {
-            when(botManager.getInventory().getBambooCount(TileColor.GREEN)).thenReturn(1);
-            when(botManager.getInventory().getBambooCount(TileColor.PINK)).thenReturn(1);
-            assertThat(pandaObjective.getCompletion(board, botManager)).isEqualTo(1);
+            when(botState.getInventory().getBambooCount(TileColor.GREEN)).thenReturn(1);
+            when(botState.getInventory().getBambooCount(TileColor.PINK)).thenReturn(1);
+            assertThat(pandaObjective.getCompletion(board, botState)).isEqualTo(1);
         }
 
         @Test
         @DisplayName("When the objective is partially achieved, returns the correct value")
         void getCompletion_WhenObjectiveIsPartiallyAchieved_ThenReturnsCorrectValue() {
-            when(botManager.getInventory().getBambooCount(TileColor.GREEN)).thenReturn(1);
-            when(botManager.getInventory().getBambooCount(TileColor.PINK)).thenReturn(0);
-            assertThat(pandaObjective.getCompletion(board, botManager)).isEqualTo(0.5f);
+            when(botState.getInventory().getBambooCount(TileColor.GREEN)).thenReturn(1);
+            when(botState.getInventory().getBambooCount(TileColor.PINK)).thenReturn(0);
+            assertThat(pandaObjective.getCompletion(board, botState)).isEqualTo(0.5f);
         }
     }
 }

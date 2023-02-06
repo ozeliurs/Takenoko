@@ -17,6 +17,6 @@ public class StoreImprovementAction implements Action {
         ImprovementType improvementType = board.peekImprovement();
         botManager.displayMessage(botManager.getName() + " stored improvement " + improvementType);
         botManager.getInventory().storeImprovement(improvementType);
-        return new ActionResult(List.of(ApplyImprovementFromInventoryAction.class), 1);
+        return new ActionResult(List.of(ApplyImprovementFromInventoryAction.class), 0);
     }
 }

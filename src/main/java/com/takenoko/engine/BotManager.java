@@ -2,8 +2,6 @@ package com.takenoko.engine;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.ActionResult;
-import com.takenoko.actions.actors.MoveGardenerAction;
-import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
@@ -33,9 +31,6 @@ public class BotManager {
     private final String name;
     private final Bot bot;
     private final int defaultNumberOfActions;
-
-    public static final List<Class<? extends Action>> DEFAULT_AVAILABLE_ACTIONS =
-            List.of(MovePandaAction.class, MoveGardenerAction.class);
 
     /**
      * Constructor for the class
@@ -78,19 +73,29 @@ public class BotManager {
         botState.resetAvailableActions(board);
         botState.setNumberOfActions(defaultNumberOfActions);
 
-        board.rollWeather();
-        displayMessage(this.getName() + " rolled weather: " + board.peekWeather());
-        botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
+        if (board.getRoundNumber() > 0) {
+            board.rollWeather();
+            displayMessage(this.getName() + " rolled weather: " + board.peekWeather());
+            botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
+        }
         while (canPlayBot()) {
-            botState.update(board, this);
+            botState.update(board);
             consoleUserInterface.displayDebug(
                     this.getName() + " has " + botState.getNumberOfActions() + " actions.");
             consoleUserInterface.displayDebug(
-                    this.getName() + " can play: " + botState.getAvailableActions());
+                    this.getName()
+                            + " can play: "
+                            + botState.getAvailableActions().stream()
+                                    .map(Class::getSimpleName)
+                                    .toList());
             consoleUserInterface.displayDebug(
                     this.getName() + " must complete: " + botState.getObjectives());
             consoleUserInterface.displayDebug(
-                    this.getName() + " has already played: " + botState.getAlreadyDoneActions());
+                    this.getName()
+                            + " has already played: "
+                            + botState.getAlreadyDoneActions().stream()
+                                    .map(Class::getSimpleName)
+                                    .toList());
             consoleUserInterface.displayDebug(
                     this.getName() + " has achieved: " + botState.getAchievedObjectives());
             consoleUserInterface.displayDebug(
@@ -100,10 +105,9 @@ public class BotManager {
                     this.getName() + " inventory: " + botState.getInventory());
 
             if (botState.getAvailableActions().isEmpty()) {
-                throw new IllegalStateException(
-                        "The bot "
-                                + name
-                                + " has no more actions. Please check the available actions.");
+                consoleUserInterface.displayError(
+                        "The bot " + name + " has no available actions. This turn is skipped.");
+                break;
             }
 
             Action action = bot.chooseAction(board.copy(), botState.copy());
@@ -123,7 +127,7 @@ public class BotManager {
     }
 
     private boolean canPlayBot() {
-        return !botState.getAvailableActions().isEmpty() && botState.getNumberOfActions() > 0;
+        return botState.getNumberOfActions() > 0;
     }
 
     /**
@@ -197,5 +201,14 @@ public class BotManager {
 
     public void setObjectiveAchieved(Objective objective) {
         botState.setObjectiveAchieved(objective);
+    }
+
+    /**
+     * Set the starting deck
+     *
+     * @param objectives list of objectives
+     */
+    public void setStartingDeck(List<Objective> objectives) {
+        botState.setStartingDeck(objectives);
     }
 }

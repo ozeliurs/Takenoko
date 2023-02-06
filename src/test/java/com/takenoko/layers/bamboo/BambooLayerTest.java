@@ -1,7 +1,6 @@
 package com.takenoko.layers.bamboo;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
@@ -302,13 +301,16 @@ class BambooLayerTest {
         }
 
         @Test
-        @DisplayName("when the tile is not a pond and is a growable tile should return true")
+        @DisplayName(
+                "when the tile is not a pond and is a growable tile and is irrigated should return"
+                        + " true")
         void whenTheTileIsNotAPondAndIsAGrowableTileShouldReturnTrue() {
             when(board.isTile(any())).thenReturn(true);
             when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             when(board.getTileAt(any()).getType()).thenReturn(mock(TileType.class));
             when(board.getBambooAt(any())).thenReturn(mock(LayerBambooStack.class));
             when(board.getBambooAt(any()).isGrowable()).thenReturn(true);
+            when(board.isIrrigatedAt(any())).thenReturn(true);
             assertThat(bambooLayer.isGrowableAt(new PositionVector(-1, 0, 1), board)).isTrue();
         }
     }
