@@ -96,6 +96,7 @@ public class GameEngine {
         this.board = new Board();
         for (BotManager botManager : botManagers) {
             botManager.reset();
+            botManager.setStartingDeck(board.getStarterDeck());
         }
 
         // Game is now ready to be started

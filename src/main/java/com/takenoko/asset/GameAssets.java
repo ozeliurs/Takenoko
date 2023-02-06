@@ -1,6 +1,8 @@
 package com.takenoko.asset;
 
+import com.takenoko.objective.Objective;
 import com.takenoko.weather.WeatherDice;
+import java.util.List;
 import java.util.Objects;
 
 public class GameAssets {
@@ -103,5 +105,14 @@ public class GameAssets {
     @Override
     public int hashCode() {
         return Objects.hash(weatherDice, improvementDeck, tileDeck, objectiveDeck, irrigationDeck);
+    }
+
+    /**
+     * Return the list of objectives for the starting deck
+     *
+     * @return list of objectives
+     */
+    public List<Objective> getStarterDeck() {
+        return objectiveDeck.getStarterDeck();
     }
 }

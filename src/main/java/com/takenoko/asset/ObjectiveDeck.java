@@ -5,11 +5,9 @@ import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.*;
 import com.takenoko.shape.PatternFactory;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /** The deck containing all the different objectives. */
 public class ObjectiveDeck extends ArrayList<Objective> {
@@ -164,5 +162,35 @@ public class ObjectiveDeck extends ArrayList<Objective> {
         return "ObjectiveDeck{"
                 + this.stream().map(Objects::toString).collect(Collectors.joining(", "))
                 + "}";
+    }
+
+    /**
+     * Create the starter deck for a player
+     *
+     * @return List of objectives
+     */
+    public List<Objective> getStarterDeck() {
+        List<Objective> drawnObjective =
+                Stream.concat(
+                                this.stream().filter(PandaObjective.class::isInstance).limit(1),
+                                Stream.concat(
+                                        this.stream()
+                                                .filter(PatternObjective.class::isInstance)
+                                                .limit(1),
+                                        this.stream()
+                                                .filter(
+                                                        o ->
+                                                                o instanceof SingleGardenerObjective
+                                                                        || o
+                                                                                instanceof
+                                                                                MultipleGardenerObjective)
+                                                .limit(1)))
+                        .toList();
+
+        for (Objective objective : drawnObjective) {
+            this.remove(objective);
+        }
+
+        return drawnObjective;
     }
 }
