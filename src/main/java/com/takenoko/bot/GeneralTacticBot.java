@@ -3,14 +3,13 @@ package com.takenoko.bot;
 import static com.takenoko.bot.irrigation.pathfinding.IrrigationPathFinding.getShortestIrrigationPath;
 
 import com.takenoko.actions.Action;
-import com.takenoko.actions.irrigation.PlaceIrrigationAction;
 import com.takenoko.actions.irrigation.PlaceIrrigationFromInventoryAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.actions.weather.ChooseAndApplyWeatherAction;
-import com.takenoko.engine.Board;
-import com.takenoko.engine.BotState;
+import com.takenoko.engine.*;
 import com.takenoko.layers.irrigation.EdgePosition;
 import com.takenoko.layers.tile.Tile;
+import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.PandaObjective;
 import com.takenoko.objective.PatternObjective;
@@ -23,23 +22,23 @@ public class GeneralTacticBot implements Bot {
 
     private final FullRandomBot fullRandomBot = new FullRandomBot();
     private final List<EdgePosition> irrigationToPlace = new ArrayList<>();
+    private static final int ARBITRARY_MARGIN = 5;
 
     @Override
-    public Action chooseAction(Board board, BotState botState) {
+    public Action chooseAction(Board board, BotState botState, History history) {
         /*
          * Intelligence when having the choice of the meteo to either :
          * - Choose the sun because it is the best move
-         * - Choose the wind because it allows the bot to win next move
+         * - Choose the wind because it allows the bot to win next move <- WIP
          */
         if (botState.getAvailableActions().contains(ChooseAndApplyWeatherAction.class)) {
-            // TODO: add some logic to choose the weather, if you can win by choosing WIND, do it
             return new ChooseAndApplyWeatherAction(WeatherFactory.SUNNY.createWeather());
         }
 
         /*
-         * Intelligence to complete a PatterObjective by adding irrigation channels
+         * Intelligence to complete a PatternObjective by adding irrigation channels
          */
-        if (botState.getAvailableActions().contains(ChooseAndApplyWeatherAction.class)) {
+        if (botState.getAvailableActions().contains(PlaceIrrigationFromInventoryAction.class)) {
             // Because it is empty, we have to analyze the board to find the best irrigation path
             if (irrigationToPlace.isEmpty()) {
                 analyzeIrrigationToPlaceToCompletePatternObjective(board, botState);
@@ -48,45 +47,90 @@ public class GeneralTacticBot implements Bot {
             if (!irrigationToPlace.isEmpty()) {
                 return new PlaceIrrigationFromInventoryAction(irrigationToPlace.remove(0));
             }
-            // TODO: What happens if we have no irrigation to place
         }
 
         /*
          * Intelligence to not redeem a PandaObjective if it is the last one in his hand, except if that makes it win
          */
         if (botState.getAvailableActions().contains(RedeemObjectiveAction.class)) {
-            return analyzeObjectivesToRedeem(botState);
+            RedeemObjectiveAction result = analyzeObjectivesToRedeem(botState, history);
+            if (result != null) {
+                return result;
+            }
         }
 
-        return fullRandomBot.chooseAction(board, botState);
+        return fullRandomBot.chooseAction(board, botState, history);
     }
 
     // --------------------------------------------------------
     // -------- Methods related to objectives analysis --------
     // --------------------------------------------------------
 
-    public RedeemObjectiveAction analyzeObjectivesToRedeem(BotState botState) {
+    public RedeemObjectiveAction analyzeObjectivesToRedeem(BotState botState, History history) {
         /*
          * If we have only one panda objective, do not redeem it
          * If we have any other objective, redeem any of them
          */
         List<Objective> pandaObjectives =
-                botState.getObjectives().stream().filter(PandaObjective.class::isInstance).toList();
-
-        List<Objective> otherObjectives =
-                botState.getObjectives().stream()
-                        .filter(objective -> !(objective instanceof PandaObjective))
+                botState.getAchievedObjectives().stream()
+                        .filter(PandaObjective.class::isInstance)
                         .toList();
 
+        // GetAchievedObjectives -> [PandaObjective]
+        // Décide de pas le faire
+        // ?
+
         if (pandaObjectives.size() > 1) {
-            return new RedeemObjectiveAction(botState.getObjectives().get(0));
+            return new RedeemObjectiveAction(pandaObjectives.get(0));
         } else if (pandaObjectives.size() == 1) {
-            // TODO: add some logic to redeem the panda objective if it makes it win
-            return new RedeemObjectiveAction(otherObjectives.get(0));
-        } else {
-            // TODO: What happens if we have no objective to redeem ?
-            return null;
+            // Calculate whether if it is worth redeeming the panda objective
+            boolean shouldRedeemPandaObjective =
+                    analyzeIfShouldRedeemLastPandaObjective(
+                            botState, history, (PandaObjective) pandaObjectives.get(0));
+            if (shouldRedeemPandaObjective) {
+                return new RedeemObjectiveAction(pandaObjectives.get(0));
+            }
         }
+        return null;
+    }
+
+    /**
+     * This method is used to calculate if the bot can win by redeeming its last panda objective
+     *
+     * @param botState the bot state
+     * @param history the history
+     * @param pandaObjective the panda objective to redeem
+     * @return true if it is worth redeeming the panda objective, false otherwise
+     */
+    public boolean analyzeIfShouldRedeemLastPandaObjective(
+            BotState botState, History history, PandaObjective pandaObjective) {
+        // Verify that it is the last objective
+        int objectiveToComplete =
+                GameEngine.DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(
+                        history.getBotManagerUUIDs().size() + 1);
+        if (botState.getRedeemedObjectives().size() + 1 != objectiveToComplete) {
+            return false;
+        }
+
+        // Retrieve the last HistoryItem from the history for each bot
+        List<HistoryItem> listOfLastHistoryItem = history.getLatestHistoryItem();
+
+        // Calculate the score for each bot
+        List<Integer> listOfBotScores = new ArrayList<>();
+        for (HistoryItem historyItem : listOfLastHistoryItem) {
+            listOfBotScores.add(
+                    historyItem.redeemedObjectives().stream().mapToInt(Objective::getPoints).sum());
+        }
+
+        // Calculate number of points counting the last panda objective as well as the Emperor's
+        // bonus
+        int ifRedeemedBotScore =
+                pandaObjective.getPoints()
+                        + botState.getObjectiveScore()
+                        + EmperorObjective.EMPEROR_BONUS;
+
+        // If the current bot has the highest score, redeem the panda objective
+        return ifRedeemedBotScore > Collections.max(listOfBotScores) + ARBITRARY_MARGIN;
     }
 
     // --------------------------------------------------------
@@ -105,20 +149,19 @@ public class GeneralTacticBot implements Bot {
         // - a place irrigation action in its inventory
         // - at least one irrigation to place
         // - at least one pattern objective that is not already completed
-        if (botState.getAvailableActions().contains(PlaceIrrigationAction.class)
-                && botState.getInventory().getIrrigationChannelsCount() > 0
-                && !allPatternObjectivesAreCompleted(botState)) {
+        if (!allPatternObjectivesAreCompleted(botState)) {
             // Get all the shapes that could be completed by placing an irrigation
             List<Shape> candidateShapes = getCandidateShape(board, botState);
 
             // If it is not empty, be intelligent
             if (!candidateShapes.isEmpty()) {
+                List<List<EdgePosition>> allPossiblePaths = new ArrayList<>();
                 for (Shape shape : candidateShapes) {
                     // Get the position vector and tile of the shape
-                    Map<PositionVector, Tile> pair = shape.getElements();
+                    Map<PositionVector, Tile> map = shape.getElements();
                     // Find the tiles that are not irrigated yet
                     List<PositionVector> candidateTilesToIrrigate =
-                            pair.keySet().stream()
+                            map.keySet().stream()
                                     .filter(tile -> !board.isIrrigatedAt(tile))
                                     .toList();
                     // Find which irrigation to place to irrigate all the tiles of the shape
@@ -129,14 +172,15 @@ public class GeneralTacticBot implements Bot {
                     // irrigation available
                     if (botState.getInventory().getIrrigationChannelsCount()
                             > possibleEdgePositions.size()) {
-                        // Clear the previous irrigation to place list
-                        irrigationToPlace.clear();
-                        // Add all the edge position to the list of irrigation to place
-                        irrigationToPlace.addAll(possibleEdgePositions);
-                        // Break the loop because we only consider the first shape found
-                        break;
+                        allPossiblePaths.add(possibleEdgePositions);
                     }
                 }
+
+                irrigationToPlace.clear();
+                // Choose the shortest path
+                allPossiblePaths.stream()
+                        .min(Comparator.comparingInt(List::size))
+                        .ifPresent(irrigationToPlace::addAll);
             }
         }
     }
@@ -169,7 +213,7 @@ public class GeneralTacticBot implements Bot {
 
         List<Shape> matchedPatterns = new ArrayList<>();
         for (PatternObjective patternObjective : patternObjectives) {
-            matchedPatterns = patternObjective.getPattern().match(board);
+            matchedPatterns = patternObjective.getPattern().match(board, true);
         }
 
         return matchedPatterns;
