@@ -9,7 +9,7 @@ import java.util.*;
 
 public class IrrigationPathFinding {
 
-    static final int ITERATION_LIMIT = 500;
+    static final int ITERATION_LIMIT = 5000;
     static ConsoleUserInterface consoleUserInterface = new ConsoleUserInterface();
 
     private IrrigationPathFinding() {}
