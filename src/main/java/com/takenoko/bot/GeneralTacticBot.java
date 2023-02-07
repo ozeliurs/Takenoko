@@ -35,7 +35,7 @@ public class GeneralTacticBot extends PriorityBot {
     protected void fillAction(Board board, BotState botState, History history) {
         // We do not care if action is available or not, the unavailable actions will be removed by
         // the super method.
-        
+
         this.add(
                 new IrrigationMaster(
                                 parameters.get("SmartIrrigationPlacing"),
@@ -50,8 +50,7 @@ public class GeneralTacticBot extends PriorityBot {
                         .compute(board, botState, history));
 
         this.addWithOffset(
-                new SmartPanda().compute(board, botState, history),
-                parameters.get("MovePanda"));
+                new SmartPanda().compute(board, botState, history), parameters.get("MovePanda"));
 
         this.addWithOffset(
                 new SmartGardener().compute(board, botState, history),
