@@ -29,6 +29,7 @@ public class Main {
     private boolean demo = false;
 
     private final Logger logger = LogManager.getLogger(Main.class);
+    private static final int TWO_THOUSANDS_NB_GAMES=10;
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -44,14 +45,14 @@ public class Main {
         if (thousands) {
             loggerConfig.setLevel(ConsoleUserInterface.GAMESTATS);
             ctx.updateLoggers();
-            gameEngine.runGame(10);
+            gameEngine.runGame(TWO_THOUSANDS_NB_GAMES);
             GameEngine gameEngine2 =
                     new GameEngine(
                             new ArrayList<>(
                                     List.of(
                                             new BotManager(new FullRandomBot(), "Bob2"),
                                             new BotManager(new FullRandomBot(), "Joe2"))));
-            gameEngine2.runGame(10);
+            gameEngine2.runGame(TWO_THOUSANDS_NB_GAMES);
         } else if (demo) {
             loggerConfig.setLevel(Level.INFO);
             ctx.updateLoggers();
