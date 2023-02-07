@@ -23,6 +23,9 @@ public class GrowBambooAction implements Action {
         if (board.isBambooGrowableAt(position)) {
             board.growBamboo(position);
             botManager.displayMessage("Grew bamboo at " + position);
+            botManager
+                    .getSingleBotStatistics()
+                    .updatePlantedBambooCounter(board.getTileAt(position).getColor());
             return new ActionResult();
         }
         throw new IllegalStateException("Cannot grow bamboo at " + position);
