@@ -1,7 +1,7 @@
 package com.takenoko.ui;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Console user interface
@@ -22,7 +22,7 @@ public class ConsoleUserInterface implements UserInterface {
 
     /** Create a new ConsoleUserInterface with default logger */
     public ConsoleUserInterface() {
-        this((Logger) LogManager.getLogger(ConsoleUserInterface.class));
+        this(LogManager.getLogger(ConsoleUserInterface.class));
     }
 
     /**
@@ -50,9 +50,5 @@ public class ConsoleUserInterface implements UserInterface {
 
     public void displayLineSeparator() {
         logger.info("------------------------------------------------------------");
-    }
-
-    public Logger getLogger() {
-        return logger;
     }
 }
