@@ -74,7 +74,7 @@ public class BotManager {
      * action. Objectives are also verified in order to know if the bot has won.
      *
      * @param board the board of the game
-     * @param history
+     * @param history the history of the game
      */
     public void playBot(Board board, History history) {
         botState.resetAvailableActions(board);
@@ -87,29 +87,7 @@ public class BotManager {
         }
         while (canPlayBot()) {
             botState.update(board);
-            consoleUserInterface.displayDebug(
-                    this.getName() + " has " + botState.getNumberOfActions() + " actions.");
-            consoleUserInterface.displayDebug(
-                    this.getName()
-                            + " can play: "
-                            + botState.getAvailableActions().stream()
-                                    .map(Class::getSimpleName)
-                                    .toList());
-            consoleUserInterface.displayDebug(
-                    this.getName() + " must complete: " + botState.getObjectives());
-            consoleUserInterface.displayDebug(
-                    this.getName()
-                            + " has already played: "
-                            + botState.getAlreadyDoneActions().stream()
-                                    .map(Class::getSimpleName)
-                                    .toList());
-            consoleUserInterface.displayDebug(
-                    this.getName() + " has achieved: " + botState.getAchievedObjectives());
-            consoleUserInterface.displayDebug(
-                    this.getName() + " has redeemed: " + botState.getRedeemedObjectives());
-
-            consoleUserInterface.displayDebug(
-                    this.getName() + " inventory: " + botState.getInventory());
+            displayDebugBotState();
 
             if (botState.getAvailableActions().isEmpty()) {
                 consoleUserInterface.displayError(
@@ -132,6 +110,33 @@ public class BotManager {
             botState.updateAvailableActions(action, actionResult);
         }
         board.getWeather().ifPresent(value -> value.revert(board, this));
+    }
+
+    /** Display debug messages */
+    private void displayDebugBotState() {
+        consoleUserInterface.displayDebug(
+                this.getName() + " has " + botState.getNumberOfActions() + " actions.");
+        consoleUserInterface.displayDebug(
+                this.getName()
+                        + " can play: "
+                        + botState.getAvailableActions().stream()
+                                .map(Class::getSimpleName)
+                                .toList());
+        consoleUserInterface.displayDebug(
+                this.getName() + " must complete: " + botState.getObjectives());
+        consoleUserInterface.displayDebug(
+                this.getName()
+                        + " has already played: "
+                        + botState.getAlreadyDoneActions().stream()
+                                .map(Class::getSimpleName)
+                                .toList());
+        consoleUserInterface.displayDebug(
+                this.getName() + " has achieved: " + botState.getAchievedObjectives());
+        consoleUserInterface.displayDebug(
+                this.getName() + " has redeemed: " + botState.getRedeemedObjectives());
+
+        consoleUserInterface.displayDebug(
+                this.getName() + " inventory: " + botState.getInventory());
     }
 
     private boolean canPlayBot() {

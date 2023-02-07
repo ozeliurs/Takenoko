@@ -1,6 +1,5 @@
 package com.takenoko.objective;
 
-import com.takenoko.actions.Action;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.vector.PositionVector;
@@ -66,8 +65,8 @@ public class MultipleGardenerObjective extends Objective {
         // spotless:on
     }
 
-    public List<Action> getActionsToComplete(Board board) {
-        return objective.getActionsToComplete(board);
+    public List<PositionVector> getPositionsToComplete(Board board) {
+        return objective.getPositionsToComplete(board);
     }
 
     @Override

@@ -1,10 +1,8 @@
 package com.takenoko.objective;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.layers.bamboo.LayerBambooStack;
@@ -425,7 +423,7 @@ class SingleGardenerObjectiveTest {
             when(board.getGardenerPossibleMoves()).thenReturn(List.of());
 
             // Test
-            assertThat(objectiveWithImprovement.getActionsToComplete(board)).isEmpty();
+            assertThat(objectiveWithImprovement.getPositionsToComplete(board)).isEmpty();
         }
 
         @Test
@@ -435,38 +433,12 @@ class SingleGardenerObjectiveTest {
             Board board = mock(Board.class);
 
             when(board.getPandaPossibleMoves()).thenReturn(List.of(new PositionVector(1, 0, -1)));
+            when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
+            when(board.getTileAt(any())).thenReturn(new Tile());
             when(board.getGardenerPossibleMoves()).thenReturn(List.of());
 
             // Test
-            assertThat(objectiveWithImprovement.getActionsToComplete(board)).isEmpty();
-        }
-
-        @Test
-        @Disabled
-        @DisplayName("if Panda and Gardener movements are available returns the actions")
-        void getActionsToComplete_ifPandaAndGardenerMovementsAreAvailable_returnsTheActions() {
-            // Variables
-            Board board = mock(Board.class);
-
-            objectiveWithImprovement =
-                    new SingleGardenerObjective(3, TileColor.PINK, ImprovementType.WATERSHED, 0);
-
-            when(board.getPandaPossibleMoves()).thenReturn(List.of(new PositionVector(1, 0, -1)));
-            // when(board.getGardenerPossibleMoves()).thenReturn(List.of(new PositionVector(1, 0,
-            // -1)));
-            when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
-            when(board.getGardenerPosition()).thenReturn(new PositionVector(0, 0, 0));
-            when(board.getTileAt(any()))
-                    .thenReturn(new Tile(ImprovementType.WATERSHED, TileColor.PINK));
-            when(board.getBambooAt(any())).thenReturn(new LayerBambooStack(4));
-            when(board.isBambooGrowableAt(any())).thenReturn(true);
-            when(board.isBambooEatableAt(any())).thenReturn(true);
-
-            // Test
-            assertThat(objectiveWithImprovement.getActionsToComplete(board))
-                    .containsExactlyInAnyOrder(
-                            // new MovePandaAction(new PositionVector(1, 0, -1)),
-                            new MoveGardenerAction(new PositionVector(1, 0, -1)));
+            assertThat(objectiveWithImprovement.getPositionsToComplete(board)).isEmpty();
         }
     }
 }
