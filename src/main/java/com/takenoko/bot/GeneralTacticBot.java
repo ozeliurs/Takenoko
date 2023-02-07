@@ -58,7 +58,7 @@ public class GeneralTacticBot extends PriorityBot {
 
         this.addWithOffset(
                 new SmartPattern().compute(board, botState, history),
-                parameters.get("SmartPattern"));
+                parameters.get("SmartPatternPlacing"));
 
         this.addWithOffset(
                 new SmartObjective().compute(board, botState, history),
