@@ -317,9 +317,7 @@ class GameEngineTest {
             gameEngine.startGame();
             gameEngine.endGame();
 
-            verify(consoleUserInterface, times(1)).displayMessage(scoreboard.toString());
-            verify(consoleUserInterface, times(1))
-                    .displayMessage("The game is finished. Thanks for playing !");
+            verify(consoleUserInterface, times(1)).displayMessage("The game is finished. Thanks for playing !");
         }
     }
 
@@ -343,6 +341,26 @@ class GameEngineTest {
             GameEngine gameEngine = spy(new GameEngine());
             gameEngine.runGame(2);
             verify(gameEngine, times(2)).runGame();
+        }
+
+        @Test
+        @DisplayName("Should display a lot of messages")
+        void runGame_shouldDisplayALotOfMessages() {
+            ConsoleUserInterface consoleUserInterface = mock(ConsoleUserInterface.class);
+
+            Scoreboard scoreboard = spy(Scoreboard.class);
+
+            gameEngine =
+                    new GameEngine(
+                            1,
+                            new Board(),
+                            consoleUserInterface,
+                            GameState.INITIALIZED,
+                            new ArrayList<>(List.of(spy(BotManager.class), spy(BotManager.class))),
+                            scoreboard);
+            gameEngine.runGame(2);
+            verify(consoleUserInterface, times(1)).displayEnd("All 2 games have been run :");
+            verify(consoleUserInterface, times(1)).displayStats(any());
         }
     }
 
