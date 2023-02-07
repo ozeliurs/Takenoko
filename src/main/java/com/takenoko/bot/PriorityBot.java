@@ -10,9 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class PriorityBot extends HashMap<Action, Integer> implements Bot {
+public abstract class PriorityBot extends HashMap<Action, Double> implements Bot {
 
-    ConsoleUserInterface consoleUserInterface = new ConsoleUserInterface();
+    public static final int DEFAULT_PRIORITY = 0;
+    transient ConsoleUserInterface consoleUserInterface = new ConsoleUserInterface();
 
     @Override
     public Action chooseAction(Board board, BotState botState, History history) {
@@ -21,7 +22,7 @@ public abstract class PriorityBot extends HashMap<Action, Integer> implements Bo
                         // Remove actions that are not available
                         .filter(v -> botState.getAvailableActions().contains(v.getKey().getClass()))
                         // Order by priority
-                        .max(Comparator.comparingInt(Entry::getValue))
+                        .max(Comparator.comparingDouble(Entry::getValue))
                         // Get the action with the highest priority
                         .map(Map.Entry::getKey);
 
@@ -37,9 +38,40 @@ public abstract class PriorityBot extends HashMap<Action, Integer> implements Bo
                 });
     }
 
-    protected void addActionIfNotNull(Action action, int priority) {
+    protected void addActionWithPriority(Action action, double priority) {
         if (action != null) {
             this.put(action, priority);
         }
+    }
+
+    protected void add(PriorityBot bot) {
+        this.addWithOffset(bot, 0);
+    }
+
+    /** This method is used to add a bot with an offset */
+    protected void addWithOffset(PriorityBot bot, double offset) {
+        bot.forEach((k, v) -> this.put(k, v + offset));
+    }
+
+    /** This method is used to add a bot with a Linear function offset */
+    protected void addWithLinear(PriorityBot bot, double multiplier) {
+        bot.forEach((k, v) -> this.put(k, v + multiplier));
+    }
+
+    /** This method is used to add a bot with Affine function offset */
+    protected void addWithAffine(PriorityBot bot, double multiplier, double offset) {
+        bot.forEach((k, v) -> this.put(k, v * multiplier + offset));
+    }
+
+    /** This method is used to add a bot and squash the priority between two numbers */
+    protected void addWithSquash(PriorityBot bot, double min, double max) {
+        double minPriority = bot.values().stream().min(Double::compareTo).orElse(0.0);
+        double maxPriority = bot.values().stream().max(Double::compareTo).orElse(0.0);
+        double range = maxPriority - minPriority;
+        bot.forEach(
+                (k, v) -> {
+                    double priority = (v - minPriority) / range;
+                    this.put(k, min + priority * (max - min));
+                });
     }
 }
