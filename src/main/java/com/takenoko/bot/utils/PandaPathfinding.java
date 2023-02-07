@@ -45,16 +45,18 @@ public class PandaPathfinding {
     }
 
     public Action getMovePandaAction() {
-        if (getPosition() == null) {
+        PositionVector position = getPosition();
+        if (position == null) {
             return null;
         }
-        return new MovePandaAction(getPosition());
+        return new MovePandaAction(position);
     }
 
     public Action getForcedMovePandaAction() {
-        if (getPosition() == null) {
+        PositionVector position = getPosition();
+        if (position == null) {
             return null;
         }
-        return new ForcedMovePandaAction(getPosition());
+        return new ForcedMovePandaAction(position);
     }
 }

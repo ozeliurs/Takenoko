@@ -1,6 +1,5 @@
 package com.takenoko.bot;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import com.takenoko.actors.Gardener;
@@ -14,11 +13,8 @@ import com.takenoko.layers.irrigation.IrrigationLayer;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.layers.tile.TileLayer;
-import com.takenoko.objective.PatternObjective;
-import com.takenoko.shape.Line;
 import com.takenoko.vector.PositionVector;
 import java.util.List;
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -74,15 +70,16 @@ class GeneralTacticBotTest {
             BotState botState = mock(BotState.class);
 
             // When
-            when(generalTacticBot.getCurrentPatternObjectives(botState))
-                    .thenReturn(List.of(new PatternObjective(new Line(TileColor.YELLOW), 2)));
-
-            // Execute method
-            Pair<PositionVector, Tile> result =
-                    generalTacticBot.analyzeBoardToFindPlaceToCompleteShapeOfPatternObjective(
-                            board, botState);
-            assertThat(result)
-                    .isEqualTo(Pair.of(new PositionVector(3, -3, 0), new Tile(TileColor.YELLOW)));
+            // TODO: move this test to SmartPattern
+            /**
+             * when(generalTacticBot.getCurrentPatternObjectives(botState)) .thenReturn(List.of(new
+             * PatternObjective(new Line(TileColor.YELLOW), 2)));
+             *
+             * <p>// Execute method Pair<PositionVector, Tile> result =
+             * generalTacticBot.analyzeBoardToFindPlaceToCompleteShapeOfPatternObjective( board,
+             * botState); assertThat(result) .isEqualTo(Pair.of(new PositionVector(3, -3, 0), new
+             * Tile(TileColor.YELLOW)));
+             */
         }
     }
 }

@@ -21,7 +21,7 @@ public class GardenerPathfinding {
     }
 
     public PositionVector getPosition() {
-        List<PositionVector> pandaMoves =
+        List<PositionVector> gardenerMoves =
                 Stream.of(
                                 // SimpleGardenerObjective Moves
                                 botState.getNotAchievedObjectives().stream()
@@ -52,11 +52,11 @@ public class GardenerPathfinding {
                         .flatMap(Collection::stream)
                         .toList();
 
-        if (pandaMoves.isEmpty()) {
+        if (gardenerMoves.isEmpty()) {
             return null;
         }
 
-        return pandaMoves.stream().toList().get(0);
+        return gardenerMoves.stream().toList().get(0);
     }
 
     public Action getMoveGardenerAction() {

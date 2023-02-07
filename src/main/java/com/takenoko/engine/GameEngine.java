@@ -61,7 +61,7 @@ public class GameEngine {
                                         new BotState()),
                                 new BotManager(
                                         new ConsoleUserInterface(),
-                                        "Bob",
+                                        "GeneralTactic",
                                         new GeneralTacticBot(),
                                         new BotState()))),
                 new Scoreboard(),

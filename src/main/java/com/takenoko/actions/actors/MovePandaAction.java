@@ -66,7 +66,7 @@ public class MovePandaAction implements DefaultAction {
 
     @Override
     public String toString() {
-        return "MovePandaAction {" + relativePositionVector + "}";
+        return "MovePandaAction {pos_vect=" + relativePositionVector + "}";
     }
 
     @Override
