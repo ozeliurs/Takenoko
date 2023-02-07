@@ -317,7 +317,8 @@ class GameEngineTest {
             gameEngine.startGame();
             gameEngine.endGame();
 
-            verify(consoleUserInterface, times(1)).displayMessage("The game is finished. Thanks for playing !");
+            verify(consoleUserInterface, times(1))
+                    .displayMessage("The game is finished. Thanks for playing !");
         }
     }
 

@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -65,7 +64,8 @@ class ScoreboardTest {
     void toString_ThenReturnsCorrectString() {
         scoreboard.addBotManager(botManager1);
         String result = scoreboard.toString();
-        assertThat(result).contains("============== Scoreboard ==============","Wins","Total Score");
+        assertThat(result)
+                .contains("============== Scoreboard ==============", "Wins", "Total Score");
         verify(botManager1, times(1)).getName();
     }
 
@@ -74,8 +74,9 @@ class ScoreboardTest {
     void updateScoreTest() {
         scoreboard.addBotManager(botManager1);
         scoreboard.updateScore(botManager1, 10);
-        assertThat(scoreboard.getTotalScore()).containsEntry(botManager1,10); //getTotalScore().get(botManager1)).isEqualTo(10);
+        assertThat(scoreboard.getTotalScore())
+                .containsEntry(botManager1, 10); // getTotalScore().get(botManager1)).isEqualTo(10);
         scoreboard.updateScore(botManager1, 5);
-        assertThat(scoreboard.getTotalScore()).containsEntry(botManager1,15);
+        assertThat(scoreboard.getTotalScore()).containsEntry(botManager1, 15);
     }
 }
