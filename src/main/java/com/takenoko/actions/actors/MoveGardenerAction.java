@@ -54,13 +54,17 @@ public class MoveGardenerAction implements DefaultAction {
         }
 
         bambooStacks.forEach(
-                (positionVector, layerBambooStack) ->
-                        botManager.displayMessage(
-                                "Gardener planted bamboo at "
-                                        + positionVector
-                                        + ", the stack is now "
-                                        + layerBambooStack.getBambooCount()
-                                        + "high"));
+                (positionVector, layerBambooStack) -> {
+                    botManager.displayMessage(
+                            "Gardener planted bamboo at "
+                                    + positionVector
+                                    + ", the stack is now "
+                                    + layerBambooStack.getBambooCount()
+                                    + "high");
+                    botManager
+                            .getSingleBotStatistics()
+                            .updatePlantedBambooCounter(board.getTileAt(positionVector).getColor());
+                });
 
         return new ActionResult(1);
     }
