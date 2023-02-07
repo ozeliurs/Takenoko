@@ -43,9 +43,26 @@ public class GeneralTacticBot extends PriorityBot {
     }
 
     @Override
+    @SuppressWarnings({"java:S3599", "java:S1171"})
     protected void fillAction(Board board, BotState botState, History history) {
         // We do not care if action is available or not, the unavailable actions will be removed by
         // the super method.
+
+        new HashMap<PriorityBot, Class<? extends Action>>() {
+            {
+                put(new SmartPanda().compute(board, botState, history), MovePandaAction.class);
+                put(
+                        new SmartGardener().compute(board, botState, history),
+                        MoveGardenerAction.class);
+                put(new SmartPattern().compute(board, botState, history), PlaceTileAction.class);
+                put(
+                        new SmartDrawIrrigation().compute(board, botState, history),
+                        DrawIrrigationAction.class);
+                put(
+                        new SmartObjective().compute(board, botState, history),
+                        RedeemObjectiveAction.class);
+            }
+        }.forEach((k, v) -> this.addWithOffset(k, priorityByActionClass.get(v)));
 
         this.add(
                 new IrrigationMaster(
@@ -59,26 +76,6 @@ public class GeneralTacticBot extends PriorityBot {
                                 priorityByActionClass.get(ChooseIfApplyWeatherAction.class),
                                 priorityByActionClass.get(ChooseAndApplyWeatherAction.class))
                         .compute(board, botState, history));
-
-        this.addWithOffset(
-                new SmartPanda().compute(board, botState, history),
-                priorityByActionClass.get(MovePandaAction.class));
-
-        this.addWithOffset(
-                new SmartGardener().compute(board, botState, history),
-                priorityByActionClass.get(MoveGardenerAction.class));
-
-        this.addWithOffset(
-                new SmartPattern().compute(board, botState, history),
-                priorityByActionClass.get(PlaceTileAction.class));
-
-        this.addWithOffset(
-                new SmartDrawIrrigation().compute(board, botState, history),
-                priorityByActionClass.get(DrawIrrigationAction.class));
-
-        this.addWithOffset(
-                new SmartObjective().compute(board, botState, history),
-                priorityByActionClass.get(RedeemObjectiveAction.class));
     }
 
     @Override
