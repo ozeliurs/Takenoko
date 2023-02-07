@@ -213,4 +213,6 @@ public class BotManager {
     public void setStartingDeck(List<Objective> objectives) {
         botState.setStartingDeck(objectives);
     }
+
+    public String toString(){return "{Name: "+name+" | Type: "+bot.getClass().getSimpleName()+" }";}
 }
