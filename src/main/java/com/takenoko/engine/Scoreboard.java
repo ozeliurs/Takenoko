@@ -10,7 +10,7 @@ public class Scoreboard {
     private final HashMap<BotManager, Integer> totalScore;
 
     public Scoreboard() {
-        totalScore = new HashMap<>();
+        totalScore=new HashMap<>();
         numberOfVictoryHashMap = new HashMap<>();
     }
 
@@ -33,8 +33,8 @@ public class Scoreboard {
         numberOfVictoryHashMap.put(botManager, numberOfVictoryHashMap.get(botManager) + 1);
     }
 
-    public void updateScore(BotManager botManager, int scoreToAdd) {
-        totalScore.put(botManager, totalScore.get(botManager) + scoreToAdd);
+    public void updateScore(BotManager botManager, int scoreToAdd){
+        totalScore.put(botManager,totalScore.get(botManager)+scoreToAdd);
     }
 
     @Override

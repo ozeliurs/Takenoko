@@ -201,7 +201,7 @@ public class GameEngine {
             scoreboard.incrementNumberOfVictory(botManager);
         }
         for (BotManager botManager : botManagers) {
-            scoreboard.updateScore(botManager, botManager.getObjectiveScore());
+            scoreboard.updateScore(botManager,botManager.getObjectiveScore());
             botManager.reset();
         }
 
@@ -209,12 +209,12 @@ public class GameEngine {
         gameState = GameState.FINISHED;
     }
 
-    public StringBuilder statSummary(int numberOfGames) {
-        StringBuilder summary = new StringBuilder();
-        for (BotManager botManager : botManagers) {
+    public StringBuilder statSummary(int numberOfGames){
+        StringBuilder summary= new StringBuilder();
+        for(BotManager botManager:botManagers){
             summary.append(botManager.getName())
                     .append(" has average score per game of :")
-                    .append(scoreboard.getTotalScore().get(botManager) / numberOfGames)
+                    .append(scoreboard.getTotalScore().get(botManager)/numberOfGames)
                     .append("|||");
         }
         return summary;
@@ -303,21 +303,22 @@ public class GameEngine {
         endGame();
     }
 
-    public void runGame() {
+    public void runGame(){
         runGame(Level.INFO);
     }
 
-    public void runGame(int numberOfGames, Level level) {
+    public void runGame(int numberOfGames,Level level) {
         for (int i = 0; i < numberOfGames; i++) {
             runGame(level);
         }
         consoleUserInterface.getLogger().setLevel(Level.INFO);
         consoleUserInterface.displayMessage(scoreboard.toString());
         consoleUserInterface.displayMessage(statSummary(numberOfGames).toString());
+
     }
 
-    public void runGame(int numberOfGames) {
-        runGame(numberOfGames, Level.INFO);
+    public void runGame(int numberOfGames){
+        runGame(numberOfGames,Level.INFO);
     }
 
     public ConsoleUserInterface getConsoleUserInterface() {
