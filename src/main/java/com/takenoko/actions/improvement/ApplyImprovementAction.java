@@ -8,6 +8,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.vector.PositionVector;
+import java.util.Objects;
 
 /**
  * Action to draw an improvement from the inventory. Throws an exception if the improvement is not
@@ -32,5 +33,18 @@ public class ApplyImprovementAction implements Action {
                         + " at "
                         + positionVector);
         return new ActionResult(0);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ApplyImprovementAction that = (ApplyImprovementAction) o;
+        return Objects.equals(positionVector, that.positionVector);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(positionVector);
     }
 }

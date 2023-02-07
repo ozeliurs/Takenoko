@@ -97,7 +97,8 @@ class GameEngineTest {
                             consoleUserInterface,
                             GameState.INITIALIZED,
                             new ArrayList<>(List.of(spy(BotManager.class), spy(BotManager.class))),
-                            new Scoreboard());
+                            new Scoreboard(),
+                            mock(History.class));
 
             gameEngine.newGame();
 
@@ -172,7 +173,8 @@ class GameEngineTest {
                             consoleUserInterface,
                             GameState.READY,
                             new ArrayList<>(List.of(botManager1, botManager2)),
-                            new Scoreboard());
+                            new Scoreboard(),
+                            mock(History.class));
 
             gameEngine.startGame();
 
@@ -214,10 +216,11 @@ class GameEngineTest {
                             mock(ConsoleUserInterface.class),
                             mock(GameState.class),
                             List.of(botm1, botm2),
-                            mock(Scoreboard.class));
+                            mock(Scoreboard.class),
+                            mock(History.class));
             ge.playGame();
-            verify(botm1, times(2)).playBot(any());
-            verify(botm2, times(2)).playBot(any());
+            verify(botm1, times(2)).playBot(any(), any());
+            verify(botm2, times(2)).playBot(any(), any());
         }
 
         private static Stream<Arguments> numberOfObjectives() {
@@ -256,7 +259,8 @@ class GameEngineTest {
                             cui,
                             mock(GameState.class),
                             players,
-                            mock(Scoreboard.class));
+                            mock(Scoreboard.class),
+                            mock(History.class));
             ge.playGame();
 
             verify(cui, times(1))
@@ -312,7 +316,8 @@ class GameEngineTest {
                             consoleUserInterface,
                             GameState.READY,
                             new ArrayList<>(List.of(spy(BotManager.class), spy(BotManager.class))),
-                            scoreboard);
+                            scoreboard,
+                            mock(History.class));
 
             gameEngine.startGame();
             gameEngine.endGame();
@@ -362,7 +367,8 @@ class GameEngineTest {
                             mock(ConsoleUserInterface.class),
                             GameState.PLAYING,
                             List.of(botm1, botm2),
-                            scoreboard);
+                            scoreboard,
+                            mock(History.class));
             ge.endGame();
             assertThat(ge.getWinner()).isEqualTo(Pair.of(List.of(botm1, botm2), EndGameState.TIE));
             verify(scoreboard, times(1)).incrementNumberOfVictory(botm1);
@@ -384,7 +390,8 @@ class GameEngineTest {
                             mock(ConsoleUserInterface.class),
                             GameState.PLAYING,
                             List.of(botm1, botm2),
-                            scoreboard);
+                            scoreboard,
+                            mock(History.class));
             ge.endGame();
             assertThat(ge.getWinner())
                     .isEqualTo(Pair.of(List.of(botm2), EndGameState.WIN_WITH_OBJECTIVE_POINTS));
@@ -407,7 +414,8 @@ class GameEngineTest {
                             consoleUserInterface,
                             GameState.PLAYING,
                             List.of(botm1, botm2),
-                            scoreboard);
+                            scoreboard,
+                            mock(History.class));
             ge.endGame();
             assertThat(ge.getWinner())
                     .isEqualTo(

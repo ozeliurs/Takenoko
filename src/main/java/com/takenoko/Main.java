@@ -4,6 +4,6 @@ import com.takenoko.engine.GameEngine;
 
 public class Main {
     public static void main(String[] args) {
-        new GameEngine().runGame(1);
+        new GameEngine().runGame(10);
     }
 }

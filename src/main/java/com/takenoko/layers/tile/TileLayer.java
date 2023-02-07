@@ -164,6 +164,9 @@ public class TileLayer {
      * @return the tile at the given position
      */
     public Tile getTileAt(PositionVector positionVector) {
+        if (!isTile(positionVector)) {
+            throw new IllegalArgumentException("No tile at this position");
+        }
         return tiles.get(positionVector);
     }
 
