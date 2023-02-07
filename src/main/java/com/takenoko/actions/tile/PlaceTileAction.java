@@ -39,6 +39,9 @@ public class PlaceTileAction implements Action {
                 botManager.getName() + " placed " + tile + " at " + positionVector);
         if (!board.placeTile(tile, positionVector).isEmpty()) {
             botManager.displayMessage(tile.getColor() + " bamboo grew at " + positionVector);
+            botManager
+                    .getSingleBotStatistics()
+                    .updateTilesPlacedCounter(board.getTileAt(positionVector).getColor());
         }
         return new ActionResult(1);
     }
