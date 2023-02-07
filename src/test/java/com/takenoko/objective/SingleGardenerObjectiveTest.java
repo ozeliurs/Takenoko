@@ -433,6 +433,8 @@ class SingleGardenerObjectiveTest {
             Board board = mock(Board.class);
 
             when(board.getPandaPossibleMoves()).thenReturn(List.of(new PositionVector(1, 0, -1)));
+            when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
+            when(board.getTileAt(any())).thenReturn(new Tile());
             when(board.getGardenerPossibleMoves()).thenReturn(List.of());
 
             // Test
