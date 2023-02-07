@@ -200,7 +200,7 @@ public class GameEngine {
             scoreboard.incrementNumberOfVictory(botManager);
         }
         for (BotManager botManager : botManagers) {
-            scoreboard.updateScore(botManager,botManager.getObjectiveScore());
+            scoreboard.updateScore(botManager, botManager.getObjectiveScore());
             botManager.reset();
         }
 
@@ -212,7 +212,7 @@ public class GameEngine {
 
     public String statSummary(int numberOfGames) {
         StringBuilder summary = new StringBuilder();
-        String lineJump="\n \t \t \t";
+        String lineJump = "\n \t \t \t";
         summary.append("Summarized game statistics for ")
                 .append(numberOfGames)
                 .append(" games between ")

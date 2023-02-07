@@ -10,7 +10,7 @@ public class Scoreboard {
     private final HashMap<BotManager, Integer> totalScore;
 
     public Scoreboard() {
-        totalScore=new HashMap<>();
+        totalScore = new HashMap<>();
         numberOfVictoryHashMap = new HashMap<>();
     }
 
@@ -33,16 +33,15 @@ public class Scoreboard {
         numberOfVictoryHashMap.put(botManager, numberOfVictoryHashMap.get(botManager) + 1);
     }
 
-    public void updateScore(BotManager botManager, int scoreToAdd){
-        totalScore.put(botManager,totalScore.get(botManager)+scoreToAdd);
+    public void updateScore(BotManager botManager, int scoreToAdd) {
+        totalScore.put(botManager, totalScore.get(botManager) + scoreToAdd);
     }
 
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        String lineJump="\n \t \t \t";
-        stringBuilder.append("============== Scoreboard ==============")
-                .append(lineJump);
+        String lineJump = "\n \t \t \t";
+        stringBuilder.append("============== Scoreboard ==============").append(lineJump);
         for (Map.Entry<BotManager, Integer> entry : numberOfVictoryHashMap.entrySet()) {
             stringBuilder
                     .append("< ")

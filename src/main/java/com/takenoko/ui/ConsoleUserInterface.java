@@ -11,9 +11,9 @@ import org.apache.logging.log4j.Logger;
  */
 public class ConsoleUserInterface implements UserInterface {
     private final Logger logger;
-    public static final Level GAMESTATS=Level.forName("GAMESTATS",50);
-    public static final Level SCOREBOARD= Level.forName("SCOREBOARD",50);
-    public static final Level END=Level.forName("END",40);
+    public static final Level GAMESTATS = Level.forName("GAMESTATS", 50);
+    public static final Level SCOREBOARD = Level.forName("SCOREBOARD", 50);
+    public static final Level END = Level.forName("END", 40);
 
     /**
      * Create a new ConsoleUserInterface with the given logger
@@ -52,9 +52,17 @@ public class ConsoleUserInterface implements UserInterface {
         logger.debug(message);
     }
 
-    public void displayStats(String message){ logger.log(GAMESTATS,message);}
-    public void displayScoreBoard(String message){ logger.log(SCOREBOARD,message);}
-    public void displayEnd(String message){ logger.log(END,message);}
+    public void displayStats(String message) {
+        logger.log(GAMESTATS, message);
+    }
+
+    public void displayScoreBoard(String message) {
+        logger.log(SCOREBOARD, message);
+    }
+
+    public void displayEnd(String message) {
+        logger.log(END, message);
+    }
 
     public void displayLineSeparator() {
         logger.info("------------------------------------------------------------");
