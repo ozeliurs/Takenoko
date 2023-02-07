@@ -265,7 +265,7 @@ public class GeneralTacticBot implements Bot {
         // Verify that it is the last objective
         int objectiveToComplete =
                 GameEngine.DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(
-                        history.getBotManagerUUIDs().size() + 1);
+                        history.getBotManagerUUIDs().size());
         if (botState.getRedeemedObjectives().size() + 1 != objectiveToComplete) {
             return false;
         }
