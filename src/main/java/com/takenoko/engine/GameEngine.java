@@ -20,6 +20,7 @@ public class GameEngine {
     private final int numberOfRounds;
     private final List<BotManager> botManagers;
     private final Scoreboard scoreboard;
+    private final BotStatistics botStatistics;
 
     public GameEngine(
             int numberOfRounds,
@@ -27,7 +28,8 @@ public class GameEngine {
             ConsoleUserInterface consoleUserInterface,
             GameState gameState,
             List<BotManager> botManagerList,
-            Scoreboard scoreboard) {
+            Scoreboard scoreboard,
+            BotStatistics botStatistics) {
         // Assign values to the attributes
         this.numberOfRounds = numberOfRounds;
         this.board = board;
@@ -35,7 +37,9 @@ public class GameEngine {
         this.gameState = gameState;
         this.botManagers = botManagerList;
         this.scoreboard = scoreboard;
+        this.botStatistics = botStatistics;
         scoreboard.addBotManager(botManagerList);
+        botStatistics.addBotManagers(botManagerList);
     }
 
     /**
@@ -54,13 +58,16 @@ public class GameEngine {
                                         new ConsoleUserInterface(),
                                         "Joe",
                                         new FullRandomBot(),
-                                        new BotState()),
+                                        new BotState(),
+                                        new SingleBotStatistics()),
                                 new BotManager(
                                         new ConsoleUserInterface(),
                                         "Bob",
                                         new FullRandomBot(),
-                                        new BotState()))),
-                new Scoreboard());
+                                        new BotState(),
+                                        new SingleBotStatistics()))),
+                new Scoreboard(),
+                new BotStatistics());
     }
 
     public GameEngine(List<BotManager> botManagers) {
@@ -70,7 +77,8 @@ public class GameEngine {
                 new ConsoleUserInterface(),
                 GameState.INITIALIZED,
                 botManagers,
-                new Scoreboard());
+                new Scoreboard(),
+                new BotStatistics());
     }
 
     /**
@@ -198,9 +206,16 @@ public class GameEngine {
 
         for (BotManager botManager : winner.getLeft()) {
             scoreboard.incrementNumberOfVictory(botManager);
+            botStatistics.incrementWins(botManager);
+        }
+        for (BotManager botManager : botManagers) {
+            if (!winner.getLeft().contains(botManager)) {
+                botStatistics.incrementLosses(botManager);
+            }
         }
         for (BotManager botManager : botManagers) {
             scoreboard.updateScore(botManager, botManager.getObjectiveScore());
+            botStatistics.updateScore(botManager, botManager.getObjectiveScore());
             botManager.reset();
         }
 
@@ -317,5 +332,6 @@ public class GameEngine {
         consoleUserInterface.displayEnd("All " + numberOfGames + " games have been run :");
         consoleUserInterface.displayScoreBoard(scoreboard.toString());
         consoleUserInterface.displayStats(statSummary(numberOfGames));
+        consoleUserInterface.displayStats(botStatistics.toString());
     }
 }
