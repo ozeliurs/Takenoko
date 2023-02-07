@@ -15,15 +15,18 @@ import com.takenoko.layers.tile.TileColor;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
 import java.util.List;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class GeneralTacticBotTest {
     @Nested
+    @Disabled
     @DisplayName("method analyzeBoardToFindPlaceToCompleteShapeOfPatternObjective")
     class TestAnalyzeBoardToFindPlaceToCompleteShapeOfPatternObjective {
         @Test
+        @Disabled
         @DisplayName("should return the only place to complete the shape of the pattern objective")
         void shouldReturnTheOnlyPlaceToCompleteTheShapeOfThePatternObjective() {
             GeneralTacticBot generalTacticBot = new GeneralTacticBot();

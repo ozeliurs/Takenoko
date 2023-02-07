@@ -51,7 +51,7 @@ public class PatternObjective extends Objective {
 
     @Override
     public float getCompletion(Board board, BotState botState) {
-        return pattern.getSubsetMatchPattern(board);
+        return pattern.matchRatio(board);
     }
 
     @Override

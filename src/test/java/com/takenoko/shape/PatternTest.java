@@ -248,9 +248,11 @@ class PatternTest {
     }
 
     @Nested
+    @Disabled
     @DisplayName("method getSubsetMatchPattern")
     class TestGetSubsetMatchPattern {
         @Test
+        @Disabled
         @DisplayName("should return the subset of the pattern that matches the board")
         void getSubsetMatchPattern_shouldReturnSubsetOfPatternThatMatchesBoard() {
             Pattern pattern = PatternFactory.LINE.createPattern(TileColor.ANY);

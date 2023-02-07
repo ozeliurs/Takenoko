@@ -75,8 +75,9 @@ public class Pattern extends Shape {
      *
      * @param board@return the ratio of the matching translated/rotated shapes
      */
-    public float getSubsetMatchPattern(Board board) {
+    public float matchRatio(Board board) {
         return 0f;
+        // TODO: change this method to matchRatio
         // return matchRatio(board, 1, false);
     }
 

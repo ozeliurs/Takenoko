@@ -5,10 +5,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
 import com.takenoko.ui.ConsoleUserInterface;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public abstract class PriorityBot extends HashMap<Action, Double> implements Bot {
 
@@ -91,5 +88,19 @@ public abstract class PriorityBot extends HashMap<Action, Double> implements Bot
                     double priority = (v - minPriority) / range;
                     this.put(k, min + priority * (max - min));
                 });
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        PriorityBot that = (PriorityBot) o;
+        return Objects.equals(consoleUserInterface, that.consoleUserInterface);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), consoleUserInterface);
     }
 }
