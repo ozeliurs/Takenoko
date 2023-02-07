@@ -387,4 +387,8 @@ public class Board {
     public List<Objective> getStarterDeck() {
         return gameAssets.getStarterDeck();
     }
+
+    public List<EdgePosition> getPlacedIrrigations() {
+        return irrigationLayer.getIrrigationChannelsPositions().stream().toList();
+    }
 }
