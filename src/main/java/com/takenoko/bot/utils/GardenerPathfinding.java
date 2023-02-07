@@ -32,7 +32,7 @@ public class GardenerPathfinding {
                                         .map(
                                                 v ->
                                                         ((SingleGardenerObjective) v)
-                                                                .getActionsToComplete(board))
+                                                                .getPositionsToComplete(board))
                                         .flatMap(List::stream)
                                         .filter(v -> board.getGardenerPossibleMoves().contains(v))
                                         .toList(),
@@ -45,7 +45,7 @@ public class GardenerPathfinding {
                                         .map(
                                                 v ->
                                                         ((MultipleGardenerObjective) v)
-                                                                .getActionsToComplete(board))
+                                                                .getPositionsToComplete(board))
                                         .flatMap(List::stream)
                                         .filter(v -> board.getGardenerPossibleMoves().contains(v))
                                         .toList())

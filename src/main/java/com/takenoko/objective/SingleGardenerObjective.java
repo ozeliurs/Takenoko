@@ -2,9 +2,6 @@ package com.takenoko.objective;
 
 import static java.lang.Math.abs;
 
-import com.takenoko.actions.Action;
-import com.takenoko.actions.actors.MoveGardenerAction;
-import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.layers.tile.ImprovementType;
@@ -87,8 +84,8 @@ public class SingleGardenerObjective extends Objective {
                 targetSize, targetColor, targetImprovementType, getPoints());
     }
 
-    public List<Action> getActionsToComplete(Board board) {
-        ArrayList<Action> toDoActions = new ArrayList<>();
+    public List<PositionVector> getPositionsToComplete(Board board) {
+        ArrayList<PositionVector> toDoActions = new ArrayList<>();
 
         // PANDA Filter panda moves to only have the ones that are eligible and the moves
         List<PositionVector> pandaMoves =
@@ -111,7 +108,7 @@ public class SingleGardenerObjective extends Objective {
                                     .getBambooCount()
                             + 1
                     == targetSize) {
-                toDoActions.add(new MovePandaAction(pandaMove));
+                toDoActions.add(pandaMove);
             }
         }
 
@@ -136,7 +133,7 @@ public class SingleGardenerObjective extends Objective {
                                     .getBambooCount()
                             - 1
                     == targetSize) {
-                toDoActions.add(new MoveGardenerAction(gardenerMove));
+                toDoActions.add(gardenerMove);
             }
         }
 
