@@ -204,8 +204,6 @@ public class GameEngine {
             botManager.reset();
         }
 
-        consoleUserInterface.displayMessage(scoreboard.toString());
-
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
     }
@@ -316,8 +314,8 @@ public class GameEngine {
         for (int i = 0; i < numberOfGames; i++) {
             runGame();
         }
+        consoleUserInterface.displayEnd("All " + numberOfGames + " games have been run :");
         consoleUserInterface.displayScoreBoard(scoreboard.toString());
         consoleUserInterface.displayStats(statSummary(numberOfGames));
-        consoleUserInterface.displayEnd("The games are finished. Thanks for playing !");
     }
 }
