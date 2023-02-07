@@ -27,6 +27,7 @@ public class PlaceIrrigationFromInventoryAction implements DefaultAction {
                         + positionVector
                         + " from inventory");
         botManager.getInventory().useIrrigationChannel();
+        botManager.getSingleBotStatistics().incrementIrrigationsPlaced();
         board.placeIrrigation(positionVector);
         return new ActionResult(0);
     }
