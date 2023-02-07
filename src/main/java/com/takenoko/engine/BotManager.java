@@ -63,6 +63,10 @@ public class BotManager {
         this(DEFAULT_CONSOLE_USER_INTERFACE, DEFAULT_NAME, bot, new BotState());
     }
 
+    public BotManager(Bot bot, String name) {
+        this(DEFAULT_CONSOLE_USER_INTERFACE, name, bot, new BotState());
+    }
+
     /**
      * Ask for the bot to choose an action based on his algorithm and then execute the returned
      * action. Objectives are also verified in order to know if the bot has won.
@@ -210,5 +214,9 @@ public class BotManager {
      */
     public void setStartingDeck(List<Objective> objectives) {
         botState.setStartingDeck(objectives);
+    }
+
+    public String toString() {
+        return "{Name: " + name + " | Type: " + bot.getClass().getSimpleName() + " }";
     }
 }

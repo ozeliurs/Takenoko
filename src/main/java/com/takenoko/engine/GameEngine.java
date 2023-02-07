@@ -200,13 +200,32 @@ public class GameEngine {
             scoreboard.incrementNumberOfVictory(botManager);
         }
         for (BotManager botManager : botManagers) {
+            scoreboard.updateScore(botManager, botManager.getObjectiveScore());
             botManager.reset();
         }
 
-        consoleUserInterface.displayMessage(scoreboard.toString());
-
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
+    }
+
+    public String statSummary(int numberOfGames) {
+        StringBuilder summary = new StringBuilder();
+        String lineJump = "\n \t \t \t";
+        summary.append("Summarized game statistics for ")
+                .append(numberOfGames)
+                .append(" games between ")
+                .append(botManagers)
+                .append(lineJump);
+        summary.append("============== BotAverage ==============").append(lineJump);
+        for (BotManager botManager : botManagers) {
+            summary.append("< ")
+                    .append(botManager.getName())
+                    .append(" : Score avg per game- ")
+                    .append(scoreboard.getTotalScore().get(botManager) / numberOfGames)
+                    .append(" > | ")
+                    .append(lineJump);
+        }
+        return summary.toString();
     }
 
     /**
@@ -295,5 +314,8 @@ public class GameEngine {
         for (int i = 0; i < numberOfGames; i++) {
             runGame();
         }
+        consoleUserInterface.displayEnd("All " + numberOfGames + " games have been run :");
+        consoleUserInterface.displayScoreBoard(scoreboard.toString());
+        consoleUserInterface.displayStats(statSummary(numberOfGames));
     }
 }
