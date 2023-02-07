@@ -118,5 +118,50 @@ class IrrigationPathFindingTest {
                     positions.contains(new EdgePosition(pos6, target))
                             || positions.contains(new EdgePosition(pos7, target)));
         }
+
+        @Test
+        void impossibleBoardTest() {
+            TileDeck tileDeck = mock(TileDeck.class);
+            GameAssets gameAssets = mock(GameAssets.class);
+            when(gameAssets.getTileDeck()).thenReturn(tileDeck);
+            when(tileDeck.peek())
+                    .thenReturn(List.of(new Tile(ImprovementType.WATERSHED), new Tile()));
+            when(gameAssets.copy()).thenReturn(gameAssets);
+
+            Board board =
+                    new Board(
+                            new TileLayer(),
+                            new BambooLayer(),
+                            new Panda(),
+                            new Gardener(),
+                            gameAssets,
+                            new IrrigationLayer());
+            List<PositionVector> pos =
+                    List.of(
+                            new PositionVector(0, -1, 1),
+                            new PositionVector(-1, 0, 1),
+                            new PositionVector(-1, 1, 0),
+                            new PositionVector(-1, -1, 2),
+                            new PositionVector(-2, 1, 1),
+                            new PositionVector(0, -2, 2),
+                            new PositionVector(-1, -2, 3),
+                            new PositionVector(-2, -1, 3),
+                            new PositionVector(-2, -2, 4),
+                            new PositionVector(-3, -1, 4),
+                            new PositionVector(-3, 0, 3),
+                            new PositionVector(-3, 1, 2));
+
+            for (PositionVector positionVector : pos) {
+                board.drawTiles();
+                board.placeTile(board.peekTileDeck().get(1), positionVector);
+            }
+
+            List<EdgePosition> positions =
+                    IrrigationPathFinding.getShortestIrrigationPath(
+                            List.of(new PositionVector(-3, 1, 2), new PositionVector(-3, 0, 3)),
+                            board);
+
+            assertThat(positions).isEmpty();
+        }
     }
 }
