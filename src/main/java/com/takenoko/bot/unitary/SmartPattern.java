@@ -1,6 +1,5 @@
 package com.takenoko.bot.unitary;
 
-import com.takenoko.actions.Action;
 import com.takenoko.actions.tile.PlaceTileAction;
 import com.takenoko.actions.tile.PlaceTileWithImprovementAction;
 import com.takenoko.bot.PriorityBot;
@@ -22,7 +21,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class SmartPattern extends PriorityBot {
     @Override
-    public Action chooseAction(
+    protected void fillAction(
             Board board,
             BotState botState,
             History history) { // Complete the shape of the current PatternObjective
@@ -61,7 +60,6 @@ public class SmartPattern extends PriorityBot {
                 }
             }
         }
-        return super.chooseAction(board, botState, history);
     }
 
     public Pair<PositionVector, Tile> analyzeBoardToFindPlaceToCompleteShapeOfPatternObjective(

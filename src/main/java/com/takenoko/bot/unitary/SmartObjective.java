@@ -1,6 +1,5 @@
 package com.takenoko.bot.unitary;
 
-import com.takenoko.actions.Action;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.bot.PriorityBot;
 import com.takenoko.bot.utils.HistoryAnalysis;
@@ -17,10 +16,8 @@ public class SmartObjective extends PriorityBot {
     private static final int ARBITRARY_MARGIN = 0;
 
     @Override
-    public Action chooseAction(Board board, BotState botState, History history) {
+    protected void fillAction(Board board, BotState botState, History history) {
         this.addActionWithPriority(analyzeObjectivesToRedeem(botState, history), DEFAULT_PRIORITY);
-
-        return super.chooseAction(board, botState, history);
     }
 
     public RedeemObjectiveAction analyzeObjectivesToRedeem(BotState botState, History history) {

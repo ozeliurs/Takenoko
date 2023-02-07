@@ -13,7 +13,6 @@ import com.takenoko.actions.weather.ChooseAndApplyWeatherAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.bot.unitary.*;
 import com.takenoko.engine.*;
-import com.takenoko.objective.PatternObjective;
 import java.util.*;
 
 public class GeneralTacticBot extends PriorityBot {
@@ -32,8 +31,8 @@ public class GeneralTacticBot extends PriorityBot {
                         put(PlaceIrrigationFromInventoryAction.class, 10);
                         put(PlaceTileAction.class, 9);
                         put(PlaceTileWithImprovementAction.class, 9);
-                        put(ChooseIfApplyWeatherAction.class, 8);
-                        put(ChooseAndApplyWeatherAction.class, 7);
+                        put(ChooseAndApplyWeatherAction.class, 8);
+                        put(ChooseIfApplyWeatherAction.class, 7);
                         put(StoreIrrigationInInventoryAction.class, 5);
                         put(RedeemObjectiveAction.class, 4);
                         put(DrawIrrigationAction.class, 3);
@@ -44,51 +43,42 @@ public class GeneralTacticBot extends PriorityBot {
     }
 
     @Override
-    public Action chooseAction(Board board, BotState botState, History history) {
+    protected void fillAction(Board board, BotState botState, History history) {
         // We do not care if action is available or not, the unavailable actions will be removed by
         // the super method.
 
-        System.out.println("GeneralTacticBot.chooseAction");
-
         this.add(
                 new IrrigationMaster(
-                        priorityByActionClass.get(PlaceIrrigationFromInventoryAction.class),
-                        priorityByActionClass.get(DrawIrrigationAction.class),
-                        priorityByActionClass.get(StoreIrrigationInInventoryAction.class)));
-
-        System.out.println("GeneralTacticBot.chooseAction 1");
+                                priorityByActionClass.get(PlaceIrrigationFromInventoryAction.class),
+                                priorityByActionClass.get(DrawIrrigationAction.class),
+                                priorityByActionClass.get(StoreIrrigationInInventoryAction.class))
+                        .compute(board, botState, history));
 
         this.add(
                 new WeatherMaster(
-                        priorityByActionClass.get(ChooseIfApplyWeatherAction.class),
-                        priorityByActionClass.get(ChooseAndApplyWeatherAction.class)));
-
-        System.out.println("GeneralTacticBot.chooseAction 2");
-
-        this.addWithOffset(new RushPandaBot(), priorityByActionClass.get(MovePandaAction.class));
-
-        System.out.println("GeneralTacticBot.chooseAction 3");
+                                priorityByActionClass.get(ChooseIfApplyWeatherAction.class),
+                                priorityByActionClass.get(ChooseAndApplyWeatherAction.class))
+                        .compute(board, botState, history));
 
         this.addWithOffset(
-                new SmartGardener(), priorityByActionClass.get(MoveGardenerAction.class));
-
-        System.out.println("GeneralTacticBot.chooseAction 4");
-
-        this.addWithOffset(new SmartPattern(), priorityByActionClass.get(PatternObjective.class));
-
-        System.out.println("GeneralTacticBot.chooseAction 5");
+                new SmartPanda().compute(board, botState, history),
+                priorityByActionClass.get(MovePandaAction.class));
 
         this.addWithOffset(
-                new SmartDrawIrrigation(), priorityByActionClass.get(DrawIrrigationAction.class));
-
-        System.out.println("GeneralTacticBot.chooseAction 6");
+                new SmartGardener().compute(board, botState, history),
+                priorityByActionClass.get(MoveGardenerAction.class));
 
         this.addWithOffset(
-                new SmartObjective(), priorityByActionClass.get(RedeemObjectiveAction.class));
+                new SmartPattern().compute(board, botState, history),
+                priorityByActionClass.get(PlaceTileAction.class));
 
-        System.out.println("GeneralTacticBot.chooseAction 7");
+        this.addWithOffset(
+                new SmartDrawIrrigation().compute(board, botState, history),
+                priorityByActionClass.get(DrawIrrigationAction.class));
 
-        return super.chooseAction(board, botState, history);
+        this.addWithOffset(
+                new SmartObjective().compute(board, botState, history),
+                priorityByActionClass.get(RedeemObjectiveAction.class));
     }
 
     @Override

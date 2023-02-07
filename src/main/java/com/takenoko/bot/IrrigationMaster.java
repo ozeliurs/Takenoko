@@ -1,6 +1,5 @@
 package com.takenoko.bot;
 
-import com.takenoko.actions.Action;
 import com.takenoko.bot.unitary.SmartDrawIrrigation;
 import com.takenoko.bot.unitary.SmartPlaceIrrigation;
 import com.takenoko.bot.unitary.SmartStoreIrrigation;
@@ -25,11 +24,16 @@ public class IrrigationMaster extends PriorityBot {
     }
 
     @Override
-    public Action chooseAction(Board board, BotState botState, History history) {
-        this.addWithOffset(new SmartPlaceIrrigation(), placeIrrigationCoefficient);
-        this.addWithOffset(new SmartDrawIrrigation(), drawIrrigationCoefficient);
-        this.addWithOffset(new SmartStoreIrrigation(), storeIrrigationCoefficient);
-        return super.chooseAction(board, botState, history);
+    protected void fillAction(Board board, BotState botState, History history) {
+        this.addWithOffset(
+                new SmartPlaceIrrigation().compute(board, botState, history),
+                placeIrrigationCoefficient);
+        this.addWithOffset(
+                new SmartDrawIrrigation().compute(board, botState, history),
+                drawIrrigationCoefficient);
+        this.addWithOffset(
+                new SmartStoreIrrigation().compute(board, botState, history),
+                storeIrrigationCoefficient);
     }
 
     @Override

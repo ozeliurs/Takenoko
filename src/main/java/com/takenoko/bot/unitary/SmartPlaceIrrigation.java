@@ -1,6 +1,5 @@
 package com.takenoko.bot.unitary;
 
-import com.takenoko.actions.Action;
 import com.takenoko.actions.irrigation.PlaceIrrigationFromInventoryAction;
 import com.takenoko.bot.PriorityBot;
 import com.takenoko.bot.irrigation.pathfinding.IrrigationPathFinding;
@@ -19,7 +18,7 @@ public class SmartPlaceIrrigation extends PriorityBot {
     private final List<EdgePosition> irrigationToPlace = new ArrayList<>();
 
     @Override
-    public Action chooseAction(Board board, BotState botState, History history) {
+    protected void fillAction(Board board, BotState botState, History history) {
         // Complete a PatternObjective by adding irrigation channels
         if (botState.getAvailableActions().contains(PlaceIrrigationFromInventoryAction.class)) {
             // Because it is empty, we have to analyze the board to find the best irrigation path
@@ -33,7 +32,6 @@ public class SmartPlaceIrrigation extends PriorityBot {
                         DEFAULT_PRIORITY);
             }
         }
-        return super.chooseAction(board, botState, history);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.takenoko.bot.unitary;
 
-import com.takenoko.actions.Action;
 import com.takenoko.actions.irrigation.DrawIrrigationAction;
 import com.takenoko.bot.PriorityBot;
 import com.takenoko.engine.Board;
@@ -11,11 +10,10 @@ public class SmartDrawIrrigation extends PriorityBot {
     private static final int ARBITRARY_MAX_IRRIGATION_TO_CHOOSE_TO_DRAW = 3;
 
     @Override
-    public Action chooseAction(Board board, BotState botState, History history) {
+    protected void fillAction(Board board, BotState botState, History history) {
         if (botState.getInventory().getIrrigationChannelsCount()
-                <= ARBITRARY_MAX_IRRIGATION_TO_CHOOSE_TO_DRAW) {
+                < ARBITRARY_MAX_IRRIGATION_TO_CHOOSE_TO_DRAW) {
             this.addActionWithPriority(new DrawIrrigationAction(), DEFAULT_PRIORITY);
         }
-        return super.chooseAction(board, botState, history);
     }
 }

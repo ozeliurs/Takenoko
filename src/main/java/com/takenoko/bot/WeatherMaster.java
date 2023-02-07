@@ -1,6 +1,5 @@
 package com.takenoko.bot;
 
-import com.takenoko.actions.Action;
 import com.takenoko.bot.unitary.SmartApplyWeather;
 import com.takenoko.bot.unitary.SmartChooseAndApplyWeather;
 import com.takenoko.engine.Board;
@@ -17,10 +16,14 @@ public class WeatherMaster extends PriorityBot {
     }
 
     @Override
-    public Action chooseAction(Board board, BotState botState, History history) {
-        this.addWithOffset(new SmartChooseAndApplyWeather(), chooseAndApplyWeatherCoefficient);
-        this.addWithOffset(new SmartApplyWeather(), chooseIfApplyWeatherCoefficient);
-
-        return super.chooseAction(board, botState, history);
+    protected void fillAction(Board board, BotState botState, History history) {
+        this.addWithOffset(
+                new SmartChooseAndApplyWeather().compute(board, botState, history),
+                chooseAndApplyWeatherCoefficient);
+        this.addWithOffset(
+                new SmartApplyWeather()
+                        .compute(board, botState, history)
+                        .compute(board, botState, history),
+                chooseIfApplyWeatherCoefficient);
     }
 }

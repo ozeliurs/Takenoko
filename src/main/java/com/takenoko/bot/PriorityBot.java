@@ -15,21 +15,34 @@ public abstract class PriorityBot extends HashMap<Action, Double> implements Bot
     public static final int DEFAULT_PRIORITY = 0;
     transient ConsoleUserInterface consoleUserInterface = new ConsoleUserInterface();
 
-    @Override
+    protected abstract void fillAction(Board board, BotState botState, History history);
+
+    protected PriorityBot compute(Board board, BotState botState, History history) {
+        fillAction(board, botState, history);
+        return this;
+    }
+
     public Action chooseAction(Board board, BotState botState, History history) {
+        fillAction(board, botState, history);
+        // filtered = this.entrySet().stream()
+        // Remove actions that are not available
+        //        .filter(v -> botState.getAvailableActions().contains(v.getKey().getClass()))
+
         Optional<Action> action =
                 this.entrySet().stream()
                         // Remove actions that are not available
                         .filter(v -> botState.getAvailableActions().contains(v.getKey().getClass()))
                         // Order by priority
-                        .max(Comparator.comparingDouble(Entry::getValue))
+                        .min(Comparator.comparingDouble(Entry::getValue))
                         // Get the action with the highest priority
                         .map(Map.Entry::getKey);
 
-        this.clear();
+        consoleUserInterface.displayDebug(botState.getAvailableActions() + "");
+
+        consoleUserInterface.displayDebug("PriorityBot has these actions: " + this);
 
         consoleUserInterface.displayDebug("PriorityBot chose action: " + action);
-
+        clear();
         return action.orElseGet(
                 () -> {
                     consoleUserInterface.displayMessage(
@@ -50,7 +63,12 @@ public abstract class PriorityBot extends HashMap<Action, Double> implements Bot
 
     /** This method is used to add a bot with an offset */
     protected void addWithOffset(PriorityBot bot, double offset) {
-        bot.forEach((k, v) -> this.put(k, v + offset));
+        bot.forEach(
+                (k, v) -> {
+                    consoleUserInterface.displayDebug(
+                            "Adding action " + k + " with priority " + (v + offset));
+                    this.put(k, v + offset);
+                });
     }
 
     /** This method is used to add a bot with a Linear function offset */
