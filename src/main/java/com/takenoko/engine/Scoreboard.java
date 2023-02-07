@@ -40,7 +40,9 @@ public class Scoreboard {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("============== Scoreboard ==============");
+        String lineJump="\n \t \t \t";
+        stringBuilder.append("============== Scoreboard ==============")
+                .append(lineJump);
         for (Map.Entry<BotManager, Integer> entry : numberOfVictoryHashMap.entrySet()) {
             stringBuilder
                     .append("< ")
@@ -49,7 +51,8 @@ public class Scoreboard {
                     .append(entry.getValue())
                     .append(" Total Score-")
                     .append(totalScore.get(entry.getKey()))
-                    .append(" > | ");
+                    .append(" > | ")
+                    .append(lineJump);
         }
         return stringBuilder.toString();
     }
