@@ -29,7 +29,7 @@ public class Main {
     private boolean demo = false;
 
     private final Logger logger = LogManager.getLogger(Main.class);
-    private static final int TWO_THOUSANDS_NB_GAMES=10;
+    private static final int TWO_THOUSANDS_NB_GAMES = 10;
 
     public static void main(String[] args) {
         Main main = new Main();
