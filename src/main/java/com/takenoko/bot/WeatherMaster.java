@@ -5,7 +5,6 @@ import com.takenoko.bot.unitary.SmartChooseAndApplyWeather;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
-
 import java.util.Objects;
 
 public class WeatherMaster extends PriorityBot {
@@ -35,11 +34,15 @@ public class WeatherMaster extends PriorityBot {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         WeatherMaster that = (WeatherMaster) o;
-        return chooseIfApplyWeatherCoefficient == that.chooseIfApplyWeatherCoefficient && chooseAndApplyWeatherCoefficient == that.chooseAndApplyWeatherCoefficient;
+        return chooseIfApplyWeatherCoefficient == that.chooseIfApplyWeatherCoefficient
+                && chooseAndApplyWeatherCoefficient == that.chooseAndApplyWeatherCoefficient;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), chooseIfApplyWeatherCoefficient, chooseAndApplyWeatherCoefficient);
+        return Objects.hash(
+                super.hashCode(),
+                chooseIfApplyWeatherCoefficient,
+                chooseAndApplyWeatherCoefficient);
     }
 }

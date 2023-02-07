@@ -5,7 +5,6 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
 import com.takenoko.ui.ConsoleUserInterface;
-
 import java.util.*;
 
 public abstract class PriorityBot extends HashMap<Action, Double> implements Bot {
