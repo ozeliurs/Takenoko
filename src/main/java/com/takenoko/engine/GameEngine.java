@@ -335,4 +335,16 @@ public class GameEngine {
         consoleUserInterface.displayScoreBoard(scoreboard.toString());
         consoleUserInterface.displayStats(statSummary(numberOfGames));
     }
+
+    public void runGame(int numberOfGames, boolean logToCSV) {
+        for (int i = 0; i < numberOfGames; i++) {
+            runGame();
+        }
+        consoleUserInterface.displayEnd("All " + numberOfGames + " games have been run :");
+        consoleUserInterface.displayScoreBoard(scoreboard.toString());
+        consoleUserInterface.displayStats(statSummary(numberOfGames));
+        if (logToCSV) {
+            // logToCSV(numberOfGames);
+        }
+    }
 }

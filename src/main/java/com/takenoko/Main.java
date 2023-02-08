@@ -28,6 +28,11 @@ public class Main {
             description = "Run one game as Demo | show all logs")
     private boolean demo = false;
 
+    @Parameter(
+            names = {"--csv"},
+            description = "Append the results in a csv file")
+    private boolean csv = false;
+
     private final Logger logger = LogManager.getLogger(Main.class);
     private static final int TWO_THOUSANDS_NB_GAMES = 10;
 
@@ -53,11 +58,11 @@ public class Main {
                                     List.of(
                                             new BotManager(new FullRandomBot(), "Bob2"),
                                             new BotManager(new FullRandomBot(), "Joe2"))));
-            gameEngine2.runGame(TWO_THOUSANDS_NB_GAMES);
+            gameEngine2.runGame(TWO_THOUSANDS_NB_GAMES, csv);
         } else if (demo) {
             loggerConfig.setLevel(Level.INFO);
             ctx.updateLoggers();
-            new GameEngine().runGame();
+            new GameEngine().runGame(1, csv);
         } else {
             logger.log(Level.INFO, "no parameters");
         }
