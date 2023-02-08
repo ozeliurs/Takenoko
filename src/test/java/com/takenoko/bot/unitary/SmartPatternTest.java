@@ -1,32 +1,25 @@
 package com.takenoko.bot.unitary;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import com.takenoko.actions.irrigation.DrawIrrigationAction;
-import com.takenoko.actions.irrigation.PlaceIrrigationFromInventoryAction;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import com.takenoko.actions.tile.PlaceTileAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
-import com.takenoko.layers.tile.Pond;
-import com.takenoko.layers.tile.Tile;
-import com.takenoko.layers.tile.TileColor;
-import com.takenoko.layers.tile.TileType;
+import com.takenoko.inventory.Inventory;
+import com.takenoko.layers.tile.*;
 import com.takenoko.objective.PatternObjective;
 import com.takenoko.shape.Curve;
-import com.takenoko.shape.Pattern;
 import com.takenoko.vector.PositionVector;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 class SmartPatternTest {
 
@@ -34,39 +27,62 @@ class SmartPatternTest {
     @DisplayName("fillAction")
     class fillAction {
         @Test
-        @DisplayName("Should call FullrandomBot when there is no PlaceIrrigationFromInventoryAction")
-        void shouldCallFullrandomBotWhenThereIsNoPlaceIrrigationFromInventoryAction() {
-            // TODO
-        }
-
-        @Test
         @DisplayName("When given a pattern objective, should try to complete it")
         void shouldTryToCompletePatternObjective() {
-            Map<Tile, PositionVector> m = new HashMap<Tile, PositionVector>();
-            m.put(new Pond(), new PositionVector(0, 0, 0));
-            m.put(new Tile(TileColor.PINK), new PositionVector(1, 0, -1));
-            m.put(new Tile(TileColor.PINK), new PositionVector(1, -1, 0));
-            m.put(new Tile(TileColor.GREEN), new PositionVector(0, -1, 1));
+            Map<PositionVector, Tile> m = new HashMap<>();
+            m.put(new PositionVector(0, 0, 0), new Pond());
+            m.put(new PositionVector(1, 0, -1), new Tile(TileColor.PINK));
+            m.put(new PositionVector(1, -1, 0), new Tile(TileColor.PINK));
+            m.put(new PositionVector(0, -1, 1), new Tile(TileColor.GREEN));
 
             Board board = mock(Board.class);
-            for (Map.Entry<Tile, PositionVector> entry : m.entrySet()) {
-                when(board.getTileAt(entry.getValue())).thenReturn(entry.getKey());
-                when(board.isTile(entry.getValue())).thenReturn(true);
-                when(board.isIrrigatedAt(entry.getValue())).thenReturn(true);
+            for (Map.Entry<PositionVector, Tile> entry : m.entrySet()) {
+                when(board.getTileAt(entry.getKey())).thenReturn(entry.getValue());
+                when(board.isTile(entry.getKey())).thenReturn(true);
+                when(board.isIrrigatedAt(entry.getKey())).thenReturn(true);
             }
-            when(board.getTilesWithoutPond()).thenReturn(m.entrySet().stream().filter(k -> k.getKey().getType() != TileType.POND).collect(Collectors.toMap(Map.Entry::getValue,Map.Entry::getKey)));
-            when(board.getTiles()).thenReturn(m.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue,Map.Entry::getKey)));
-            when(board.peekTileDeck()).thenReturn(List.of(new Tile(TileColor.PINK), new Tile(TileColor.PINK),new Tile(TileColor.PINK)));
+            when(board.getTilesWithoutPond())
+                    .thenReturn(
+                            m.entrySet().stream()
+                                    .filter(k -> k.getValue().getType() != TileType.POND)
+                                    .collect(
+                                            Collectors.toMap(
+                                                    Map.Entry::getKey, Map.Entry::getValue)));
+            when(board.getTiles())
+                    .thenReturn(
+                            m.entrySet().stream()
+                                    .collect(
+                                            Collectors.toMap(
+                                                    Map.Entry::getKey, Map.Entry::getValue)));
+            when(board.peekTileDeck())
+                    .thenReturn(
+                            List.of(
+                                    new Tile(TileColor.PINK),
+                                    new Tile(TileColor.PINK),
+                                    new Tile(TileColor.PINK)));
+            when(board.getAvailableTilePositions())
+                    .thenReturn(
+                            List.of(
+                                    new PositionVector(1, -1, 0),
+                                    new PositionVector(1, 0, -1),
+                                    new PositionVector(0, -1, 1),
+                                    new PositionVector(-1, 0, 1),
+                                    new PositionVector(-1, 1, 0)));
 
             BotState botState = mock(BotState.class);
             when(botState.getAvailableActions()).thenReturn(List.of(PlaceTileAction.class));
-            when(botState.getNotAchievedObjectives()).thenReturn(List.of(new PatternObjective(new Curve(TileColor.PINK), 100)));
+            when(botState.getNotAchievedObjectives())
+                    .thenReturn(List.of(new PatternObjective(new Curve(TileColor.PINK), 100)));
+            when(botState.getInventory()).thenReturn(mock(Inventory.class));
+            when(botState.getInventory().hasImprovement()).thenReturn(false);
+            when(botState.getInventory().hasImprovement(ImprovementType.WATERSHED))
+                    .thenReturn(false);
 
             SmartPattern smartPattern = new SmartPattern();
             smartPattern.fillAction(board, botState, mock(History.class));
 
-            assertThat(smartPattern.chooseAction(board, botState, mock(History.class))).isInstanceOf(PlaceTileAction.class);
+            assertThat(smartPattern.chooseAction(board, botState, mock(History.class)))
+                    .isInstanceOf(PlaceTileAction.class);
         }
     }
-
 }

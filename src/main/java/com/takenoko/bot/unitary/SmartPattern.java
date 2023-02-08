@@ -67,7 +67,6 @@ public class SmartPattern extends PriorityBot {
         // Get all the pattern objectives of the bot
         Stream<PatternObjective> patternObjectives =
                 getCurrentPatternObjectives(botState).stream()
-                        .filter(patternObjective -> !patternObjective.isAchieved())
                         .sorted(Comparator.comparing(Objective::getPoints).reversed());
 
         // Get all the shapes that could be completed by placing a tile
@@ -126,7 +125,7 @@ public class SmartPattern extends PriorityBot {
     }
 
     public List<PatternObjective> getCurrentPatternObjectives(BotState botState) {
-        return botState.getObjectives().stream()
+        return botState.getNotAchievedObjectives().stream()
                 .filter(PatternObjective.class::isInstance)
                 .map(PatternObjective.class::cast)
                 .toList();
