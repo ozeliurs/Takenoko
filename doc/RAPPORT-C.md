@@ -49,10 +49,15 @@ Here is the list of all the components :
 Even if we discuss the quality of each component, we will spend some time discussing the SonarQube report, the test coverage and
 what we think of the quality of the project in general. It is in this section : [Quality](#quality)
 
-Regarding documentation, you can find our [Javadoc] as well as our [PIT test report] hosted via GitHub Pages.
+Regarding documentation, you can find our [Javadoc](https://pns-si3-projects.github.io/projet2-ps5-22-23-takenoko-2023-c/apidocs/index.html) 
+as well as our [PIT test report](https://pns-si3-projects.github.io/projet2-ps5-22-23-takenoko-2023-c/pit-reports/index.html) hosted via GitHub Pages.
+We also have the whole [Maven documentation](https://pns-si3-projects.github.io/projet2-ps5-22-23-takenoko-2023-c/project-info.html) generated.
 The subject is discussed in the following section : [Documentation](#documentation)
 
 ### Architecture
+
+For each category, we will focus how the system works in general. This means that we won't go in details about each attribute
+or method a class has. However, you should be able to understand how the project is tied up.
 
 #### Game Engine
 
@@ -65,10 +70,14 @@ The subject is discussed in the following section : [Documentation](#documentati
 #### Bot Manager
 
 <p align="center">
-   <img src="images/architecture/ps5-architecture-bot-manager.svg" alt="svg" width="50%">
+   <img src="images/architecture/bot-manager.svg" alt="svg" width="50%">
 </p>
 
 #### Board
+
+<p align="center">
+   <img src="images/architecture/board.svg" alt="svg" width="50%">
+</p>
 
 #### Layers
 
