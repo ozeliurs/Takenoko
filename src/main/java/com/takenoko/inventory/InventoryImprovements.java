@@ -45,4 +45,9 @@ public class InventoryImprovements extends ArrayList<ImprovementType> {
     public boolean hasImprovement(ImprovementType improvementType) {
         return contains(improvementType);
     }
+
+    public int getImprovementCount(ImprovementType improvementType) {
+        return Math.toIntExact(
+                this.stream().filter(improvement -> improvement == improvementType).count());
+    }
 }
