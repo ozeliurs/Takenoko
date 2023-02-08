@@ -2,7 +2,7 @@ package com.takenoko.bot.unitary;
 
 import com.takenoko.actions.irrigation.PlaceIrrigationFromInventoryAction;
 import com.takenoko.bot.PriorityBot;
-import com.takenoko.bot.irrigation.pathfinding.IrrigationPathFinding;
+import com.takenoko.bot.utils.pathfinding.irrigation.IrrigationPathFinding;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
