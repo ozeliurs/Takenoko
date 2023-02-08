@@ -1,15 +1,5 @@
 # Takenoko 🎋 Knowledge Report
 
-**WRITE IN ENGLISH MOTHERDUCKER 🦆 !!!**
-
-• un résumé des fonctionnalités réalisées sur tout le jeu (couverture des règles du jeu indépendamment de ce qui était demandé cette semaine), et éventuellement la liste de ce qui n'a pas été fait.
-
-• un résumé de ce qui a été fait pour les logs (en quelques lignes max, quels choix ont été faits pour les réaliser)
-
-• un résumé de ce qui a été fait pour les statistiques en CSV (en quelques lignes max, quels choix ont été faits pour les réaliser)
-
-• un résumé de ce qui a été fait pour le bot spécifique demandé, et éventuellement une comparaison avec votre meilleur bot et une analyse de pourquoi celui qui gagne est le meilleur
-
 ## Summary
 1. [Progress Report](#Progress-Report)
     1. test
@@ -33,8 +23,6 @@
 ## Process
 
 ### Roles and Involvement
-
-- Qui est responsable de quoi / qui a fait quoi ?
 
 ### Task Management
 
@@ -97,14 +85,18 @@ We used tags on all the issues to specify if it was a *User Story* or a *Feature
 
 ##### GitHub Project
 
-All of our issues where assigned to a Github Project. Since they were also correctly tagged, and we were opening and closing them when needed, we had some statistics and graphs to look at.
+All of our issues where assigned to a GitHub Project. Since they were also correctly tagged, and we were opening and closing them when needed, we had some statistics and graphs to look at.
 We also tried to use the kanban provided but found out that, since issues were added gradually, we could just follow their status in the list of issues.
 
 You can find two of the interesting graphs below.
 
-<img src="images/issues-by-status.png" alt="issues-by-status" width="50%">
+<p align="center">
+   <img src="images/issues-by-status.png" alt="issues-by-status" width="50%">
+</p>
 
-<img src="images/issues-by-tag.png" alt="issues-by-tag" width="50%">
+<p align="center">
+   <img src="images/issues-by-tag.png" alt="issues-by-tag" width="50%">
+</p>
 
 ### Git Branching Strategy
 
