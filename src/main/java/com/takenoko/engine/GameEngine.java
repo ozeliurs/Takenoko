@@ -218,7 +218,9 @@ public class GameEngine {
             botStatistics.updateScore(botManager, botManager.getObjectiveScore());
             botManager.reset();
         }
-
+        board.analyze();
+        consoleUserInterface.displayFullStats(botStatistics.toString());
+        consoleUserInterface.displayFullStats(board.getBoardStatistics().toString());
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
     }
@@ -332,6 +334,5 @@ public class GameEngine {
         consoleUserInterface.displayEnd("All " + numberOfGames + " games have been run :");
         consoleUserInterface.displayScoreBoard(scoreboard.toString());
         consoleUserInterface.displayStats(statSummary(numberOfGames));
-        consoleUserInterface.displayStats(botStatistics.toString());
     }
 }
