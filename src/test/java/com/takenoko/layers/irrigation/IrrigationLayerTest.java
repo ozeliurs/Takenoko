@@ -9,7 +9,6 @@ import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
 import com.takenoko.asset.TileDeck;
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BoardStatistics;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.tile.*;
 import com.takenoko.vector.PositionVector;
@@ -40,8 +39,7 @@ public class IrrigationLayerTest {
                                 new Panda(),
                                 new Gardener(),
                                 new GameAssets(),
-                                irrigationLayer,
-                                new BoardStatistics()));
+                                irrigationLayer));
     }
 
     @Nested
@@ -117,8 +115,7 @@ public class IrrigationLayerTest {
                                     new Panda(),
                                     new Gardener(),
                                     gameAssets,
-                                    irrigationLayer,
-                                    new BoardStatistics()));
+                                    irrigationLayer));
 
             when(tileDeck.peek()).thenReturn(List.of(new Tile(), new Tile(), new Tile()));
         }
