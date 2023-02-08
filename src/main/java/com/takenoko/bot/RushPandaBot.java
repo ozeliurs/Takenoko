@@ -1,8 +1,10 @@
 package com.takenoko.bot;
 
+import com.takenoko.actions.improvement.DrawImprovementAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
+import com.takenoko.layers.tile.ImprovementType;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -35,6 +37,8 @@ public class RushPandaBot extends GeneralTacticBot {
                 this.randomBot.getRandomForcedMovePandaAction(board), DEFAULT_PRIORITY);
         this.addActionWithPriority(
                 this.randomBot.getRandomMovePandaAction(board), DEFAULT_PRIORITY);
+
+        this.addActionWithPriority(new DrawImprovementAction(ImprovementType.FERTILIZER), 1);
     }
 
     @Override
