@@ -4,6 +4,7 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.engine.SingleBotStatistics;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.ImprovementType;
@@ -39,8 +40,10 @@ class PlaceTileWithImprovementActionTest {
         @DisplayName("Should add improvement to tile")
         void shouldAddImprovementToTile() {
             when(botManager.getInventory()).thenReturn(mock(Inventory.class));
+            when(botManager.getSingleBotStatistics()).thenReturn(mock(SingleBotStatistics.class));
             PlaceTileWithImprovementAction placeTileWithImprovementAction =
                     new PlaceTileWithImprovementAction(tile, positionVector, improvementType);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             placeTileWithImprovementAction.execute(board, botManager);
             verify(board, times(1)).placeTile(any(), any());
             verify(tile, times(1)).setImprovement(improvementType);

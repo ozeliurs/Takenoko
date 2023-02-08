@@ -4,6 +4,7 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.engine.SingleBotStatistics;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
@@ -35,6 +36,8 @@ class MovePandaActionTest {
         @Test
         @DisplayName("should move the panda collect bamboo and display messages")
         void shouldMoveThePandaCollectBambooAndDisplayMessages() {
+            SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
+            when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
             Inventory inventory = mock(Inventory.class);
             when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
             when(botManager.getInventory()).thenReturn(inventory);

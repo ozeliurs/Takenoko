@@ -389,8 +389,9 @@ class GameEngineTest {
                             new BotStatistics());
             gameEngine.runGame(2);
             verify(consoleUserInterface, times(1)).displayEnd("All 2 games have been run :");
-            verify(consoleUserInterface, times(2)).displayStats(any());
+            verify(consoleUserInterface, times(4)).displayFullStats(any());
             verify(consoleUserInterface, times(1)).displayScoreBoard(any());
+            verify(consoleUserInterface, times(1)).displayStats(any());
         }
     }
 
@@ -403,10 +404,12 @@ class GameEngineTest {
             BotManager botm1 = mock(BotManager.class);
             BotManager botm2 = mock(BotManager.class);
             Scoreboard scoreboard = mock(Scoreboard.class);
+            Board board = mock(Board.class);
+            when(board.getBoardStatistics()).thenReturn(mock(BoardStatistics.class));
             GameEngine ge =
                     new GameEngine(
                             2,
-                            mock(Board.class),
+                            board,
                             mock(ConsoleUserInterface.class),
                             GameState.PLAYING,
                             List.of(botm1, botm2),
@@ -424,17 +427,20 @@ class GameEngineTest {
             BotManager botm1 = mock(BotManager.class);
             BotManager botm2 = mock(BotManager.class);
             Scoreboard scoreboard = mock(Scoreboard.class);
+            BotStatistics botStatistics = mock(BotStatistics.class);
             when(botm1.getObjectiveScore()).thenReturn(1);
             when(botm2.getObjectiveScore()).thenReturn(2);
+            Board board = mock(Board.class);
+            when(board.getBoardStatistics()).thenReturn(mock(BoardStatistics.class));
             GameEngine ge =
                     new GameEngine(
                             2,
-                            mock(Board.class),
+                            board,
                             mock(ConsoleUserInterface.class),
                             GameState.PLAYING,
                             List.of(botm1, botm2),
                             scoreboard,
-                            mock(BotStatistics.class));
+                            botStatistics);
             ge.endGame();
             assertThat(ge.getWinner())
                     .isEqualTo(Pair.of(List.of(botm2), EndGameState.WIN_WITH_OBJECTIVE_POINTS));
@@ -450,10 +456,12 @@ class GameEngineTest {
             when(botm2.getPandaObjectiveScore()).thenReturn(2);
             Scoreboard scoreboard = mock(Scoreboard.class);
             ConsoleUserInterface consoleUserInterface = mock(ConsoleUserInterface.class);
+            Board board = mock(Board.class);
+            when(board.getBoardStatistics()).thenReturn(mock(BoardStatistics.class));
             GameEngine ge =
                     new GameEngine(
                             2,
-                            mock(Board.class),
+                            board,
                             consoleUserInterface,
                             GameState.PLAYING,
                             List.of(botm1, botm2),
