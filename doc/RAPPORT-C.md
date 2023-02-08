@@ -29,9 +29,63 @@
 
 ## Architecture and Quality
 
+### Overview
+
+In this section, we will go over all the main components of our architecture. We will discuss how it works, how it used
+and if its quality is good.
+Here is the list of all the components : 
+- [GameEngine](#game-engine) -> responsible for managing the course of the game
+- [Action](#action) -> something that the bot can do
+- [Objective](#objective) -> represent an objective card
+- [Bot](#bot) -> only contains the behavior
+- [BotManager](#bot-manager) -> stores a bot with its inventory and attributes
+- [Board](#board) -> contains all the elements that can be placed or used on the board
+- [Layers](#layers) -> different types of layers to represent the tiles, the bamboos and the irrigation channels
+- [Shape](#shape) -> represents a combination of tiles
+- [Statistics](#statistics) -> used to measure and export what is happening during a game
+- [Logging](#logging) -> used to display data in the console with different levels
+- [Coordinate](#coordinate) -> represent the cube coordinates for a hexagonal grid
+
+Even if we discuss the quality of each component, we will spend some time discussing the SonarQube report, the test coverage and
+what we think of the quality of the project in general. It is in this section : [Quality](#quality)
+
+Regarding documentation, you can find our [Javadoc] as well as our [PIT test report] hosted via GitHub Pages.
+The subject is discussed in the following section : [Documentation](#documentation)
+
+### Architecture
+
+#### Game Engine
+
+#### Action
+
+#### Objective
+
+#### Bot
+
+#### Bot Manager
+
 <p align="center">
    <img src="images/architecture/ps5-architecture-bot-manager.svg" alt="svg" width="50%">
 </p>
+
+#### Board
+
+#### Layers
+
+#### Shape
+
+#### Statistics
+
+### Quality
+
+#### Logging
+
+#### Coordinate
+
+
+### Documentation
+
+
 
 ---
 
