@@ -126,7 +126,7 @@ public class FullRandomBot implements Bot {
         return new GrowBambooAction(positions.get(random.nextInt(positions.size())));
     }
 
-    private Action getRandomForcedMovePandaAction(Board board) {
+    public Action getRandomForcedMovePandaAction(Board board) {
         List<PositionVector> pandaPossibleMoves = board.getPandaPossibleMoves();
         if (pandaPossibleMoves.isEmpty()) {
             return null;
@@ -220,7 +220,7 @@ public class FullRandomBot implements Bot {
                 availableTilePositions.get(random.nextInt(availableTilePositions.size())));
     }
 
-    private Action getRandomMovePandaAction(Board board) {
+    public Action getRandomMovePandaAction(Board board) {
         List<PositionVector> pandaPossibleMoves = board.getPandaPossibleMoves();
         if (pandaPossibleMoves.isEmpty()) {
             return null;

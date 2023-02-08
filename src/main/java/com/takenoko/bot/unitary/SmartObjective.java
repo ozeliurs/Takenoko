@@ -37,8 +37,7 @@ public class SmartObjective extends PriorityBot {
 
         // If when we redeem an objective and it does not make us win we don't redeem
         if (botState.getRedeemedObjectives().size() + 1
-                < GameEngine.DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(
-                        history.getBotManagerUUIDs().size() + 1)) {
+                < GameEngine.DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(history.keySet().size())) {
             return null;
         }
 
@@ -46,7 +45,7 @@ public class SmartObjective extends PriorityBot {
                 && pandaObjectives.get(0).getPoints()
                                 + botState.getObjectiveScore()
                                 + EmperorObjective.EMPEROR_BONUS
-                        > new HistoryAnalysis(history).getMaxBotScore() + ARBITRARY_MARGIN) {
+                        > HistoryAnalysis.getMaxCurrentBotScore(history) + ARBITRARY_MARGIN) {
             return new RedeemObjectiveAction(pandaObjectives.get(0));
         }
 
