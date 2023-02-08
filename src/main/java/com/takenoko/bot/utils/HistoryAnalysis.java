@@ -15,6 +15,7 @@ public class HistoryAnalysis {
 
     private static final double MID_GAME_THRESHOLD = 0.25;
     private static final double LATE_GAME_THRESHOLD = 0.75;
+    public static final double DEFAULT_RUSH_PANDA_THRESHOLD = 0.8;
 
     private HistoryAnalysis() {}
 
@@ -127,6 +128,6 @@ public class HistoryAnalysis {
     }
 
     static Map<UUID, Boolean> analyzeRushPanda(History history) {
-        return analyzeRushPanda(history, 0.8);
+        return analyzeRushPanda(history, DEFAULT_RUSH_PANDA_THRESHOLD);
     }
 }
