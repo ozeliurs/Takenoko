@@ -1,8 +1,14 @@
 package com.takenoko.bot;
 
+import com.takenoko.engine.Board;
+import com.takenoko.engine.BotState;
+import com.takenoko.engine.History;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class RushPandaBot extends GeneralTacticBot {
+    private final transient FullRandomBot randomBot;
+
     @SuppressWarnings({"java:S3599", "java:S1171"})
     public RushPandaBot() {
         super(
@@ -19,5 +25,29 @@ public class RushPandaBot extends GeneralTacticBot {
                         put("SmartIrrigationPlacing", -1);
                     }
                 });
+        this.randomBot = new FullRandomBot();
+    }
+
+    @Override
+    protected void fillAction(Board board, BotState botState, History history) {
+        super.fillAction(board, botState, history);
+        this.addActionWithPriority(
+                this.randomBot.getRandomForcedMovePandaAction(board), DEFAULT_PRIORITY);
+        this.addActionWithPriority(
+                this.randomBot.getRandomMovePandaAction(board), DEFAULT_PRIORITY);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RushPandaBot that = (RushPandaBot) o;
+        return Objects.equals(randomBot, that.randomBot);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), randomBot);
     }
 }
