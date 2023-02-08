@@ -14,6 +14,7 @@ public class StoreIrrigationInInventoryAction implements Action {
         botManager.displayMessage(
                 botManager.getName() + " stored an irrigation channel in inventory");
         botManager.getInventory().collectIrrigationChannel();
+        botManager.getSingleBotStatistics().updateActions(getClass().getSimpleName());
         return new ActionResult(1);
     }
 }

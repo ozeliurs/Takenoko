@@ -30,8 +30,9 @@ public class BambooLayer {
      *
      * @param positionVector the position of the tile
      * @param board the board
+     * @return the number of bamboo grown
      */
-    public void growBamboo(PositionVector positionVector, Board board) {
+    public LayerBambooStack growBamboo(PositionVector positionVector, Board board) {
         if (!board.isBambooGrowableAt(positionVector)) {
             throw new IllegalArgumentException("The tile is not growable");
         }
@@ -44,13 +45,14 @@ public class BambooLayer {
 
             if (bamboo.get(positionVector).bambooCount == LayerBambooStack.MAX_BAMBOO - 1) {
                 bamboo.get(positionVector).growBamboo();
-                return;
+                return new LayerBambooStack(1);
             }
             bamboo.get(positionVector).growBamboo(2);
-            return;
+            return new LayerBambooStack(2);
         }
 
         bamboo.get(positionVector).growBamboo();
+        return new LayerBambooStack(1);
     }
 
     /**

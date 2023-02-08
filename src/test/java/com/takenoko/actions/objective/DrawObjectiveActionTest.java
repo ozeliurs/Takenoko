@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.engine.BotState;
+import com.takenoko.engine.SingleBotStatistics;
 import com.takenoko.objective.Objective;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +23,8 @@ class DrawObjectiveActionTest {
         void execute_shouldReturnActionResultWithDrawObjectiveAction() {
             Board board = mock(Board.class);
             BotManager botManager = mock(BotManager.class);
-
+            SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
+            when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
             DrawObjectiveAction drawObjectiveAction = new DrawObjectiveAction();
 
             drawObjectiveAction.execute(board, botManager);

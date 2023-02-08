@@ -31,6 +31,7 @@ public class BotManager {
     private final String name;
     private final Bot bot;
     private final int defaultNumberOfActions;
+    private final SingleBotStatistics singleBotStatistics;
 
     /**
      * Constructor for the class
@@ -39,19 +40,30 @@ public class BotManager {
      * @param name the name of the bot
      * @param bot the bot
      * @param botState the bot state
+     * @param botStatistics the extended statistics for this botManager
      */
     protected BotManager(
-            ConsoleUserInterface consoleUserInterface, String name, Bot bot, BotState botState) {
+            ConsoleUserInterface consoleUserInterface,
+            String name,
+            Bot bot,
+            BotState botState,
+            SingleBotStatistics botStatistics) {
         this.botState = botState;
         this.consoleUserInterface = consoleUserInterface;
         this.name = name;
         this.bot = bot;
         this.defaultNumberOfActions = botState.getNumberOfActions();
+        this.singleBotStatistics = botStatistics;
     }
 
     /** Default constructor for the class */
     protected BotManager() {
-        this(DEFAULT_CONSOLE_USER_INTERFACE, DEFAULT_NAME, DEFAULT_BOT, new BotState());
+        this(
+                DEFAULT_CONSOLE_USER_INTERFACE,
+                DEFAULT_NAME,
+                DEFAULT_BOT,
+                new BotState(),
+                new SingleBotStatistics());
     }
 
     /**
@@ -60,11 +72,16 @@ public class BotManager {
      * @param bot the bot
      */
     public BotManager(Bot bot) {
-        this(DEFAULT_CONSOLE_USER_INTERFACE, DEFAULT_NAME, bot, new BotState());
+        this(
+                DEFAULT_CONSOLE_USER_INTERFACE,
+                DEFAULT_NAME,
+                bot,
+                new BotState(),
+                new SingleBotStatistics());
     }
 
     public BotManager(Bot bot, String name) {
-        this(DEFAULT_CONSOLE_USER_INTERFACE, name, bot, new BotState());
+        this(DEFAULT_CONSOLE_USER_INTERFACE, name, bot, new BotState(), new SingleBotStatistics());
     }
 
     /**
@@ -80,6 +97,7 @@ public class BotManager {
         if (board.getRoundNumber() > 0) {
             board.rollWeather();
             displayMessage(this.getName() + " rolled weather: " + board.peekWeather());
+            singleBotStatistics.updateWeathersRolled(board.peekWeather().toString());
             botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         }
         while (canPlayBot()) {
@@ -177,6 +195,7 @@ public class BotManager {
 
     public void reset() {
         this.botState.reset();
+        singleBotStatistics.reset();
     }
 
     public int getObjectiveScore() {
@@ -216,7 +235,11 @@ public class BotManager {
         botState.setStartingDeck(objectives);
     }
 
+    public SingleBotStatistics getSingleBotStatistics() {
+        return singleBotStatistics;
+    }
+
     public String toString() {
-        return "{Name: " + name + " | Type: " + bot.getClass().getSimpleName() + " }";
+        return name + "   | Type: " + bot.getClass().getSimpleName();
     }
 }

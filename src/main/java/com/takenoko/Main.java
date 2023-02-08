@@ -37,6 +37,7 @@ public class Main {
         main.run();
     }
 
+    @SuppressWarnings("java:S4792")
     public void run() {
         GameEngine gameEngine = new GameEngine();
         LoggerContext ctx = (LoggerContext) LogManager.getContext(false);

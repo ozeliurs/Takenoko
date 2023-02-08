@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.engine.SingleBotStatistics;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
@@ -38,7 +39,9 @@ public class MoveGardenerActionTest {
         void shouldMoveTheGardenerPlantBamboo() {
             when(board.getGardenerPosition()).thenReturn(new PositionVector(0, 0, 0));
             when(botManager.getName()).thenReturn("Joe");
+            when(botManager.getSingleBotStatistics()).thenReturn(mock(SingleBotStatistics.class));
             when(board.isIrrigatedAt(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             moveGardenerAction.execute(board, botManager);
             verify(board).moveGardener(new PositionVector(-1, 0, 1));
         }

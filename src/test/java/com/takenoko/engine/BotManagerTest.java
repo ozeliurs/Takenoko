@@ -14,6 +14,7 @@ class BotManagerTest {
     Bot bot;
     BotState botState;
     Board board;
+    SingleBotStatistics singleBotStatistics;
 
     @BeforeEach
     void setUp() {
@@ -21,8 +22,10 @@ class BotManagerTest {
         bot = mock(Bot.class);
         botState = mock(BotState.class);
         board = mock(Board.class);
+        singleBotStatistics = mock(SingleBotStatistics.class);
 
-        botManager = new BotManager(consoleUserInterface, "Bot", bot, botState);
+        botManager =
+                new BotManager(consoleUserInterface, "Bot", bot, botState, singleBotStatistics);
     }
 
     @AfterEach

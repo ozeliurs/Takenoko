@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.engine.BotState;
+import com.takenoko.engine.SingleBotStatistics;
 import com.takenoko.objective.Objective;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +24,8 @@ class RedeemObjectiveActionTest {
             Board board = mock(Board.class);
             BotManager botManager = mock(BotManager.class);
             Objective objective = mock(Objective.class);
-
+            SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
+            when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
             RedeemObjectiveAction redeemObjectiveAction = new RedeemObjectiveAction(objective);
             redeemObjectiveAction.execute(board, botManager);
 

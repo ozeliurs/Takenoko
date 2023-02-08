@@ -34,6 +34,7 @@ public class RedeemObjectiveAction implements DefaultAction {
                         + objective.getPoints()
                         + "points");
         botManager.redeemObjective(objective);
+        botManager.getSingleBotStatistics().updateObjectivesRedeemed(objective);
         return new ActionResult();
     }
 }
