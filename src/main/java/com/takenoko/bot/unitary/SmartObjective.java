@@ -30,13 +30,15 @@ public class SmartObjective extends PriorityBot {
                         .filter(PandaObjective.class::isInstance)
                         .toList();
 
+        // If we have two PandaObjective we redeem one
         if (pandaObjectives.size() > 1) {
             return new RedeemObjectiveAction(pandaObjectives.get(0));
         }
 
+        // If when we redeem an objective and it does not make us win we don't redeem
         if (botState.getRedeemedObjectives().size() + 1
-                != GameEngine.DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(
-                        history.getBotManagerUUIDs().size() + 1)) {
+                < GameEngine.DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(
+                        history.getBotManagerUUIDs().size())) {
             return null;
         }
 
