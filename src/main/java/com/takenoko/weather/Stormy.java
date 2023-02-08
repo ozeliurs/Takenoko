@@ -30,4 +30,9 @@ public class Stormy implements Weather {
     public void revert(Board board, BotManager botManager) {
         board.resetWeather();
     }
+
+    @Override
+    public String toString() {
+        return "Stormy";
+    }
 }
