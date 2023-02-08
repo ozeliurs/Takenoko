@@ -14,7 +14,7 @@ public abstract class PriorityBot extends HashMap<Action, Double> implements Bot
 
     protected abstract void fillAction(Board board, BotState botState, History history);
 
-    public PriorityBot compute(Board board, BotState botState, History history) {
+    protected PriorityBot compute(Board board, BotState botState, History history) {
         fillAction(board, botState, history);
         return this;
     }
