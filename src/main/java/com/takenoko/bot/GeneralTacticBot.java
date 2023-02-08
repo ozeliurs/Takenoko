@@ -1,8 +1,13 @@
 package com.takenoko.bot;
 
 import com.takenoko.bot.unitary.*;
-import com.takenoko.engine.*;
-import java.util.*;
+import com.takenoko.engine.Board;
+import com.takenoko.engine.BotState;
+import com.takenoko.engine.History;
+import com.takenoko.layers.tile.ImprovementType;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class GeneralTacticBot extends PriorityBot {
     private final Map<String, Integer> parameters;
@@ -63,6 +68,14 @@ public class GeneralTacticBot extends PriorityBot {
         this.addWithOffset(
                 new SmartObjective().compute(board, botState, history),
                 parameters.get("RedeemObjective"));
+
+        this.addWithOffset(
+                new SmartDrawImprovement(
+                                Map.of(
+                                        ImprovementType.WATERSHED, 4,
+                                        ImprovementType.ENCLOSURE, 1))
+                        .compute(board, botState, history),
+                0);
     }
 
     @Override
