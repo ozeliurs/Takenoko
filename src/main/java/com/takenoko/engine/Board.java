@@ -25,6 +25,7 @@ public class Board {
     private final GameAssets gameAssets;
     private Weather weather = null;
     int roundNumber = 0;
+    private final BoardStatistics boardStatistics;
 
     /**
      * Constructor for the Board class.
@@ -42,13 +43,15 @@ public class Board {
             Panda panda,
             Gardener gardener,
             GameAssets gameAssets,
-            IrrigationLayer irrigationLayer) {
+            IrrigationLayer irrigationLayer,
+            BoardStatistics boardStatistics) {
         this.tileLayer = tileLayer;
         this.bambooLayer = bambooLayer;
         this.panda = panda;
         this.gardener = gardener;
         this.gameAssets = gameAssets;
         this.irrigationLayer = irrigationLayer;
+        this.boardStatistics = boardStatistics;
     }
 
     public void rollWeather() {
@@ -67,7 +70,8 @@ public class Board {
                 new Panda(),
                 new Gardener(),
                 new GameAssets(),
-                new IrrigationLayer());
+                new IrrigationLayer(),
+                new BoardStatistics());
     }
 
     public Board(Board board) {
@@ -79,6 +83,7 @@ public class Board {
         this.weather = board.weather;
         this.irrigationLayer = board.irrigationLayer.copy();
         this.roundNumber = board.roundNumber;
+        this.boardStatistics = board.boardStatistics;
     }
 
     /**
@@ -245,7 +250,8 @@ public class Board {
                 && gameAssets.equals(board.gameAssets)
                 && Objects.equals(weather, board.weather)
                 && irrigationLayer.equals(board.irrigationLayer)
-                && roundNumber == board.roundNumber;
+                && roundNumber == board.roundNumber
+                && boardStatistics == board.boardStatistics;
     }
 
     @Override
@@ -258,7 +264,8 @@ public class Board {
                 gameAssets,
                 weather,
                 irrigationLayer,
-                roundNumber);
+                roundNumber,
+                boardStatistics);
     }
 
     public Board copy() {
@@ -386,5 +393,13 @@ public class Board {
      */
     public List<Objective> getStarterDeck() {
         return gameAssets.getStarterDeck();
+    }
+
+    public BoardStatistics getBoardStatistics() {
+        return boardStatistics;
+    }
+
+    public void analyze() {
+        boardStatistics.analyzeBoard(this);
     }
 }
