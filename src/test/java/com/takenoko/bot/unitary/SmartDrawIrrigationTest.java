@@ -26,7 +26,7 @@ public class SmartDrawIrrigationTest {
             when(botState.getInventory()).thenReturn(mock(Inventory.class));
             when(botState.getInventory().getIrrigationChannelsCount()).thenReturn(2);
 
-            SmartDrawIrrigation smartDrawIrrigation = new SmartDrawIrrigation();
+            SmartDrawIrrigation smartDrawIrrigation = new SmartDrawIrrigation(3);
             smartDrawIrrigation.fillAction(board, botState, mock(History.class));
 
             assertThat(smartDrawIrrigation.keySet())
