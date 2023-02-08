@@ -168,7 +168,7 @@ class SingleBotStatisticsTest {
         void whenThePlantedBambooIsOfNewColor_shouldAddNewEntry() {
             TileColor tileColor = mock(TileColor.class);
             int oldSize = singleBotStatistics.getBambooCounter().size();
-            singleBotStatistics.updatePlantedBambooCounter(tileColor);
+            singleBotStatistics.updatePlantedBambooCounter(tileColor, 1);
             assertThat(singleBotStatistics.getBambooCounter()).hasSize(oldSize + 1);
         }
 
@@ -176,9 +176,9 @@ class SingleBotStatisticsTest {
         @DisplayName("when the bamboo planted isn't of new color, shouldn't add new entry")
         void whenThePlantedBambooIsntOfNewColor_shouldntAddNewEntry() {
             TileColor tileColor = mock(TileColor.class);
-            singleBotStatistics.updatePlantedBambooCounter(tileColor);
+            singleBotStatistics.updatePlantedBambooCounter(tileColor, 1);
             int oldSize = singleBotStatistics.getBambooCounter().size();
-            singleBotStatistics.updatePlantedBambooCounter(tileColor);
+            singleBotStatistics.updatePlantedBambooCounter(tileColor, 1);
             assertThat(singleBotStatistics.getBambooCounter()).hasSize(oldSize);
         }
 
@@ -186,9 +186,9 @@ class SingleBotStatisticsTest {
         @DisplayName("should increment number of bamboos planted for the right color")
         void shouldIncrementNumberOfBamboosPlantedForTheRightColor() {
             TileColor tileColor = mock(TileColor.class);
-            singleBotStatistics.updatePlantedBambooCounter(tileColor);
+            singleBotStatistics.updatePlantedBambooCounter(tileColor, 1);
             int oldValue = singleBotStatistics.getBambooCounter().get(tileColor).getRight();
-            singleBotStatistics.updatePlantedBambooCounter(tileColor);
+            singleBotStatistics.updatePlantedBambooCounter(tileColor, 1);
             assertThat(singleBotStatistics.getBambooCounter().get(tileColor).getRight())
                     .isEqualTo(oldValue + 1);
         }
@@ -196,7 +196,7 @@ class SingleBotStatisticsTest {
         @Test
         @DisplayName("if parameter is null, should throw exception")
         void ifParameterIsNull_shouldThrowException() {
-            assertThatThrownBy(() -> singleBotStatistics.updatePlantedBambooCounter(null))
+            assertThatThrownBy(() -> singleBotStatistics.updatePlantedBambooCounter(null, 1))
                     .isInstanceOf(IllegalArgumentException.class);
         }
     }

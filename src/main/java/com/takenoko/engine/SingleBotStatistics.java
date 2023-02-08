@@ -106,18 +106,21 @@ public class SingleBotStatistics {
         }
     }
 
-    public void updatePlantedBambooCounter(TileColor tileColor) {
+    public void updatePlantedBambooCounter(TileColor tileColor, int count) {
         if (tileColor == null) {
             throw new IllegalArgumentException();
+        }
+        if (count == 0) {
+            count = 1;
         }
         if (bambooCounter.containsKey(tileColor)) {
             bambooCounter.put(
                     tileColor,
                     Pair.of(
                             bambooCounter.get(tileColor).getLeft(),
-                            bambooCounter.get(tileColor).getRight() + 1));
+                            bambooCounter.get(tileColor).getRight() + count));
         } else {
-            bambooCounter.put(tileColor, Pair.of(0, 1));
+            bambooCounter.put(tileColor, Pair.of(0, count));
         }
     }
 

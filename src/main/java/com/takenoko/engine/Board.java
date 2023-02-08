@@ -166,9 +166,10 @@ public class Board {
      * Grow bamboo on a tile. By default, the number of bamboo is 1 if the tile is irrigated.
      *
      * @param positionVector the position of the tile
+     * @return the bamboo stack at the position
      */
-    public void growBamboo(PositionVector positionVector) {
-        bambooLayer.growBamboo(positionVector, this);
+    public LayerBambooStack growBamboo(PositionVector positionVector) {
+        return bambooLayer.growBamboo(positionVector, this);
     }
 
     /**
