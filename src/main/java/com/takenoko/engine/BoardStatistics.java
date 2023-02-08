@@ -4,7 +4,6 @@ import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
-
 import java.util.*;
 
 public class BoardStatistics {
@@ -22,18 +21,18 @@ public class BoardStatistics {
         this.tilesPlaced = (EnumMap<TileColor, Integer>) tilesPlaced;
         this.improvements = (EnumMap<ImprovementType, Integer>) improvements;
         this.percentageOfIrrigation = percentageOfIrrigation;
-        this.totalNbOfTiles=totalNbOfTiles;
+        this.totalNbOfTiles = totalNbOfTiles;
     }
 
     public BoardStatistics(BoardStatistics boardStatistics) {
         this.tilesPlaced = boardStatistics.tilesPlaced;
         this.percentageOfIrrigation = boardStatistics.percentageOfIrrigation;
         this.improvements = boardStatistics.improvements;
-        this.totalNbOfTiles= boardStatistics.totalNbOfTiles;
+        this.totalNbOfTiles = boardStatistics.totalNbOfTiles;
     }
 
     public BoardStatistics() {
-        this(new EnumMap<>(TileColor.class), new EnumMap<>(ImprovementType.class), 0,0);
+        this(new EnumMap<>(TileColor.class), new EnumMap<>(ImprovementType.class), 0, 0);
     }
 
     public void updateImprovements(ImprovementType improvementType) {
@@ -100,7 +99,7 @@ public class BoardStatistics {
         return statistics.toString();
     }
 
-    public BoardStatistics copy(){
+    public BoardStatistics copy() {
         return new BoardStatistics(this);
     }
 
@@ -109,7 +108,9 @@ public class BoardStatistics {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BoardStatistics that = (BoardStatistics) o;
-        return Float.compare(that.percentageOfIrrigation, percentageOfIrrigation) == 0 && tilesPlaced.equals(that.tilesPlaced) && improvements.equals(that.improvements);
+        return Float.compare(that.percentageOfIrrigation, percentageOfIrrigation) == 0
+                && tilesPlaced.equals(that.tilesPlaced)
+                && improvements.equals(that.improvements);
     }
 
     @Override

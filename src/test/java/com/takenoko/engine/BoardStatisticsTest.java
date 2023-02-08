@@ -1,5 +1,8 @@
 package com.takenoko.engine;
 
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import com.takenoko.actors.Gardener;
 import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
@@ -10,27 +13,23 @@ import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.vector.PositionVector;
-import org.junit.jupiter.api.*;
-
 import java.util.HashMap;
 import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.*;
 
 class BoardStatisticsTest {
     private BoardStatistics boardStatistics;
     private Board board;
 
     @BeforeEach
-    void setUp(){
-        boardStatistics=new BoardStatistics();
-        board=mock(Board.class);
+    void setUp() {
+        boardStatistics = new BoardStatistics();
+        board = mock(Board.class);
     }
 
     @AfterEach
-    void tearDown(){
-        boardStatistics=null;
+    void tearDown() {
+        boardStatistics = null;
     }
 
     @Nested
@@ -80,24 +79,26 @@ class BoardStatisticsTest {
         @Test
         @DisplayName("General tests")
         void GeneralTests() {
-            boardStatistics=spy(BoardStatistics.class);
-            TileLayer tileLayer=mock(TileLayer.class);
-            IrrigationLayer irrigationLayer=mock(IrrigationLayer.class);
-            Optional<ImprovementType> improvementType=Optional.of(ImprovementType.FERTILIZER);
-            board=new Board(tileLayer,
-                    mock(BambooLayer.class),
-                    mock(Panda.class),
-                    mock(Gardener.class),
-                    mock(GameAssets.class),
-                    irrigationLayer,
-                    boardStatistics);
-            HashMap<PositionVector,Tile> map=new HashMap<>();
-            PositionVector positionVector1=mock(PositionVector.class);
-            Tile tile1=mock(Tile.class);
-            PositionVector positionVector2=mock(PositionVector.class);
-            Tile tile2=mock(Tile.class);
-            map.put(positionVector1,tile1);
-            map.put(positionVector2,tile2);
+            boardStatistics = spy(BoardStatistics.class);
+            TileLayer tileLayer = mock(TileLayer.class);
+            IrrigationLayer irrigationLayer = mock(IrrigationLayer.class);
+            Optional<ImprovementType> improvementType = Optional.of(ImprovementType.FERTILIZER);
+            board =
+                    new Board(
+                            tileLayer,
+                            mock(BambooLayer.class),
+                            mock(Panda.class),
+                            mock(Gardener.class),
+                            mock(GameAssets.class),
+                            irrigationLayer,
+                            boardStatistics);
+            HashMap<PositionVector, Tile> map = new HashMap<>();
+            PositionVector positionVector1 = mock(PositionVector.class);
+            Tile tile1 = mock(Tile.class);
+            PositionVector positionVector2 = mock(PositionVector.class);
+            Tile tile2 = mock(Tile.class);
+            map.put(positionVector1, tile1);
+            map.put(positionVector2, tile2);
             when(tileLayer.getTilesWithoutPond()).thenReturn(map);
             when(tile1.getColor()).thenReturn(TileColor.GREEN);
             when(tile2.getColor()).thenReturn(TileColor.PINK);
@@ -111,10 +112,12 @@ class BoardStatisticsTest {
             assertThat(boardStatistics.getTotalNbOfTiles()).isEqualTo(Float.valueOf(2));
             assertThat(boardStatistics.getPercentageOfIrrigation()).isEqualTo(Float.valueOf(50));
         }
+
         @Test
         @DisplayName("should throw exception if argument is null")
         void shouldThrowExceptionIfArgumentIsNull() {
-            assertThatThrownBy(() -> boardStatistics.analyzeBoard(null)).isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> boardStatistics.analyzeBoard(null))
+                    .isInstanceOf(IllegalArgumentException.class);
         }
     }
 }
