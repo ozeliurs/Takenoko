@@ -236,4 +236,64 @@ public class ShapeTest {
             assertThat(shape.toString()).isNotNull();
         }
     }
+
+    @Nested
+    @DisplayName("method getMissingShape")
+    class TestGetMissingShape {
+        @Test
+        @DisplayName("should return a shape corresponding to the missing part of the shape")
+        void getMissingShape_shouldReturnShapeCorrespondingToMissingPartOfShape() {
+            Shape startShape =
+                    new Shape(
+                            Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, 0, -1), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, -1, 0), new Tile(TileColor.PINK)));
+
+            Shape otherShape =
+                    new Shape(
+                            Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, 0, -1), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, -1, 0), new Tile(TileColor.PINK)),
+                            Pair.of(new PositionVector(1, 1, -2), new Tile(TileColor.GREEN)));
+
+            assertThat(otherShape.getMissingShape(startShape))
+                    .isEqualTo(
+                            new Shape(
+                                    Pair.of(
+                                            new PositionVector(1, 1, -2),
+                                            new Tile(TileColor.GREEN))));
+        }
+
+        @Test
+        @DisplayName("should return a complex shape corresponding to the missing part of the shape")
+        void getMissingShape_shouldReturnAComplexShapeCorrespondingToMissingPartOfShape() {
+            Shape startShape =
+                    new Shape(
+                            Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, 0, -1), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, -1, 0), new Tile(TileColor.PINK)));
+
+            Shape otherShape =
+                    new Shape(
+                            Pair.of(new PositionVector(0, 0, 0), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, 0, -1), new Tile(TileColor.YELLOW)),
+                            Pair.of(new PositionVector(1, -1, 0), new Tile(TileColor.PINK)),
+                            Pair.of(new PositionVector(1, 1, -2), new Tile(TileColor.GREEN)),
+                            Pair.of(new PositionVector(2, 1, -3), new Tile(TileColor.GREEN)),
+                            Pair.of(new PositionVector(2, 0, -2), new Tile(TileColor.GREEN)));
+
+            assertThat(otherShape.getMissingShape(startShape))
+                    .isEqualTo(
+                            new Shape(
+                                    Pair.of(
+                                            new PositionVector(1, 1, -2),
+                                            new Tile(TileColor.GREEN)),
+                                    Pair.of(
+                                            new PositionVector(2, 1, -3),
+                                            new Tile(TileColor.GREEN)),
+                                    Pair.of(
+                                            new PositionVector(2, 0, -2),
+                                            new Tile(TileColor.GREEN))));
+        }
+    }
 }

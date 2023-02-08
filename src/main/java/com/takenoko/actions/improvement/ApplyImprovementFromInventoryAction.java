@@ -10,6 +10,7 @@ import com.takenoko.engine.BotManager;
 import com.takenoko.engine.BotState;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.vector.PositionVector;
+import java.util.Objects;
 
 /** Action to apply an improvement from the inventory. */
 @ActionAnnotation(ActionType.DEFAULT)
@@ -42,5 +43,19 @@ public class ApplyImprovementFromInventoryAction extends ApplyImprovementAction
     public static boolean canBePlayed(Board board, BotState botState) {
         return botState.getInventory().hasImprovement()
                 && !board.getAvailableImprovementPositions().isEmpty();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ApplyImprovementFromInventoryAction that = (ApplyImprovementFromInventoryAction) o;
+        return improvementType == that.improvementType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), improvementType);
     }
 }

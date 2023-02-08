@@ -270,4 +270,8 @@ public class BotState {
     public void setStartingDeck(List<Objective> objectives) {
         this.objectiveManager.setStartingDeck(objectives);
     }
+
+    public List<Objective> getNotAchievedObjectives() {
+        return this.objectiveManager.getNotAchievedObjectives();
+    }
 }

@@ -9,6 +9,7 @@ import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import java.util.Map;
+import java.util.Objects;
 
 /** This class represents the action of moving the panda. */
 @ActionAnnotation(ActionType.DEFAULT)
@@ -61,5 +62,23 @@ public class MovePandaAction implements DefaultAction {
             botManager.displayMessage("Panda didn't eat any bamboo");
         }
         return new ActionResult(1);
+    }
+
+    @Override
+    public String toString() {
+        return "MovePandaAction {pos_vect=" + relativePositionVector + "}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MovePandaAction that = (MovePandaAction) o;
+        return Objects.equals(relativePositionVector, that.relativePositionVector);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(relativePositionVector);
     }
 }

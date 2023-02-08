@@ -1,8 +1,7 @@
 package com.takenoko.objective;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
@@ -12,12 +11,10 @@ import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -410,6 +407,38 @@ class SingleGardenerObjectiveTest {
             // Test
             assertThat(objectiveWithImprovement.getMatchingPositions(board))
                     .containsExactly(position01);
+        }
+    }
+
+    @Nested
+    @DisplayName("method getActionsToComplete")
+    class GetActionsToComplete {
+        @Test
+        @DisplayName("if no Panda && no Gardener movements are available returns null")
+        void getActionsToComplete_ifNoPandaAndNoGardenerMovementsAreAvailable_returnsNull() {
+            // Variables
+            Board board = mock(Board.class);
+
+            when(board.getPandaPossibleMoves()).thenReturn(List.of());
+            when(board.getGardenerPossibleMoves()).thenReturn(List.of());
+
+            // Test
+            assertThat(objectiveWithImprovement.getPositionsToComplete(board)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("if Panda && no Gardener movements are available returns null")
+        void getActionsToComplete_ifPandaAndNoGardenerMovementsAreAvailable_returnsNull() {
+            // Variables
+            Board board = mock(Board.class);
+
+            when(board.getPandaPossibleMoves()).thenReturn(List.of(new PositionVector(1, 0, -1)));
+            when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
+            when(board.getTileAt(any())).thenReturn(new Tile());
+            when(board.getGardenerPossibleMoves()).thenReturn(List.of());
+
+            // Test
+            assertThat(objectiveWithImprovement.getPositionsToComplete(board)).isEmpty();
         }
     }
 }

@@ -9,6 +9,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.tile.ImprovementType;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Action to draw an improvement from the deck. if the improvement is not available in the deck, the
@@ -33,5 +34,18 @@ public class DrawImprovementAction implements Action {
         botManager.displayMessage(botManager.getName() + " drew improvement " + improvementType);
         return new ActionResult(
                 List.of(ApplyImprovementAction.class, StoreImprovementAction.class), 0);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DrawImprovementAction that = (DrawImprovementAction) o;
+        return improvementType == that.improvementType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(improvementType);
     }
 }

@@ -1,6 +1,7 @@
 package com.takenoko.engine;
 
 import com.takenoko.bot.FullRandomBot;
+import com.takenoko.bot.GeneralTacticBot;
 import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.ui.ConsoleUserInterface;
@@ -11,15 +12,16 @@ import org.apache.commons.lang3.tuple.Pair;
 /** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
     // ATTRIBUTES
-    public static final int DEFAULT_NUMBER_OF_ROUNDS = 5000;
-    protected static final Map<Integer, Integer> DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN =
-            new HashMap<>(Map.of(2, 9, 3, 8, 4, 7));
+    public static final int DEFAULT_NUMBER_OF_ROUNDS = 200;
+    public static final Map<Integer, Integer> DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN =
+            Map.of(2, 9, 3, 8, 4, 7);
     private Board board;
     private final ConsoleUserInterface consoleUserInterface;
     private GameState gameState;
     private final int numberOfRounds;
     private final List<BotManager> botManagers;
     private final Scoreboard scoreboard;
+    private History history;
 
     public GameEngine(
             int numberOfRounds,
@@ -27,7 +29,8 @@ public class GameEngine {
             ConsoleUserInterface consoleUserInterface,
             GameState gameState,
             List<BotManager> botManagerList,
-            Scoreboard scoreboard) {
+            Scoreboard scoreboard,
+            History history) {
         // Assign values to the attributes
         this.numberOfRounds = numberOfRounds;
         this.board = board;
@@ -35,6 +38,7 @@ public class GameEngine {
         this.gameState = gameState;
         this.botManagers = botManagerList;
         this.scoreboard = scoreboard;
+        this.history = history;
         scoreboard.addBotManager(botManagerList);
     }
 
@@ -57,10 +61,11 @@ public class GameEngine {
                                         new BotState()),
                                 new BotManager(
                                         new ConsoleUserInterface(),
-                                        "Bob",
-                                        new FullRandomBot(),
+                                        "GeneralTactic",
+                                        new GeneralTacticBot(),
                                         new BotState()))),
-                new Scoreboard());
+                new Scoreboard(),
+                new History());
     }
 
     public GameEngine(List<BotManager> botManagers) {
@@ -70,7 +75,8 @@ public class GameEngine {
                 new ConsoleUserInterface(),
                 GameState.INITIALIZED,
                 botManagers,
-                new Scoreboard());
+                new Scoreboard(),
+                new History());
     }
 
     /**
@@ -94,9 +100,12 @@ public class GameEngine {
 
         // Reset all the attributes that needs to be
         this.board = new Board();
+        this.history = new History();
+
         for (BotManager botManager : botManagers) {
             botManager.reset();
             botManager.setStartingDeck(board.getStarterDeck());
+            history.addBotManager(botManager);
         }
 
         // Game is now ready to be started
@@ -136,7 +145,7 @@ public class GameEngine {
                 }
                 consoleUserInterface.displayMessage(
                         "===== <" + botManager.getName() + "> is playing =====");
-                botManager.playBot(board);
+                botManager.playBot(board, history.getHistoryWithoutCurrentBotManager(botManager));
 
                 if (botManager.getRedeemedObjectives().size()
                                 >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(botManagers.size())

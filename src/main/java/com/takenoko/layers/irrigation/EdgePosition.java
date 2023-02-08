@@ -62,7 +62,7 @@ public class EdgePosition {
                 .toList();
     }
 
-    static List<EdgePosition> getEdgePositions(PositionVector positionVector) {
+    public static List<EdgePosition> getEdgePositions(PositionVector positionVector) {
         return positionVector.getNeighbors().stream()
                 .map(vector -> new EdgePosition(positionVector, vector.toPositionVector()))
                 .toList();

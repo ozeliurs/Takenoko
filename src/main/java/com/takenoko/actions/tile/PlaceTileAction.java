@@ -8,6 +8,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
+import java.util.Objects;
 
 /** This class represents the action of placing a tile on the board. */
 @ActionAnnotation(ActionType.FORCED)
@@ -41,5 +42,19 @@ public class PlaceTileAction implements Action {
             botManager.displayMessage(tile.getColor() + " bamboo grew at " + positionVector);
         }
         return new ActionResult(1);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlaceTileAction that = (PlaceTileAction) o;
+        return Objects.equals(tile, that.tile)
+                && Objects.equals(positionVector, that.positionVector);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tile, positionVector);
     }
 }
