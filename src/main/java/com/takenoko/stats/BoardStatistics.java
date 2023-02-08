@@ -1,5 +1,6 @@
-package com.takenoko.engine;
+package com.takenoko.stats;
 
+import com.takenoko.engine.Board;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;

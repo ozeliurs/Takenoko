@@ -11,6 +11,7 @@ import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.objective.Objective;
+import com.takenoko.stats.BoardStatistics;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.Weather;
 import java.util.*;

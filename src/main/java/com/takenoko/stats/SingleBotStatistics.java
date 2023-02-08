@@ -1,4 +1,4 @@
-package com.takenoko.engine;
+package com.takenoko.stats;
 
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.Objective;
@@ -8,16 +8,16 @@ import org.apache.commons.lang3.tuple.Pair;
 
 /** This class represents an extended list of statistics for a specific BotManager */
 public class SingleBotStatistics {
-    private static final String WINS = "\t -Wins : ";
-    private static final String LOSSES = "\t -Losses : ";
-    private static final String IRRIGATIONS_PLACED = "\t -Irrigations Placed : ";
-    private static final String FINAL_SCORE = "\t -Final Score : ";
+    public static final String WINS = "\t -Wins : ";
+    public static final String LOSSES = "\t -Losses : ";
+    public static final String IRRIGATIONS_PLACED = "\t -Irrigations Placed : ";
+    public static final String FINAL_SCORE = "\t -Final Score : ";
     private int totalNbOfAction;
     private final HashMap<String, Integer> numericStats;
     private final EnumMap<ObjectiveTypes, Integer> objectivesRedeemed;
-    private final EnumMap<TileColor, Pair<Integer, Integer>> bambooCounter;
+    private final EnumMap<TileColor, Pair<Integer, Integer>> bambooCounter; // Left eaten, right grown
     private final EnumMap<TileColor, Integer> tilesPlaced;
-    private final HashMap<String, Pair<Integer, Integer>> weathers;
+    private final HashMap<String, Pair<Integer, Integer>> weathers; // Left applied, right rolled
     private final HashMap<String, Integer> actions;
 
     public SingleBotStatistics(

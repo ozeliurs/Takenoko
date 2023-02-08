@@ -7,6 +7,7 @@ import com.takenoko.bot.Bot;
 import com.takenoko.bot.TilePlacingBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.List;
 

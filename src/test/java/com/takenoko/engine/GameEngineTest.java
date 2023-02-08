@@ -6,6 +6,8 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
+import com.takenoko.stats.BoardStatistics;
+import com.takenoko.stats.BotStatistics;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.HashMap;

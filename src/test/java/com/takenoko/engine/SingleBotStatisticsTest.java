@@ -8,6 +8,7 @@ import com.takenoko.actions.Action;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.ObjectiveTypes;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.weather.Weather;
 import org.junit.jupiter.api.*;
 

@@ -9,7 +9,7 @@ import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
 import com.takenoko.asset.TileDeck;
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BoardStatistics;
+import com.takenoko.stats.BoardStatistics;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.tile.*;
 import com.takenoko.vector.PositionVector;

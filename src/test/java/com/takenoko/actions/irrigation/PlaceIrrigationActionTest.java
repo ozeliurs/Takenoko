@@ -6,7 +6,7 @@ import static org.mockito.Mockito.*;
 import com.takenoko.actions.ActionResult;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.engine.SingleBotStatistics;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.layers.irrigation.EdgePosition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
