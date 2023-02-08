@@ -3,71 +3,80 @@ package com.takenoko.engine;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.ObjectiveTypes;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
+import java.util.*;
+import org.apache.commons.lang3.tuple.Pair;
 
 /** This class represents an extended list of statistics for a specific BotManager */
 public class SingleBotStatistics {
-    private int wins;
-    private int losses;
-    private final HashMap<ObjectiveTypes, Integer> objectivesRedeemed;
-    private final HashMap<TileColor, Integer> bamboosEaten;
-    private final HashMap<TileColor, Integer> bamboosPlanted;
-    private int irrigationsPlaced;
-    private int finalScore;
-    private final HashMap<TileColor, Integer> tilesPlaced;
+    private static final String WINS = "\t -Wins : ";
+    private static final String LOSSES = "\t -Losses : ";
+    private static final String IRRIGATIONS_PLACED = "\t -Irrigations Placed : ";
+    private static final String FINAL_SCORE = "\t -Final Score : ";
+    private int totalNbOfAction;
+    private final HashMap<String, Integer> numericStats;
+    private final EnumMap<ObjectiveTypes, Integer> objectivesRedeemed;
+    private final EnumMap<TileColor, Pair<Integer, Integer>> bambooCounter;
+    private final EnumMap<TileColor, Integer> tilesPlaced;
+    private final HashMap<String, Pair<Integer, Integer>> weathers;
+    private final HashMap<String, Integer> actions;
 
     public SingleBotStatistics(
-            int wins,
-            int losses,
+            Map<String, Integer> numericStats,
             Map<ObjectiveTypes, Integer> objectivesRedeemed,
-            Map<TileColor, Integer> bamboosEaten,
-            Map<TileColor, Integer> bamboosPlanted,
-            int irrigationsPlaced,
-            int finalScore,
-            Map<TileColor, Integer> tilesPlaced) {
-        this.wins = wins;
-        this.losses = losses;
-        this.objectivesRedeemed = (HashMap<ObjectiveTypes, Integer>) objectivesRedeemed;
-        this.bamboosEaten = (HashMap<TileColor, Integer>) bamboosEaten;
-        this.bamboosPlanted = (HashMap<TileColor, Integer>) bamboosPlanted;
-        this.irrigationsPlaced = irrigationsPlaced;
-        this.finalScore = finalScore;
-        this.tilesPlaced = (HashMap<TileColor, Integer>) tilesPlaced;
+            Map<TileColor, Pair<Integer, Integer>> bambooCounter,
+            Map<TileColor, Integer> tilesPlaced,
+            Map<String, Pair<Integer, Integer>> weathers,
+            Map<String, Integer> actions,
+            int totalNbOfAction) {
+        this.numericStats = (HashMap<String, Integer>) numericStats;
+        this.objectivesRedeemed = (EnumMap<ObjectiveTypes, Integer>) objectivesRedeemed;
+        this.bambooCounter = (EnumMap<TileColor, Pair<Integer, Integer>>) bambooCounter;
+        this.tilesPlaced = (EnumMap<TileColor, Integer>) tilesPlaced;
+        this.weathers = (HashMap<String, Pair<Integer, Integer>>) weathers;
+        this.actions = (HashMap<String, Integer>) actions;
+        this.totalNbOfAction = totalNbOfAction;
+        numericStats.put(WINS, 0);
+        numericStats.put(LOSSES, 0);
+        numericStats.put(FINAL_SCORE, 0);
+        numericStats.put(IRRIGATIONS_PLACED, 0);
     }
 
     public SingleBotStatistics(SingleBotStatistics singleBotStatistics) {
         this(
-                singleBotStatistics.wins,
-                singleBotStatistics.losses,
+                singleBotStatistics.numericStats,
                 singleBotStatistics.objectivesRedeemed,
-                singleBotStatistics.bamboosEaten,
-                singleBotStatistics.bamboosPlanted,
-                singleBotStatistics.irrigationsPlaced,
-                singleBotStatistics.finalScore,
-                singleBotStatistics.tilesPlaced);
+                singleBotStatistics.bambooCounter,
+                singleBotStatistics.tilesPlaced,
+                singleBotStatistics.weathers,
+                singleBotStatistics.actions,
+                singleBotStatistics.totalNbOfAction);
     }
 
     public SingleBotStatistics() {
-        this(0, 0, new HashMap<>(), new HashMap<>(), new HashMap<>(), 0, 0, new HashMap<>());
+        this(
+                new HashMap<>(),
+                new EnumMap<>(ObjectiveTypes.class),
+                new EnumMap<>(TileColor.class),
+                new EnumMap<>(TileColor.class),
+                new HashMap<>(),
+                new HashMap<>(),
+                0);
     }
 
     public void incrementWins() {
-        wins++;
+        numericStats.replace(WINS, numericStats.get(WINS) + 1);
     }
 
     public void incrementLosses() {
-        losses++;
+        numericStats.replace(LOSSES, numericStats.get(LOSSES) + 1);
     }
 
     public void incrementIrrigationsPlaced() {
-        irrigationsPlaced++;
+        numericStats.replace(IRRIGATIONS_PLACED, numericStats.get(IRRIGATIONS_PLACED) + 1);
     }
 
     public void updateScore(int toAdd) {
-        finalScore += toAdd;
+        numericStats.replace(FINAL_SCORE, numericStats.get(FINAL_SCORE) + toAdd);
     }
 
     public void updateObjectivesRedeemed(Objective objective) {
@@ -86,10 +95,14 @@ public class SingleBotStatistics {
         if (tileColor == null) {
             throw new IllegalArgumentException();
         }
-        if (bamboosEaten.containsKey(tileColor)) {
-            bamboosEaten.put(tileColor, bamboosEaten.get(tileColor) + 1);
+        if (bambooCounter.containsKey(tileColor)) {
+            bambooCounter.put(
+                    tileColor,
+                    Pair.of(
+                            bambooCounter.get(tileColor).getLeft() + 1,
+                            bambooCounter.get(tileColor).getRight()));
         } else {
-            bamboosEaten.put(tileColor, 1);
+            bambooCounter.put(tileColor, Pair.of(1, 0));
         }
     }
 
@@ -97,10 +110,14 @@ public class SingleBotStatistics {
         if (tileColor == null) {
             throw new IllegalArgumentException();
         }
-        if (bamboosPlanted.containsKey(tileColor)) {
-            bamboosPlanted.put(tileColor, bamboosPlanted.get(tileColor) + 1);
+        if (bambooCounter.containsKey(tileColor)) {
+            bambooCounter.put(
+                    tileColor,
+                    Pair.of(
+                            bambooCounter.get(tileColor).getLeft(),
+                            bambooCounter.get(tileColor).getRight() + 1));
         } else {
-            bamboosPlanted.put(tileColor, 1);
+            bambooCounter.put(tileColor, Pair.of(0, 1));
         }
     }
 
@@ -115,18 +132,51 @@ public class SingleBotStatistics {
         }
     }
 
+    public void updateWeathersRolled(String weather) {
+        if (weather == null) {
+            throw new IllegalArgumentException();
+        }
+        if (weathers.containsKey(weather)) {
+            weathers.replace(
+                    weather,
+                    Pair.of(weathers.get(weather).getLeft(), weathers.get(weather).getRight() + 1));
+        } else {
+            weathers.put(weather, Pair.of(0, 1));
+        }
+    }
+
+    public void updateWeathersApplied(String weather) {
+        if (weather == null) {
+            throw new IllegalArgumentException();
+        }
+        if (weathers.containsKey(weather))
+            weathers.replace(
+                    weather,
+                    Pair.of(weathers.get(weather).getLeft() + 1, weathers.get(weather).getRight()));
+        else {
+            weathers.put(weather, Pair.of(1, 0));
+        }
+    }
+
+    public void updateActions(String action) {
+        if (action == null) {
+            throw new IllegalArgumentException();
+        }
+        totalNbOfAction++;
+        if (actions.containsKey(action)) {
+            actions.replace(action, actions.get(action) + 1);
+        } else {
+            actions.put(action, 1);
+        }
+    }
+
     public SingleBotStatistics copy() {
         return new SingleBotStatistics(this);
     }
 
     public void reset() {
-        this.wins = 0;
-        this.losses = 0;
         this.objectivesRedeemed.clear();
-        this.bamboosEaten.clear();
-        this.bamboosPlanted.clear();
-        this.irrigationsPlaced = 0;
-        this.finalScore = 0;
+        this.bambooCounter.clear();
     }
 
     public String toString() {
@@ -134,21 +184,22 @@ public class SingleBotStatistics {
         String lineJump = "\n \t \t \t";
         String indentation = "\t\t* ";
         TreeMap<ObjectiveTypes, Integer> sortedObjectives = new TreeMap<>(objectivesRedeemed);
-        TreeMap<TileColor, Integer> sortedBamboosEaten = new TreeMap<>(bamboosEaten);
-        TreeMap<TileColor, Integer> sortedBamboosGrown = new TreeMap<>(bamboosPlanted);
+        TreeMap<TileColor, Pair<Integer, Integer>> sortedBambooCounter =
+                new TreeMap<>(bambooCounter);
         TreeMap<TileColor, Integer> sortedTilesPlaced = new TreeMap<>(tilesPlaced);
+        TreeMap<String, Integer> sortedActions = new TreeMap<>(actions);
         singleBotStat
-                .append("\t -Number of wins : ")
-                .append(wins)
+                .append(WINS)
+                .append(numericStats.get(WINS))
                 .append(lineJump)
-                .append("\t -Number of Losses : ")
-                .append(losses)
+                .append(LOSSES)
+                .append(numericStats.get(LOSSES))
                 .append(lineJump)
-                .append("\t -Total final score : ")
-                .append(finalScore)
+                .append(IRRIGATIONS_PLACED)
+                .append(numericStats.get(IRRIGATIONS_PLACED))
                 .append(lineJump)
-                .append("\t -Number of irrigations placed : ")
-                .append(irrigationsPlaced)
+                .append(FINAL_SCORE)
+                .append(numericStats.get(FINAL_SCORE))
                 .append(lineJump)
                 .append("\t -Redeemed objectives : ");
         for (ObjectiveTypes objectiveType : sortedObjectives.keySet()) {
@@ -160,22 +211,22 @@ public class SingleBotStatistics {
                     .append(objectivesRedeemed.get(objectiveType));
         }
         singleBotStat.append(lineJump).append("\t -Bamboos eaten :");
-        for (TileColor tileColor : sortedBamboosEaten.keySet()) {
+        for (TileColor tileColor : sortedBambooCounter.keySet()) {
             singleBotStat
                     .append(lineJump)
                     .append(indentation)
                     .append(tileColor)
                     .append(" : ")
-                    .append(bamboosEaten.get(tileColor));
+                    .append(bambooCounter.get(tileColor).getLeft());
         }
         singleBotStat.append(lineJump).append("\t -Bamboos grown :");
-        for (TileColor tileColor : sortedBamboosGrown.keySet()) {
+        for (TileColor tileColor : sortedBambooCounter.keySet()) {
             singleBotStat
                     .append(lineJump)
                     .append(indentation)
                     .append(tileColor)
                     .append(" : ")
-                    .append(bamboosPlanted.get(tileColor));
+                    .append(bambooCounter.get(tileColor).getRight());
         }
         singleBotStat.append(lineJump).append("\t -Tiles placed :");
         for (TileColor tileColor : sortedTilesPlaced.keySet()) {
@@ -186,6 +237,34 @@ public class SingleBotStatistics {
                     .append(" : ")
                     .append(tilesPlaced.get(tileColor));
         }
+        singleBotStat.append(lineJump).append("\t -Rolled Weathers :");
+        for (Map.Entry<String, Pair<Integer, Integer>> entry : weathers.entrySet()) {
+            singleBotStat
+                    .append(lineJump)
+                    .append(indentation)
+                    .append(entry.getKey())
+                    .append(" : ")
+                    .append(entry.getValue().getRight());
+        }
+        singleBotStat.append(lineJump).append("\t -Applied Weathers :");
+        for (Map.Entry<String, Pair<Integer, Integer>> entry : weathers.entrySet()) {
+            singleBotStat
+                    .append(lineJump)
+                    .append(indentation)
+                    .append(entry.getKey())
+                    .append(" : ")
+                    .append(entry.getValue().getLeft());
+        }
+        singleBotStat.append(lineJump).append("\t -Average choice of action :");
+        for (Map.Entry<String, Integer> entry : sortedActions.entrySet()) {
+            singleBotStat
+                    .append(lineJump)
+                    .append(indentation)
+                    .append(entry.getKey())
+                    .append(" : ")
+                    .append((Float.valueOf(entry.getValue()) / totalNbOfAction) * 100)
+                    .append("%");
+        }
         return singleBotStat.toString();
     }
 
@@ -194,26 +273,52 @@ public class SingleBotStatistics {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SingleBotStatistics that = (SingleBotStatistics) o;
-        return wins == that.wins
-                && losses == that.losses
-                && irrigationsPlaced == that.irrigationsPlaced
-                && finalScore == that.finalScore
+        return totalNbOfAction == that.totalNbOfAction
+                && numericStats.equals(that.numericStats)
                 && objectivesRedeemed.equals(that.objectivesRedeemed)
-                && bamboosEaten.equals(that.bamboosEaten)
-                && bamboosPlanted.equals(that.bamboosPlanted)
-                && tilesPlaced.equals(that.tilesPlaced);
+                && bambooCounter.equals(that.bambooCounter)
+                && tilesPlaced.equals(that.tilesPlaced)
+                && weathers.equals(that.weathers)
+                && actions.equals(that.actions);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-                wins,
-                losses,
+                totalNbOfAction,
+                numericStats,
                 objectivesRedeemed,
-                bamboosEaten,
-                bamboosPlanted,
-                irrigationsPlaced,
-                finalScore,
-                tilesPlaced);
+                bambooCounter,
+                tilesPlaced,
+                weathers,
+                actions);
+    }
+
+    public Map<String, Integer> getNumericStats() {
+        return numericStats;
+    }
+
+    public int getTotalNbOfAction() {
+        return totalNbOfAction;
+    }
+
+    public Map<ObjectiveTypes, Integer> getObjectivesRedeemed() {
+        return objectivesRedeemed;
+    }
+
+    public Map<TileColor, Pair<Integer, Integer>> getBambooCounter() {
+        return bambooCounter;
+    }
+
+    public Map<TileColor, Integer> getTilesPlaced() {
+        return tilesPlaced;
+    }
+
+    public Map<String, Pair<Integer, Integer>> getWeathers() {
+        return weathers;
+    }
+
+    public Map<String, Integer> getActions() {
+        return actions;
     }
 }
