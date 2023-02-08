@@ -45,7 +45,7 @@ public class SmartObjective extends PriorityBot {
                 && pandaObjectives.get(0).getPoints()
                                 + botState.getObjectiveScore()
                                 + EmperorObjective.EMPEROR_BONUS
-                        > new HistoryAnalysis(history).getMaxBotScore() + ARBITRARY_MARGIN) {
+                        > HistoryAnalysis.getMaxCurrentBotScore(history) + ARBITRARY_MARGIN) {
             return new RedeemObjectiveAction(pandaObjectives.get(0));
         }
 

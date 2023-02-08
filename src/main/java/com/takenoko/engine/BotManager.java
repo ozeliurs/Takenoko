@@ -56,7 +56,7 @@ public class BotManager {
     }
 
     /** Default constructor for the class */
-    protected BotManager() {
+    public BotManager() {
         this(DEFAULT_CONSOLE_USER_INTERFACE, DEFAULT_NAME, DEFAULT_BOT, new BotState());
     }
 
