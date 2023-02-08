@@ -24,13 +24,11 @@ public abstract class Weather {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Weather weather = (Weather) o;
-        return toString().equals(weather.toString());
+        return o != null && getClass() == o.getClass();
     }
 
     @Override
     public int hashCode() {
-        return toString().hashCode();
+        return this.getClass().hashCode();
     }
 }
