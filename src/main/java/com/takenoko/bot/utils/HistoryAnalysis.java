@@ -2,7 +2,6 @@ package com.takenoko.bot.utils;
 
 import com.takenoko.engine.History;
 import com.takenoko.objective.Objective;
-
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
@@ -10,8 +9,7 @@ import java.util.stream.Collectors;
 
 public class HistoryAnalysis {
 
-    private HistoryAnalysis() {
-    }
+    private HistoryAnalysis() {}
 
     /**
      * Retrieves the current score for each bot manager in the history.
