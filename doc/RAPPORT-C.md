@@ -2,12 +2,25 @@
 
 ## Summary
 1. [Progress Report](#Progress-Report)
-    1. test
-    2. test2
+   1. test
+   2. test2
 2. [Architecture and Quality](#Architecture-and-Quality)
-    1. test
+   1. test
 3. [Process](#Process)
-    1. [Git Branching Strategy](#Git-Branching-Strategy)
+   1. [Task Management](#Task-Management)
+      1. [Agile Principles](#Agile-Principles)
+      2. [Github](#Github)
+         1. [Releases](#Releases)
+         2. [Tag](#tags)
+         3. [GitHub Project](#GitHub-Project)
+   2. [Git Branching Strategy](#Git-Branching-Strategy)
+   3. [Continuous Development and Automation](#Continuous-Development-and-Automation)
+      1. [Format check](#Format-check)
+      2. [Maven compiler](#Maven-compiler)
+      3. [Continuous integration with SonarQube](#Continous-integration-with-SonarQube)
+         1. [Jacoco](#Jacoco)
+         2. [PIT test](#PIT-test)
+         3. [Package](#Package)
 
 ---
 
