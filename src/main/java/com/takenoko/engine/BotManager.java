@@ -97,6 +97,7 @@ public class BotManager {
         if (board.getRoundNumber() > 0) {
             board.rollWeather();
             displayMessage(this.getName() + " rolled weather: " + board.peekWeather());
+            singleBotStatistics.updateWeathersRolled(board.peekWeather().toString());
             botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         }
         while (canPlayBot()) {
@@ -194,6 +195,7 @@ public class BotManager {
 
     public void reset() {
         this.botState.reset();
+        singleBotStatistics.reset();
     }
 
     public int getObjectiveScore() {
