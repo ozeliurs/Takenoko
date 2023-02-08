@@ -1,26 +1,27 @@
 # Takenoko 🎋 Knowledge Report
 
-**WRITE IN ENGLISH MOTHERDUCKER 🦆 !!!**
-
-• un résumé des fonctionnalités réalisées sur tout le jeu (couverture des règles du jeu indépendamment de ce qui était demandé cette semaine), et éventuellement la liste de ce qui n'a pas été fait.
-
-• un résumé de ce qui a été fait pour les logs (en quelques lignes max, quels choix ont été faits pour les réaliser)
-
-• un résumé de ce qui a été fait pour les statistiques en CSV (en quelques lignes max, quels choix ont été faits pour les réaliser)
-
-• un résumé de ce qui a été fait pour le bot spécifique demandé, et éventuellement une comparaison avec votre meilleur bot et une analyse de pourquoi celui qui gagne est le meilleur
-
 ## Summary
 1. [Progress Report](#Progress-Report)
-    1. test
-    2. test2
+   1. test
+   2. test2
 2. [Architecture and Quality](#Architecture-and-Quality)
-    1. test
+   1. test
 3. [Process](#Process)
-    1. [Git Branching Strategy](#Git-Branching-Strategy)
-
----
-
+   1. [Task Management](#Task-Management)
+      1. [Agile Principles](#Agile-Principles)
+      2. [Github](#Github)
+         1. [Releases](#Releases)
+         2. [Tag](#tags)
+         3. [GitHub Project](#GitHub-Project)
+   2. [Git Branching Strategy](#Git-Branching-Strategy)
+   3. [Continuous Development and Automation](#Continuous-Development-and-Automation)
+      1. [Format check](#Format-check)
+      2. [Maven compiler](#Maven-compiler)
+      3. [Continuous integration with SonarQube](#Continous-integration-with-SonarQube)
+         1. [Jacoco](#Jacoco)
+         2. [PIT test](#PIT-test)
+         3. [Package](#Package)
+ 
 ## Progress Report
 
 
@@ -28,13 +29,23 @@
 
 ## Architecture and Quality
 
+<p align="center">
+   <img src="images/architecture/ps5-architecture-bot-manager.svg" alt="svg" width="50%">
+</p>
+
 ---
 
 ## Process
 
 ### Roles and Involvement
 
-- Qui est responsable de quoi / qui a fait quoi ?
+<p align="center">
+   <img src="images/github-screenshots/assignees-stats.png" alt="releases" width="20%">
+</p>
+
+<p align="center">
+   <img src="images/github-screenshots/assignees-graph.png" alt="releases" width="50%">
+</p>
 
 ### Task Management
 
@@ -45,63 +56,76 @@ To do so, we decided to work with *Releases*, *User Stories* and *Features*.
 
 *Releases* are meant to be **regular** and **must be stable**. They also must add value to the project. We did weekly releases that were each containing about 3 *User stories*.
 
-⚠️ SCREENSHOT OF THE RELEASES FROM GITHUB ⚠️
+<p align="center">
+   <img src="images/github-screenshots/releases.png" alt="releases" width="20%">
+</p>
 
 The *User Stories* are used to specify needs from the clients or developers.
 We tried to follow this naming convention for most of our them :
 - "As a dev, I can ... in order to ..."
 - "As a bot, I can ... in order to ..."
 
-⚠️ SCREENSHOT OF THE USER STORIES FROM GITHUB ⚠️
+<p align="center">
+   <img src="images/github-screenshots/user-story.png" alt="user-story" width="50%">
+</p>
 
 However, some have different names...
 
 Concerning the *Features*, they are contained inside a *User Story*. Many *features* can be inside a single user story, but a *feature* only belongs to one *user story*.
 The *Features* are used to define a specific need to add to the project.
 
-⚠️ SCREENSHOT OF THE FEATURES FROM GITHUB ⚠️
+<p align="center">
+   <img src="images/github-screenshots/feature.png" alt="feature" width="50%">
+</p>
 
-#### Github
+#### GitHub
 
 ##### Releases
 
-We only used Github for our task management as we could do everything we wanted there.
+We only used GitHub for our task management as we could do everything we wanted there.
 
-The *Releases* were specified using *Milestones* from Github. As we were aiming to do one release per week, we also had one milestone per week.
-However, we fell behind some of the deadlines, especially during the Christmas holidays. This means that we have less releases than weeks of work. However, they still follow this naming convention : "WEEK 00 - [ANIMAL NAME]". The week number was increased by one each time we did a release.
+The *Releases* were specified using *Milestones* from GitHub. As we were aiming to do one release per week, we also had one milestone per week.
+However, we fell behind some deadlines, especially during the Christmas holidays. This means that we have less releases than weeks of work. However, they still follow this naming convention : "WEEK 00 - [ANIMAL NAME]". The week number was increased by one each time we did a release.
 
-⚠️ SCREENSHOT OF THE MILESTONES ⚠️
+<p align="center">
+   <img src="images/github-screenshots/milestones.png" alt="milestones" width="50%">
+</p>
 
 Each time we did a release, we also created a package that could then be installed using Maven.
 One version number is missing, because during the holiday we should have created package 0.3.0. But we did not, so later we released 0.4.0 as 0.3.0. And then we decided to bump the version up to get back to the correct one.
 
-⚠️ SCREENSHOT OF THE PACKAGES ⚠️
+<p align="center">
+   <img src="images/github-screenshots/packages.png" alt="packages" width="50%">
+</p>
 
-⚠️ SCREENSHOT OF THE MAVEN CODE TO USE THE PACKAGE ⚠️
-
+<p align="center">
+   <img src="images/github-screenshots/package-maven.png" alt="package-maven" width="50%">
+</p>
 
 ##### Tags
 
-We used tags on all the issues to specify if it was a *User Story* or a *Feature*. The issues could also have differents tags like "docs", "test", "fix" or "hotfix".
+We used tags on all the issues to specify if it was a *User Story* or a *Feature*. The issues could also have different tags like "docs", "test", "fix" or "hotfix".
 
-⚠️ SCREENSHOT OF THE TAGS ⚠️
+##### GitHub Project
 
-##### Github Project
-
-All of our issues where assigned to a Github Project. Since they were also correctly tagged, and we were opening and closing them when needed, we had some statistics and graphs to look at.
+All of our issues where assigned to a GitHub Project. Since they were also correctly tagged, and we were opening and closing them when needed, we had some statistics and graphs to look at.
 We also tried to use the kanban provided but found out that, since issues were added gradually, we could just follow their status in the list of issues.
 
 You can find two of the interesting graphs below.
 
-⚠️ SCREENSHOT OF THE PROGRESS REPORT BY TAGS ⚠️
+<p align="center">
+   <img src="images/github-screenshots/issues-by-status.png" alt="issues-by-status" width="50%">
+</p>
 
-⚠️ SCREENSHOT OF THE PROGRESS REPORT BY STATUS ⚠️
+<p align="center">
+   <img src="images/github-screenshots/issues-by-tag.png" alt="issues-by-tag" width="50%">
+</p>
 
 ### Git Branching Strategy
 
 Our strategy does not correspond to any other one that we could find online.
 However, it is inspired by the [Git Flow Strategy](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). We modified it in order to have branches corresponding to how our tasks were organized.
-Those tasks were organized in order to corresponds to our we are [managing our tasks](#Task-Management). This implies that we have the following branch categories :
+Those tasks were organized in order to correspond to our we are [managing our tasks](#Task-Management). This implies that we have the following branch categories :
 - `main` : contains the stable releases
 - `develop` : contains the stable user stories
 - `us-` : contains a user story currently being developed
@@ -148,7 +172,7 @@ gitGraph
 
 ### Continuous Development and Automation
 
-#### Github Hooks
+#### GitHub Hooks
 
 #### Format check
 
