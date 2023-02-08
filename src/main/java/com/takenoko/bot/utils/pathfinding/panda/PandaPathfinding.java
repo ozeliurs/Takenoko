@@ -17,6 +17,7 @@ public class PandaPathfinding {
         return botState.getNotAchievedObjectives().stream()
                 .filter(PandaObjective.class::isInstance)
                 .map(PandaObjective.class::cast)
+                .distinct()
                 .map(
                         pandaObjective ->
                                 Pair.of(
@@ -41,6 +42,13 @@ public class PandaPathfinding {
                                                                         // possible
                                                                         .toList()
                                                                         .contains(positionToEat))
+                                                .map(
+                                                        positionToEat ->
+                                                                positionToEat
+                                                                        .sub(
+                                                                                board.getPandaPosition()
+                                                                                        .toPositionVector())
+                                                                        .toPositionVector())
                                                 .toList()))
                 .filter(v -> !v.getValue().isEmpty())
                 .collect(Collectors.toMap(Pair::getKey, Pair::getValue));

@@ -24,6 +24,7 @@ public class GardenerPathfinding {
                         // SimpleGardenerObjective Moves
                         botState.getNotAchievedObjectives().stream()
                                 .filter(v -> (v.getClass() == SingleGardenerObjective.class))
+                                .distinct()
                                 .map(
                                         v ->
                                                 Pair.of(
