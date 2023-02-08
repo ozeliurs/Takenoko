@@ -21,6 +21,7 @@ import com.takenoko.actions.weather.ChooseAndApplyWeatherAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
+import com.takenoko.engine.History;
 import com.takenoko.layers.irrigation.EdgePosition;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
@@ -40,7 +41,7 @@ public class FullRandomBot implements Bot {
     }
 
     @Override
-    public Action chooseAction(Board board, BotState botState) {
+    public Action chooseAction(Board board, BotState botState, History history) {
         List<Action> actions = new ArrayList<>();
 
         if (botState.getAvailableActions().contains(ChooseIfApplyWeatherAction.class)) {

@@ -200,4 +200,9 @@ public class ObjectiveManager {
     public int hashCode() {
         return Objects.hash(objectives, achievedObjectives, redeemedObjectives);
     }
+
+    public List<Objective> getNotAchievedObjectives() {
+        return new ArrayList<>(
+                objectives.stream().filter(objective -> !objective.isAchieved()).toList());
+    }
 }

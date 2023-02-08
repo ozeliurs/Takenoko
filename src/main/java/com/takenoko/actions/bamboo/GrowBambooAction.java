@@ -8,6 +8,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
+import java.util.Objects;
 
 /** Action that grows bamboo at a given position. */
 @ActionAnnotation(ActionType.FORCED)
@@ -31,5 +32,18 @@ public class GrowBambooAction implements Action {
             return new ActionResult();
         }
         throw new IllegalStateException("Cannot grow bamboo at " + position);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GrowBambooAction that = (GrowBambooAction) o;
+        return Objects.equals(position, that.position);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(position);
     }
 }

@@ -2,7 +2,7 @@ package com.takenoko.asset;
 
 /** IrrigationDeck represents the irrigation deck, defaults to 20 irrigation. */
 public class IrrigationDeck {
-    private static final int DEFAULT_SIZE = 20;
+    public static final int DEFAULT_SIZE = 20;
     private int size;
 
     /** Creates a new IrrigationDeck with the default size. */

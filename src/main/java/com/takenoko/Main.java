@@ -61,5 +61,6 @@ public class Main {
         } else {
             logger.log(Level.INFO, "no parameters");
         }
+
     }
 }

@@ -246,4 +246,20 @@ class PatternTest {
         Curve pinkCurve = new Curve(TileColor.PINK);
         assertThat(pinkCurve.match(board)).hasSize(2);
     }
+
+    @Nested
+    @Disabled
+    @DisplayName("method getSubsetMatchPattern")
+    class TestGetSubsetMatchPattern {
+        @Test
+        @Disabled
+        @DisplayName("should return the subset of the pattern that matches the board")
+        void getSubsetMatchPattern_shouldReturnSubsetOfPatternThatMatchesBoard() {
+            Pattern pattern = PatternFactory.LINE.createPattern(TileColor.ANY);
+
+            // List<Shape> result = pattern.getSubsetMatchPattern(board,
+            // pattern.getElements().size(), true);
+            // assertThat(result).containsExactly(new Shape(TileColor.YELLOW, ));
+        }
+    }
 }

@@ -403,4 +403,8 @@ public class Board {
     public void analyze() {
         boardStatistics.analyzeBoard(this);
     }
+    
+    public List<EdgePosition> getPlacedIrrigations() {
+        return irrigationLayer.getIrrigationChannelsPositions().stream().toList();
+    }
 }
