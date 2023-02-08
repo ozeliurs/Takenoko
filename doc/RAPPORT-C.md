@@ -45,21 +45,21 @@ To do so, we decided to work with *Releases*, *User Stories* and *Features*.
 
 *Releases* are meant to be **regular** and **must be stable**. They also must add value to the project. We did weekly releases that were each containing about 3 *User stories*.
 
-⚠️ SCREENSHOT OF THE RELEASES FROM GITHUB ⚠️
+![Releases](images/releases.png)
 
 The *User Stories* are used to specify needs from the clients or developers.
 We tried to follow this naming convention for most of our them :
 - "As a dev, I can ... in order to ..."
 - "As a bot, I can ... in order to ..."
 
-⚠️ SCREENSHOT OF THE USER STORIES FROM GITHUB ⚠️
+![User story](images/user-story.png)
 
 However, some have different names...
 
 Concerning the *Features*, they are contained inside a *User Story*. Many *features* can be inside a single user story, but a *feature* only belongs to one *user story*.
 The *Features* are used to define a specific need to add to the project.
 
-⚠️ SCREENSHOT OF THE FEATURES FROM GITHUB ⚠️
+![Feature](images/feature.png)
 
 #### Github
 
@@ -68,40 +68,37 @@ The *Features* are used to define a specific need to add to the project.
 We only used Github for our task management as we could do everything we wanted there.
 
 The *Releases* were specified using *Milestones* from Github. As we were aiming to do one release per week, we also had one milestone per week.
-However, we fell behind some of the deadlines, especially during the Christmas holidays. This means that we have less releases than weeks of work. However, they still follow this naming convention : "WEEK 00 - [ANIMAL NAME]". The week number was increased by one each time we did a release.
+However, we fell behind some deadlines, especially during the Christmas holidays. This means that we have less releases than weeks of work. However, they still follow this naming convention : "WEEK 00 - [ANIMAL NAME]". The week number was increased by one each time we did a release.
 
-⚠️ SCREENSHOT OF THE MILESTONES ⚠️
+![Milestones](images/milestones.png)
 
 Each time we did a release, we also created a package that could then be installed using Maven.
 One version number is missing, because during the holiday we should have created package 0.3.0. But we did not, so later we released 0.4.0 as 0.3.0. And then we decided to bump the version up to get back to the correct one.
 
-⚠️ SCREENSHOT OF THE PACKAGES ⚠️
+![Packages](images/packages.png)
 
-⚠️ SCREENSHOT OF THE MAVEN CODE TO USE THE PACKAGE ⚠️
-
+![Packages Maven](images/package-maven.png)
 
 ##### Tags
 
 We used tags on all the issues to specify if it was a *User Story* or a *Feature*. The issues could also have differents tags like "docs", "test", "fix" or "hotfix".
 
-⚠️ SCREENSHOT OF THE TAGS ⚠️
-
-##### Github Project
+##### GitHub Project
 
 All of our issues where assigned to a Github Project. Since they were also correctly tagged, and we were opening and closing them when needed, we had some statistics and graphs to look at.
 We also tried to use the kanban provided but found out that, since issues were added gradually, we could just follow their status in the list of issues.
 
 You can find two of the interesting graphs below.
 
-⚠️ SCREENSHOT OF THE PROGRESS REPORT BY TAGS ⚠️
+![Issues by status](images/issues-by-status.png)
 
-⚠️ SCREENSHOT OF THE PROGRESS REPORT BY STATUS ⚠️
+![Issues by tag](images/issues-by-tag.png)
 
 ### Git Branching Strategy
 
 Our strategy does not correspond to any other one that we could find online.
 However, it is inspired by the [Git Flow Strategy](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). We modified it in order to have branches corresponding to how our tasks were organized.
-Those tasks were organized in order to corresponds to our we are [managing our tasks](#Task-Management). This implies that we have the following branch categories :
+Those tasks were organized in order to correspond to our we are [managing our tasks](#Task-Management). This implies that we have the following branch categories :
 - `main` : contains the stable releases
 - `develop` : contains the stable user stories
 - `us-` : contains a user story currently being developed
