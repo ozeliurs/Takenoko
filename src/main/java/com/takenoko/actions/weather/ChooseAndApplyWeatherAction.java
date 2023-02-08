@@ -20,6 +20,7 @@ public class ChooseAndApplyWeatherAction implements Action {
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
         botManager.displayMessage(botManager.getName() + " chose and applied weather " + weather);
+        botManager.getSingleBotStatistics().updateWeathersApplied(weather.toString());
         return new ActionResult(weather.apply(board, botManager), 0);
     }
 }
