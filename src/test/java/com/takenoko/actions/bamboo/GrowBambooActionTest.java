@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.engine.SingleBotStatistics;
+import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.DisplayName;
@@ -35,6 +36,7 @@ class GrowBambooActionTest {
             Board board = mock(Board.class);
             BotManager botManager = mock(BotManager.class);
             when(botManager.getSingleBotStatistics()).thenReturn(mock(SingleBotStatistics.class));
+            when(board.growBamboo(any())).thenReturn(new LayerBambooStack(1));
             PositionVector position = mock(PositionVector.class);
             when(board.isBambooGrowableAt(any())).thenReturn(true);
             GrowBambooAction growBambooAction = new GrowBambooAction(position);
