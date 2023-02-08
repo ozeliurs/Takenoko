@@ -145,7 +145,8 @@ public class GameEngine {
                 }
                 consoleUserInterface.displayMessage(
                         "===== <" + botManager.getName() + "> is playing =====");
-                botManager.playBot(board, history.getHistoryWithoutCurrentBotManager(botManager));
+                history.setCurrentBotManagerUUID(botManager.getUniqueID());
+                botManager.playBot(board, history.copy());
 
                 if (botManager.getRedeemedObjectives().size()
                                 >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(botManagers.size())

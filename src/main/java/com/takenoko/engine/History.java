@@ -1,61 +1,71 @@
 package com.takenoko.engine;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class History {
+/** Class that stores the history of a game. */
+public class History extends HashMap<UUID, List<HistoryItem>> {
 
-    private final Map<UUID, List<HistoryItem>> historyMap;
-
-    public History(Map<UUID, List<HistoryItem>> historyMap) {
-        this.historyMap = historyMap;
-    }
+    private UUID currentBotManagerUUID;
 
     public History(History historyMap) {
-        this.historyMap = new HashMap<>(historyMap.historyMap);
+        super(historyMap);
+        currentBotManagerUUID = historyMap.currentBotManagerUUID;
     }
 
     public History() {
-        this.historyMap = new HashMap<>();
+        super();
     }
 
-    public History getHistoryWithoutCurrentBotManager(BotManager botManager) {
-        History copy = copy();
-        copy.historyMap.remove(botManager.getUniqueID());
-        return copy;
+    public UUID getCurrentBotManagerUUID() {
+        return currentBotManagerUUID;
+    }
+
+    public void setCurrentBotManagerUUID(UUID currentBotManagerUUID) {
+        this.currentBotManagerUUID = currentBotManagerUUID;
     }
 
     public void addBotManager(BotManager botManager) {
-        historyMap.put(
-                botManager.getUniqueID(),
-                new ArrayList<>(List.of(new HistoryItem(null, List.of()))));
+        put(botManager.getUniqueID(), new ArrayList<>(List.of()));
     }
 
     public void addHistoryItem(BotManager botManager, HistoryItem historyItem) {
-        historyMap
-                .computeIfAbsent(botManager.getUniqueID(), k -> new ArrayList<>())
-                .add(historyItem);
-    }
-
-    public List<HistoryItem> getHistory(UUID uniqueID) {
-        return historyMap.computeIfAbsent(uniqueID, k -> new ArrayList<>());
-    }
-
-    public List<UUID> getBotManagerUUIDs() {
-        return new ArrayList<>(historyMap.keySet());
+        computeIfAbsent(botManager.getUniqueID(), k -> new ArrayList<>()).add(historyItem);
     }
 
     public History copy() {
         return new History(this);
     }
 
-    public List<HistoryItem> getLatestHistoryItem() {
-        return historyMap.values().stream()
+    /**
+     * Returns a map of the latest history item for each bot manager in the history.
+     *
+     * @return a map of the latest history item for each bot manager.
+     */
+    public Map<UUID, HistoryItem> getLatestHistoryItems() {
+        return entrySet().stream()
                 .map(
-                        historyItems -> {
-                            ArrayList<HistoryItem> reversed = new ArrayList<>(historyItems);
+                        uuidListEntry -> {
+                            ArrayList<HistoryItem> reversed =
+                                    new ArrayList<>(uuidListEntry.getValue());
                             Collections.reverse(reversed);
-                            return reversed.get(0);
+                            return new AbstractMap.SimpleEntry<>(
+                                    uuidListEntry.getKey(), reversed.get(0));
                         })
-                .toList();
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        History history = (History) o;
+        return Objects.equals(getCurrentBotManagerUUID(), history.getCurrentBotManagerUUID());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getCurrentBotManagerUUID());
     }
 }
