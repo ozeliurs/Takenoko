@@ -22,7 +22,7 @@ public class SmartGardener extends PriorityBot {
                 for (PositionVector position : objective.getValue()) {
                     this.addActionWithPriority(
                             new MoveGardenerAction(position),
-                            objective.getKey().getPoints() - (double) objective.getValue().size());
+                            objective.getKey().getPoints() / (double) objective.getValue().size());
                 }
             }
         }
