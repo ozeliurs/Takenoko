@@ -22,14 +22,19 @@
          2. [PIT test](#PIT-test)
          3. [Package](#Package)
 
----
-
+   
 ## Progress Report
+
 
 
 ---
 
 ## Architecture and Quality
+
+
+<p align="center">
+   <img src="ps5-architecture-bot-manager.svg" alt="svg" width="50%">
+</p>
 
 ---
 
@@ -47,7 +52,7 @@ To do so, we decided to work with *Releases*, *User Stories* and *Features*.
 *Releases* are meant to be **regular** and **must be stable**. They also must add value to the project. We did weekly releases that were each containing about 3 *User stories*.
 
 <p align="center">
-   <img src="images/releases.png" alt="releases" width="20%">
+   <img src="images/github-screenshots/releases.png" alt="releases" width="20%">
 </p>
 
 The *User Stories* are used to specify needs from the clients or developers.
@@ -56,7 +61,7 @@ We tried to follow this naming convention for most of our them :
 - "As a bot, I can ... in order to ..."
 
 <p align="center">
-   <img src="images/user-story.png" alt="user-story" width="50%">
+   <img src="images/github-screenshots/user-story.png" alt="user-story" width="50%">
 </p>
 
 However, some have different names...
@@ -65,7 +70,7 @@ Concerning the *Features*, they are contained inside a *User Story*. Many *featu
 The *Features* are used to define a specific need to add to the project.
 
 <p align="center">
-   <img src="images/feature.png" alt="feature" width="50%">
+   <img src="images/github-screenshots/feature.png" alt="feature" width="50%">
 </p>
 
 #### GitHub
@@ -78,18 +83,18 @@ The *Releases* were specified using *Milestones* from GitHub. As we were aiming 
 However, we fell behind some deadlines, especially during the Christmas holidays. This means that we have less releases than weeks of work. However, they still follow this naming convention : "WEEK 00 - [ANIMAL NAME]". The week number was increased by one each time we did a release.
 
 <p align="center">
-   <img src="images/milestones.png" alt="milestones" width="50%">
+   <img src="images/github-screenshots/milestones.png" alt="milestones" width="50%">
 </p>
 
 Each time we did a release, we also created a package that could then be installed using Maven.
 One version number is missing, because during the holiday we should have created package 0.3.0. But we did not, so later we released 0.4.0 as 0.3.0. And then we decided to bump the version up to get back to the correct one.
 
 <p align="center">
-   <img src="images/packages.png" alt="packages" width="50%">
+   <img src="images/github-screenshots/packages.png" alt="packages" width="50%">
 </p>
 
 <p align="center">
-   <img src="images/package-maven.png" alt="package-maven" width="50%">
+   <img src="images/github-screenshots/package-maven.png" alt="package-maven" width="50%">
 </p>
 
 ##### Tags
@@ -104,11 +109,11 @@ We also tried to use the kanban provided but found out that, since issues were a
 You can find two of the interesting graphs below.
 
 <p align="center">
-   <img src="images/issues-by-status.png" alt="issues-by-status" width="50%">
+   <img src="images/github-screenshots/issues-by-status.png" alt="issues-by-status" width="50%">
 </p>
 
 <p align="center">
-   <img src="images/issues-by-tag.png" alt="issues-by-tag" width="50%">
+   <img src="images/github-screenshots/issues-by-tag.png" alt="issues-by-tag" width="50%">
 </p>
 
 ### Git Branching Strategy
