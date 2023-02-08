@@ -42,6 +42,7 @@ public class PlaceTileAction implements Action {
             botManager
                     .getSingleBotStatistics()
                     .updateTilesPlacedCounter(board.getTileAt(positionVector).getColor());
+            botManager.getSingleBotStatistics().updateActions(getClass().getSimpleName());
         }
         return new ActionResult(1);
     }

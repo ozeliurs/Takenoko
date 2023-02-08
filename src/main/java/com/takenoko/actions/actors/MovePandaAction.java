@@ -54,6 +54,7 @@ public class MovePandaAction implements DefaultAction {
             botManager
                     .getSingleBotStatistics()
                     .updateEatenBambooCounter(board.getTileAt(board.getPandaPosition()).getColor());
+            botManager.getSingleBotStatistics().updateActions(getClass().getSimpleName());
             botManager.displayMessage(
                     "Panda ate one "
                             + board.getTileAt(board.getPandaPosition()).getColor()
