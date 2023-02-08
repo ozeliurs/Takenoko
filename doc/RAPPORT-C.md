@@ -45,21 +45,21 @@ To do so, we decided to work with *Releases*, *User Stories* and *Features*.
 
 *Releases* are meant to be **regular** and **must be stable**. They also must add value to the project. We did weekly releases that were each containing about 3 *User stories*.
 
-![Releases](images/releases.png)
+<img src="images/releases.png" alt="releases" width="50%">
 
 The *User Stories* are used to specify needs from the clients or developers.
 We tried to follow this naming convention for most of our them :
 - "As a dev, I can ... in order to ..."
 - "As a bot, I can ... in order to ..."
 
-![User story](images/user-story.png)
+<img src="images/user-story.png" alt="user-story" width="50%">
 
 However, some have different names...
 
 Concerning the *Features*, they are contained inside a *User Story*. Many *features* can be inside a single user story, but a *feature* only belongs to one *user story*.
 The *Features* are used to define a specific need to add to the project.
 
-![Feature](images/feature.png)
+<img src="images/feature.png" alt="feature" width="50%">
 
 #### Github
 
@@ -67,17 +67,17 @@ The *Features* are used to define a specific need to add to the project.
 
 We only used Github for our task management as we could do everything we wanted there.
 
-The *Releases* were specified using *Milestones* from Github. As we were aiming to do one release per week, we also had one milestone per week.
+The *Releases* were specified using *Milestones* from GitHub. As we were aiming to do one release per week, we also had one milestone per week.
 However, we fell behind some deadlines, especially during the Christmas holidays. This means that we have less releases than weeks of work. However, they still follow this naming convention : "WEEK 00 - [ANIMAL NAME]". The week number was increased by one each time we did a release.
 
-![Milestones](images/milestones.png)
+<img src="images/milestones.png" alt="milestones" width="50%">
 
 Each time we did a release, we also created a package that could then be installed using Maven.
 One version number is missing, because during the holiday we should have created package 0.3.0. But we did not, so later we released 0.4.0 as 0.3.0. And then we decided to bump the version up to get back to the correct one.
 
-![Packages](images/packages.png)
+<img src="images/packages.png" alt="packages" width="50%">
 
-![Packages Maven](images/package-maven.png)
+<img src="images/package-maven.png" alt="package-maven" width="50%">
 
 ##### Tags
 
@@ -90,9 +90,9 @@ We also tried to use the kanban provided but found out that, since issues were a
 
 You can find two of the interesting graphs below.
 
-![Issues by status](images/issues-by-status.png)
+<img src="images/issues-by-status.png" alt="issues-by-status" width="50%">
 
-![Issues by tag](images/issues-by-tag.png)
+<img src="images/issues-by-tag.png" alt="issues-by-tag" width="50%">
 
 ### Git Branching Strategy
 
