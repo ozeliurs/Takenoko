@@ -45,21 +45,21 @@ To do so, we decided to work with *Releases*, *User Stories* and *Features*.
 
 *Releases* are meant to be **regular** and **must be stable**. They also must add value to the project. We did weekly releases that were each containing about 3 *User stories*.
 
-<img src="images/releases.png" alt="releases" width="50%">
+<img src="images/releases.png" alt="releases" width="20%" style="display: block; margin: 0 auto">
 
 The *User Stories* are used to specify needs from the clients or developers.
 We tried to follow this naming convention for most of our them :
 - "As a dev, I can ... in order to ..."
 - "As a bot, I can ... in order to ..."
 
-<img src="images/user-story.png" alt="user-story" width="50%">
+<img src="images/user-story.png" alt="user-story" width="50%" style="display: block; margin: 0 auto">
 
 However, some have different names...
 
 Concerning the *Features*, they are contained inside a *User Story*. Many *features* can be inside a single user story, but a *feature* only belongs to one *user story*.
 The *Features* are used to define a specific need to add to the project.
 
-<img src="images/feature.png" alt="feature" width="50%">
+<img src="images/feature.png" alt="feature" width="50%" style="display: block; margin: 0 auto">
 
 #### Github
 
@@ -70,18 +70,18 @@ We only used Github for our task management as we could do everything we wanted 
 The *Releases* were specified using *Milestones* from GitHub. As we were aiming to do one release per week, we also had one milestone per week.
 However, we fell behind some deadlines, especially during the Christmas holidays. This means that we have less releases than weeks of work. However, they still follow this naming convention : "WEEK 00 - [ANIMAL NAME]". The week number was increased by one each time we did a release.
 
-<img src="images/milestones.png" alt="milestones" width="50%">
+<img src="images/milestones.png" alt="milestones" width="50%" style="display: block; margin: 0 auto">
 
 Each time we did a release, we also created a package that could then be installed using Maven.
 One version number is missing, because during the holiday we should have created package 0.3.0. But we did not, so later we released 0.4.0 as 0.3.0. And then we decided to bump the version up to get back to the correct one.
 
-<img src="images/packages.png" alt="packages" width="50%">
+<img src="images/packages.png" alt="packages" width="50%" style="display: block; margin: 0 auto">
 
-<img src="images/package-maven.png" alt="package-maven" width="50%">
+<img src="images/package-maven.png" alt="package-maven" width="50%" style="display: block; margin: 0 auto">
 
 ##### Tags
 
-We used tags on all the issues to specify if it was a *User Story* or a *Feature*. The issues could also have differents tags like "docs", "test", "fix" or "hotfix".
+We used tags on all the issues to specify if it was a *User Story* or a *Feature*. The issues could also have different tags like "docs", "test", "fix" or "hotfix".
 
 ##### GitHub Project
 
@@ -90,9 +90,9 @@ We also tried to use the kanban provided but found out that, since issues were a
 
 You can find two of the interesting graphs below.
 
-<img src="images/issues-by-status.png" alt="issues-by-status" width="50%">
+<img src="images/issues-by-status.png" alt="issues-by-status" width="50%" style="display: block; margin: 0 auto">
 
-<img src="images/issues-by-tag.png" alt="issues-by-tag" width="50%">
+<img src="images/issues-by-tag.png" alt="issues-by-tag" width="50%" style="display: block; margin: 0 auto">
 
 ### Git Branching Strategy
 
