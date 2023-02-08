@@ -39,7 +39,13 @@
 
 ### Roles and Involvement
 
-TODO LATER
+<p align="center">
+   <img src="images/github-screenshots/assignees-stats.png" alt="releases" width="20%">
+</p>
+
+<p align="center">
+   <img src="images/github-screenshots/assignees-graph.png" alt="releases" width="50%">
+</p>
 
 ### Task Management
 
