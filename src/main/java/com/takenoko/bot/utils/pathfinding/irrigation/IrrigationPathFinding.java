@@ -1,4 +1,4 @@
-package com.takenoko.bot.irrigation.pathfinding;
+package com.takenoko.bot.utils.pathfinding.irrigation;
 
 import com.takenoko.asset.IrrigationDeck;
 import com.takenoko.engine.Board;
