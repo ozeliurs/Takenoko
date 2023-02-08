@@ -98,35 +98,35 @@ public class HistoryAnalysis {
 
         return history.entrySet().stream()
                 .map(
-                        uuidHistoryEntry ->
+                        uuidListEntry ->
                                 Map.entry(
-                                        uuidHistoryEntry.getKey(),
-                                        uuidHistoryEntry.getValue().stream()
+                                        uuidListEntry.getKey(),
+                                        uuidListEntry.getValue().stream()
                                                                 .filter(
-                                                                        historyItem ->
-                                                                                historyItem
-                                                                                                .action()
-                                                                                                .getClass()
-                                                                                                .equals(
-                                                                                                        MovePandaAction
-                                                                                                                .class)
-                                                                                        || historyItem
-                                                                                                .action()
-                                                                                                .getClass()
-                                                                                                .equals(
-                                                                                                        ForcedMovePandaAction
-                                                                                                                .class))
+                                                                        roundHistory ->
+                                                                                roundHistory
+                                                                                        .stream()
+                                                                                        .anyMatch(
+                                                                                                action ->
+                                                                                                        action.action()
+                                                                                                                        .getClass()
+                                                                                                                        .equals(
+                                                                                                                                MovePandaAction
+                                                                                                                                        .class)
+                                                                                                                || action.action()
+                                                                                                                        .getClass()
+                                                                                                                        .equals(
+                                                                                                                                ForcedMovePandaAction
+                                                                                                                                        .class)))
                                                                 .count()
                                                         / (double)
-                                                                history.get(
-                                                                                uuidHistoryEntry
-                                                                                        .getKey())
+                                                                history.get(uuidListEntry.getKey())
                                                                         .size()
                                                 > threshold))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     static Map<UUID, Boolean> analyzeRushPanda(History history) {
-        return analyzeRushPanda(history, 0.3);
+        return analyzeRushPanda(history, 0.8);
     }
 }

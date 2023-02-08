@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /** Class that stores the history of a game. */
-public class History extends HashMap<UUID, List<HistoryItem>> {
+public class History extends HashMap<UUID, List<TurnHistory>> {
 
     private UUID currentBotManagerUUID;
 
@@ -29,8 +29,8 @@ public class History extends HashMap<UUID, List<HistoryItem>> {
         put(botManager.getUniqueID(), new ArrayList<>(List.of()));
     }
 
-    public void addHistoryItem(BotManager botManager, HistoryItem historyItem) {
-        computeIfAbsent(botManager.getUniqueID(), k -> new ArrayList<>()).add(historyItem);
+    public void addTurnHistory(BotManager botManager, TurnHistory turnHistory) {
+        computeIfAbsent(botManager.getUniqueID(), k -> new ArrayList<>()).add(turnHistory);
     }
 
     public History copy() {
@@ -46,11 +46,14 @@ public class History extends HashMap<UUID, List<HistoryItem>> {
         return entrySet().stream()
                 .map(
                         uuidListEntry -> {
-                            ArrayList<HistoryItem> reversed =
-                                    new ArrayList<>(uuidListEntry.getValue());
-                            Collections.reverse(reversed);
+                            TurnHistory lastRound =
+                                    uuidListEntry
+                                            .getValue()
+                                            .get(uuidListEntry.getValue().size() - 1);
+                            HistoryItem lastHistoryItem = lastRound.get(lastRound.size() - 1);
+
                             return new AbstractMap.SimpleEntry<>(
-                                    uuidListEntry.getKey(), reversed.get(0));
+                                    uuidListEntry.getKey(), lastHistoryItem);
                         })
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }

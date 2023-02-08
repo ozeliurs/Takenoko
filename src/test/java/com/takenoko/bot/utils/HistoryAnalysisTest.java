@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.takenoko.actions.Action;
 import com.takenoko.actions.actors.ForcedMovePandaAction;
 import com.takenoko.actions.actors.MoveGardenerAction;
 import com.takenoko.actions.actors.MovePandaAction;
@@ -32,19 +33,24 @@ class HistoryAnalysisTest {
         botManager = new BotManager();
         HistoryItem historyItem4Points = mock(HistoryItem.class);
         PandaObjective pandaObjective = mock(PandaObjective.class);
+        TurnHistory turnHistory = new TurnHistory();
+
         when(pandaObjective.getPoints()).thenReturn(2);
         when(historyItem4Points.redeemedObjectives())
                 .thenReturn(List.of(pandaObjective, pandaObjective));
+        turnHistory.add(historyItem4Points);
         history.addBotManager(botManager);
         history.setCurrentBotManagerUUID(botManager.getUniqueID());
-        history.addHistoryItem(botManager, historyItem4Points);
+        history.addTurnHistory(botManager, turnHistory);
 
         botManager2 = new BotManager();
         HistoryItem historyItem2Points = mock(HistoryItem.class);
+        TurnHistory turnHistory2 = new TurnHistory();
         when(historyItem2Points.redeemedObjectives()).thenReturn(List.of(pandaObjective));
+        turnHistory2.add(historyItem2Points);
         history.addBotManager(botManager2);
         history.setCurrentBotManagerUUID(botManager2.getUniqueID());
-        history.addHistoryItem(botManager2, historyItem2Points);
+        history.addTurnHistory(botManager2, turnHistory2);
     }
 
     @Nested
@@ -85,17 +91,24 @@ class HistoryAnalysisTest {
             botManager = new BotManager();
             historyItem1 = mock(HistoryItem.class);
             pandaObjective = mock(PandaObjective.class);
-            when(pandaObjective.getPoints()).thenReturn(2);
+            TurnHistory turnHistory = new TurnHistory();
 
+            when(pandaObjective.getPoints()).thenReturn(2);
+            when(historyItem1.redeemedObjectives())
+                    .thenReturn(List.of(pandaObjective, pandaObjective));
+            turnHistory.add(historyItem1);
             history.addBotManager(botManager);
             history.setCurrentBotManagerUUID(botManager.getUniqueID());
-            history.addHistoryItem(botManager, historyItem1);
+            history.addTurnHistory(botManager, turnHistory);
 
             botManager2 = new BotManager();
             historyItem2 = mock(HistoryItem.class);
+            TurnHistory turnHistory2 = new TurnHistory();
+            when(historyItem2.redeemedObjectives()).thenReturn(List.of(pandaObjective));
+            turnHistory2.add(historyItem2);
             history.addBotManager(botManager2);
             history.setCurrentBotManagerUUID(botManager2.getUniqueID());
-            history.addHistoryItem(botManager2, historyItem2);
+            history.addTurnHistory(botManager2, turnHistory2);
         }
 
         @Test
@@ -164,15 +177,35 @@ class HistoryAnalysisTest {
             ForcedMovePandaAction forcedMovePandaAction = mock(ForcedMovePandaAction.class);
             history.addBotManager(botManager);
             history.setCurrentBotManagerUUID(botManager.getUniqueID());
-            history.addHistoryItem(botManager, new HistoryItem(forcedMovePandaAction, List.of()));
-            history.addHistoryItem(botManager, new HistoryItem(movePandaAction, List.of()));
-            history.addHistoryItem(botManager, new HistoryItem(movePandaAction, List.of()));
-            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
-            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
-            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
-            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
-            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
-            assertThat(HistoryAnalysis.analyzeRushPanda(history))
+            history.addTurnHistory(
+                    botManager,
+                    new TurnHistory(
+                            new HistoryItem(forcedMovePandaAction, List.of()),
+                            new HistoryItem(movePandaAction, List.of()),
+                            new HistoryItem(moveGardenerAction, List.of())));
+
+            history.addTurnHistory(
+                    botManager,
+                    new TurnHistory(
+                            new HistoryItem(mock(Action.class), List.of()),
+                            new HistoryItem(mock(Action.class), List.of()),
+                            new HistoryItem(moveGardenerAction, List.of())));
+
+            history.addTurnHistory(
+                    botManager,
+                    new TurnHistory(
+                            new HistoryItem(forcedMovePandaAction, List.of()),
+                            new HistoryItem(movePandaAction, List.of()),
+                            new HistoryItem(moveGardenerAction, List.of())));
+
+            history.addTurnHistory(
+                    botManager,
+                    new TurnHistory(
+                            new HistoryItem(forcedMovePandaAction, List.of()),
+                            new HistoryItem(movePandaAction, List.of()),
+                            new HistoryItem(moveGardenerAction, List.of())));
+
+            assertThat(HistoryAnalysis.analyzeRushPanda(history, 0.74))
                     .containsEntry(botManager.getUniqueID(), true);
         }
 
@@ -181,11 +214,37 @@ class HistoryAnalysisTest {
         void shouldReturnFalseWhenBotHasNotRushedPanda() {
             history = new History();
             botManager = new BotManager();
+            ForcedMovePandaAction forcedMovePandaAction = mock(ForcedMovePandaAction.class);
             history.addBotManager(botManager);
             history.setCurrentBotManagerUUID(botManager.getUniqueID());
-            history.addHistoryItem(botManager, new HistoryItem(movePandaAction, List.of()));
-            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
-            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
+            history.addTurnHistory(
+                    botManager,
+                    new TurnHistory(
+                            new HistoryItem(forcedMovePandaAction, List.of()),
+                            new HistoryItem(movePandaAction, List.of()),
+                            new HistoryItem(moveGardenerAction, List.of())));
+
+            history.addTurnHistory(
+                    botManager,
+                    new TurnHistory(
+                            new HistoryItem(mock(Action.class), List.of()),
+                            new HistoryItem(mock(Action.class), List.of()),
+                            new HistoryItem(moveGardenerAction, List.of())));
+
+            history.addTurnHistory(
+                    botManager,
+                    new TurnHistory(
+                            new HistoryItem(forcedMovePandaAction, List.of()),
+                            new HistoryItem(movePandaAction, List.of()),
+                            new HistoryItem(moveGardenerAction, List.of())));
+
+            history.addTurnHistory(
+                    botManager,
+                    new TurnHistory(
+                            new HistoryItem(mock(Action.class), List.of()),
+                            new HistoryItem(mock(Action.class), List.of()),
+                            new HistoryItem(moveGardenerAction, List.of())));
+
             assertThat(HistoryAnalysis.analyzeRushPanda(history))
                     .containsEntry(botManager.getUniqueID(), false);
         }
