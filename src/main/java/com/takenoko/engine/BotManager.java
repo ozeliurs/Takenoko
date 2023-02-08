@@ -42,7 +42,7 @@ public class BotManager {
      * @param bot the bot
      * @param botState the bot state
      */
-    protected BotManager(
+    public BotManager(
             ConsoleUserInterface consoleUserInterface, String name, Bot bot, BotState botState) {
         this.botState = botState;
         this.consoleUserInterface = consoleUserInterface;
@@ -56,7 +56,7 @@ public class BotManager {
     }
 
     /** Default constructor for the class */
-    protected BotManager() {
+    public BotManager() {
         this(DEFAULT_CONSOLE_USER_INTERFACE, DEFAULT_NAME, DEFAULT_BOT, new BotState());
     }
 
@@ -79,6 +79,8 @@ public class BotManager {
     public void playBot(Board board, History history) {
         botState.resetAvailableActions(board);
         botState.setNumberOfActions(defaultNumberOfActions);
+
+        TurnHistory turnHistory = new TurnHistory();
 
         if (board.getRoundNumber() > 0) {
             board.rollWeather();
@@ -106,9 +108,10 @@ public class BotManager {
             }
 
             ActionResult actionResult = action.execute(board, this);
-            history.addHistoryItem(this, new HistoryItem(action, botState.getRedeemedObjectives()));
+            turnHistory.add(new HistoryItem(action, getRedeemedObjectives()));
             botState.updateAvailableActions(action, actionResult);
         }
+        history.addTurnHistory(this, turnHistory);
         board.getWeather().ifPresent(value -> value.revert(board, this));
     }
 

@@ -19,7 +19,7 @@ public class SmartPanda extends PriorityBot {
 
         Map<PandaObjective, List<PositionVector>> completionMap =
                 PandaPathfinding.getPandaMoves(board, botState);
-        if (completionMap.size() > 0) {
+        if (completionMap.size() != 0) {
             for (Entry<PandaObjective, List<PositionVector>> objective : completionMap.entrySet()) {
                 for (PositionVector position : objective.getValue()) {
                     this.addActionWithPriority(
