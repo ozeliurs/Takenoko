@@ -28,6 +28,7 @@ class BoardTest {
     Panda panda;
     Gardener gardener;
     GameAssets gameAssets;
+    BoardStatistics boardStatistics;
 
     @BeforeEach
     void setUp() {
@@ -36,10 +37,17 @@ class BoardTest {
         panda = mock(Panda.class);
         gardener = mock(Gardener.class);
         gameAssets = mock(GameAssets.class);
+        boardStatistics = mock(BoardStatistics.class);
 
         board =
                 new Board(
-                        tileLayer, bambooLayer, panda, gardener, gameAssets, new IrrigationLayer());
+                        tileLayer,
+                        bambooLayer,
+                        panda,
+                        gardener,
+                        gameAssets,
+                        new IrrigationLayer(),
+                        boardStatistics);
     }
 
     @Test
@@ -231,11 +239,26 @@ class BoardTest {
             Gardener gardener = mock(Gardener.class);
             GameAssets gameAssets = mock(GameAssets.class);
             IrrigationLayer irrigationLayer = mock(IrrigationLayer.class);
+            boardStatistics = mock(BoardStatistics.class);
 
             Board board =
-                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+                    new Board(
+                            tileLayer,
+                            bambooLayer,
+                            panda,
+                            gardener,
+                            gameAssets,
+                            irrigationLayer,
+                            boardStatistics);
             Board board2 =
-                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+                    new Board(
+                            tileLayer,
+                            bambooLayer,
+                            panda,
+                            gardener,
+                            gameAssets,
+                            irrigationLayer,
+                            boardStatistics);
 
             assertThat(board).isEqualTo(board2);
         }
@@ -251,7 +274,8 @@ class BoardTest {
                             mock(Panda.class),
                             mock(Gardener.class),
                             mock(GameAssets.class),
-                            new IrrigationLayer());
+                            new IrrigationLayer(),
+                            mock(BoardStatistics.class));
             assertThat(board).isNotEqualTo(board2);
         }
 
@@ -275,11 +299,26 @@ class BoardTest {
             Gardener gardener = mock(Gardener.class);
             GameAssets gameAssets = mock(GameAssets.class);
             IrrigationLayer irrigationLayer = mock(IrrigationLayer.class);
+            boardStatistics = mock(BoardStatistics.class);
 
             Board board =
-                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+                    new Board(
+                            tileLayer,
+                            bambooLayer,
+                            panda,
+                            gardener,
+                            gameAssets,
+                            irrigationLayer,
+                            boardStatistics);
             Board board2 =
-                    new Board(tileLayer, bambooLayer, panda, gardener, gameAssets, irrigationLayer);
+                    new Board(
+                            tileLayer,
+                            bambooLayer,
+                            panda,
+                            gardener,
+                            gameAssets,
+                            irrigationLayer,
+                            boardStatistics);
 
             assertThat(board).hasSameHashCodeAs(board2);
         }
@@ -295,7 +334,8 @@ class BoardTest {
                             mock(Panda.class),
                             mock(Gardener.class),
                             mock(GameAssets.class),
-                            new IrrigationLayer());
+                            new IrrigationLayer(),
+                            mock(BoardStatistics.class));
             assertThat(board).doesNotHaveSameHashCodeAs(board2);
         }
     }
