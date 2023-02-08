@@ -42,7 +42,7 @@ public class BotManager {
      * @param bot the bot
      * @param botState the bot state
      */
-    protected BotManager(
+    public BotManager(
             ConsoleUserInterface consoleUserInterface, String name, Bot bot, BotState botState) {
         this.botState = botState;
         this.consoleUserInterface = consoleUserInterface;

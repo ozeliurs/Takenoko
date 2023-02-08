@@ -100,7 +100,7 @@ public class GameEngine {
 
         // Reset all the attributes that needs to be
         this.board = new Board();
-        this.history = new History();
+        this.history.clear();
 
         for (BotManager botManager : botManagers) {
             botManager.reset();

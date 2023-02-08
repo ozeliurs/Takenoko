@@ -1,5 +1,7 @@
 package com.takenoko.bot.utils;
 
+import com.takenoko.actions.actors.ForcedMovePandaAction;
+import com.takenoko.actions.actors.MovePandaAction;
 import com.takenoko.engine.GameEngine;
 import com.takenoko.engine.History;
 import com.takenoko.objective.Objective;
@@ -82,5 +84,49 @@ public class HistoryAnalysis {
             return GameProgress.LATE_GAME;
         }
         return GameProgress.MID_GAME;
+    }
+
+    /**
+     * Analyse the history and determine the bots which are using the Rush Panda strategy.
+     *
+     * @param history the history to analyse
+     * @return a map of the bot managers which are using the Rush Panda strategy.
+     */
+    static Map<UUID, Boolean> analyzeRushPanda(History history, double threshold) {
+        // if the bot has moved a panda more than threshold times, it is using the Rush Panda
+        // strategy
+
+        return history.entrySet().stream()
+                .map(
+                        uuidHistoryEntry ->
+                                Map.entry(
+                                        uuidHistoryEntry.getKey(),
+                                        uuidHistoryEntry.getValue().stream()
+                                                                .filter(
+                                                                        historyItem ->
+                                                                                historyItem
+                                                                                                .action()
+                                                                                                .getClass()
+                                                                                                .equals(
+                                                                                                        MovePandaAction
+                                                                                                                .class)
+                                                                                        || historyItem
+                                                                                                .action()
+                                                                                                .getClass()
+                                                                                                .equals(
+                                                                                                        ForcedMovePandaAction
+                                                                                                                .class))
+                                                                .count()
+                                                        / (double)
+                                                                history.get(
+                                                                                uuidHistoryEntry
+                                                                                        .getKey())
+                                                                        .size()
+                                                > threshold))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    static Map<UUID, Boolean> analyzeRushPanda(History history) {
+        return analyzeRushPanda(history, 0.3);
     }
 }

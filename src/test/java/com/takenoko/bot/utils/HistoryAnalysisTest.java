@@ -1,13 +1,19 @@
 package com.takenoko.bot.utils;
 
+import static com.takenoko.engine.GameEngine.DEFAULT_NUMBER_OF_ROUNDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.takenoko.engine.BotManager;
-import com.takenoko.engine.History;
-import com.takenoko.engine.HistoryItem;
+import com.takenoko.actions.actors.ForcedMovePandaAction;
+import com.takenoko.actions.actors.MoveGardenerAction;
+import com.takenoko.actions.actors.MovePandaAction;
+import com.takenoko.bot.GeneralTacticBot;
+import com.takenoko.bot.RushPandaBot;
+import com.takenoko.engine.*;
 import com.takenoko.objective.PandaObjective;
+import com.takenoko.ui.ConsoleUserInterface;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -141,6 +147,85 @@ class HistoryAnalysisTest {
                                     pandaObjective,
                                     pandaObjective));
             assertThat(HistoryAnalysis.getGameProgress(history)).isEqualTo(GameProgress.LATE_GAME);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method analyzeRushPanda()")
+    class AnalyzeRushPanda {
+        MovePandaAction movePandaAction = mock(MovePandaAction.class);
+        MoveGardenerAction moveGardenerAction = mock(MoveGardenerAction.class);
+
+        @Test
+        @DisplayName("Should return true when the bot has rushed a panda")
+        void shouldReturnTrueWhenBotHasRushedPanda() {
+            history = new History();
+            botManager = new BotManager();
+            ForcedMovePandaAction forcedMovePandaAction = mock(ForcedMovePandaAction.class);
+            history.addBotManager(botManager);
+            history.setCurrentBotManagerUUID(botManager.getUniqueID());
+            history.addHistoryItem(botManager, new HistoryItem(forcedMovePandaAction, List.of()));
+            history.addHistoryItem(botManager, new HistoryItem(movePandaAction, List.of()));
+            history.addHistoryItem(botManager, new HistoryItem(movePandaAction, List.of()));
+            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
+            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
+            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
+            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
+            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
+            assertThat(HistoryAnalysis.analyzeRushPanda(history))
+                    .containsEntry(botManager.getUniqueID(), true);
+        }
+
+        @Test
+        @DisplayName("Should return false when the bot has not rushed a panda")
+        void shouldReturnFalseWhenBotHasNotRushedPanda() {
+            history = new History();
+            botManager = new BotManager();
+            history.addBotManager(botManager);
+            history.setCurrentBotManagerUUID(botManager.getUniqueID());
+            history.addHistoryItem(botManager, new HistoryItem(movePandaAction, List.of()));
+            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
+            history.addHistoryItem(botManager, new HistoryItem(moveGardenerAction, List.of()));
+            assertThat(HistoryAnalysis.analyzeRushPanda(history))
+                    .containsEntry(botManager.getUniqueID(), false);
+        }
+    }
+
+    @Nested
+    @DisplayName("Integration tests")
+    class IntegrationTest {
+        @Test
+        @DisplayName("Should return the correct analysis")
+        void test1() {
+            History history = new History();
+            BotManager rushPandaBotManager =
+                    new BotManager(
+                            new ConsoleUserInterface(),
+                            "Rush Panda",
+                            new RushPandaBot(),
+                            new BotState());
+
+            GameEngine gameEngine =
+                    new GameEngine(
+                            DEFAULT_NUMBER_OF_ROUNDS,
+                            new Board(),
+                            new ConsoleUserInterface(),
+                            GameState.INITIALIZED,
+                            new ArrayList<>(
+                                    List.of(
+                                            new BotManager(
+                                                    new ConsoleUserInterface(),
+                                                    "Joe",
+                                                    new GeneralTacticBot(),
+                                                    new BotState()),
+                                            rushPandaBotManager)),
+                            new Scoreboard(),
+                            history);
+            gameEngine.newGame();
+            gameEngine.startGame();
+            gameEngine.playGame();
+            assertThat(HistoryAnalysis.analyzeRushPanda(history))
+                    .containsEntry(rushPandaBotManager.getUniqueID(), true);
         }
     }
 }

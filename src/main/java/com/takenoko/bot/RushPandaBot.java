@@ -9,14 +9,14 @@ public class RushPandaBot extends GeneralTacticBot {
                 new HashMap<>() {
                     {
                         put("MovePanda", 10);
-                        put("MoveGardener", 9);
-                        put("RedeemObjective", 8);
-                        put("SmartPatternPlacing", 7);
-                        put("ChooseAndApplyWeather", 5);
-                        put("ChooseIfApplyWeather", 4);
-                        put("DrawIrrigation", 3);
-                        put("StoreIrrigationInInventory", 2);
-                        put("SmartIrrigationPlacing", 1);
+                        put("MoveGardener", -1);
+                        put("RedeemObjective", -1);
+                        put("SmartPatternPlacing", -1);
+                        put("ChooseAndApplyWeather", -1);
+                        put("ChooseIfApplyWeather", -1);
+                        put("DrawIrrigation", -1);
+                        put("StoreIrrigationInInventory", -1);
+                        put("SmartIrrigationPlacing", -1);
                     }
                 });
     }
