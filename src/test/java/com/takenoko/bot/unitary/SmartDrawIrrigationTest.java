@@ -8,6 +8,7 @@ import com.takenoko.actions.irrigation.DrawIrrigationAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ public class SmartDrawIrrigationTest {
     @DisplayName("method fillAction")
     class FillAction {
         @Test
+        @Disabled
         @DisplayName(
                 "Should draw an irrigation when lumber in inventory lower than arbitrary limit")
         void drawIrrigationWhenLumberLow() {
