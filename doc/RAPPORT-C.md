@@ -21,19 +21,16 @@
          1. [Jacoco](#Jacoco)
          2. [PIT test](#PIT-test)
          3. [Package](#Package)
-
-   
+ 
 ## Progress Report
-
 
 
 ---
 
 ## Architecture and Quality
 
-
 <p align="center">
-   <img src="ps5-architecture-bot-manager.svg" alt="svg" width="50%">
+   <img src="images/architecture/ps5-architecture-bot-manager.svg" alt="svg" width="50%">
 </p>
 
 ---
@@ -41,6 +38,8 @@
 ## Process
 
 ### Roles and Involvement
+
+TODO LATER
 
 ### Task Management
 
