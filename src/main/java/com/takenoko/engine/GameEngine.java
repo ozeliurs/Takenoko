@@ -31,7 +31,7 @@ public class GameEngine {
             GameState gameState,
             List<BotManager> botManagerList,
             Scoreboard scoreboard,
-            BotStatistics botStatistics, {
+            BotStatistics botStatistics,
             History history) {
         // Assign values to the attributes
         this.numberOfRounds = numberOfRounds;
@@ -68,7 +68,7 @@ public class GameEngine {
                                         new ConsoleUserInterface(),
                                         "GeneralTactic",
                                         new GeneralTacticBot(),
-                                        new BotState()))),
+                                        new BotState(),
                                         new SingleBotStatistics()))),
                 new Scoreboard(),
                 new BotStatistics(),

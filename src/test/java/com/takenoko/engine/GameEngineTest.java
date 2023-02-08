@@ -319,7 +319,8 @@ class GameEngineTest {
                             GameState.INITIALIZED,
                             new ArrayList<>(List.of(spy(BotManager.class), spy(BotManager.class))),
                             scoreboard,
-                            botStatistics);
+                            botStatistics,
+                            mock(History.class));
             gameEngine.newGame();
             gameEngine.startGame();
             gameEngine.endGame();
@@ -391,7 +392,8 @@ class GameEngineTest {
                             GameState.INITIALIZED,
                             new ArrayList<>(List.of(spy(BotManager.class), spy(BotManager.class))),
                             scoreboard,
-                            new BotStatistics());
+                            new BotStatistics(),
+                            new History());
             gameEngine.runGame(2);
             verify(consoleUserInterface, times(1)).displayEnd("All 2 games have been run :");
             verify(consoleUserInterface, times(4)).displayFullStats(any());
@@ -419,7 +421,7 @@ class GameEngineTest {
                             GameState.PLAYING,
                             List.of(botm1, botm2),
                             scoreboard,
-                            mock(BotStatistics.class)),
+                            mock(BotStatistics.class),
                             mock(History.class));
             ge.endGame();
             assertThat(ge.getWinner()).isEqualTo(Pair.of(List.of(botm1, botm2), EndGameState.TIE));
