@@ -47,5 +47,20 @@ class MovePandaActionTest {
             verify(board).movePanda(new PositionVector(-1, 0, 1));
             verify(inventory, times(1)).collectBamboo(any());
         }
+
+        @Test
+        @DisplayName("should update eaten bamboo counter and actions in singleBotStatistics")
+        void shouldUpdateEatenBambooCounterAndActionsInSingleBotStatistics() {
+            SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
+            when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
+            Inventory inventory = mock(Inventory.class);
+            when(board.getPandaPosition()).thenReturn(new PositionVector(0, 0, 0));
+            when(botManager.getInventory()).thenReturn(inventory);
+            when(botManager.getName()).thenReturn("Joe");
+            when(board.getTileAt(any())).thenReturn(new Tile());
+            movePandaAction.execute(board, botManager);
+            verify(singleBotStatistics).updateEatenBambooCounter(any());
+            verify(singleBotStatistics).updateActions(movePandaAction.getClass().getSimpleName());
+        }
     }
 }
