@@ -15,7 +15,8 @@ public class SingleBotStatistics {
     private int totalNbOfAction;
     private final HashMap<String, Integer> numericStats;
     private final EnumMap<ObjectiveTypes, Integer> objectivesRedeemed;
-    private final EnumMap<TileColor, Pair<Integer, Integer>> bambooCounter; // Left eaten, right grown
+    private final EnumMap<TileColor, Pair<Integer, Integer>>
+            bambooCounter; // Left eaten, right grown
     private final EnumMap<TileColor, Integer> tilesPlaced;
     private final HashMap<String, Pair<Integer, Integer>> weathers; // Left applied, right rolled
     private final HashMap<String, Integer> actions;

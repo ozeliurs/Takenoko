@@ -8,11 +8,11 @@ import com.takenoko.vector.PositionVector;
 import java.util.*;
 
 public class BoardStatistics {
-    private final EnumMap<TileColor, Integer> tilesPlaced;
-    private final EnumMap<ImprovementType, Integer> improvements;
+    public final EnumMap<TileColor, Integer> tilesPlaced;
+    public final EnumMap<ImprovementType, Integer> improvements;
 
-    private float percentageOfIrrigation;
-    private float totalNbOfTiles;
+    public float percentageOfIrrigation;
+    public float totalNbOfTiles;
 
     public BoardStatistics(
             Map<TileColor, Integer> tilesPlaced,

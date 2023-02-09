@@ -7,15 +7,11 @@ import com.takenoko.stats.BotStatistics;
 import com.takenoko.stats.CSVExporter;
 import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.ui.ConsoleUserInterface;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.tuple.Pair;
 
-/**
- * The game engine is responsible for the gameplay throughout the game.
- */
+/** The game engine is responsible for the gameplay throughout the game. */
 public class GameEngine {
     // ATTRIBUTES
     public static final int DEFAULT_NUMBER_OF_ROUNDS = 5000;
@@ -120,9 +116,7 @@ public class GameEngine {
                 "The new game has been set up. You can start the game !");
     }
 
-    /**
-     * This method change the game state to playing and add the first tile to the board.
-     */
+    /** This method change the game state to playing and add the first tile to the board. */
     public void startGame() {
         if (gameState == GameState.INITIALIZED) {
             throw new IllegalStateException(
@@ -156,7 +150,7 @@ public class GameEngine {
                 botManager.playBot(board);
 
                 if (botManager.getRedeemedObjectives().size()
-                        >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(botManagers.size())
+                                >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(botManagers.size())
                         && !isLastRound) {
                     consoleUserInterface.displayMessage(
                             "===== <" + botManager.getName() + "> finished the game =====");
@@ -176,9 +170,7 @@ public class GameEngine {
         }
     }
 
-    /**
-     * This method is used to end the game correctly.
-     */
+    /** This method is used to end the game correctly. */
     public void endGame() {
         if (gameState != GameState.PLAYING && gameState != GameState.FINISHED) {
             throw new IllegalStateException(
@@ -195,13 +187,13 @@ public class GameEngine {
                             + " points ! "
                             + "With the following objectives : "
                             + winner.getLeft().get(0).getRedeemedObjectives().stream()
-                            .map(Object::toString)
-                            .collect(Collectors.joining(", ")));
+                                    .map(Object::toString)
+                                    .collect(Collectors.joining(", ")));
             case TIE -> consoleUserInterface.displayMessage(
                     "It's a tie !, the winners are : "
                             + winner.getLeft().stream()
-                            .map(BotManager::getName)
-                            .collect(Collectors.joining(", ")));
+                                    .map(BotManager::getName)
+                                    .collect(Collectors.joining(", ")));
             case WIN_WITH_PANDA_OBJECTIVE_POINTS -> consoleUserInterface.displayMessage(
                     "The winner is "
                             + winner.getLeft().get(0).getName()
@@ -210,8 +202,8 @@ public class GameEngine {
                             + " points ! "
                             + "With the following objectives : "
                             + winner.getLeft().get(0).getRedeemedObjectives().stream()
-                            .map(Object::toString)
-                            .collect(Collectors.joining(", ")));
+                                    .map(Object::toString)
+                                    .collect(Collectors.joining(", ")));
             default -> throw new IllegalStateException("Unexpected value: " + winner.getRight());
         }
 
@@ -277,9 +269,9 @@ public class GameEngine {
                                 botManager ->
                                         botManager.getObjectiveScore()
                                                 == botManagers.stream()
-                                                .mapToInt(BotManager::getObjectiveScore)
-                                                .max()
-                                                .orElse(0))
+                                                        .mapToInt(BotManager::getObjectiveScore)
+                                                        .max()
+                                                        .orElse(0))
                         .toList();
         if (botManagersWithMaxScore.size() == 1) {
             return Pair.of(
@@ -292,11 +284,11 @@ public class GameEngine {
                                     botManager ->
                                             botManager.getPandaObjectiveScore()
                                                     == botManagersWithMaxScore.stream()
-                                                    .mapToInt(
-                                                            BotManager
-                                                                    ::getPandaObjectiveScore)
-                                                    .max()
-                                                    .orElse(0))
+                                                            .mapToInt(
+                                                                    BotManager
+                                                                            ::getPandaObjectiveScore)
+                                                            .max()
+                                                            .orElse(0))
                             .toList();
             if (botManagersWithMaxPandaObjective.size() == 1) {
                 return Pair.of(
@@ -332,9 +324,7 @@ public class GameEngine {
         this.gameState = gameState;
     }
 
-    /**
-     * Run a whole game from initialization to end.
-     */
+    /** Run a whole game from initialization to end. */
     public void runGame() {
         newGame();
         startGame();
