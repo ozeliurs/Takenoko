@@ -135,9 +135,10 @@ public class Pattern extends Shape {
 
         return missingShapes.stream()
                 .filter(
-                        shape ->
-                                new HashSet<>(board.getAvailableTilePositions())
-                                        .containsAll(shape.getElements().keySet()))
+                        shape -> shape.getElements().keySet().stream().anyMatch(
+                                positionVector -> board.getAvailableTilePositions().contains(positionVector)
+                        )
+                )
                 .sorted(Comparator.comparingInt(v -> v.getElements().size()))
                 .toList();
     }

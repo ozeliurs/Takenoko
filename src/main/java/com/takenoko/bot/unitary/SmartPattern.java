@@ -13,11 +13,13 @@ import com.takenoko.objective.Objective;
 import com.takenoko.objective.PatternObjective;
 import com.takenoko.shape.Shape;
 import com.takenoko.vector.PositionVector;
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.tuple.Pair;
 
 public class SmartPattern extends PriorityBot {
     @Override
@@ -27,8 +29,21 @@ public class SmartPattern extends PriorityBot {
             History history) { // Complete the shape of the current PatternObjective
         if (botState.getAvailableActions().contains(PlaceTileAction.class)
                 || botState.getAvailableActions().contains(PlaceTileWithImprovementAction.class)) {
-            Pair<PositionVector, Tile> tileToPlaceWithPosition =
+            Map<PatternObjective, List<Shape>> tileToPlaceWithPosition =
                     analyzeBoardToFindPlaceToCompleteShapeOfPatternObjective(board, botState);
+
+
+
+            for (Map.Entry<PatternObjective, List<Shape>> entry : tileToPlaceWithPosition.entrySet()) {
+                for (Shape shape : entry.getValue()) {
+                    for (Map.Entry<PositionVector, Tile> tile : shape.getElements().entrySet()) {
+
+                    }
+                }
+            }
+
+
+
             if (tileToPlaceWithPosition != null) {
                 // We add both types of action to the bot. We consider that the wrong one will be
                 // sorted by the priority bot
@@ -62,7 +77,7 @@ public class SmartPattern extends PriorityBot {
         }
     }
 
-    public Pair<PositionVector, Tile> analyzeBoardToFindPlaceToCompleteShapeOfPatternObjective(
+    public Map<PatternObjective, List<Shape>> analyzeBoardToFindPlaceToCompleteShapeOfPatternObjective(
             Board board, BotState botState) {
         // Get all the pattern objectives of the bot
         Stream<PatternObjective> patternObjectives =
@@ -70,58 +85,42 @@ public class SmartPattern extends PriorityBot {
                         .sorted(Comparator.comparing(Objective::getPoints).reversed());
 
         // Get all the shapes that could be completed by placing a tile
-        List<Shape> uncompletedSubsetOfShapes =
+        Map<PatternObjective, List<Shape>> uncompletedSubsetOfShapes =
                 patternObjectives
                         .map(
                                 patternObjective ->
-                                        patternObjective
-                                                .getShapeToCompletePatternObjective(board)
-                                                .stream()
-                                                .min(
-                                                        Comparator.comparingInt(
-                                                                v -> v.getElements().size())))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .toList();
+                                        Map.entry(patternObjective,
+                                                patternObjective
+                                                        .getShapeToCompletePatternObjective(board))
+                        )
+                        .filter(entry -> !entry.getValue().isEmpty())
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // Get the available tiles to place
         List<Tile> deckAvailableTiles = board.peekTileDeck();
         List<TileColor> deckAvailableColors =
                 deckAvailableTiles.stream().map(Tile::getColor).toList();
 
-        Optional<Shape> bestSubsetThanCanBeFurtherCompleted =
-                uncompletedSubsetOfShapes.stream()
-                        .filter(
-                                shape ->
-                                        shape.getElements().values().stream()
-                                                .anyMatch(
-                                                        tile ->
-                                                                deckAvailableColors.contains(
-                                                                        tile.getColor())))
-                        .findFirst();
-
-        if (bestSubsetThanCanBeFurtherCompleted.isPresent()) {
-            Shape bestSubset = bestSubsetThanCanBeFurtherCompleted.get();
-            return bestSubset.getElements().entrySet().stream()
-                    .map(
-                            entrySet ->
-                                    Pair.of(
-                                            entrySet.getKey(),
-                                            board.peekTileDeck().stream()
-                                                    .filter(
-                                                            tile2 ->
-                                                                    entrySet.getValue()
-                                                                            .getColor()
-                                                                            .equals(
-                                                                                    tile2
-                                                                                            .getColor()))
-                                                    .findFirst()))
-                    .filter(pair -> pair.getRight().isPresent())
-                    .map(pair -> Pair.of(pair.getLeft(), pair.getRight().get()))
-                    .findFirst()
-                    .orElseThrow();
-        }
-        return null;
+        return uncompletedSubsetOfShapes.entrySet().stream()
+                        .map(
+                                entrySet -> Map.entry(
+                                        entrySet.getKey(),
+                                        entrySet.getValue().stream().filter(
+                                                        shape ->
+                                                                shape.getElements().entrySet().stream()
+                                                                        .anyMatch(
+                                                                                vectorTileEntry ->
+                                                                                        deckAvailableColors.contains(
+                                                                                                vectorTileEntry.getValue().getColor())
+                                                                                                && board.getAvailableTilePositions().contains(
+                                                                                                vectorTileEntry.getKey())
+                                                                        )
+                                                )
+                                                .toList()
+                                )
+                        )
+                        .filter(entry -> !entry.getValue().isEmpty())
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public List<PatternObjective> getCurrentPatternObjectives(BotState botState) {
