@@ -1,5 +1,6 @@
 package com.takenoko.bot.unitary;
 
+import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.objective.RedeemObjectiveAction;
 import com.takenoko.bot.PriorityBot;
 import com.takenoko.bot.utils.HistoryAnalysis;
@@ -18,6 +19,14 @@ public class SmartObjective extends PriorityBot {
     @Override
     protected void fillAction(Board board, BotState botState, History history) {
         this.addActionWithPriority(analyzeObjectivesToRedeem(botState, history), DEFAULT_PRIORITY);
+        this.addActionWithPriority(new DrawObjectiveAction(), DEFAULT_PRIORITY);
+
+        botState.getAchievedObjectives().stream()
+                .filter(v -> v.getClass() != PandaObjective.class)
+                .forEach(
+                        v ->
+                                this.addActionWithPriority(
+                                        new RedeemObjectiveAction(v), DEFAULT_PRIORITY));
     }
 
     public RedeemObjectiveAction analyzeObjectivesToRedeem(BotState botState, History history) {

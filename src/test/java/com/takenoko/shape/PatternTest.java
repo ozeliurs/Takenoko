@@ -9,6 +9,7 @@ import com.takenoko.layers.tile.*;
 import com.takenoko.vector.PositionVector;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
@@ -248,18 +249,39 @@ class PatternTest {
     }
 
     @Nested
-    @Disabled
     @DisplayName("method getSubsetMatchPattern")
     class TestGetSubsetMatchPattern {
         @Test
-        @Disabled
         @DisplayName("should return the subset of the pattern that matches the board")
         void getSubsetMatchPattern_shouldReturnSubsetOfPatternThatMatchesBoard() {
-            Pattern pattern = PatternFactory.LINE.createPattern(TileColor.ANY);
+            Pattern pattern = PatternFactory.LINE.createPattern(TileColor.YELLOW);
+            Board board = mock(Board.class);
+            when(board.getTilesWithoutPond())
+                    .thenReturn(
+                            Map.of(
+                                    new PositionVector(0, -1, 1), new Tile(TileColor.YELLOW),
+                                    new PositionVector(1, -1, 0), new Tile(TileColor.YELLOW)));
 
-            // List<Shape> result = pattern.getSubsetMatchPattern(board,
-            // pattern.getElements().size(), true);
-            // assertThat(result).containsExactly(new Shape(TileColor.YELLOW, ));
+            when(board.isIrrigatedAt(any())).thenReturn(false);
+            List<Shape> result = pattern.getSubsetMatchPattern(board, 1, true);
+            assertThat(result)
+                    .containsExactlyInAnyOrder(
+                            new Shape(
+                                    Map.of(
+                                            new PositionVector(0, -1, 1),
+                                                    new Tile(TileColor.YELLOW),
+                                            new PositionVector(1, -1, 0),
+                                                    new Tile(TileColor.YELLOW))),
+                            new Shape(
+                                    Map.of(
+                                            new PositionVector(0, -1, 1),
+                                            new Tile(TileColor.YELLOW))),
+                            new Shape(
+                                    Map.of(
+                                            new PositionVector(1, -1, 0),
+                                            new Tile(TileColor.YELLOW))));
+
+            assertThat(pattern.getSubsetMatchPattern(board, 1, false)).isEmpty();
         }
     }
 }

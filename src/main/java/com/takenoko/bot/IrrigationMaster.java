@@ -6,34 +6,39 @@ import com.takenoko.bot.unitary.SmartStoreIrrigation;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
+import java.util.Map;
 import java.util.Objects;
 
 public class IrrigationMaster extends PriorityBot {
-    private final int placeIrrigationCoefficient;
-    private final int drawIrrigationCoefficient;
-    private final int storeIrrigationCoefficient;
+    private final Map<String, Integer> params;
 
-    public IrrigationMaster(
-            int placeIrrigationCoefficient,
-            int drawIrrigationCoefficient,
-            int storeIrrigationCoefficient) {
-        super();
-        this.placeIrrigationCoefficient = placeIrrigationCoefficient;
-        this.drawIrrigationCoefficient = drawIrrigationCoefficient;
-        this.storeIrrigationCoefficient = storeIrrigationCoefficient;
+    static final Map<String, Integer> DEFAULT_PARAMS =
+            Map.of(
+                    "placeIrrigationCoefficient", 1,
+                    "drawIrrigationCoefficient", 1,
+                    "storeIrrigationCoefficient", 1,
+                    "maxIrrigationToChooseToDraw", 5);
+
+    public IrrigationMaster(Map<String, Integer> params) {
+        this.params = params;
+    }
+
+    public IrrigationMaster() {
+        this.params = DEFAULT_PARAMS;
     }
 
     @Override
     protected void fillAction(Board board, BotState botState, History history) {
         this.addWithOffset(
                 new SmartPlaceIrrigation().compute(board, botState, history),
-                placeIrrigationCoefficient);
+                params.get("placeIrrigationCoefficient"));
         this.addWithOffset(
-                new SmartDrawIrrigation().compute(board, botState, history),
-                drawIrrigationCoefficient);
+                new SmartDrawIrrigation(params.get("maxIrrigationToChooseToDraw"))
+                        .compute(board, botState, history),
+                params.get("drawIrrigationCoefficient"));
         this.addWithOffset(
                 new SmartStoreIrrigation().compute(board, botState, history),
-                storeIrrigationCoefficient);
+                params.get("storeIrrigationCoefficient"));
     }
 
     @Override
@@ -42,17 +47,11 @@ public class IrrigationMaster extends PriorityBot {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         IrrigationMaster that = (IrrigationMaster) o;
-        return placeIrrigationCoefficient == that.placeIrrigationCoefficient
-                && drawIrrigationCoefficient == that.drawIrrigationCoefficient
-                && storeIrrigationCoefficient == that.storeIrrigationCoefficient;
+        return Objects.equals(params, that.params);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                super.hashCode(),
-                placeIrrigationCoefficient,
-                drawIrrigationCoefficient,
-                storeIrrigationCoefficient);
+        return Objects.hash(super.hashCode(), params);
     }
 }

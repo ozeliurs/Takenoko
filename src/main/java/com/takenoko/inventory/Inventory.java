@@ -182,4 +182,8 @@ public class Inventory {
                 + inventoryImprovements
                 + '}';
     }
+
+    public int getImprovementCount(ImprovementType improvementType) {
+        return inventoryImprovements.getImprovementCount(improvementType);
+    }
 }

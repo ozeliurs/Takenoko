@@ -5,27 +5,34 @@ import com.takenoko.bot.unitary.SmartChooseAndApplyWeather;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
+import java.util.Map;
 import java.util.Objects;
 
 public class WeatherMaster extends PriorityBot {
-    private final int chooseIfApplyWeatherCoefficient;
-    private final int chooseAndApplyWeatherCoefficient;
 
-    public WeatherMaster(int applyWeatherCoefficient, int chooseAndApplyWeatherCoefficient) {
-        this.chooseIfApplyWeatherCoefficient = applyWeatherCoefficient;
-        this.chooseAndApplyWeatherCoefficient = chooseAndApplyWeatherCoefficient;
+    private final Map<String, Integer> params;
+
+    static final Map<String, Integer> DEFAULT_PARAMS =
+            Map.of(
+                    "chooseIfApplyWeatherCoefficient", 2,
+                    "chooseAndApplyWeatherCoefficient", 1);
+
+    public WeatherMaster(Map<String, Integer> params) {
+        this.params = params;
+    }
+
+    public WeatherMaster() {
+        this.params = DEFAULT_PARAMS;
     }
 
     @Override
     protected void fillAction(Board board, BotState botState, History history) {
         this.addWithOffset(
                 new SmartChooseAndApplyWeather().compute(board, botState, history),
-                chooseAndApplyWeatherCoefficient);
+                params.get("chooseAndApplyWeatherCoefficient"));
         this.addWithOffset(
-                new SmartApplyWeather()
-                        .compute(board, botState, history)
-                        .compute(board, botState, history),
-                chooseIfApplyWeatherCoefficient);
+                new SmartApplyWeather().compute(board, botState, history),
+                params.get("chooseIfApplyWeatherCoefficient"));
     }
 
     @Override
@@ -34,15 +41,11 @@ public class WeatherMaster extends PriorityBot {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         WeatherMaster that = (WeatherMaster) o;
-        return chooseIfApplyWeatherCoefficient == that.chooseIfApplyWeatherCoefficient
-                && chooseAndApplyWeatherCoefficient == that.chooseAndApplyWeatherCoefficient;
+        return Objects.equals(params, that.params);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(
-                super.hashCode(),
-                chooseIfApplyWeatherCoefficient,
-                chooseAndApplyWeatherCoefficient);
+        return Objects.hash(super.hashCode(), params);
     }
 }
