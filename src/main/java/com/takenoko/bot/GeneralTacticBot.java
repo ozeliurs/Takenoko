@@ -21,26 +21,26 @@ public class GeneralTacticBot extends PriorityBot {
                 new IrrigationMaster(
                                 Map.of(
                                         "placeIrrigationCoefficient", 10,
-                                        "drawIrrigationCoefficient", 9,
-                                        "storeIrrigationCoefficient", 8,
-                                        "maxIrrigationToChooseToDraw", 5))
+                                        "drawIrrigationCoefficient", 10,
+                                        "storeIrrigationCoefficient", 11,
+                                        "maxIrrigationToChooseToDraw", 4))
                         .compute(board, botState, history));
 
         this.add(new WeatherMaster().compute(board, botState, history));
 
-        this.addWithOffset(new SmartPanda().compute(board, botState, history), 2);
+        this.addWithOffset(new SmartPanda().compute(board, botState, history), 5);
 
-        this.addWithOffset(new SmartGardener().compute(board, botState, history), 1);
+        this.addWithOffset(new SmartGardener().compute(board, botState, history), 5);
 
         this.addWithOffset(new SmartPattern().compute(board, botState, history), 9);
 
-        this.addWithOffset(new SmartObjective().compute(board, botState, history), 4);
+        this.addWithOffset(new SmartObjective().compute(board, botState, history), 12);
 
         this.addWithOffset(
                 new SmartDrawImprovement(
                                 Map.of(
-                                        ImprovementType.WATERSHED, 4,
-                                        ImprovementType.ENCLOSURE, 1))
+                                        ImprovementType.WATERSHED, 3,
+                                        ImprovementType.ENCLOSURE, 2))
                         .compute(board, botState, history),
                 0);
     }
