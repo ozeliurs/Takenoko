@@ -70,17 +70,6 @@ public class Pattern extends Shape {
         // spotless:on
     }
 
-    /**
-     * Returns the ratio of the matching shapes.
-     *
-     * @param board@return the ratio of the matching translated/rotated shapes
-     */
-    public float matchRatio(Board board) {
-        return 0f;
-        // TODO: change this method to matchRatio
-        // return matchRatio(board, 1, false);
-    }
-
     public List<Shape> getSubsetMatchPattern(
             Board board, int startingSize, boolean ignoreIrrigation) {
         // spotless:off
@@ -135,10 +124,12 @@ public class Pattern extends Shape {
 
         return missingShapes.stream()
                 .filter(
-                        shape -> shape.getElements().keySet().stream().anyMatch(
-                                positionVector -> board.getAvailableTilePositions().contains(positionVector)
-                        )
-                )
+                        shape ->
+                                shape.getElements().keySet().stream()
+                                        .anyMatch(
+                                                positionVector ->
+                                                        board.getAvailableTilePositions()
+                                                                .contains(positionVector)))
                 .sorted(Comparator.comparingInt(v -> v.getElements().size()))
                 .toList();
     }

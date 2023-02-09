@@ -13,8 +13,6 @@ import com.takenoko.objective.Objective;
 import com.takenoko.objective.PatternObjective;
 import com.takenoko.shape.Shape;
 import com.takenoko.vector.PositionVector;
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -32,53 +30,85 @@ public class SmartPattern extends PriorityBot {
             Map<PatternObjective, List<Shape>> tileToPlaceWithPosition =
                     analyzeBoardToFindPlaceToCompleteShapeOfPatternObjective(board, botState);
 
+            List<Tile> tilesDeck = board.peekTileDeck();
 
-
-            for (Map.Entry<PatternObjective, List<Shape>> entry : tileToPlaceWithPosition.entrySet()) {
+            for (Map.Entry<PatternObjective, List<Shape>> entry :
+                    tileToPlaceWithPosition.entrySet()) {
                 for (Shape shape : entry.getValue()) {
-                    for (Map.Entry<PositionVector, Tile> tile : shape.getElements().entrySet()) {
+                    Map.Entry<PositionVector, Tile> tileToPlace =
+                            shape.getElements().entrySet().stream()
+                                    .filter(
+                                            e ->
+                                                    (tilesDeck.stream()
+                                                                    .anyMatch(
+                                                                            t ->
+                                                                                    t.getColor()
+                                                                                            .equals(
+                                                                                                    e.getValue()
+                                                                                                            .getColor()))
+                                                            && board.getAvailableTilePositions()
+                                                                    .contains(e.getKey())))
+                                    .findFirst()
+                                    .orElse(null);
+                    if (tileToPlace != null) {
 
-                    }
-                }
-            }
+                        Tile tile =
+                                tilesDeck.stream()
+                                        .filter(
+                                                t ->
+                                                        t.getColor()
+                                                                .equals(
+                                                                        tileToPlace
+                                                                                .getValue()
+                                                                                .getColor()))
+                                        .findFirst()
+                                        .orElseThrow();
 
-
-
-            if (tileToPlaceWithPosition != null) {
-                // We add both types of action to the bot. We consider that the wrong one will be
-                // sorted by the priority bot
-                this.addActionWithPriority(
-                        new PlaceTileAction(
-                                tileToPlaceWithPosition.getRight(),
-                                tileToPlaceWithPosition.getLeft()),
-                        DEFAULT_PRIORITY);
-
-                // Verify that the tile to place does not already have an improvement
-                if (tileToPlaceWithPosition.getRight().getImprovement().isEmpty()) {
-                    // We force the bot to place the watershed if he has one
-                    if (botState.getInventory().hasImprovement(ImprovementType.WATERSHED)) {
+                        // We add both types of action to the bot. We consider that the wrong one
+                        // will be
+                        // sorted by the priority bot
                         this.addActionWithPriority(
-                                new PlaceTileWithImprovementAction(
-                                        tileToPlaceWithPosition.getRight(),
-                                        tileToPlaceWithPosition.getLeft(),
-                                        ImprovementType.WATERSHED),
-                                DEFAULT_PRIORITY);
-                    } else if (botState.getInventory().hasImprovement()) {
-                        // Otherwise place a """random""" one
-                        this.addActionWithPriority(
-                                new PlaceTileWithImprovementAction(
-                                        tileToPlaceWithPosition.getRight(),
-                                        tileToPlaceWithPosition.getLeft(),
-                                        botState.getInventory().getInventoryImprovements().get(0)),
-                                DEFAULT_PRIORITY);
+                                new PlaceTileAction(tile, tileToPlace.getKey()),
+                                calculatePriority(entry, shape));
+
+                        // Verify that the tile to place does not already have an improvement
+                        if (tile.getImprovement().isEmpty()) {
+                            // We force the bot to place the watershed if he has one
+                            if (botState.getInventory().hasImprovement(ImprovementType.WATERSHED)) {
+                                this.addActionWithPriority(
+                                        new PlaceTileWithImprovementAction(
+                                                tile,
+                                                tileToPlace.getKey(),
+                                                ImprovementType.WATERSHED),
+                                        calculatePriority(entry, shape));
+                            } else if (botState.getInventory().hasImprovement()) {
+                                // Otherwise place a """random""" one
+                                this.addActionWithPriority(
+                                        new PlaceTileWithImprovementAction(
+                                                tile,
+                                                tileToPlace.getKey(),
+                                                botState.getInventory()
+                                                        .getInventoryImprovements()
+                                                        .get(0)),
+                                        calculatePriority(entry, shape));
+                            }
+                        }
                     }
                 }
             }
         }
     }
 
-    public Map<PatternObjective, List<Shape>> analyzeBoardToFindPlaceToCompleteShapeOfPatternObjective(
-            Board board, BotState botState) {
+    public static double calculatePriority(
+            Map.Entry<PatternObjective, List<Shape>> entry, Shape shape) {
+        return entry.getKey().getPoints()
+                * (shape.getElements().size()
+                        / (double) entry.getKey().getPattern().getElements().size());
+    }
+
+    public Map<PatternObjective, List<Shape>>
+            analyzeBoardToFindPlaceToCompleteShapeOfPatternObjective(
+                    Board board, BotState botState) {
         // Get all the pattern objectives of the bot
         Stream<PatternObjective> patternObjectives =
                 getCurrentPatternObjectives(botState).stream()
@@ -89,10 +119,10 @@ public class SmartPattern extends PriorityBot {
                 patternObjectives
                         .map(
                                 patternObjective ->
-                                        Map.entry(patternObjective,
-                                                patternObjective
-                                                        .getShapeToCompletePatternObjective(board))
-                        )
+                                        Map.entry(
+                                                patternObjective,
+                                                patternObjective.getShapeToCompletePatternObjective(
+                                                        board)))
                         .filter(entry -> !entry.getValue().isEmpty())
                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
@@ -102,25 +132,31 @@ public class SmartPattern extends PriorityBot {
                 deckAvailableTiles.stream().map(Tile::getColor).toList();
 
         return uncompletedSubsetOfShapes.entrySet().stream()
-                        .map(
-                                entrySet -> Map.entry(
+                .map(
+                        entrySet ->
+                                Map.entry(
                                         entrySet.getKey(),
-                                        entrySet.getValue().stream().filter(
+                                        entrySet.getValue().stream()
+                                                .filter(
                                                         shape ->
-                                                                shape.getElements().entrySet().stream()
+                                                                shape
+                                                                        .getElements()
+                                                                        .entrySet()
+                                                                        .stream()
                                                                         .anyMatch(
                                                                                 vectorTileEntry ->
-                                                                                        deckAvailableColors.contains(
-                                                                                                vectorTileEntry.getValue().getColor())
-                                                                                                && board.getAvailableTilePositions().contains(
-                                                                                                vectorTileEntry.getKey())
-                                                                        )
-                                                )
-                                                .toList()
-                                )
-                        )
-                        .filter(entry -> !entry.getValue().isEmpty())
-                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                                                                                        deckAvailableColors
+                                                                                                        .contains(
+                                                                                                                vectorTileEntry
+                                                                                                                        .getValue()
+                                                                                                                        .getColor())
+                                                                                                && board.getAvailableTilePositions()
+                                                                                                        .contains(
+                                                                                                                vectorTileEntry
+                                                                                                                        .getKey())))
+                                                .toList()))
+                .filter(entry -> !entry.getValue().isEmpty())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public List<PatternObjective> getCurrentPatternObjectives(BotState botState) {
