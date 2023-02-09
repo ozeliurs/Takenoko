@@ -61,6 +61,20 @@ or method a class has. However, you should be able to understand how the project
 
 #### Game Engine
 
+Our game engine follows a really simple procedure and has quite few responsibility.  
+To run a game you just need to call the four following methods in order : 
+- `newGame()`
+- `startGame()`
+- `playGame()`
+- `endGame()`
+
+This execution process is already defined in the `runGame()` method. If you do not run the previous methods in order, it will
+raise an error explaining why it failed.
+
+You can also run many games one after the other using the following method : `runGame(int)`.
+
+You can specify the bot managers you want to use in your game by using one of the constructors.
+
 <p align="center">
    <img src="images/architecture/game-engine.svg" alt="svg" width="50%">
 </p>
@@ -68,6 +82,16 @@ or method a class has. However, you should be able to understand how the project
 #### Action
 
 #### Objective
+
+The `Objective` class represents an objective card from the game.
+It can have one of the three available types. It also has a state to specify if it is achieved or not.
+
+All of our objectives extend the `Objective` class.
+
+Each objective has a different `verify(...)` method that can be called to know if the objective is achieved or not on the 
+current setup of the board. 
+Each objective has a different `getCompletion(...)` in order to find out the highest percentage of completion for the said
+objective.
 
 <p align="center">
    <img src="images/architecture/objective.svg" alt="svg" width="50%">
@@ -77,11 +101,34 @@ or method a class has. However, you should be able to understand how the project
 
 #### Bot Manager
 
+As said in the name, the `Bot Manager` is responsible for managing a bot, its available actions, its inventory, its objectives.
+A `Bot` in itself just represent the behavior of the said bot (see [Bot](#bot)).
+
+The main method of a bot manager is `playBot(...)`. This method is responsible for managing correctly how a bot turn should go.  
+This means that it will roll the weather dice and then tell the bot to choose to do.  
+Then, in the limit of doable actions, the bot manager will just call the `chooseAction(...)` of the bot. The result given
+can then be executed and added to the history.  
+The result of the execution is an `ActionResult` which can then be used to update the available actions of the bot. To lear
+more about the `ActionResult` see [Action](#action).
+
 <p align="center">
    <img src="images/architecture/bot-manager.svg" alt="svg" width="50%">
 </p>
 
 #### Board
+
+The `Board` contains all the physical elements of a real game.  
+The `Panda` and `Gardener` each have their own class that extends `Actor`. This class is responsible for managing the 
+movements.
+The physical board is built from the tiles, the bamboos and the irrigation channels. To represent those we used layers, so
+our board has an attribute for each type of layer. To learn more see [Layers](#layers).
+Since the weather is also general to the whole game, it belongs in `Board`.
+Finally, we have a class `GameAssets` whose job is to store the weather dice, the improvement deck, the objective deck,
+the tile deck and the irrigation deck. All of those are their own class.
+
+Because the board contains so many elements, and that each of them is its own class, our `Board` is in fact only a facade. 
+Having a facade is useful to avoid the anti-pattern named "Train Wreck Pattern". 
+Having a facade is also useful because the method called is independent of the method implemented below.
 
 <p align="center">
    <img src="images/architecture/board.svg" alt="svg" width="50%">
@@ -97,16 +144,22 @@ or method a class has. However, you should be able to understand how the project
 
 #### Coordinate
 
-
-
-
-
-
 ### Quality
+
+#### Good quality
+
+#### Not so good quality
 
 ### Documentation
 
+As said in the [Overview](#overview), you can our [Javadoc](https://pns-si3-projects.github.io/projet2-ps5-22-23-takenoko-2023-c/apidocs/index.html)
+as well as our [PIT test report](https://pns-si3-projects.github.io/projet2-ps5-22-23-takenoko-2023-c/pit-reports/index.html) hosted via GitHub Pages.
+We also have the whole [Maven documentation](https://pns-si3-projects.github.io/projet2-ps5-22-23-takenoko-2023-c/project-info.html) generated.
 
+The Javadoc could be more complete and the code is lacking quite some comments in certain areas of the code. We tried our
+best to comment what we were doing as it is as important as the file you are currently reading.
+
+The PIT test report results are discussed in the [Quality](#quality) section.
 
 ---
 
