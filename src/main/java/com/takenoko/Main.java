@@ -2,7 +2,7 @@ package com.takenoko;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
-import com.takenoko.bot.FullRandomBot;
+import com.takenoko.bot.GeneralTacticBot;
 import com.takenoko.engine.BotManager;
 import com.takenoko.engine.GameEngine;
 import com.takenoko.ui.ConsoleUserInterface;
@@ -34,7 +34,7 @@ public class Main {
     private boolean csv = false;
 
     private final Logger logger = LogManager.getLogger(Main.class);
-    private static final int TWO_THOUSANDS_NB_GAMES = 10;
+    private static final int TWO_THOUSANDS_NB_GAMES = 1000;
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -56,8 +56,10 @@ public class Main {
                     new GameEngine(
                             new ArrayList<>(
                                     List.of(
-                                            new BotManager(new FullRandomBot(), "Bob2"),
-                                            new BotManager(new FullRandomBot(), "Joe2"))));
+                                            new BotManager(
+                                                    new GeneralTacticBot(), "GeneralTacticBot1"),
+                                            new BotManager(
+                                                    new GeneralTacticBot(), "GeneralTacticBot2"))));
             gameEngine2.runGame(TWO_THOUSANDS_NB_GAMES, csv);
         } else if (demo) {
             loggerConfig.setLevel(Level.INFO);
