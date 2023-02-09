@@ -132,7 +132,7 @@ public class HistoryAnalysis {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    static Map<UUID, Boolean> analyzeRushPanda(History history) {
+    public static Map<UUID, Boolean> analyzeRushPanda(History history) {
         return analyzeRushPanda(history, DEFAULT_RUSH_PANDA_THRESHOLD);
     }
 }

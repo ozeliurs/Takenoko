@@ -1,6 +1,6 @@
 package com.takenoko.engine;
 
-import com.takenoko.bot.FullRandomBot;
+import com.takenoko.bot.ColletBot;
 import com.takenoko.bot.GeneralTacticBot;
 import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
@@ -63,8 +63,8 @@ public class GameEngine {
                         List.of(
                                 new BotManager(
                                         new ConsoleUserInterface(),
-                                        "Joe",
-                                        new FullRandomBot(),
+                                        "ColletBot",
+                                        new ColletBot(),
                                         new BotState(),
                                         new SingleBotStatistics()),
                                 new BotManager(
