@@ -44,5 +44,16 @@ class PlaceIrrigationActionTest {
             ActionResult result = action.execute(board, botManager);
             assertThat(result.cost()).isEqualTo(1);
         }
+
+        @Test
+        @DisplayName(
+                "should increment irrigation counter in singleBotStatistics and update actions")
+        void shouldIncrementIrrigationCounterInSingleBotStatisticsAndUpdateActions() {
+            SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
+            when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
+            action.execute(board, botManager);
+            verify(singleBotStatistics, times(1)).incrementIrrigationsPlaced();
+            verify(singleBotStatistics, times(1)).updateActions(action.getClass().getSimpleName());
+        }
     }
 }

@@ -307,8 +307,8 @@ class GameEngineTest {
         }
 
         @Test
-        @DisplayName("endGame should increments victories and losses")
-        void endGame_shouldIncrementsVictoriesAndLosses() {
+        @DisplayName("endGame should increments victories and losses and update scores")
+        void endGame_shouldIncrementsVictoriesAndLossesAndUpdateScores() {
             BotStatistics botStatistics = mock(BotStatistics.class);
             Scoreboard scoreboard = spy(Scoreboard.class);
             gameEngine =
@@ -326,6 +326,7 @@ class GameEngineTest {
             gameEngine.endGame();
             verify(botStatistics, times(2)).incrementWins(any());
             verify(botStatistics, times(0)).incrementLosses(any());
+            verify(botStatistics, times(2)).updateScore(any(), anyInt());
             verify(scoreboard, times(2)).incrementNumberOfVictory(any());
         }
 

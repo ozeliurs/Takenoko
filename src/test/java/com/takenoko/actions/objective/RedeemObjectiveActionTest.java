@@ -47,5 +47,18 @@ class RedeemObjectiveActionTest {
             botState.update(board);
             assertThat(botState.getAvailableActions()).contains(RedeemObjectiveAction.class);
         }
+
+        @Test
+        @DisplayName("should update actions in singlebotStatistics")
+        void shouldUpdateActionsInSingleBotStatistics() {
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+            Objective objective = mock(Objective.class);
+            SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
+            when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
+            RedeemObjectiveAction redeemObjectiveAction = new RedeemObjectiveAction(objective);
+            redeemObjectiveAction.execute(board, botManager);
+            verify(singleBotStatistics, times(1)).updateObjectivesRedeemed(objective);
+        }
     }
 }

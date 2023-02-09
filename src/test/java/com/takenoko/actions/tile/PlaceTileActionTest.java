@@ -4,6 +4,7 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
+import com.takenoko.engine.SingleBotStatistics;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.vector.PositionVector;
@@ -43,6 +44,18 @@ class PlaceTileActionTest {
             when(board.getTileAt(any())).thenReturn(new Tile());
             placeTileAction.execute(board, botManager);
             verify(botManager, times(2)).displayMessage(any());
+        }
+
+        @Test
+        @DisplayName("Should update tiles placed counter and actions in singleBotStatistics")
+        void shouldUpdateTilesPlaceCounterAndActionsInSingleBotStatistics() {
+            SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
+            when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
+            when(board.getTileAt(any())).thenReturn(new Tile());
+            placeTileAction.execute(board, botManager);
+            verify(singleBotStatistics, times(1))
+                    .updateActions(placeTileAction.getClass().getSimpleName());
+            verify(singleBotStatistics, times(1)).updateTilesPlacedCounter(any());
         }
     }
 }

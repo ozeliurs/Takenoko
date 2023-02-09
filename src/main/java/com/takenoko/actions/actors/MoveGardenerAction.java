@@ -67,10 +67,8 @@ public class MoveGardenerAction implements DefaultAction {
                             .updatePlantedBambooCounter(
                                     board.getTileAt(positionVector).getColor(),
                                     layerBambooStack.getBambooCount());
-                    botManager
-                            .getSingleBotStatistics()
-                            .updateActions(this.getClass().getSimpleName());
                 });
+        botManager.getSingleBotStatistics().updateActions(this.getClass().getSimpleName());
 
         return new ActionResult(1);
     }
