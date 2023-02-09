@@ -65,6 +65,10 @@ or method a class has. However, you should be able to understand how the project
 
 #### Objective
 
+<p align="center">
+   <img src="images/architecture/objective.svg" alt="svg" width="50%">
+</p>
+
 #### Bot
 
 #### Bot Manager
