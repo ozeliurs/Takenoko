@@ -467,6 +467,7 @@ public class CSVExporter {
 
     /**
      * Converts a list of HashMaps to a list of lists.
+     *
      * @param entries The list of HashMaps.
      * @return The list of lists.
      */
@@ -497,6 +498,7 @@ public class CSVExporter {
 
     /**
      * Converts a list of lists to a list of HashMaps.
+     *
      * @param data The list of lists.
      * @return The list of HashMaps.
      */
