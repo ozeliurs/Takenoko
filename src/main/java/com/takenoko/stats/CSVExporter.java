@@ -10,11 +10,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.file.Paths;
 import java.util.*;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class CSVExporter {
     private static final String CSV_FILE_PATH = "stats/gamestats.csv";
     private static final String FORBIDDEN_CHAR = "🐼";
+    private static final int NUMBER_OF_BOTS = 2;
     File csvPath;
 
     private final List<Pair<BoardStatistics, List<SingleBotStatistics>>> data;
@@ -101,14 +103,15 @@ public class CSVExporter {
 
         List<SingleBotStatistics> botStatistics = new ArrayList<>();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < NUMBER_OF_BOTS; i++) {
             try {
+                System.out.println(data.get("Bot<" + i + ">Serialized"));
                 botStatistics.add(
                         gson.fromJson(
-                                data.get("Bot<" + i + ">ChooseIfApplyWeatherAction")
-                                        .replace(FORBIDDEN_CHAR, ","),
+                                data.get("Bot<" + i + ">Serialized").replace(FORBIDDEN_CHAR, ","),
                                 SingleBotStatistics.class));
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                System.out.println("Error while reading bot statistics: " + e.getMessage());
                 // Ignore
             }
         }
@@ -192,271 +195,309 @@ public class CSVExporter {
 
         entries.put(
                 "Bot<" + offset + ">Wins",
-                singleBotStatistics
-                        .getNumericStats()
-                        .getOrDefault(SingleBotStatistics.WINS, 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getNumericStats()
+                                .getOrDefault(SingleBotStatistics.WINS, 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">Losses",
-                singleBotStatistics
-                        .getNumericStats()
-                        .getOrDefault(SingleBotStatistics.LOSSES, 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getNumericStats()
+                                .getOrDefault(SingleBotStatistics.LOSSES, 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">IrrigationsPlaced",
-                singleBotStatistics
-                        .getNumericStats()
-                        .getOrDefault(SingleBotStatistics.IRRIGATIONS_PLACED, 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getNumericStats()
+                                .getOrDefault(SingleBotStatistics.IRRIGATIONS_PLACED, 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">FinalScore",
-                singleBotStatistics
-                        .getNumericStats()
-                        .getOrDefault(SingleBotStatistics.FINAL_SCORE, 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getNumericStats()
+                                .getOrDefault(SingleBotStatistics.FINAL_SCORE, 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">TotalNbOfAction",
                 Integer.toString(singleBotStatistics.getTotalNbOfAction()));
 
         entries.put(
                 "Bot<" + offset + ">GreenTilesPlaced",
-                singleBotStatistics.getTilesPlaced().getOrDefault(TileColor.GREEN, 0).toString());
+                Objects.toString(
+                        singleBotStatistics.getTilesPlaced().getOrDefault(TileColor.GREEN, 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">PinkTilesPlaced",
-                singleBotStatistics.getTilesPlaced().getOrDefault(TileColor.PINK, 0).toString());
+                Objects.toString(
+                        singleBotStatistics.getTilesPlaced().getOrDefault(TileColor.PINK, 0), "0"));
         entries.put(
                 "Bot<" + offset + ">YellowTilesPlaced",
-                singleBotStatistics.getTilesPlaced().getOrDefault(TileColor.YELLOW, 0).toString());
+                Objects.toString(
+                        singleBotStatistics.getTilesPlaced().getOrDefault(TileColor.YELLOW, 0),
+                        "0"));
 
         entries.put(
                 "Bot<" + offset + ">AppliedSunny",
-                singleBotStatistics
-                        .getWeathers()
-                        .getOrDefault("Sunny", Pair.of(0, 0))
-                        .getLeft()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getWeathers()
+                                .getOrDefault("Sunny", MutablePair.of(0, 0))
+                                .getLeft(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">AppliedRainy",
-                singleBotStatistics
-                        .getWeathers()
-                        .getOrDefault("Rainy", Pair.of(0, 0))
-                        .getLeft()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getWeathers()
+                                .getOrDefault("Rainy", MutablePair.of(0, 0))
+                                .getLeft(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">AppliedCloudy",
-                singleBotStatistics
-                        .getWeathers()
-                        .getOrDefault("Cloudy", Pair.of(0, 0))
-                        .getLeft()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getWeathers()
+                                .getOrDefault("Cloudy", MutablePair.of(0, 0))
+                                .getLeft(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">AppliedWindy",
-                singleBotStatistics
-                        .getWeathers()
-                        .getOrDefault("Windy", Pair.of(0, 0))
-                        .getLeft()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getWeathers()
+                                .getOrDefault("Windy", MutablePair.of(0, 0))
+                                .getLeft(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">AppliedStormy",
-                singleBotStatistics
-                        .getWeathers()
-                        .getOrDefault("Stormy", Pair.of(0, 0))
-                        .getLeft()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getWeathers()
+                                .getOrDefault("Stormy", MutablePair.of(0, 0))
+                                .getLeft(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">AppliedQuestionMark",
-                singleBotStatistics
-                        .getWeathers()
-                        .getOrDefault("QuestionMark", Pair.of(0, 0))
-                        .getLeft()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getWeathers()
+                                .getOrDefault("QuestionMark", MutablePair.of(0, 0))
+                                .getLeft(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">RolledSunny",
-                singleBotStatistics
-                        .getWeathers()
-                        .getOrDefault("Sunny", Pair.of(0, 0))
-                        .getRight()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getWeathers()
+                                .getOrDefault("Sunny", MutablePair.of(0, 0))
+                                .getRight(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">RolledRainy",
-                singleBotStatistics
-                        .getWeathers()
-                        .getOrDefault("Rainy", Pair.of(0, 0))
-                        .getRight()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getWeathers()
+                                .getOrDefault("Rainy", MutablePair.of(0, 0))
+                                .getRight(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">RolledCloudy",
-                singleBotStatistics
-                        .getWeathers()
-                        .getOrDefault("Cloudy", Pair.of(0, 0))
-                        .getRight()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getWeathers()
+                                .getOrDefault("Cloudy", MutablePair.of(0, 0))
+                                .getRight(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">RolledWindy",
-                singleBotStatistics
-                        .getWeathers()
-                        .getOrDefault("Windy", Pair.of(0, 0))
-                        .getRight()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getWeathers()
+                                .getOrDefault("Windy", MutablePair.of(0, 0))
+                                .getRight(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">RolledStormy",
-                singleBotStatistics
-                        .getWeathers()
-                        .getOrDefault("Stormy", Pair.of(0, 0))
-                        .getRight()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getWeathers()
+                                .getOrDefault("Stormy", MutablePair.of(0, 0))
+                                .getRight(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">RolledQuestionMark",
-                singleBotStatistics
-                        .getWeathers()
-                        .getOrDefault("QuestionMark", Pair.of(0, 0))
-                        .getRight()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getWeathers()
+                                .getOrDefault("QuestionMark", MutablePair.of(0, 0))
+                                .getRight(),
+                        "0"));
 
         entries.put(
                 "Bot<" + offset + ">GreenBambooPlaced",
-                singleBotStatistics
-                        .getBambooCounter()
-                        .getOrDefault(TileColor.GREEN, Pair.of(0, 0))
-                        .getLeft()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getBambooCounter()
+                                .getOrDefault(TileColor.GREEN, MutablePair.of(0, 0))
+                                .getLeft(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">PinkBambooPlaced",
-                singleBotStatistics
-                        .getBambooCounter()
-                        .getOrDefault(TileColor.PINK, Pair.of(0, 0))
-                        .getLeft()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getBambooCounter()
+                                .getOrDefault(TileColor.PINK, MutablePair.of(0, 0))
+                                .getLeft(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">YellowBambooPlaced",
-                singleBotStatistics
-                        .getBambooCounter()
-                        .getOrDefault(TileColor.YELLOW, Pair.of(0, 0))
-                        .getLeft()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getBambooCounter()
+                                .getOrDefault(TileColor.YELLOW, MutablePair.of(0, 0))
+                                .getLeft(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">GreenBambooEaten",
-                singleBotStatistics
-                        .getBambooCounter()
-                        .getOrDefault(TileColor.GREEN, Pair.of(0, 0))
-                        .getRight()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getBambooCounter()
+                                .getOrDefault(TileColor.GREEN, MutablePair.of(0, 0))
+                                .getRight(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">PinkBambooEaten",
-                singleBotStatistics
-                        .getBambooCounter()
-                        .getOrDefault(TileColor.PINK, Pair.of(0, 0))
-                        .getRight()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getBambooCounter()
+                                .getOrDefault(TileColor.PINK, MutablePair.of(0, 0))
+                                .getRight(),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">YellowBambooEaten",
-                singleBotStatistics
-                        .getBambooCounter()
-                        .getOrDefault(TileColor.YELLOW, Pair.of(0, 0))
-                        .getRight()
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getBambooCounter()
+                                .getOrDefault(TileColor.YELLOW, MutablePair.of(0, 0))
+                                .getRight(),
+                        "0"));
 
         entries.put(
                 "Bot<" + offset + ">ForcedMovePandaAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("ForcedMovePandaAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("ForcedMovePandaAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">MoveGardenerAction",
-                singleBotStatistics.getActions().getOrDefault("MoveGardenerAction", 0).toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("MoveGardenerAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">MovePandaAction",
-                singleBotStatistics.getActions().getOrDefault("MovePandaAction", 0).toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("MovePandaAction", 0), "0"));
         entries.put(
                 "Bot<" + offset + ">GrowBambooAction",
-                singleBotStatistics.getActions().getOrDefault("GrowBambooAction", 0).toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("GrowBambooAction", 0), "0"));
         entries.put(
                 "Bot<" + offset + ">ApplyImprovementAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("ApplyImprovementAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("ApplyImprovementAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">ApplyImprovementFromInventoryAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("ApplyImprovementFromInventoryAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getActions()
+                                .getOrDefault("ApplyImprovementFromInventoryAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">DrawImprovementAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("DrawImprovementAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("DrawImprovementAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">StoreImprovementAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("StoreImprovementAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("StoreImprovementAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">DrawIrrigationAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("DrawIrrigationAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("DrawIrrigationAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">PlaceIrrigationAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("PlaceIrrigationAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("PlaceIrrigationAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">PlaceIrrigationFromInventoryAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("PlaceIrrigationFromInventoryAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getActions()
+                                .getOrDefault("PlaceIrrigationFromInventoryAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">StoreIrrigationInInventoryAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("StoreIrrigationInInventoryAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getActions()
+                                .getOrDefault("StoreIrrigationInInventoryAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">DrawObjectiveAction",
-                singleBotStatistics.getActions().getOrDefault("DrawObjectiveAction", 0).toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("DrawObjectiveAction", 0)));
         entries.put(
                 "Bot<" + offset + ">RedeemObjectiveAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("RedeemObjectiveAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("RedeemObjectiveAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">DrawTileAction",
-                singleBotStatistics.getActions().getOrDefault("DrawTileAction", 0).toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("DrawTileAction", 0), "0"));
         entries.put(
                 "Bot<" + offset + ">PlaceTileAction",
-                singleBotStatistics.getActions().getOrDefault("PlaceTileAction", 0).toString());
+                Objects.toString(
+                        singleBotStatistics.getActions().getOrDefault("PlaceTileAction", 0), "0"));
         entries.put(
                 "Bot<" + offset + ">PlaceTileWithImprovementAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("PlaceTileWithImprovementAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getActions()
+                                .getOrDefault("PlaceTileWithImprovementAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">ChooseAndApplyWeatherAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("ChooseAndApplyWeatherAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getActions()
+                                .getOrDefault("ChooseAndApplyWeatherAction", 0),
+                        "0"));
         entries.put(
                 "Bot<" + offset + ">ChooseIfApplyWeatherAction",
-                singleBotStatistics
-                        .getActions()
-                        .getOrDefault("ChooseIfApplyWeatherAction", 0)
-                        .toString());
+                Objects.toString(
+                        singleBotStatistics
+                                .getActions()
+                                .getOrDefault("ChooseIfApplyWeatherAction", 0),
+                        "0"));
         try {
             entries.put(
                     "Bot<" + offset + ">Serialized",
                     gson.toJson(singleBotStatistics).replace(",", FORBIDDEN_CHAR));
         } catch (Exception e) {
+            System.out.println(
+                    "Error while serializing Bot<"
+                            + offset
+                            + ">Serialized statistics"
+                            + e.getMessage());
             entries.put(
                     "Bot<" + offset + ">Serialized",
                     gson.toJson(new SingleBotStatistics()).replace(",", FORBIDDEN_CHAR));
