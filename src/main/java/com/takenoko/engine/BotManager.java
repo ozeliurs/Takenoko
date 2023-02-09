@@ -44,7 +44,7 @@ public class BotManager {
      * @param botState the bot state
      * @param botStatistics the extended statistics for this botManager
      */
-    protected BotManager(
+    public BotManager(
             ConsoleUserInterface consoleUserInterface,
             String name,
             Bot bot,
@@ -63,7 +63,7 @@ public class BotManager {
     }
 
     /** Default constructor for the class */
-    protected BotManager() {
+    public BotManager() {
         this(
                 DEFAULT_CONSOLE_USER_INTERFACE,
                 DEFAULT_NAME,
