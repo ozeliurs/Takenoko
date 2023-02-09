@@ -9,6 +9,7 @@ import com.takenoko.actors.Gardener;
 import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
 import com.takenoko.asset.TileDeck;
+import com.takenoko.bot.utils.pathfinding.irrigation.IrrigationPathFinding;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BoardStatistics;
 import com.takenoko.layers.bamboo.BambooLayer;

@@ -108,7 +108,7 @@ public class GameEngine {
 
         // Reset all the attributes that needs to be
         this.board = new Board();
-        this.history = new History();
+        this.history.clear();
 
         for (BotManager botManager : botManagers) {
             botManager.reset();
@@ -153,7 +153,8 @@ public class GameEngine {
                 }
                 consoleUserInterface.displayMessage(
                         "===== <" + botManager.getName() + "> is playing =====");
-                botManager.playBot(board, history.getHistoryWithoutCurrentBotManager(botManager));
+                history.setCurrentBotManagerUUID(botManager.getUniqueID());
+                botManager.playBot(board, history.copy());
 
                 if (botManager.getRedeemedObjectives().size()
                                 >= DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(botManagers.size())

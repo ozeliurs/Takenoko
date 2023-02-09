@@ -51,7 +51,7 @@ public class PatternObjective extends Objective {
 
     @Override
     public float getCompletion(Board board, BotState botState) {
-        return pattern.matchRatio(board);
+        throw new UnsupportedOperationException();
     }
 
     @Override

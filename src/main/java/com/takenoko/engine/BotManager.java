@@ -101,6 +101,8 @@ public class BotManager {
         botState.resetAvailableActions(board);
         botState.setNumberOfActions(defaultNumberOfActions);
 
+        TurnHistory turnHistory = new TurnHistory();
+
         if (board.getRoundNumber() > 0) {
             board.rollWeather();
             displayMessage(this.getName() + " rolled weather: " + board.peekWeather());
@@ -128,9 +130,10 @@ public class BotManager {
             }
 
             ActionResult actionResult = action.execute(board, this);
-            history.addHistoryItem(this, new HistoryItem(action, botState.getRedeemedObjectives()));
+            turnHistory.add(new HistoryItem(action, getRedeemedObjectives()));
             botState.updateAvailableActions(action, actionResult);
         }
+        history.addTurnHistory(this, turnHistory);
         board.getWeather().ifPresent(value -> value.revert(board, this));
     }
 
