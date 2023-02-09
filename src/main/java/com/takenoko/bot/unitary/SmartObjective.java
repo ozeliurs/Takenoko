@@ -20,6 +20,13 @@ public class SmartObjective extends PriorityBot {
     protected void fillAction(Board board, BotState botState, History history) {
         this.addActionWithPriority(analyzeObjectivesToRedeem(botState, history), DEFAULT_PRIORITY);
         this.addActionWithPriority(new DrawObjectiveAction(), DEFAULT_PRIORITY);
+
+        botState.getAchievedObjectives().stream()
+                .filter(v -> v.getClass() != PandaObjective.class)
+                .forEach(
+                        v ->
+                                this.addActionWithPriority(
+                                        new RedeemObjectiveAction(v), DEFAULT_PRIORITY));
     }
 
     public RedeemObjectiveAction analyzeObjectivesToRedeem(BotState botState, History history) {
