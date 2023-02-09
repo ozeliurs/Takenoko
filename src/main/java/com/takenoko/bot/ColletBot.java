@@ -4,6 +4,7 @@ import static com.takenoko.bot.utils.pathfinding.panda.PandaPathfinding.getPanda
 
 import com.takenoko.actions.actors.ForcedMovePandaAction;
 import com.takenoko.actions.actors.MovePandaAction;
+import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.bot.unitary.SmartChooseAndApplyWeather;
 import com.takenoko.bot.unitary.SmartDrawImprovement;
@@ -38,7 +39,7 @@ public class ColletBot extends PriorityBot {
             addWithOffset(
                     (new SmartChooseAndApplyWeather(new Cloudy()))
                             .compute(board, botState, history),
-                    0);
+                    50);
             addWithOffset(
                     (new SmartDrawImprovement(
                                     Map.of(
@@ -48,6 +49,21 @@ public class ColletBot extends PriorityBot {
                                             1)))
                             .compute(board, botState, history),
                     0);
+        }
+        if (HistoryAnalysis.analyzeRushPanda(history).keySet().stream()
+                .anyMatch(k -> k != history.getCurrentBotManagerUUID())) {
+            addWithOffset(
+                    (new SmartDrawImprovement(Map.of(ImprovementType.ENCLOSURE, 3)))
+                            .compute(board, botState, history),
+                    0);
+            if (botState.getInventory().hasImprovement(ImprovementType.ENCLOSURE)
+                    && !board.getAvailableImprovementPositions().isEmpty()) {
+                addActionWithPriority(
+                        new ApplyImprovementFromInventoryAction(
+                                ImprovementType.ENCLOSURE,
+                                board.getAvailableImprovementPositions().get(0)),
+                        0);
+            }
         }
 
         addWithOffset((new SmartChooseAndApplyWeather()).compute(board, botState, history), 0);
