@@ -62,6 +62,11 @@ public class HistoryAnalysis {
         // if someone has completed more than LATE_GAME_THRESHOLD objectives, the game is in the
         // late game
         // otherwise, the game is in the mid-game
+
+        if (history.getLatestHistoryItems() == null) {
+            return GameProgress.EARLY_GAME;
+        }
+
         if (history.getLatestHistoryItems().values().stream()
                 .allMatch(
                         historyItem ->
