@@ -11,6 +11,7 @@ import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.objective.Objective;
+import com.takenoko.stats.BoardStatistics;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.Weather;
 import java.util.*;
@@ -25,6 +26,7 @@ public class Board {
     private final GameAssets gameAssets;
     private Weather weather = null;
     int roundNumber = 0;
+    private final BoardStatistics boardStatistics;
 
     /**
      * Constructor for the Board class.
@@ -42,13 +44,15 @@ public class Board {
             Panda panda,
             Gardener gardener,
             GameAssets gameAssets,
-            IrrigationLayer irrigationLayer) {
+            IrrigationLayer irrigationLayer,
+            BoardStatistics boardStatistics) {
         this.tileLayer = tileLayer;
         this.bambooLayer = bambooLayer;
         this.panda = panda;
         this.gardener = gardener;
         this.gameAssets = gameAssets;
         this.irrigationLayer = irrigationLayer;
+        this.boardStatistics = boardStatistics;
     }
 
     public void rollWeather() {
@@ -67,7 +71,8 @@ public class Board {
                 new Panda(),
                 new Gardener(),
                 new GameAssets(),
-                new IrrigationLayer());
+                new IrrigationLayer(),
+                new BoardStatistics());
     }
 
     public Board(Board board) {
@@ -79,6 +84,7 @@ public class Board {
         this.weather = board.weather;
         this.irrigationLayer = board.irrigationLayer.copy();
         this.roundNumber = board.roundNumber;
+        this.boardStatistics = board.boardStatistics;
     }
 
     /**
@@ -161,9 +167,10 @@ public class Board {
      * Grow bamboo on a tile. By default, the number of bamboo is 1 if the tile is irrigated.
      *
      * @param positionVector the position of the tile
+     * @return the bamboo stack at the position
      */
-    public void growBamboo(PositionVector positionVector) {
-        bambooLayer.growBamboo(positionVector, this);
+    public LayerBambooStack growBamboo(PositionVector positionVector) {
+        return bambooLayer.growBamboo(positionVector, this);
     }
 
     /**
@@ -245,7 +252,8 @@ public class Board {
                 && gameAssets.equals(board.gameAssets)
                 && Objects.equals(weather, board.weather)
                 && irrigationLayer.equals(board.irrigationLayer)
-                && roundNumber == board.roundNumber;
+                && roundNumber == board.roundNumber
+                && boardStatistics == board.boardStatistics;
     }
 
     @Override
@@ -258,7 +266,8 @@ public class Board {
                 gameAssets,
                 weather,
                 irrigationLayer,
-                roundNumber);
+                roundNumber,
+                boardStatistics);
     }
 
     public Board copy() {
@@ -386,6 +395,14 @@ public class Board {
      */
     public List<Objective> getStarterDeck() {
         return gameAssets.getStarterDeck();
+    }
+
+    public BoardStatistics getBoardStatistics() {
+        return boardStatistics;
+    }
+
+    public void analyze() {
+        boardStatistics.analyzeBoard(this);
     }
 
     public List<EdgePosition> getPlacedIrrigations() {

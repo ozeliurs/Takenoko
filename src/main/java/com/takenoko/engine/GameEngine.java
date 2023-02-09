@@ -4,6 +4,9 @@ import com.takenoko.bot.FullRandomBot;
 import com.takenoko.bot.GeneralTacticBot;
 import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
+import com.takenoko.stats.BotStatistics;
+import com.takenoko.stats.CSVExporter;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,6 +24,7 @@ public class GameEngine {
     private final int numberOfRounds;
     private final List<BotManager> botManagers;
     private final Scoreboard scoreboard;
+    private final BotStatistics botStatistics;
     private History history;
 
     public GameEngine(
@@ -30,6 +34,7 @@ public class GameEngine {
             GameState gameState,
             List<BotManager> botManagerList,
             Scoreboard scoreboard,
+            BotStatistics botStatistics,
             History history) {
         // Assign values to the attributes
         this.numberOfRounds = numberOfRounds;
@@ -38,8 +43,10 @@ public class GameEngine {
         this.gameState = gameState;
         this.botManagers = botManagerList;
         this.scoreboard = scoreboard;
+        this.botStatistics = botStatistics;
         this.history = history;
         scoreboard.addBotManager(botManagerList);
+        botStatistics.addBotManagers(botManagerList);
     }
 
     /**
@@ -58,13 +65,16 @@ public class GameEngine {
                                         new ConsoleUserInterface(),
                                         "Joe",
                                         new FullRandomBot(),
-                                        new BotState()),
+                                        new BotState(),
+                                        new SingleBotStatistics()),
                                 new BotManager(
                                         new ConsoleUserInterface(),
                                         "GeneralTactic",
                                         new GeneralTacticBot(),
-                                        new BotState()))),
+                                        new BotState(),
+                                        new SingleBotStatistics()))),
                 new Scoreboard(),
+                new BotStatistics(),
                 new History());
     }
 
@@ -76,6 +86,7 @@ public class GameEngine {
                 GameState.INITIALIZED,
                 botManagers,
                 new Scoreboard(),
+                new BotStatistics(),
                 new History());
     }
 
@@ -208,15 +219,45 @@ public class GameEngine {
 
         for (BotManager botManager : winner.getLeft()) {
             scoreboard.incrementNumberOfVictory(botManager);
+            botStatistics.incrementWins(botManager);
         }
+        for (BotManager botManager : botManagers) {
+            if (!winner.getLeft().contains(botManager)) {
+                botStatistics.incrementLosses(botManager);
+            }
+        }
+        for (BotManager botManager : botManagers) {
+            scoreboard.updateScore(botManager, botManager.getObjectiveScore());
+            botStatistics.updateScore(botManager, botManager.getObjectiveScore());
+        }
+        board.analyze();
+        consoleUserInterface.displayFullStats(botStatistics.toString());
+        consoleUserInterface.displayFullStats(board.getBoardStatistics().toString());
+        consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         for (BotManager botManager : botManagers) {
             botManager.reset();
         }
-
-        consoleUserInterface.displayMessage(scoreboard.toString());
-
-        consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         gameState = GameState.FINISHED;
+    }
+
+    public String statSummary(int numberOfGames) {
+        StringBuilder summary = new StringBuilder();
+        String lineJump = "\n \t \t \t";
+        summary.append("Summarized game statistics for ")
+                .append(numberOfGames)
+                .append(" games between ")
+                .append(botManagers)
+                .append(lineJump);
+        summary.append("============== BotAverage ==============").append(lineJump);
+        for (BotManager botManager : botManagers) {
+            summary.append("< ")
+                    .append(botManager.getName())
+                    .append(" : Score avg per game- ")
+                    .append(scoreboard.getTotalScore().get(botManager) / numberOfGames)
+                    .append(" > | ")
+                    .append(lineJump);
+        }
+        return summary.toString();
     }
 
     /**
@@ -304,6 +345,24 @@ public class GameEngine {
     public void runGame(int numberOfGames) {
         for (int i = 0; i < numberOfGames; i++) {
             runGame();
+        }
+        consoleUserInterface.displayEnd("All " + numberOfGames + " games have been run :");
+        consoleUserInterface.displayScoreBoard(scoreboard.toString());
+        consoleUserInterface.displayStats(statSummary(numberOfGames));
+    }
+
+    public void runGame(int numberOfGames, boolean logToCSV) {
+        for (int i = 0; i < numberOfGames; i++) {
+            runGame();
+        }
+        consoleUserInterface.displayEnd("All " + numberOfGames + " games have been run :");
+        consoleUserInterface.displayScoreBoard(scoreboard.toString());
+        consoleUserInterface.displayStats(statSummary(numberOfGames));
+        if (logToCSV) {
+            CSVExporter csvExporter = new CSVExporter();
+            csvExporter.addStatistics(
+                    board.getBoardStatistics(), botStatistics.values().stream().toList());
+            csvExporter.writeCSV();
         }
     }
 }

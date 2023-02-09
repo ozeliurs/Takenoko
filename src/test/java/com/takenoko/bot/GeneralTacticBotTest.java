@@ -13,6 +13,7 @@ import com.takenoko.layers.irrigation.IrrigationLayer;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.layers.tile.TileLayer;
+import com.takenoko.stats.BoardStatistics;
 import com.takenoko.vector.PositionVector;
 import java.util.List;
 import org.junit.jupiter.api.Disabled;
@@ -50,7 +51,8 @@ class GeneralTacticBotTest {
                             new Panda(),
                             new Gardener(),
                             gameAssets,
-                            new IrrigationLayer());
+                            new IrrigationLayer(),
+                            new BoardStatistics());
             board = spy(board);
 
             board.drawTiles();

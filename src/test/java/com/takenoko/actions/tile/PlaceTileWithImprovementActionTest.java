@@ -9,6 +9,7 @@ import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.vector.PositionVector;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,8 +40,10 @@ class PlaceTileWithImprovementActionTest {
         @DisplayName("Should add improvement to tile")
         void shouldAddImprovementToTile() {
             when(botManager.getInventory()).thenReturn(mock(Inventory.class));
+            when(botManager.getSingleBotStatistics()).thenReturn(mock(SingleBotStatistics.class));
             PlaceTileWithImprovementAction placeTileWithImprovementAction =
                     new PlaceTileWithImprovementAction(tile, positionVector, improvementType);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             placeTileWithImprovementAction.execute(board, botManager);
             verify(board, times(1)).placeTile(any(), any());
             verify(tile, times(1)).setImprovement(improvementType);

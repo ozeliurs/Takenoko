@@ -19,6 +19,7 @@ public class DrawObjectiveAction implements DefaultAction {
         botManager.addObjective(board.peekObjectiveDeck());
         botManager.displayMessage(
                 botManager.getName() + " drew objective " + board.peekObjectiveDeck());
+        botManager.getSingleBotStatistics().updateActions(getClass().getSimpleName());
         return new ActionResult(List.of(DrawObjectiveAction.class), 1);
     }
 

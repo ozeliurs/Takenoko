@@ -7,6 +7,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.engine.BotState;
 import com.takenoko.objective.Objective;
+import com.takenoko.stats.SingleBotStatistics;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -22,13 +23,27 @@ class DrawObjectiveActionTest {
         void execute_shouldReturnActionResultWithDrawObjectiveAction() {
             Board board = mock(Board.class);
             BotManager botManager = mock(BotManager.class);
-
+            SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
+            when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
             DrawObjectiveAction drawObjectiveAction = new DrawObjectiveAction();
 
             drawObjectiveAction.execute(board, botManager);
 
             verify(board, times(1)).drawObjective();
             verify(botManager, times(1)).addObjective(any());
+        }
+
+        @Test
+        @DisplayName("should update actions in singlebotStatistics")
+        void shouldUpdateActionsInSingleBotStatistics() {
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+            SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
+            when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
+            DrawObjectiveAction drawObjectiveAction = new DrawObjectiveAction();
+            drawObjectiveAction.execute(board, botManager);
+            verify(singleBotStatistics, times(1))
+                    .updateActions(drawObjectiveAction.getClass().getSimpleName());
         }
     }
 
@@ -60,7 +75,6 @@ class DrawObjectiveActionTest {
             for (int i = 0; i < BotState.MAX_OBJECTIVES; i++) {
                 botState.addObjective(mock(Objective.class));
             }
-            System.out.println(botState.getObjectives());
             assertThat(DrawObjectiveAction.canBePlayed(board, botState)).isFalse();
         }
 
