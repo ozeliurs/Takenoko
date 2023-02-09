@@ -61,6 +61,10 @@ or method a class has. However, you should be able to understand how the project
 
 #### Game Engine
 
+<p align="center">
+   <img src="images/architecture/game-engine.svg" alt="svg" width="50%">
+</p>
+
 #### Action
 
 #### Objective
@@ -89,12 +93,16 @@ or method a class has. However, you should be able to understand how the project
 
 #### Statistics
 
-### Quality
-
 #### Logging
 
 #### Coordinate
 
+
+
+
+
+
+### Quality
 
 ### Documentation
 
