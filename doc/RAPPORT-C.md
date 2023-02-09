@@ -5,7 +5,20 @@
    1. test
    2. test2
 2. [Architecture and Quality](#Architecture-and-Quality)
-   1. test
+   1. [Architecture](#architecture)
+      1. [GameEngine](#game-engine)
+      2. [Action](#action)
+      3. [Objective](#objective)
+      4. [Bot](#bot)
+      5. [BotManager](#bot-manager)
+      6. [Board](#board)
+      7. [Layers](#layers)
+      8. [Shape](#shape)
+      9. [Statistics](#statistics)
+      10. [Logging](#logging)
+      11. [Coordinate](#coordinate)
+   2. [Quality](#quality)
+   3. [Documentation](#documentation)
 3. [Process](#Process)
    1. [Task Management](#Task-Management)
       1. [Agile Principles](#Agile-Principles)
