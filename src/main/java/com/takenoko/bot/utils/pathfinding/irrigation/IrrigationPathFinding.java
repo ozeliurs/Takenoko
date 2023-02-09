@@ -1,4 +1,4 @@
-package com.takenoko.bot.irrigation.pathfinding;
+package com.takenoko.bot.utils.pathfinding.irrigation;
 
 import com.takenoko.asset.IrrigationDeck;
 import com.takenoko.engine.Board;
@@ -9,7 +9,7 @@ import java.util.*;
 
 public class IrrigationPathFinding {
 
-    static final int ITERATION_LIMIT = 5000;
+    static final int ITERATION_LIMIT = 1000;
     static ConsoleUserInterface consoleUserInterface = new ConsoleUserInterface();
 
     private IrrigationPathFinding() {}

@@ -391,4 +391,8 @@ public class Board {
     public List<EdgePosition> getPlacedIrrigations() {
         return irrigationLayer.getIrrigationChannelsPositions().stream().toList();
     }
+
+    public boolean hasImprovementInDeck() {
+        return !gameAssets.getImprovementDeck().isEmpty();
+    }
 }
