@@ -15,6 +15,7 @@ import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.EmperorObjective;
+import com.takenoko.objective.SingleGardenerObjective;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.WeatherFactory;
 import java.util.List;
@@ -65,7 +66,7 @@ class ColletBotTest {
             Board board = spy(new Board());
 
             BotState botState = mock(BotState.class);
-            when(botState.getNotAchievedObjectives()).thenReturn(List.of(new EmperorObjective()));
+            when(botState.getNotAchievedObjectives()).thenReturn(List.of(mock(SingleGardenerObjective.class)));
             when(botState.getInventory()).thenReturn(new Inventory());
 
             when(board.getPandaPossibleMoves())
