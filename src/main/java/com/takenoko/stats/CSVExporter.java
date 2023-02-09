@@ -105,13 +105,11 @@ public class CSVExporter {
 
         for (int i = 0; i < NUMBER_OF_BOTS; i++) {
             try {
-                System.out.println(data.get("Bot<" + i + ">Serialized"));
                 botStatistics.add(
                         gson.fromJson(
                                 data.get("Bot<" + i + ">Serialized").replace(FORBIDDEN_CHAR, ","),
                                 SingleBotStatistics.class));
             } catch (Exception e) {
-                System.out.println("Error while reading bot statistics: " + e.getMessage());
                 // Ignore
             }
         }
@@ -493,11 +491,6 @@ public class CSVExporter {
                     "Bot<" + offset + ">Serialized",
                     gson.toJson(singleBotStatistics).replace(",", FORBIDDEN_CHAR));
         } catch (Exception e) {
-            System.out.println(
-                    "Error while serializing Bot<"
-                            + offset
-                            + ">Serialized statistics"
-                            + e.getMessage());
             entries.put(
                     "Bot<" + offset + ">Serialized",
                     gson.toJson(new SingleBotStatistics()).replace(",", FORBIDDEN_CHAR));

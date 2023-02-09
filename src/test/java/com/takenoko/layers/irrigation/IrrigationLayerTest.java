@@ -261,7 +261,6 @@ public class IrrigationLayerTest {
             if (step <= 9) return;
 
             // With irrigation
-            System.out.println(board.getTileAt(new PositionVector(1, -2, 1)));
             assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(1, -2, 1))).isTrue();
 
             if (step <= 10) return;

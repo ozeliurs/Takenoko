@@ -62,7 +62,6 @@ class DrawObjectiveActionTest {
             for (int i = 0; i < BotState.MAX_OBJECTIVES; i++) {
                 botState.addObjective(mock(Objective.class));
             }
-            System.out.println(botState.getObjectives());
             assertThat(DrawObjectiveAction.canBePlayed(board, botState)).isFalse();
         }
 
