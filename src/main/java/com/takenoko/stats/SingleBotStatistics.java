@@ -13,13 +13,12 @@ public class SingleBotStatistics {
     public static final String IRRIGATIONS_PLACED = "\t -Irrigations Placed : ";
     public static final String FINAL_SCORE = "\t -Final Score : ";
     private int totalNbOfAction;
-    private final HashMap<String, Integer> numericStats;
-    private final EnumMap<ObjectiveTypes, Integer> objectivesRedeemed;
-    private final EnumMap<TileColor, Pair<Integer, Integer>>
-            bambooCounter; // Left eaten, right grown
-    private final EnumMap<TileColor, Integer> tilesPlaced;
-    private final HashMap<String, Pair<Integer, Integer>> weathers; // Left applied, right rolled
-    private final HashMap<String, Integer> actions;
+    private final Map<String, Integer> numericStats;
+    private final Map<ObjectiveTypes, Integer> objectivesRedeemed;
+    private final Map<TileColor, Pair<Integer, Integer>> bambooCounter; // Left eaten, right grown
+    private final Map<TileColor, Integer> tilesPlaced;
+    private final Map<String, Pair<Integer, Integer>> weathers; // Left applied, right rolled
+    private final Map<String, Integer> actions;
 
     public SingleBotStatistics(
             Map<String, Integer> numericStats,
@@ -29,12 +28,12 @@ public class SingleBotStatistics {
             Map<String, Pair<Integer, Integer>> weathers,
             Map<String, Integer> actions,
             int totalNbOfAction) {
-        this.numericStats = (HashMap<String, Integer>) numericStats;
-        this.objectivesRedeemed = (EnumMap<ObjectiveTypes, Integer>) objectivesRedeemed;
-        this.bambooCounter = (EnumMap<TileColor, Pair<Integer, Integer>>) bambooCounter;
-        this.tilesPlaced = (EnumMap<TileColor, Integer>) tilesPlaced;
-        this.weathers = (HashMap<String, Pair<Integer, Integer>>) weathers;
-        this.actions = (HashMap<String, Integer>) actions;
+        this.numericStats = numericStats;
+        this.objectivesRedeemed = objectivesRedeemed;
+        this.bambooCounter = bambooCounter;
+        this.tilesPlaced = tilesPlaced;
+        this.weathers = weathers;
+        this.actions = actions;
         this.totalNbOfAction = totalNbOfAction;
         numericStats.put(WINS, 0);
         numericStats.put(LOSSES, 0);
@@ -56,9 +55,9 @@ public class SingleBotStatistics {
     public SingleBotStatistics() {
         this(
                 new HashMap<>(),
-                new EnumMap<>(ObjectiveTypes.class),
-                new EnumMap<>(TileColor.class),
-                new EnumMap<>(TileColor.class),
+                new HashMap<>(),
+                new HashMap<>(),
+                new HashMap<>(),
                 new HashMap<>(),
                 new HashMap<>(),
                 0);

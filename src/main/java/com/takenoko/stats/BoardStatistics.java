@@ -8,8 +8,8 @@ import com.takenoko.vector.PositionVector;
 import java.util.*;
 
 public class BoardStatistics {
-    public final EnumMap<TileColor, Integer> tilesPlaced;
-    public final EnumMap<ImprovementType, Integer> improvements;
+    public final Map<TileColor, Integer> tilesPlaced;
+    public final Map<ImprovementType, Integer> improvements;
 
     public float percentageOfIrrigation;
     public float totalNbOfTiles;
@@ -19,8 +19,8 @@ public class BoardStatistics {
             Map<ImprovementType, Integer> improvements,
             float percentageOfIrrigation,
             float totalNbOfTiles) {
-        this.tilesPlaced = (EnumMap<TileColor, Integer>) tilesPlaced;
-        this.improvements = (EnumMap<ImprovementType, Integer>) improvements;
+        this.tilesPlaced = tilesPlaced;
+        this.improvements = improvements;
         this.percentageOfIrrigation = percentageOfIrrigation;
         this.totalNbOfTiles = totalNbOfTiles;
     }
@@ -33,7 +33,7 @@ public class BoardStatistics {
     }
 
     public BoardStatistics() {
-        this(new EnumMap<>(TileColor.class), new EnumMap<>(ImprovementType.class), 0, 0);
+        this(new HashMap<>(), new HashMap<>(), 0, 0);
     }
 
     public void updateImprovements(ImprovementType improvementType) {

@@ -349,7 +349,10 @@ public class GameEngine {
         consoleUserInterface.displayScoreBoard(scoreboard.toString());
         consoleUserInterface.displayStats(statSummary(numberOfGames));
         if (logToCSV) {
-            new CSVExporter();
+            CSVExporter csvExporter = new CSVExporter();
+            csvExporter.addStatistics(
+                    board.getBoardStatistics(), botStatistics.values().stream().toList());
+            csvExporter.writeCSV();
         }
     }
 }
