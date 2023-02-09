@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.engine.SingleBotStatistics;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.weather.Weather;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

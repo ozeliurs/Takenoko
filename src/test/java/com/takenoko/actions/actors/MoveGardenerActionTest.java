@@ -5,9 +5,9 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
-import com.takenoko.engine.SingleBotStatistics;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import java.util.Map;

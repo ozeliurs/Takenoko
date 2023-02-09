@@ -4,6 +4,9 @@ import com.takenoko.bot.FullRandomBot;
 import com.takenoko.bot.GeneralTacticBot;
 import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
+import com.takenoko.stats.BotStatistics;
+import com.takenoko.stats.CSVExporter;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -226,12 +229,14 @@ public class GameEngine {
         for (BotManager botManager : botManagers) {
             scoreboard.updateScore(botManager, botManager.getObjectiveScore());
             botStatistics.updateScore(botManager, botManager.getObjectiveScore());
-            botManager.reset();
         }
         board.analyze();
         consoleUserInterface.displayFullStats(botStatistics.toString());
         consoleUserInterface.displayFullStats(board.getBoardStatistics().toString());
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
+        for (BotManager botManager : botManagers) {
+            botManager.reset();
+        }
         gameState = GameState.FINISHED;
     }
 
@@ -344,5 +349,20 @@ public class GameEngine {
         consoleUserInterface.displayEnd("All " + numberOfGames + " games have been run :");
         consoleUserInterface.displayScoreBoard(scoreboard.toString());
         consoleUserInterface.displayStats(statSummary(numberOfGames));
+    }
+
+    public void runGame(int numberOfGames, boolean logToCSV) {
+        for (int i = 0; i < numberOfGames; i++) {
+            runGame();
+        }
+        consoleUserInterface.displayEnd("All " + numberOfGames + " games have been run :");
+        consoleUserInterface.displayScoreBoard(scoreboard.toString());
+        consoleUserInterface.displayStats(statSummary(numberOfGames));
+        if (logToCSV) {
+            CSVExporter csvExporter = new CSVExporter();
+            csvExporter.addStatistics(
+                    board.getBoardStatistics(), botStatistics.values().stream().toList());
+            csvExporter.writeCSV();
+        }
     }
 }

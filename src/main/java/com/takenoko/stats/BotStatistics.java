@@ -1,5 +1,6 @@
-package com.takenoko.engine;
+package com.takenoko.stats;
 
+import com.takenoko.engine.BotManager;
 import java.util.HashMap;
 import java.util.List;
 

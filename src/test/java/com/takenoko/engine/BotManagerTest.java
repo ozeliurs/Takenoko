@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.bot.Bot;
 import com.takenoko.inventory.Inventory;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.ui.ConsoleUserInterface;
 import org.junit.jupiter.api.*;
 

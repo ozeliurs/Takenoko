@@ -12,6 +12,7 @@ import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.layers.tile.TileLayer;
+import com.takenoko.stats.BoardStatistics;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import java.util.Optional;

@@ -1,39 +1,40 @@
-package com.takenoko.engine;
+package com.takenoko.stats;
 
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.Objective;
 import com.takenoko.objective.ObjectiveTypes;
 import java.util.*;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.MutablePair;
 
 /** This class represents an extended list of statistics for a specific BotManager */
 public class SingleBotStatistics {
-    private static final String WINS = "\t -Wins : ";
-    private static final String LOSSES = "\t -Losses : ";
-    private static final String IRRIGATIONS_PLACED = "\t -Irrigations Placed : ";
-    private static final String FINAL_SCORE = "\t -Final Score : ";
+    public static final String WINS = "\t -Wins : ";
+    public static final String LOSSES = "\t -Losses : ";
+    public static final String IRRIGATIONS_PLACED = "\t -Irrigations Placed : ";
+    public static final String FINAL_SCORE = "\t -Final Score : ";
     private int totalNbOfAction;
-    private final HashMap<String, Integer> numericStats;
-    private final EnumMap<ObjectiveTypes, Integer> objectivesRedeemed;
-    private final EnumMap<TileColor, Pair<Integer, Integer>> bambooCounter;
-    private final EnumMap<TileColor, Integer> tilesPlaced;
-    private final HashMap<String, Pair<Integer, Integer>> weathers;
-    private final HashMap<String, Integer> actions;
+    private final Map<String, Integer> numericStats;
+    private final Map<ObjectiveTypes, Integer> objectivesRedeemed;
+    private final Map<TileColor, MutablePair<Integer, Integer>>
+            bambooCounter; // Left eaten, right grown
+    private final Map<TileColor, Integer> tilesPlaced;
+    private final Map<String, MutablePair<Integer, Integer>> weathers; // Left applied, right rolled
+    private final Map<String, Integer> actions;
 
     public SingleBotStatistics(
             Map<String, Integer> numericStats,
             Map<ObjectiveTypes, Integer> objectivesRedeemed,
-            Map<TileColor, Pair<Integer, Integer>> bambooCounter,
+            Map<TileColor, MutablePair<Integer, Integer>> bambooCounter,
             Map<TileColor, Integer> tilesPlaced,
-            Map<String, Pair<Integer, Integer>> weathers,
+            Map<String, MutablePair<Integer, Integer>> weathers,
             Map<String, Integer> actions,
             int totalNbOfAction) {
-        this.numericStats = (HashMap<String, Integer>) numericStats;
-        this.objectivesRedeemed = (EnumMap<ObjectiveTypes, Integer>) objectivesRedeemed;
-        this.bambooCounter = (EnumMap<TileColor, Pair<Integer, Integer>>) bambooCounter;
-        this.tilesPlaced = (EnumMap<TileColor, Integer>) tilesPlaced;
-        this.weathers = (HashMap<String, Pair<Integer, Integer>>) weathers;
-        this.actions = (HashMap<String, Integer>) actions;
+        this.numericStats = numericStats;
+        this.objectivesRedeemed = objectivesRedeemed;
+        this.bambooCounter = bambooCounter;
+        this.tilesPlaced = tilesPlaced;
+        this.weathers = weathers;
+        this.actions = actions;
         this.totalNbOfAction = totalNbOfAction;
         numericStats.put(WINS, 0);
         numericStats.put(LOSSES, 0);
@@ -55,9 +56,9 @@ public class SingleBotStatistics {
     public SingleBotStatistics() {
         this(
                 new HashMap<>(),
-                new EnumMap<>(ObjectiveTypes.class),
-                new EnumMap<>(TileColor.class),
-                new EnumMap<>(TileColor.class),
+                new HashMap<>(),
+                new HashMap<>(),
+                new HashMap<>(),
                 new HashMap<>(),
                 new HashMap<>(),
                 0);
@@ -98,11 +99,11 @@ public class SingleBotStatistics {
         if (bambooCounter.containsKey(tileColor)) {
             bambooCounter.put(
                     tileColor,
-                    Pair.of(
+                    MutablePair.of(
                             bambooCounter.get(tileColor).getLeft() + 1,
                             bambooCounter.get(tileColor).getRight()));
         } else {
-            bambooCounter.put(tileColor, Pair.of(1, 0));
+            bambooCounter.put(tileColor, MutablePair.of(1, 0));
         }
     }
 
@@ -116,11 +117,11 @@ public class SingleBotStatistics {
         if (bambooCounter.containsKey(tileColor)) {
             bambooCounter.put(
                     tileColor,
-                    Pair.of(
+                    MutablePair.of(
                             bambooCounter.get(tileColor).getLeft(),
                             bambooCounter.get(tileColor).getRight() + count));
         } else {
-            bambooCounter.put(tileColor, Pair.of(0, count));
+            bambooCounter.put(tileColor, MutablePair.of(0, count));
         }
     }
 
@@ -142,9 +143,10 @@ public class SingleBotStatistics {
         if (weathers.containsKey(weather)) {
             weathers.replace(
                     weather,
-                    Pair.of(weathers.get(weather).getLeft(), weathers.get(weather).getRight() + 1));
+                    MutablePair.of(
+                            weathers.get(weather).getLeft(), weathers.get(weather).getRight() + 1));
         } else {
-            weathers.put(weather, Pair.of(0, 1));
+            weathers.put(weather, MutablePair.of(0, 1));
         }
     }
 
@@ -155,9 +157,10 @@ public class SingleBotStatistics {
         if (weathers.containsKey(weather))
             weathers.replace(
                     weather,
-                    Pair.of(weathers.get(weather).getLeft() + 1, weathers.get(weather).getRight()));
+                    MutablePair.of(
+                            weathers.get(weather).getLeft() + 1, weathers.get(weather).getRight()));
         else {
-            weathers.put(weather, Pair.of(1, 0));
+            weathers.put(weather, MutablePair.of(1, 0));
         }
     }
 
@@ -182,12 +185,13 @@ public class SingleBotStatistics {
         this.bambooCounter.clear();
     }
 
+    @Override
     public String toString() {
         StringBuilder singleBotStat = new StringBuilder();
         String lineJump = "\n \t \t \t";
         String indentation = "\t\t* ";
         TreeMap<ObjectiveTypes, Integer> sortedObjectives = new TreeMap<>(objectivesRedeemed);
-        TreeMap<TileColor, Pair<Integer, Integer>> sortedBambooCounter =
+        TreeMap<TileColor, MutablePair<Integer, Integer>> sortedBambooCounter =
                 new TreeMap<>(bambooCounter);
         TreeMap<TileColor, Integer> sortedTilesPlaced = new TreeMap<>(tilesPlaced);
         TreeMap<String, Integer> sortedActions = new TreeMap<>(actions);
@@ -241,7 +245,7 @@ public class SingleBotStatistics {
                     .append(tilesPlaced.get(tileColor));
         }
         singleBotStat.append(lineJump).append("\t -Rolled Weathers :");
-        for (Map.Entry<String, Pair<Integer, Integer>> entry : weathers.entrySet()) {
+        for (Map.Entry<String, MutablePair<Integer, Integer>> entry : weathers.entrySet()) {
             singleBotStat
                     .append(lineJump)
                     .append(indentation)
@@ -250,7 +254,7 @@ public class SingleBotStatistics {
                     .append(entry.getValue().getRight());
         }
         singleBotStat.append(lineJump).append("\t -Applied Weathers :");
-        for (Map.Entry<String, Pair<Integer, Integer>> entry : weathers.entrySet()) {
+        for (Map.Entry<String, MutablePair<Integer, Integer>> entry : weathers.entrySet()) {
             singleBotStat
                     .append(lineJump)
                     .append(indentation)
@@ -309,7 +313,7 @@ public class SingleBotStatistics {
         return objectivesRedeemed;
     }
 
-    public Map<TileColor, Pair<Integer, Integer>> getBambooCounter() {
+    public Map<TileColor, MutablePair<Integer, Integer>> getBambooCounter() {
         return bambooCounter;
     }
 
@@ -317,7 +321,7 @@ public class SingleBotStatistics {
         return tilesPlaced;
     }
 
-    public Map<String, Pair<Integer, Integer>> getWeathers() {
+    public Map<String, MutablePair<Integer, Integer>> getWeathers() {
         return weathers;
     }
 

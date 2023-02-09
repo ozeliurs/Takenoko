@@ -6,8 +6,8 @@ import static org.mockito.Mockito.*;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.engine.BotState;
-import com.takenoko.engine.SingleBotStatistics;
 import com.takenoko.objective.Objective;
+import com.takenoko.stats.SingleBotStatistics;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -75,7 +75,6 @@ class DrawObjectiveActionTest {
             for (int i = 0; i < BotState.MAX_OBJECTIVES; i++) {
                 botState.addObjective(mock(Objective.class));
             }
-            System.out.println(botState.getObjectives());
             assertThat(DrawObjectiveAction.canBePlayed(board, botState)).isFalse();
         }
 

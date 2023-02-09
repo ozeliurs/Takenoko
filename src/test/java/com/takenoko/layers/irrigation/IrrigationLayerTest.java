@@ -9,9 +9,9 @@ import com.takenoko.actors.Panda;
 import com.takenoko.asset.GameAssets;
 import com.takenoko.asset.TileDeck;
 import com.takenoko.engine.Board;
-import com.takenoko.engine.BoardStatistics;
 import com.takenoko.layers.bamboo.BambooLayer;
 import com.takenoko.layers.tile.*;
+import com.takenoko.stats.BoardStatistics;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.vector.Vector;
 import java.util.List;
@@ -261,7 +261,6 @@ public class IrrigationLayerTest {
             if (step <= 9) return;
 
             // With irrigation
-            System.out.println(board.getTileAt(new PositionVector(1, -2, 1)));
             assertThat(irrigationLayer.isIrrigatedAt(new PositionVector(1, -2, 1))).isTrue();
 
             if (step <= 10) return;
