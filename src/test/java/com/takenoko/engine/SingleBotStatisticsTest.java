@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 import com.takenoko.actions.Action;
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.Objective;
-import com.takenoko.objective.ObjectiveTypes;
+import com.takenoko.objective.ObjectiveType;
 import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.weather.Weather;
 import org.junit.jupiter.api.*;
@@ -83,7 +83,7 @@ class SingleBotStatisticsTest {
         @DisplayName("when the redeemed objective is of new type, should add new entry")
         void whenTheUpdatedObjectiveIsNew_shouldAddNewEntry() {
             Objective objective = mock(Objective.class);
-            when(objective.getType()).thenReturn(ObjectiveTypes.PANDA);
+            when(objective.getType()).thenReturn(ObjectiveType.PANDA);
             int oldSize = singleBotStatistics.getObjectivesRedeemed().size();
             singleBotStatistics.updateObjectivesRedeemed(objective);
             assertThat(singleBotStatistics.getObjectivesRedeemed()).hasSize(oldSize + 1);
@@ -93,7 +93,7 @@ class SingleBotStatisticsTest {
         @DisplayName("when the redeemed objective isn't of new type, shouldn't add new entry")
         void whenTheUpdatedObjectiveIsntNew_shouldntAddNewEntry() {
             Objective objective = mock(Objective.class);
-            when(objective.getType()).thenReturn(ObjectiveTypes.PANDA);
+            when(objective.getType()).thenReturn(ObjectiveType.PANDA);
             singleBotStatistics.updateObjectivesRedeemed(objective);
             int oldSize = singleBotStatistics.getObjectivesRedeemed().size();
             singleBotStatistics.updateObjectivesRedeemed(objective);
@@ -104,12 +104,12 @@ class SingleBotStatisticsTest {
         @DisplayName("should increment number of objectives for the right type")
         void shouldIncrementNumberOfObjectivesForTheRightType() {
             Objective objective = mock(Objective.class);
-            when(objective.getType()).thenReturn(ObjectiveTypes.PANDA);
+            when(objective.getType()).thenReturn(ObjectiveType.PANDA);
             singleBotStatistics.updateObjectivesRedeemed(objective);
-            int oldValue = singleBotStatistics.getObjectivesRedeemed().get(ObjectiveTypes.PANDA);
+            int oldValue = singleBotStatistics.getObjectivesRedeemed().get(ObjectiveType.PANDA);
             singleBotStatistics.updateObjectivesRedeemed(objective);
             assertThat(singleBotStatistics.getObjectivesRedeemed())
-                    .containsEntry(ObjectiveTypes.PANDA, oldValue + 1);
+                    .containsEntry(ObjectiveType.PANDA, oldValue + 1);
         }
 
         @Test

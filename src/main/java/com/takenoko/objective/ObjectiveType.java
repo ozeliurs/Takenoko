@@ -1,6 +1,6 @@
 package com.takenoko.objective;
 
-public enum ObjectiveTypes {
+public enum ObjectiveType {
     SHAPE,
     GARDENER,
     PANDA,

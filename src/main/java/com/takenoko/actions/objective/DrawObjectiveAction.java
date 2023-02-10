@@ -8,34 +8,34 @@ import com.takenoko.actions.weather.ChooseAndApplyWeatherAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.engine.BotState;
-import com.takenoko.objective.ObjectiveTypes;
+import com.takenoko.objective.ObjectiveType;
 import java.util.List;
 import java.util.Objects;
 
 /** This class is used to draw an objective card. */
 @ActionAnnotation(ActionType.DEFAULT)
 public class DrawObjectiveAction implements DefaultAction {
-    private final ObjectiveTypes objectiveTypes;
+    private final ObjectiveType objectiveType;
 
     /**
      * Constructor. The parameter is mandatory as it allows to choose which type of objective you
      * want.
      *
-     * @param objectiveTypes objectiveTypes
+     * @param objectiveType objectiveType
      */
-    public DrawObjectiveAction(ObjectiveTypes objectiveTypes) {
-        this.objectiveTypes = objectiveTypes;
+    public DrawObjectiveAction(ObjectiveType objectiveType) {
+        this.objectiveType = objectiveType;
     }
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
 
-        if (!board.hasObjectiveTypeInDeck(objectiveTypes)) {
-            botManager.displayMessage("No more " + objectiveTypes + " in the deck");
+        if (!board.hasObjectiveTypeInDeck(objectiveType)) {
+            botManager.displayMessage("No more " + objectiveType + " in the deck");
             return new ActionResult(List.of(ChooseAndApplyWeatherAction.class), 0);
         }
 
-        board.drawObjective(objectiveTypes);
+        board.drawObjective(objectiveType);
         botManager.addObjective(board.peekObjectiveDeck());
         botManager.displayMessage(
                 botManager.getName() + " drew objective " + board.peekObjectiveDeck());
@@ -51,10 +51,10 @@ public class DrawObjectiveAction implements DefaultAction {
     /**
      * Get the objective type of the action
      *
-     * @return ObjectiveTypes
+     * @return ObjectiveType
      */
-    public ObjectiveTypes getObjectiveTypes() {
-        return objectiveTypes;
+    public ObjectiveType getObjectiveType() {
+        return objectiveType;
     }
 
     @Override
@@ -62,11 +62,11 @@ public class DrawObjectiveAction implements DefaultAction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DrawObjectiveAction that = (DrawObjectiveAction) o;
-        return objectiveTypes == that.objectiveTypes;
+        return objectiveType == that.objectiveType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(objectiveTypes);
+        return Objects.hash(objectiveType);
     }
 }

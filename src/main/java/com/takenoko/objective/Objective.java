@@ -5,11 +5,11 @@ import com.takenoko.engine.BotState;
 
 public abstract class Objective {
 
-    private final ObjectiveTypes type;
+    private final ObjectiveType type;
     ObjectiveState state;
     private final int points;
 
-    protected Objective(ObjectiveTypes type, ObjectiveState state, int points) {
+    protected Objective(ObjectiveType type, ObjectiveState state, int points) {
         this.type = type;
         this.state = state;
         this.points = points;
@@ -27,7 +27,7 @@ public abstract class Objective {
         return state == ObjectiveState.ACHIEVED;
     }
 
-    public ObjectiveTypes getType() {
+    public ObjectiveType getType() {
         return type;
     }
 

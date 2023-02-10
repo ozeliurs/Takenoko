@@ -14,7 +14,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
 import com.takenoko.inventory.Inventory;
-import com.takenoko.objective.ObjectiveTypes;
+import com.takenoko.objective.ObjectiveType;
 import com.takenoko.objective.SingleGardenerObjective;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.WeatherFactory;
@@ -124,8 +124,8 @@ class ColletBotTest {
             Action action = colletBot.chooseAction(board, botState, history);
 
             assertThat(action).isInstanceOf(DrawObjectiveAction.class);
-            assertThat(((DrawObjectiveAction) action).getObjectiveTypes())
-                    .isEqualTo(ObjectiveTypes.PANDA);
+            assertThat(((DrawObjectiveAction) action).getObjectiveType())
+                    .isEqualTo(ObjectiveType.PANDA);
         }
     }
 }

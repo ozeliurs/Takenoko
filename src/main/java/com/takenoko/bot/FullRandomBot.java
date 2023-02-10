@@ -25,7 +25,7 @@ import com.takenoko.engine.History;
 import com.takenoko.layers.irrigation.EdgePosition;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
-import com.takenoko.objective.ObjectiveTypes;
+import com.takenoko.objective.ObjectiveType;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.Weather;
 import com.takenoko.weather.WeatherFactory;
@@ -238,8 +238,8 @@ public class FullRandomBot implements Bot {
     }
 
     private Action getRandomDrawObjectiveAction() {
-        List<ObjectiveTypes> objectiveTypes = EnumSet.allOf(ObjectiveTypes.class).stream().toList();
+        List<ObjectiveType> objectiveType = EnumSet.allOf(ObjectiveType.class).stream().toList();
         return new DrawObjectiveAction(
-                objectiveTypes.stream().toList().get(random.nextInt(objectiveTypes.size())));
+                objectiveType.stream().toList().get(random.nextInt(objectiveType.size())));
     }
 }

@@ -2,7 +2,7 @@ package com.takenoko.stats;
 
 import com.takenoko.layers.tile.TileColor;
 import com.takenoko.objective.Objective;
-import com.takenoko.objective.ObjectiveTypes;
+import com.takenoko.objective.ObjectiveType;
 import java.util.*;
 import org.apache.commons.lang3.tuple.MutablePair;
 
@@ -14,7 +14,7 @@ public class SingleBotStatistics {
     public static final String FINAL_SCORE = "\t -Final Score : ";
     private int totalNbOfAction;
     private final Map<String, Integer> numericStats;
-    private final Map<ObjectiveTypes, Integer> objectivesRedeemed;
+    private final Map<ObjectiveType, Integer> objectivesRedeemed;
     private final Map<TileColor, MutablePair<Integer, Integer>>
             bambooCounter; // Left eaten, right grown
     private final Map<TileColor, Integer> tilesPlaced;
@@ -23,7 +23,7 @@ public class SingleBotStatistics {
 
     public SingleBotStatistics(
             Map<String, Integer> numericStats,
-            Map<ObjectiveTypes, Integer> objectivesRedeemed,
+            Map<ObjectiveType, Integer> objectivesRedeemed,
             Map<TileColor, MutablePair<Integer, Integer>> bambooCounter,
             Map<TileColor, Integer> tilesPlaced,
             Map<String, MutablePair<Integer, Integer>> weathers,
@@ -84,7 +84,7 @@ public class SingleBotStatistics {
         if (objective == null) {
             throw new IllegalArgumentException();
         }
-        ObjectiveTypes objectiveType = objective.getType();
+        ObjectiveType objectiveType = objective.getType();
         if (objectivesRedeemed.containsKey(objectiveType)) {
             objectivesRedeemed.replace(objectiveType, objectivesRedeemed.get(objectiveType) + 1);
         } else {
@@ -190,7 +190,7 @@ public class SingleBotStatistics {
         StringBuilder singleBotStat = new StringBuilder();
         String lineJump = "\n \t \t \t";
         String indentation = "\t\t* ";
-        TreeMap<ObjectiveTypes, Integer> sortedObjectives = new TreeMap<>(objectivesRedeemed);
+        TreeMap<ObjectiveType, Integer> sortedObjectives = new TreeMap<>(objectivesRedeemed);
         TreeMap<TileColor, MutablePair<Integer, Integer>> sortedBambooCounter =
                 new TreeMap<>(bambooCounter);
         TreeMap<TileColor, Integer> sortedTilesPlaced = new TreeMap<>(tilesPlaced);
@@ -209,7 +209,7 @@ public class SingleBotStatistics {
                 .append(numericStats.get(FINAL_SCORE))
                 .append(lineJump)
                 .append("\t -Redeemed objectives : ");
-        for (ObjectiveTypes objectiveType : sortedObjectives.keySet()) {
+        for (ObjectiveType objectiveType : sortedObjectives.keySet()) {
             singleBotStat
                     .append(lineJump)
                     .append(indentation)
@@ -309,7 +309,7 @@ public class SingleBotStatistics {
         return totalNbOfAction;
     }
 
-    public Map<ObjectiveTypes, Integer> getObjectivesRedeemed() {
+    public Map<ObjectiveType, Integer> getObjectivesRedeemed() {
         return objectivesRedeemed;
     }
 

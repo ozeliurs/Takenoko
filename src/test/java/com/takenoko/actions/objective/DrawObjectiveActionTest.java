@@ -7,7 +7,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.engine.BotState;
 import com.takenoko.objective.Objective;
-import com.takenoko.objective.ObjectiveTypes;
+import com.takenoko.objective.ObjectiveType;
 import com.takenoko.stats.SingleBotStatistics;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,11 +26,11 @@ class DrawObjectiveActionTest {
             BotManager botManager = mock(BotManager.class);
             SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
             when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
-            DrawObjectiveAction drawObjectiveAction = new DrawObjectiveAction(ObjectiveTypes.PANDA);
+            DrawObjectiveAction drawObjectiveAction = new DrawObjectiveAction(ObjectiveType.PANDA);
 
             drawObjectiveAction.execute(board, botManager);
 
-            verify(board, times(1)).drawObjective(ObjectiveTypes.PANDA);
+            verify(board, times(1)).drawObjective(ObjectiveType.PANDA);
             verify(botManager, times(1)).addObjective(any());
         }
 
@@ -41,7 +41,7 @@ class DrawObjectiveActionTest {
             BotManager botManager = mock(BotManager.class);
             SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
             when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
-            DrawObjectiveAction drawObjectiveAction = new DrawObjectiveAction(ObjectiveTypes.PANDA);
+            DrawObjectiveAction drawObjectiveAction = new DrawObjectiveAction(ObjectiveType.PANDA);
             drawObjectiveAction.execute(board, botManager);
             verify(singleBotStatistics, times(1))
                     .updateActions(drawObjectiveAction.getClass().getSimpleName());

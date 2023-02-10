@@ -131,17 +131,17 @@ public class ObjectiveDeck extends ArrayList<Objective> {
                         new SingleGardenerObjective(3, TileColor.GREEN, 0), 4, 8)); // 3 GREEN
     }
 
-    public void draw(ObjectiveTypes objectiveType) {
+    public void draw(ObjectiveType objectiveType) {
         if (isEmpty()) {
             throw new IllegalStateException("Cannot draw from an empty deck");
         }
 
         List<Objective> pandaObjectives =
-                this.stream().filter(o -> o.getType() == ObjectiveTypes.PANDA).toList();
+                this.stream().filter(o -> o.getType() == ObjectiveType.PANDA).toList();
         List<Objective> gardenerObjectives =
-                this.stream().filter(o -> o.getType() == ObjectiveTypes.GARDENER).toList();
+                this.stream().filter(o -> o.getType() == ObjectiveType.GARDENER).toList();
         List<Objective> shapeObjectives =
-                this.stream().filter(o -> o.getType() == ObjectiveTypes.SHAPE).toList();
+                this.stream().filter(o -> o.getType() == ObjectiveType.SHAPE).toList();
 
         switch (objectiveType) {
             case PANDA -> lastDrawnObjective =
@@ -151,10 +151,7 @@ public class ObjectiveDeck extends ArrayList<Objective> {
             case SHAPE -> lastDrawnObjective =
                     shapeObjectives.get(random.nextInt(shapeObjectives.size()));
             case EMPEROR -> lastDrawnObjective =
-                    this.stream()
-                            .filter(o -> o.getType() == ObjectiveTypes.EMPEROR)
-                            .toList()
-                            .get(0);
+                    this.stream().filter(o -> o.getType() == ObjectiveType.EMPEROR).toList().get(0);
             default -> throw new IllegalArgumentException(
                     "Objective type specified does not exists");
         }
@@ -216,7 +213,7 @@ public class ObjectiveDeck extends ArrayList<Objective> {
         return drawnObjective;
     }
 
-    public boolean hasObjectiveType(ObjectiveTypes objectiveTypes) {
-        return this.stream().filter(o -> o.getType() == objectiveTypes).toList().size() > 0;
+    public boolean hasObjectiveType(ObjectiveType objectiveType) {
+        return this.stream().filter(o -> o.getType() == objectiveType).toList().size() > 0;
     }
 }

@@ -14,7 +14,7 @@ public class MultipleGardenerObjective extends Objective {
 
     public MultipleGardenerObjective(
             SingleGardenerObjective objective, int numberOfTimes, int points) {
-        super(ObjectiveTypes.GARDENER, ObjectiveState.NOT_ACHIEVED, points);
+        super(ObjectiveType.GARDENER, ObjectiveState.NOT_ACHIEVED, points);
         this.objective = objective;
         this.numberOfTimes = numberOfTimes;
     }
