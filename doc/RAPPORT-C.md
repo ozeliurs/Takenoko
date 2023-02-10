@@ -239,7 +239,7 @@ You can specify the bot managers you want to use in your game by using one of th
 
 #### Action
 
-<p>
+<p align="center">
     <img src="images/architecture/action.png" alt="action" width="50%">
 </p>
 
@@ -262,6 +262,10 @@ objective.
 </p>
 
 #### Bot
+
+<p align="center">
+    <img src="images/architecture/bot.png" alt="svg" width="50%">
+</p>
 
 #### Bot Manager
 
