@@ -27,8 +27,14 @@ public class ColletBot extends PriorityBot {
     @Override
     protected void fillAction(Board board, BotState botState, History history) {
         addWithOffset((new SmartDrawIrrigation(3)).compute(board, botState, history), 100);
-        // TODO choose objective smart
-        addActionWithPriority(new DrawObjectiveAction(ObjectiveTypes.PANDA), 200);
+
+        if (board.hasObjectiveTypeInDeck(ObjectiveTypes.PANDA)) {
+            addActionWithPriority(new DrawObjectiveAction(ObjectiveTypes.PANDA), 200);
+        } else if (board.hasObjectiveTypeInDeck(ObjectiveTypes.GARDENER)) {
+            addActionWithPriority(new DrawObjectiveAction(ObjectiveTypes.GARDENER), 200);
+        } else {
+            addActionWithPriority(new DrawObjectiveAction(ObjectiveTypes.SHAPE), 200);
+        }
 
         addWithOffset((new SmartPanda()).compute(board, botState, history), 50);
         List<PositionVector> pandaMoveThatEatBamboo = getPandaMovesThatEatBamboo(board);
