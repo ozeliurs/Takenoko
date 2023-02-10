@@ -40,4 +40,8 @@ public class DrawObjectiveAction implements DefaultAction {
         return (botState.getObjectives().size()) < BotState.MAX_OBJECTIVES
                 && !board.isObjectiveDeckEmpty();
     }
+
+    public ObjectiveTypes getObjectiveTypes() {
+        return objectiveTypes;
+    }
 }
