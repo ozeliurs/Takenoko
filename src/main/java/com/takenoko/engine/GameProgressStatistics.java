@@ -23,12 +23,12 @@ public class GameProgressStatistics {
 
     public GameProgressStatistics(GameProgress gameProgress) {
         this.gameProgress = gameProgress;
-        actions.put(MovePandaAction.class.getSimpleName(), 1F);
-        actions.put(MoveGardenerAction.class.getSimpleName(), 1F);
-        actions.put(PlaceIrrigationAction.class.getSimpleName(), 1F);
-        actions.put(PlaceTileAction.class.getSimpleName(), 1F);
-        actions.put(StoreIrrigationInInventoryAction.class.getSimpleName(), 1F);
-        actions.put(DrawObjectiveAction.class.getSimpleName(), 1F);
+        actions.put(MovePandaAction.class.getSimpleName(), 0F);
+        actions.put(MoveGardenerAction.class.getSimpleName(), 0F);
+        actions.put(PlaceIrrigationAction.class.getSimpleName(), 0F);
+        actions.put(PlaceTileAction.class.getSimpleName(), 0F);
+        actions.put(StoreIrrigationInInventoryAction.class.getSimpleName(), 0F);
+        actions.put(DrawObjectiveAction.class.getSimpleName(), 0F);
     }
 
     public void incrementNbOfRounds() {
