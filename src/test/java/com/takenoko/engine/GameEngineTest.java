@@ -308,7 +308,8 @@ class GameEngineTest {
             ConsoleUserInterface consoleUserInterface = mock(ConsoleUserInterface.class);
 
             Scoreboard scoreboard = spy(Scoreboard.class);
-
+            History history = mock(History.class);
+            when(history.getHistoryStatistics()).thenReturn(mock(HistoryStatistics.class));
             gameEngine =
                     new GameEngine(
                             1,
@@ -317,7 +318,7 @@ class GameEngineTest {
                             GameState.READY,
                             new ArrayList<>(List.of(spy(BotManager.class), spy(BotManager.class))),
                             scoreboard,
-                            mock(History.class));
+                            history);
 
             gameEngine.startGame();
             gameEngine.endGame();
@@ -360,6 +361,8 @@ class GameEngineTest {
             BotManager botm1 = mock(BotManager.class);
             BotManager botm2 = mock(BotManager.class);
             Scoreboard scoreboard = mock(Scoreboard.class);
+            History history = mock(History.class);
+            when(history.getHistoryStatistics()).thenReturn(mock(HistoryStatistics.class));
             GameEngine ge =
                     new GameEngine(
                             2,
@@ -368,7 +371,7 @@ class GameEngineTest {
                             GameState.PLAYING,
                             List.of(botm1, botm2),
                             scoreboard,
-                            mock(History.class));
+                            history);
             ge.endGame();
             assertThat(ge.getWinner()).isEqualTo(Pair.of(List.of(botm1, botm2), EndGameState.TIE));
             verify(scoreboard, times(1)).incrementNumberOfVictory(botm1);
@@ -383,6 +386,8 @@ class GameEngineTest {
             Scoreboard scoreboard = mock(Scoreboard.class);
             when(botm1.getObjectiveScore()).thenReturn(1);
             when(botm2.getObjectiveScore()).thenReturn(2);
+            History history = mock(History.class);
+            when(history.getHistoryStatistics()).thenReturn(mock(HistoryStatistics.class));
             GameEngine ge =
                     new GameEngine(
                             2,
@@ -391,7 +396,7 @@ class GameEngineTest {
                             GameState.PLAYING,
                             List.of(botm1, botm2),
                             scoreboard,
-                            mock(History.class));
+                            history);
             ge.endGame();
             assertThat(ge.getWinner())
                     .isEqualTo(Pair.of(List.of(botm2), EndGameState.WIN_WITH_OBJECTIVE_POINTS));
@@ -407,6 +412,8 @@ class GameEngineTest {
             when(botm2.getPandaObjectiveScore()).thenReturn(2);
             Scoreboard scoreboard = mock(Scoreboard.class);
             ConsoleUserInterface consoleUserInterface = mock(ConsoleUserInterface.class);
+            History history = mock(History.class);
+            when(history.getHistoryStatistics()).thenReturn(mock(HistoryStatistics.class));
             GameEngine ge =
                     new GameEngine(
                             2,
@@ -415,7 +422,7 @@ class GameEngineTest {
                             GameState.PLAYING,
                             List.of(botm1, botm2),
                             scoreboard,
-                            mock(History.class));
+                            history);
             ge.endGame();
             assertThat(ge.getWinner())
                     .isEqualTo(
