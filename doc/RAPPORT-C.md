@@ -5,7 +5,7 @@
 1. [Progress Report](#progress-report)
     1. [Game Functionalities](#game-functionalities)
     2. [Logs Implemented](#logs-implemented) <- TODO
-    3. [Statistics Implemented](#statistics-implemented) <- TODO
+    3. [Statistics Implemented](#statistics-implemented)
     4. [Bots implemented](#bots-implemented)
         1. [Bot specified in the specs](#bot-specified-in-the-specs)
         2. [Our best bot : General Tactics](#our-best-bot--general-tactics)
@@ -20,7 +20,7 @@
         6. [Board](#board)
         7. [Layers](#layers) <- TODO
         8. [Shape](#shape) <- TODO
-        9. [Statistics](#statistics) <- TODO
+        9. [Statistics](#statistics)
         10. [Logging](#logging) <- TODO
         11. [Coordinate](#coordinate) <- TODO
     2. [Quality](#quality) <- TODO
@@ -71,6 +71,21 @@ We went quite deep in the game and wanted it to be the most like in the real wor
 ### Logs Implemented
 
 ### Statistics Implemented
+
+Our statistics are exported as CSV files after running the games.
+Here is a non-exhaustive list of the statistics we implemented :
+- Board related
+  - Number of tiles placed, sorted by colors
+  - Number of improvements placed, sorted by types
+- Bot related
+  - Number of wins / losses / ties
+  - Number of tiles placed
+  - Number of objectives redeemed
+  - Total number of actions
+  - Number of actions done, sorted by categories
+
+
+To learn more about the architecture of the statistics, you can read the [Statistics](#statistics) section.
 
 ### Bots implemented
 
@@ -290,6 +305,19 @@ Having a facade is also useful because the method called is independent of the m
 #### Shape
 
 #### Statistics
+
+The statistics calculated in the project concern 2 main components: Bots and the Board.
+
+The bot related statistics are defined as SingleBotStatistics, this class is used to store general game oriented
+information (number of wins and losses + total score) as well as calculate averages and make comparisons in order to
+answer questions such as "How often does the bot choose to perform this action?" or "Which weather does the bot choose
+to apply the most times?". SingleBotStatistics also stores counters for tile placing, irrigation placing, bamboo
+collecting, bamboo growing, and objective redeeming. These last metrics come together to form a broad portrayal of the
+bots' priorities which, once combined with the previously mentioned information, serves as a way of visualizing the
+bots' strategy.
+
+As for the board related statistics, their main objective is to offer a general idea of how the game played out in the
+end and paint a picture of the boards final state.
 
 #### Logging
 
