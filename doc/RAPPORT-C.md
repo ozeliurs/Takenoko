@@ -2,41 +2,46 @@
 
 ## Summary
 
-1. [Progress Report](#Progress-Report)
-    1. test
-    2. test2
-2. [Architecture and Quality](#Architecture-and-Quality)
+1. [Progress Report](#progress-report)
+    1. [Game Functionalities](#game-functionalities) <- TODO
+    2. [Logs Implemented](#logs-implemented) <- TODO
+    3. [Statistics Implemented](#statistics-implemented) <- TODO
+    4. [Bots implemented](#bots-implemented)
+        1. [Bot specified in the specs](#bot-specified-in-the-specs)
+        2. [Our best bot : General Tactics](#our-best-bot--general-tactics) 
+        3. [Which one is the best ?](#which-one-is-the-best-) 
+2. [Architecture and Quality](#architecture-and-quality)
     1. [Architecture](#architecture)
         1. [GameEngine](#game-engine)
-        2. [Action](#action)
+        2. [Action](#action) <- TODO
         3. [Objective](#objective)
-        4. [Bot](#bot)
+        4. [Bot](#bot) <- TODO
         5. [BotManager](#bot-manager)
         6. [Board](#board)
-        7. [Layers](#layers)
-        8. [Shape](#shape)
-        9. [Statistics](#statistics)
-        10. [Logging](#logging)
-        11. [Coordinate](#coordinate)
-    2. [Quality](#quality)
-        1. [Good quality](#good-quality)
-        2. [Not so good quality](#not-so-good-quality)
+        7. [Layers](#layers) <- TODO
+        8. [Shape](#shape) <- TODO
+        9. [Statistics](#statistics) <- TODO
+        10. [Logging](#logging) <- TODO
+        11. [Coordinate](#coordinate) <- TODO
+    2. [Quality](#quality) <- TODO
+        1. [Good quality](#good-quality) <- TODO
+        2. [Not so good quality](#not-so-good-quality) <- TODO
     3. [Documentation](#documentation)
-3. [Process](#Process)
-    1. [Task Management](#Task-Management)
-        1. [Agile Principles](#Agile-Principles)
-        2. [Github](#Github)
-            1. [Releases](#Releases)
+3. [Process](#process)
+    1. [Task Management](#task-management)
+        1. [Agile Principles](#agile-principles)
+        2. [Github](#github)
+            1. [Releases](#releases)
             2. [Tag](#tags)
-            3. [GitHub Project](#GitHub-Project)
-    2. [Git Branching Strategy](#Git-Branching-Strategy)
-    3. [Continuous Development and Automation](#Continuous-Development-and-Automation)
-        1. [Format check](#Format-check)
-        2. [Maven compiler](#Maven-compiler)
-        3. [Continuous integration with SonarQube](#continuous-integration-with-sonarqube)
-            1. [Jacoco](#Jacoco)
-            2. [PIT test](#PIT-test)
-            3. [Package](#Package)
+            3. [GitHub Project](#github-project)
+    2. [Git Branching Strategy](#git-branching-strategy)
+    3. [Continuous Development and Automation](#continuous-development-and-automation)
+        1. [Format check](#format-check)
+        2. [Maven compiler](#maven-compiler)
+        3. [Continuous integration with SonarQube](#continuous-integration-with-sonarqube) <- TODO
+            1. [Jacoco](#jacoco) <- TODO
+            2. [PIT test](#pit-test) <- TODO
+            3. [Package](#package) <- TODO
 
 ## Progress Report
 
@@ -54,9 +59,9 @@ bot et une analyse de pourquoi celui qui gagne est le meilleur
 
 - Respect de la pioche
 
-### Logs
+### Logs Implemented
 
-### Statistics
+### Statistics Implemented
 
 ### Bots implemented
 
