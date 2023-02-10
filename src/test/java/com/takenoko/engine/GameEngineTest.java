@@ -314,6 +314,8 @@ class GameEngineTest {
         void endGame_shouldIncrementsVictoriesAndLossesAndUpdateScores() {
             BotStatistics botStatistics = mock(BotStatistics.class);
             Scoreboard scoreboard = spy(Scoreboard.class);
+            History history = mock(History.class);
+            when(history.getHistoryStatistics()).thenReturn(mock(HistoryStatistics.class));
             gameEngine =
                     new GameEngine(
                             3,
@@ -323,7 +325,7 @@ class GameEngineTest {
                             new ArrayList<>(List.of(spy(BotManager.class), spy(BotManager.class))),
                             scoreboard,
                             botStatistics,
-                            mock(History.class));
+                            history);
             gameEngine.newGame();
             gameEngine.startGame();
             gameEngine.endGame();
@@ -401,7 +403,7 @@ class GameEngineTest {
                             new History());
             gameEngine.runGame(2);
             verify(consoleUserInterface, times(1)).displayEnd("All 2 games have been run :");
-            verify(consoleUserInterface, times(4)).displayFullStats(any());
+            verify(consoleUserInterface, times(6)).displayFullStats(any());
             verify(consoleUserInterface, times(1)).displayScoreBoard(any());
             verify(consoleUserInterface, times(1)).displayStats(any());
         }
