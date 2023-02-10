@@ -57,7 +57,7 @@ bot et une analyse de pourquoi celui qui gagne est le meilleur
 
 ### Game functionalities
 
-It would quite long to enumerate all the rules implemented in the game.  
+It would be quite long to enumerate all the rules implemented in the game.  
 You can read the official rules to find out what we have in our game since we followed them exactly.
 
 We also used [this video](https://youtu.be/o6MJEbGbCNs) as it is quite complete.
@@ -74,16 +74,16 @@ We went quite deep in the game and wanted it to be the most like in the real wor
 
 Our statistics are exported as CSV files after running the games.
 Here is a non-exhaustive list of the statistics we implemented :
-- Board related
-  - Number of tiles placed, sorted by colors
-  - Number of improvements placed, sorted by types
-- Bot related
-  - Number of wins / losses / ties
-  - Number of tiles placed
-  - Number of objectives redeemed
-  - Total number of actions
-  - Number of actions done, sorted by categories
 
+- Board related
+    - Number of tiles placed, sorted by colors
+    - Number of improvements placed, sorted by types
+- Bot related
+    - Number of wins / losses / ties
+    - Number of tiles placed
+    - Number of objectives redeemed
+    - Total number of actions
+    - Number of actions done, sorted by categories
 
 To learn more about the architecture of the statistics, you can read the [Statistics](#statistics) section.
 
@@ -238,6 +238,10 @@ You can specify the bot managers you want to use in your game by using one of th
 </p>
 
 #### Action
+
+<p>
+    <img src="images/architecture/action.png" alt="action" width="50%">
+</p>
 
 #### Objective
 
