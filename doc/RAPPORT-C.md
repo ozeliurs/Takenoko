@@ -52,7 +52,97 @@ bot et une analyse de pourquoi celui qui gagne est le meilleur
 
 ### Game functionalities
 
-TODO : Piocher dans 3 decks
+- Respect de la pioche
+
+### Logs
+
+### Statistics
+
+### Bots implemented
+
+To learn more about how the bots are implemented, please refer to the [Bot documentation](#bot).  
+It is recommended to first understand the concept of priority for the actions that the bot can do before reading this
+part.
+
+#### Bot specified in the specs
+
+The bot specified in the specs is called `ColletBot` in our code.  
+Here is a reminder of the rules for this bot:
+
+1. Bot gather a maximum of bamboos even when it does not have the colors in its objectives
+2. Bot tries to always have 5 objective cards
+3. Bot first two actions are take a card objective and choose the cloudy meteo
+4. Bot takes the cloudy meteo, then watershed improvement when getting the question mark meteo (only first rounds)
+5. Bot tries to focus on multiple objective. If he has two panda objectives he focuses on both
+6. Bot oversees other bot actions and tries to wreck their plans
+
+We will now explain how we implemented this bot.
+
+1. The bot is using our `SmartPanda` behavior which has some pathfinding algorithms to find the best path to take. The
+   priority
+   of the bamboo to take is calculated based upon the bamboo is can eat in one move, and the percentage of completion of
+   his current panda objectives.
+   The action of moving the panda has a priority of 50.
+2. The bot always wants to have 5 objective cards. He will always take panda objective cards first, with a priority of
+   200 given to the action.
+   Then, if none are available he will take gardener objectives with a priority of 40, and finally the shape objective
+   with a priority of 10.
+3. The first two actions of the bot are well-defined in the specs. If the bot is the early game state, he will choose an
+   objective card because of the priority
+   of 200, and then he will choose the cloudy meteo to get an irrigation.
+4. The bot always takes the Cloudy meteo and takes the watershed improvement when he gets the question mark meteo thanks
+   to `SmartChooseAndApplyWeather` behavior which as in
+   argument the cloudy meteo. As for the improvement part, when the bot can draw an improvement, it follows
+   the `SmartDrawImprovement` behavior.
+5. Since the bot moves the panda to the bamboo that allows him to complete an objective in his deck, he will prefer to
+   go to the bamboo that allows him to complete one of the objective.
+6. We have a `History` class that keeps track of the actions of the other bots. We use this information to put stick in
+   the wheels of other bots.
+7. If we see that a bot is currently doing the Rush Panda strategy, we will draw an improvement "enclosure" and place it
+   on the board to try to stop him. The strategy is detected when the other bot has moved the panda on at least 80% of
+   its previous moves.
+
+Since this bot is build upon the [General Tactics Bot](#our-best-bot--general-tactics), any action not defined above
+will be based upon the behaviors of the General Tactics Bot.
+
+#### Our best bot : General Tactics
+
+Our best bot is more like a combo of all the smart behaviors in a single bot without much thinking behind.
+Here are all the behaviors he can apply :
+
+- Irrigation Master
+    - Smart Place Irrigation : if there is a path or irrigation channel to complete one of our objective, we place the
+      first one
+    - Smart Draw Irrigation : if we have less than three irrigation channels in our inventory, we draw one
+    - Smart Store Irrigation : we always store the irrigation we draw
+- Weather Master
+    - Smart Choose and Apply Weather : always choose the sunny weather
+    - Smart Apply Weather : always apply the weather
+- Smart Objective
+    - If we have one objective panda left, we only redeem it if it allows us to win the game. By winning the game, we
+      mean that the sum of the current points, plus the objective to redeem points, plus the emperor bonus, is more than
+      the highest score of the other bots with an arbitrary margin of two added to it.
+- Smart Pattern
+    - We calculated if there is a pattern that we can complete by placing one or multiple tiles. We decide to place in
+      priority a tile that will directly complete an objective. We verify that we have the right tile color in our
+      inventory to place it.
+- Smart Panda
+    - Find the best bamboo to eat to complete one of our objective. The bamboos available in one move are ranked by the
+      percentage of completion of the objective they belong to.
+- Smart Gardener
+    - Find a bamboo to grow this turn.
+
+#### Which one is the best ?
+
+Images speak for themselves:
+<p align="center">
+   <img src="images/botcollet-vs-general.png" alt="battle" width="75%">
+
+We do think that the strategy specified in the specs has been thought thoroughly projects after projects through the
+years. Furthermore, this bot follows the rush panda strategy which is known to be extremely efficient.
+In our case, the strategy is less efficient because the priority coefficients are not optimized.
+
+TLDR : Rush panda strategy is overpowered...
 
 ---
 
@@ -220,9 +310,17 @@ The PIT test report results are discussed in the [Quality](#quality) section.
 
 ### Roles and Involvement
 
-Beaucoup de refactor
-Pair coding
-Repartition des tâches
+Each one of us was responsible for keeping the project issues up to date. We were also responsible for assigning the
+issues
+and linking them to the correct milestone.  
+This management allowed us to keep track of what we were doing and what we still had to do. It also allowed us to see
+how
+we were progressing and if we were getting less productive. You can quite clearly see the Christmas holiday on the
+graph...
+
+The first image represents the number of issues done by each person. Then the graph represents the evolution of the
+number
+of issues completed, sorted by assignee to the task.
 
 <p align="center">
    <img src="images/github-screenshots/assignees-stats.png" alt="releases" width="20%">
@@ -231,6 +329,13 @@ Repartition des tâches
 <p align="center">
    <img src="images/github-screenshots/assignees-graph.png" alt="releases" width="50%">
 </p>
+
+We were also all asked to review pull requests from other members of the team. We added rules to the GitHub branches on
+the branches to make sure that the pull requests were reviewed by at least one other person before being merged for the
+features.
+Two people had to review the pull requests for the user-stories. And three people had to review the pull requests for
+the
+releases. You can more learn more about our branching strategy [there](#git-branching-strategy).
 
 ### Task Management
 
@@ -371,11 +476,26 @@ gitGraph
 
 ### Continuous Development and Automation
 
-#### GitHub Hooks
+During the whole project, we tried to automate human prone errors as much as possible. We used different tools to do so.
+
+#### Pre-commit Hooks
+
+On each and every computer, we used a pre-commit hook to check our commit message convention, following
+the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) convention.
+
+This allows us to categorize our commits by their type, additionally we can also specify a scope and a description.
 
 #### Format check
 
+We used the [Spotless](https://github.com/diffplug/spotless) both on our computers and on the GitHub actions CI to
+respectively block commits and pull requests that do not follow
+the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html).
+
 #### Maven compiler
+
+All of our builds are done using Maven. We used
+the [Maven Compiler Plugin](https://maven.apache.org/plugins/maven-compiler-plugin/) to specify the version of Java we
+wanted to use and first and foremost to have a unified version of Java on all of our computers.
 
 #### Continuous integration with SonarQube
 
