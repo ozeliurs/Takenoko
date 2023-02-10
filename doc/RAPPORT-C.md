@@ -18,6 +18,8 @@
       10. [Logging](#logging)
       11. [Coordinate](#coordinate)
    2. [Quality](#quality)
+      1. [Good quality](#good-quality)
+      2. [Not so good quality](#not-so-good-quality)
    3. [Documentation](#documentation)
 3. [Process](#Process)
    1. [Task Management](#Task-Management)
@@ -30,7 +32,7 @@
    3. [Continuous Development and Automation](#Continuous-Development-and-Automation)
       1. [Format check](#Format-check)
       2. [Maven compiler](#Maven-compiler)
-      3. [Continuous integration with SonarQube](#Continous-integration-with-SonarQube)
+      3. [Continuous integration with SonarQube](#continuous-integration-with-sonarqube)
          1. [Jacoco](#Jacoco)
          2. [PIT test](#PIT-test)
          3. [Package](#Package)
@@ -179,6 +181,10 @@ The PIT test report results are discussed in the [Quality](#quality) section.
 ## Process
 
 ### Roles and Involvement
+
+Beaucoup de refactor
+Pair coding
+Repartition des tâches 
 
 <p align="center">
    <img src="images/github-screenshots/assignees-stats.png" alt="releases" width="20%">
