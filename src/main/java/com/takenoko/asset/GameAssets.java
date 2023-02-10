@@ -1,6 +1,7 @@
 package com.takenoko.asset;
 
 import com.takenoko.objective.Objective;
+import com.takenoko.objective.ObjectiveTypes;
 import com.takenoko.weather.WeatherDice;
 import java.util.List;
 import java.util.Objects;
@@ -114,5 +115,9 @@ public class GameAssets {
      */
     public List<Objective> getStarterDeck() {
         return objectiveDeck.getStarterDeck();
+    }
+
+    public boolean hasObjectiveTypeInDeck(ObjectiveTypes objectiveTypes) {
+        return objectiveDeck.hasObjectiveType(objectiveTypes);
     }
 }

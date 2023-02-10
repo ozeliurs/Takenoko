@@ -10,6 +10,7 @@ import com.takenoko.engine.GameEngine;
 import com.takenoko.engine.History;
 import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
+import com.takenoko.objective.ObjectiveTypes;
 import com.takenoko.objective.PandaObjective;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class SmartObjective extends PriorityBot {
     @Override
     protected void fillAction(Board board, BotState botState, History history) {
         this.addActionWithPriority(analyzeObjectivesToRedeem(botState, history), DEFAULT_PRIORITY);
-        this.addActionWithPriority(new DrawObjectiveAction(), DEFAULT_PRIORITY);
+        this.addActionWithPriority(new DrawObjectiveAction(ObjectiveTypes.PANDA), DEFAULT_PRIORITY);
 
         botState.getAchievedObjectives().stream()
                 .filter(v -> v.getClass() != PandaObjective.class)

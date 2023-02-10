@@ -131,11 +131,33 @@ public class ObjectiveDeck extends ArrayList<Objective> {
                         new SingleGardenerObjective(3, TileColor.GREEN, 0), 4, 8)); // 3 GREEN
     }
 
-    public void draw() {
+    public void draw(ObjectiveTypes objectiveType) {
         if (isEmpty()) {
             throw new IllegalStateException("Cannot draw from an empty deck");
         }
-        lastDrawnObjective = get(random.nextInt(size()));
+
+        List<Objective> pandaObjectives =
+                this.stream().filter(o -> o.getType() == ObjectiveTypes.PANDA).toList();
+        List<Objective> gardenerObjectives =
+                this.stream().filter(o -> o.getType() == ObjectiveTypes.GARDENER).toList();
+        List<Objective> shapeObjectives =
+                this.stream().filter(o -> o.getType() == ObjectiveTypes.SHAPE).toList();
+
+        switch (objectiveType) {
+            case PANDA -> lastDrawnObjective =
+                    pandaObjectives.get(random.nextInt(pandaObjectives.size()));
+            case GARDENER -> lastDrawnObjective =
+                    gardenerObjectives.get(random.nextInt(gardenerObjectives.size()));
+            case SHAPE -> lastDrawnObjective =
+                    shapeObjectives.get(random.nextInt(shapeObjectives.size()));
+            case EMPEROR -> lastDrawnObjective =
+                    this.stream()
+                            .filter(o -> o.getType() == ObjectiveTypes.EMPEROR)
+                            .toList()
+                            .get(0);
+            default -> throw new IllegalArgumentException(
+                    "Objective type specified does not exists");
+        }
         remove(lastDrawnObjective);
     }
 
@@ -192,5 +214,9 @@ public class ObjectiveDeck extends ArrayList<Objective> {
         }
 
         return drawnObjective;
+    }
+
+    public boolean hasObjectiveType(ObjectiveTypes objectiveTypes) {
+        return this.stream().filter(o -> o.getType() == objectiveTypes).toList().size() > 0;
     }
 }

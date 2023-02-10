@@ -25,13 +25,12 @@ import com.takenoko.engine.History;
 import com.takenoko.layers.irrigation.EdgePosition;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
+import com.takenoko.objective.ObjectiveTypes;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.Weather;
 import com.takenoko.weather.WeatherFactory;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class FullRandomBot implements Bot {
     final SecureRandom random;
@@ -84,7 +83,7 @@ public class FullRandomBot implements Bot {
             actions.add(getRandomChooseAndApplyWeatherAction());
         }
         if (botState.getAvailableActions().contains(DrawObjectiveAction.class)) {
-            actions.add(new DrawObjectiveAction());
+            actions.add(getRandomDrawObjectiveAction());
         }
         if (botState.getAvailableActions().contains(RedeemObjectiveAction.class)) {
             actions.add(getRandomRedeemObjectiveAction(botState));
@@ -236,5 +235,11 @@ public class FullRandomBot implements Bot {
         }
         return new MoveGardenerAction(
                 gardenerPossibleMoves.get(random.nextInt(gardenerPossibleMoves.size())));
+    }
+
+    private Action getRandomDrawObjectiveAction() {
+        List<ObjectiveTypes> objectiveTypes = EnumSet.allOf(ObjectiveTypes.class).stream().toList();
+        return new DrawObjectiveAction(
+                objectiveTypes.stream().toList().get(random.nextInt(objectiveTypes.size())));
     }
 }

@@ -64,7 +64,7 @@ public class Main {
         } else if (demo) {
             loggerConfig.setLevel(Level.INFO);
             ctx.updateLoggers();
-            new GameEngine().runGame(1, csv);
+            new GameEngine().runGame(10, csv);
         } else {
             logger.log(Level.INFO, "no parameters");
         }
