@@ -10,10 +10,7 @@ import com.takenoko.actions.irrigation.StoreIrrigationInInventoryAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.tile.PlaceTileAction;
 import com.takenoko.bot.utils.GameProgress;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 class GameProgressStatisticsTest {
     private GameProgressStatistics gameProgressStatistics;
@@ -23,6 +20,11 @@ class GameProgressStatisticsTest {
     void setUp() {
         gameProgress = mock(GameProgress.class);
         gameProgressStatistics = new GameProgressStatistics(gameProgress);
+    }
+
+    @AfterEach
+    void tearDown() {
+        gameProgressStatistics = null;
     }
 
     @Test
@@ -70,15 +72,15 @@ class GameProgressStatisticsTest {
 
         @Test
         @DisplayName("When gameProgressStatistics are not equal, returns false")
-        void equals_WhenBoardsAreNotEqual_ThenReturnsFalse() {
+        void equals_WhenGameProgressStatisticsAreNotEqual_ThenReturnsFalse() {
             GameProgressStatistics gameProgressStatistics1 =
                     new GameProgressStatistics(GameProgress.EARLY_GAME);
             assertThat(gameProgressStatistics).isNotEqualTo(gameProgressStatistics1);
         }
 
         @Test
-        @DisplayName("When boards is null, returns false")
-        void equals_WhenBoardIsNull_ThenReturnsFalse() {
+        @DisplayName("When gameProgressStatistics is null, returns false")
+        void equals_WhenGameProgressStatisticsIsNull_ThenReturnsFalse() {
             assertThat(gameProgressStatistics).isNotEqualTo(null);
         }
     }
@@ -87,16 +89,16 @@ class GameProgressStatisticsTest {
     @DisplayName("Method hashCode")
     class TestHashCode {
         @Test
-        @DisplayName("When boards are equal, returns same hash code")
-        void hashCode_WhenBoardsAreEqual_ThenReturnsSameHashCode() {
+        @DisplayName("When gameProgressStatistics are equal, returns same hash code")
+        void hashCode_WhenGameProgressStatisticsAreEqual_ThenReturnsSameHashCode() {
             GameProgressStatistics gameProgressStatistics1 =
                     new GameProgressStatistics(gameProgress);
             assertThat(gameProgressStatistics).hasSameHashCodeAs(gameProgressStatistics1);
         }
 
         @Test
-        @DisplayName("When boards are not equal, returns different hash code")
-        void hashCode_WhenBoardsAreNotEqual_ThenReturnsDifferentHashCode() {
+        @DisplayName("When gameProgressStatistics are not equal, returns different hash code")
+        void hashCode_WhenGameProgressStatisticsAreNotEqual_ThenReturnsDifferentHashCode() {
             GameProgressStatistics gameProgressStatistics1 =
                     new GameProgressStatistics(GameProgress.EARLY_GAME);
             assertThat(gameProgressStatistics).doesNotHaveSameHashCodeAs(gameProgressStatistics1);
