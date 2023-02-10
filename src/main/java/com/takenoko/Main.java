@@ -3,7 +3,6 @@ package com.takenoko;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.takenoko.bot.ColletBot;
-import com.takenoko.bot.GeneralTacticBot;
 import com.takenoko.engine.BotManager;
 import com.takenoko.engine.GameEngine;
 import com.takenoko.ui.ConsoleUserInterface;
@@ -57,10 +56,8 @@ public class Main {
                     new GameEngine(
                             new ArrayList<>(
                                     List.of(
-                                            new BotManager(
-                                                    new ColletBot(), "Collet Bot 01"),
-                                            new BotManager(
-                                                    new ColletBot(), "Collet Bot 02"))));
+                                            new BotManager(new ColletBot(), "Collet Bot 01"),
+                                            new BotManager(new ColletBot(), "Collet Bot 02"))));
             gameEngine2.runGame(TWO_THOUSANDS_NB_GAMES, csv);
         } else if (demo) {
             loggerConfig.setLevel(Level.INFO);
