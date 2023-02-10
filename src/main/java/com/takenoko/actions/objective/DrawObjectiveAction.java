@@ -10,12 +10,17 @@ import com.takenoko.engine.BotManager;
 import com.takenoko.engine.BotState;
 import com.takenoko.objective.ObjectiveTypes;
 import java.util.List;
+import java.util.Objects;
 
 /** This class is used to draw an objective card. */
 @ActionAnnotation(ActionType.DEFAULT)
 public class DrawObjectiveAction implements DefaultAction {
     private final ObjectiveTypes objectiveTypes;
 
+    /**
+     * Constructor. The parameter is mandatory as it allows to choose which type of objective you want.
+     * @param objectiveTypes objectiveTypes
+     */
     public DrawObjectiveAction(ObjectiveTypes objectiveTypes) {
         this.objectiveTypes = objectiveTypes;
     }
@@ -41,7 +46,24 @@ public class DrawObjectiveAction implements DefaultAction {
                 && !board.isObjectiveDeckEmpty();
     }
 
+    /**
+     * Get the objective type of the action
+     * @return ObjectiveTypes
+     */
     public ObjectiveTypes getObjectiveTypes() {
         return objectiveTypes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DrawObjectiveAction that = (DrawObjectiveAction) o;
+        return objectiveTypes == that.objectiveTypes;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(objectiveTypes);
     }
 }
