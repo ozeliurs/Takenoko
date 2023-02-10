@@ -61,5 +61,26 @@ class ConsoleUserInterfaceTest {
             consoleUserInterface.displayError("error message");
             assertThat(testOut.toString()).contains("error message");
         }
+
+        /** Test the end message display */
+        @Test
+        void displayEndMessage() {
+            consoleUserInterface.displayEnd("end message");
+            assertThat(testOut.toString()).contains("end message");
+        }
+
+        /** Test the stats message display */
+        @Test
+        void displayStatsMessage() {
+            consoleUserInterface.displayStats("stat summary message");
+            assertThat(testOut.toString()).contains("stat summary message");
+        }
+
+        /** Test the scoreBoard message display */
+        @Test
+        void displayScoreBoardMessage() {
+            consoleUserInterface.displayScoreBoard("scoreBoard message");
+            assertThat(testOut.toString()).contains("scoreBoard message");
+        }
     }
 }

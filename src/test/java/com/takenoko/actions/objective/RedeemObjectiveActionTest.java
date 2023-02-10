@@ -7,6 +7,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.engine.BotState;
 import com.takenoko.objective.Objective;
+import com.takenoko.stats.SingleBotStatistics;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -23,7 +24,8 @@ class RedeemObjectiveActionTest {
             Board board = mock(Board.class);
             BotManager botManager = mock(BotManager.class);
             Objective objective = mock(Objective.class);
-
+            SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
+            when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
             RedeemObjectiveAction redeemObjectiveAction = new RedeemObjectiveAction(objective);
             redeemObjectiveAction.execute(board, botManager);
 
@@ -44,6 +46,19 @@ class RedeemObjectiveActionTest {
 
             botState.update(board);
             assertThat(botState.getAvailableActions()).contains(RedeemObjectiveAction.class);
+        }
+
+        @Test
+        @DisplayName("should update actions in singlebotStatistics")
+        void shouldUpdateActionsInSingleBotStatistics() {
+            Board board = mock(Board.class);
+            BotManager botManager = mock(BotManager.class);
+            Objective objective = mock(Objective.class);
+            SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
+            when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
+            RedeemObjectiveAction redeemObjectiveAction = new RedeemObjectiveAction(objective);
+            redeemObjectiveAction.execute(board, botManager);
+            verify(singleBotStatistics, times(1)).updateObjectivesRedeemed(objective);
         }
     }
 }

@@ -21,16 +21,16 @@ import com.takenoko.actions.weather.ChooseAndApplyWeatherAction;
 import com.takenoko.actions.weather.ChooseIfApplyWeatherAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
+import com.takenoko.engine.History;
 import com.takenoko.layers.irrigation.EdgePosition;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
+import com.takenoko.objective.ObjectiveType;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.Weather;
 import com.takenoko.weather.WeatherFactory;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class FullRandomBot implements Bot {
     final SecureRandom random;
@@ -40,7 +40,7 @@ public class FullRandomBot implements Bot {
     }
 
     @Override
-    public Action chooseAction(Board board, BotState botState) {
+    public Action chooseAction(Board board, BotState botState, History history) {
         List<Action> actions = new ArrayList<>();
 
         if (botState.getAvailableActions().contains(ChooseIfApplyWeatherAction.class)) {
@@ -83,7 +83,7 @@ public class FullRandomBot implements Bot {
             actions.add(getRandomChooseAndApplyWeatherAction());
         }
         if (botState.getAvailableActions().contains(DrawObjectiveAction.class)) {
-            actions.add(new DrawObjectiveAction());
+            actions.add(getRandomDrawObjectiveAction(board));
         }
         if (botState.getAvailableActions().contains(RedeemObjectiveAction.class)) {
             actions.add(getRandomRedeemObjectiveAction(botState));
@@ -125,7 +125,7 @@ public class FullRandomBot implements Bot {
         return new GrowBambooAction(positions.get(random.nextInt(positions.size())));
     }
 
-    private Action getRandomForcedMovePandaAction(Board board) {
+    public Action getRandomForcedMovePandaAction(Board board) {
         List<PositionVector> pandaPossibleMoves = board.getPandaPossibleMoves();
         if (pandaPossibleMoves.isEmpty()) {
             return null;
@@ -219,7 +219,7 @@ public class FullRandomBot implements Bot {
                 availableTilePositions.get(random.nextInt(availableTilePositions.size())));
     }
 
-    private Action getRandomMovePandaAction(Board board) {
+    public Action getRandomMovePandaAction(Board board) {
         List<PositionVector> pandaPossibleMoves = board.getPandaPossibleMoves();
         if (pandaPossibleMoves.isEmpty()) {
             return null;
@@ -235,5 +235,14 @@ public class FullRandomBot implements Bot {
         }
         return new MoveGardenerAction(
                 gardenerPossibleMoves.get(random.nextInt(gardenerPossibleMoves.size())));
+    }
+
+    private Action getRandomDrawObjectiveAction(Board board) {
+        List<ObjectiveType> objectiveType =
+                EnumSet.allOf(ObjectiveType.class).stream()
+                        .filter(board::hasObjectiveTypeInDeck)
+                        .toList();
+        return new DrawObjectiveAction(
+                objectiveType.stream().toList().get(random.nextInt(objectiveType.size())));
     }
 }

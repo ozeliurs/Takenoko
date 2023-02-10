@@ -9,6 +9,7 @@ import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.vector.PositionVector;
 import java.util.Map;
+import java.util.Objects;
 
 /** Action to move a gardener. */
 @ActionAnnotation(ActionType.DEFAULT)
@@ -54,14 +55,34 @@ public class MoveGardenerAction implements DefaultAction {
         }
 
         bambooStacks.forEach(
-                (positionVector, layerBambooStack) ->
-                        botManager.displayMessage(
-                                "Gardener planted bamboo at "
-                                        + positionVector
-                                        + ", the stack is now "
-                                        + layerBambooStack.getBambooCount()
-                                        + "high"));
+                (positionVector, layerBambooStack) -> {
+                    botManager.displayMessage(
+                            "Gardener planted bamboo at "
+                                    + positionVector
+                                    + ", the stack is now "
+                                    + layerBambooStack.getBambooCount()
+                                    + "high");
+                    botManager
+                            .getSingleBotStatistics()
+                            .updatePlantedBambooCounter(
+                                    board.getTileAt(positionVector).getColor(),
+                                    layerBambooStack.getBambooCount());
+                });
+        botManager.getSingleBotStatistics().updateActions(this.getClass().getSimpleName());
 
         return new ActionResult(1);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MoveGardenerAction that = (MoveGardenerAction) o;
+        return Objects.equals(relativePositionVector, that.relativePositionVector);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(relativePositionVector);
     }
 }

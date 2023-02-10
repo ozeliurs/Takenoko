@@ -3,7 +3,9 @@ package com.takenoko.objective;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.layers.tile.TileColor;
+import com.takenoko.vector.PositionVector;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -12,7 +14,7 @@ public class PandaObjective extends Objective {
     private final Map<TileColor, Integer> bambooTarget;
 
     public PandaObjective(Map<TileColor, Integer> bambooTarget, int points) {
-        super(ObjectiveTypes.PANDA, ObjectiveState.NOT_ACHIEVED, points);
+        super(ObjectiveType.PANDA, ObjectiveState.NOT_ACHIEVED, points);
         this.bambooTarget = bambooTarget;
         if (bambooTarget.isEmpty()) {
             throw new IllegalArgumentException("The bamboo target cannot be empty");
@@ -59,6 +61,29 @@ public class PandaObjective extends Objective {
                                                 / entry.getValue())
                         .reduce(0f, Float::sum)
                 / bambooTarget.size();
+    }
+
+    public List<PositionVector> getWhereToEatToComplete(Board board, BotState botState) {
+        return board.getTiles().entrySet().stream()
+                .filter(
+                        positionVectorTileEntry ->
+                                bambooTarget.entrySet().stream()
+                                        .anyMatch(
+                                                entry ->
+                                                        board.isBambooEatableAt(
+                                                                        positionVectorTileEntry
+                                                                                .getKey())
+                                                                && positionVectorTileEntry
+                                                                                .getValue()
+                                                                                .getColor()
+                                                                        == entry.getKey()
+                                                                && botState.getInventory()
+                                                                                .getBambooCount(
+                                                                                        entry
+                                                                                                .getKey())
+                                                                        < entry.getValue()))
+                .map(Map.Entry::getKey)
+                .toList();
     }
 
     @Override

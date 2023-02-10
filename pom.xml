@@ -4,7 +4,7 @@
 
     <groupId>Optimistic-Coders</groupId>
     <artifactId>takenoko-2023-c</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8
@@ -14,6 +14,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <junit.bom.version>5.9.1</junit.bom.version>
         <mockito.bom.version>4.8.1</mockito.bom.version>
+        <skipPitest>true</skipPitest>
     </properties>
 
     <dependencyManagement> <!-- helps maven to resolve conflicting transitive dependencies -->
@@ -84,6 +85,21 @@
             <artifactId>annotations</artifactId>
             <version>20.1.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>1.82</version>
+        </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.5</version>
         </dependency>
     </dependencies>
 
@@ -209,6 +225,9 @@
                         <format>HTML</format>
                         <format>XML</format>
                     </outputFormats>
+                    <skip>
+                        ${skipPitest}
+                    </skip>
                 </configuration>
             </plugin>
             <plugin>

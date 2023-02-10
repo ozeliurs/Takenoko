@@ -10,7 +10,7 @@ import java.util.List;
  * A fine rain nourishes the young bamboo shoots. The player may place a Bamboo section on the
  * irrigated plot of his choice, up to a limit of four sections per plot.
  */
-public class Rainy implements Weather {
+public class Rainy extends Weather {
     @Override
     public List<Class<? extends Action>> apply(Board board, BotManager botManager) {
         board.setWeather(this);
@@ -24,5 +24,10 @@ public class Rainy implements Weather {
     @Override
     public void revert(Board board, BotManager botManager) {
         board.resetWeather();
+    }
+
+    @Override
+    public String toString() {
+        return "Rainy";
     }
 }

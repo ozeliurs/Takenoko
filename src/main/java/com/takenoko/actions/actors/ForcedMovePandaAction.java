@@ -14,4 +14,9 @@ public class ForcedMovePandaAction extends MovePandaAction {
     public ForcedMovePandaAction(PositionVector relativePositionVector) {
         super(relativePositionVector);
     }
+
+    @Override
+    public String toString() {
+        return "ForcedMovePandaAction{" + super.toString() + '}';
+    }
 }

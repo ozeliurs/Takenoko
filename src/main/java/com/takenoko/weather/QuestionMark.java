@@ -7,7 +7,7 @@ import com.takenoko.engine.BotManager;
 import java.util.List;
 
 /** Weather that makes the player choose a weather from the deck. */
-public class QuestionMark implements Weather {
+public class QuestionMark extends Weather {
     @Override
     public List<Class<? extends Action>> apply(Board board, BotManager botManager) {
         board.setWeather(this);

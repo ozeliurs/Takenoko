@@ -3,9 +3,7 @@ package com.takenoko.objective;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.vector.PositionVector;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Stream;
 
 /** Objective is to complete a certain number of single gardener objectives. */
@@ -16,7 +14,7 @@ public class MultipleGardenerObjective extends Objective {
 
     public MultipleGardenerObjective(
             SingleGardenerObjective objective, int numberOfTimes, int points) {
-        super(ObjectiveTypes.BAMBOO_STACK, ObjectiveState.NOT_ACHIEVED, points);
+        super(ObjectiveType.GARDENER, ObjectiveState.NOT_ACHIEVED, points);
         this.objective = objective;
         this.numberOfTimes = numberOfTimes;
     }
@@ -65,6 +63,10 @@ public class MultipleGardenerObjective extends Objective {
                 .reduce(0, Integer::sum)
                 / (numberOfTimes * objective.getTargetSize()));
         // spotless:on
+    }
+
+    public List<PositionVector> getPositionsToComplete(Board board) {
+        return objective.getPositionsToComplete(board);
     }
 
     @Override

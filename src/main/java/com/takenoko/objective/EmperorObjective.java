@@ -5,8 +5,10 @@ import com.takenoko.engine.BotState;
 
 /** This class represents the emperor objective. */
 public class EmperorObjective extends Objective {
+    public static final int EMPEROR_BONUS = 2;
+
     public EmperorObjective() {
-        super(ObjectiveTypes.EMPEROR, ObjectiveState.ACHIEVED, 2);
+        super(ObjectiveType.EMPEROR, ObjectiveState.ACHIEVED, EMPEROR_BONUS);
     }
 
     @Override

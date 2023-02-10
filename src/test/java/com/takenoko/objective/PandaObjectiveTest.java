@@ -8,7 +8,11 @@ import static org.mockito.Mockito.when;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.inventory.Inventory;
+import com.takenoko.layers.tile.Pond;
+import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileColor;
+import com.takenoko.vector.PositionVector;
+import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -74,6 +78,57 @@ class PandaObjectiveTest {
             when(botState.getInventory().getBambooCount(TileColor.GREEN)).thenReturn(1);
             when(botState.getInventory().getBambooCount(TileColor.PINK)).thenReturn(0);
             assertThat(pandaObjective.getCompletion(board, botState)).isEqualTo(0.5f);
+        }
+    }
+
+    @Nested
+    @DisplayName("Method getWhereToEatToComplete")
+    class TestGetWhereToEatToComplete {
+        @Test
+        @DisplayName("When the objective is achieved, returns an empty list")
+        void getWhereToEatToComplete_WhenObjectiveIsAchieved_ThenReturnsEmptyList() {
+            when(botState.getInventory().getBambooCount(TileColor.GREEN)).thenReturn(1);
+            when(botState.getInventory().getBambooCount(TileColor.PINK)).thenReturn(1);
+            when(board.isBambooEatableAt(any())).thenReturn(true);
+            HashMap<PositionVector, Tile> tiles = new HashMap<>();
+            tiles.put(new PositionVector(0, 0, 0), new Pond());
+            tiles.put(new PositionVector(-1, 0, 1), new Tile(TileColor.GREEN));
+            tiles.put(new PositionVector(0, -1, 1), new Tile(TileColor.PINK));
+            when(board.getTiles()).thenReturn(tiles);
+            assertThat(pandaObjective.getWhereToEatToComplete(board, botState)).isEmpty();
+        }
+
+        @Test
+        @DisplayName("When the objective is not achieved, returns the correct list")
+        void getWhereToEatToComplete_WhenObjectiveIsNotAchieved_ThenReturnsCorrectList() {
+            when(botState.getInventory().getBambooCount(TileColor.GREEN)).thenReturn(0);
+            when(botState.getInventory().getBambooCount(TileColor.PINK)).thenReturn(1);
+            when(board.isBambooEatableAt(any())).thenReturn(true);
+            HashMap<PositionVector, Tile> tiles = new HashMap<>();
+            tiles.put(new PositionVector(0, 0, 0), new Pond());
+            tiles.put(new PositionVector(-1, 0, 1), new Tile(TileColor.GREEN));
+            tiles.put(new PositionVector(0, -1, 1), new Tile(TileColor.PINK));
+            when(board.getTiles()).thenReturn(tiles);
+            assertThat(pandaObjective.getWhereToEatToComplete(board, botState))
+                    .containsExactly(new PositionVector(-1, 0, 1));
+        }
+
+        @Test
+        @DisplayName(
+                "When the objective is not achieved and there is only one bamboo to eat, returns"
+                        + " the correct list")
+        void
+                getWhereToEatToComplete_WhenObjectiveIsNotAchievedAndThereIsOnlyOneBambooToEat_ThenReturnsCorrectList() {
+            when(botState.getInventory().getBambooCount(TileColor.GREEN)).thenReturn(0);
+            when(botState.getInventory().getBambooCount(TileColor.PINK)).thenReturn(0);
+            when(board.isBambooEatableAt(new PositionVector(-1, 0, 1))).thenReturn(true);
+            HashMap<PositionVector, Tile> tiles = new HashMap<>();
+            tiles.put(new PositionVector(0, 0, 0), new Pond());
+            tiles.put(new PositionVector(-1, 0, 1), new Tile(TileColor.GREEN));
+            tiles.put(new PositionVector(0, -1, 1), new Tile(TileColor.PINK));
+            when(board.getTiles()).thenReturn(tiles);
+            assertThat(pandaObjective.getWhereToEatToComplete(board, botState))
+                    .containsExactly(new PositionVector(-1, 0, 1));
         }
     }
 }

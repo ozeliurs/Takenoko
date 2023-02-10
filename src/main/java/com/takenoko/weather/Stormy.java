@@ -11,7 +11,7 @@ import java.util.List;
  * The sky rumbles and lightning strikes, frightening the panda. The player can put the panda on the
  * plot of his choice. To recover from his fear, the shy animal eats a section of bamboo.
  */
-public class Stormy implements Weather {
+public class Stormy extends Weather {
 
     @Override
     public List<Class<? extends Action>> apply(Board board, BotManager botManager) {
@@ -29,5 +29,10 @@ public class Stormy implements Weather {
     @Override
     public void revert(Board board, BotManager botManager) {
         board.resetWeather();
+    }
+
+    @Override
+    public String toString() {
+        return "Stormy";
     }
 }
