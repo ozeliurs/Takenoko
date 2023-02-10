@@ -4,8 +4,8 @@ import com.takenoko.bot.ColletBot;
 import com.takenoko.bot.GeneralTacticBot;
 import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
+import com.takenoko.stats.BotCSVExporter;
 import com.takenoko.stats.BotStatistics;
-import com.takenoko.stats.CSVExporter;
 import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.*;
@@ -359,9 +359,8 @@ public class GameEngine {
         consoleUserInterface.displayScoreBoard(scoreboard.toString());
         consoleUserInterface.displayStats(statSummary(numberOfGames));
         if (logToCSV) {
-            CSVExporter csvExporter = new CSVExporter();
-            csvExporter.addStatistics(
-                    board.getBoardStatistics(), botStatistics.values().stream().toList());
+            BotCSVExporter csvExporter = new BotCSVExporter("stats/gamestats.csv");
+            csvExporter.addStatistics(botStatistics);
             csvExporter.writeCSV();
         }
     }
