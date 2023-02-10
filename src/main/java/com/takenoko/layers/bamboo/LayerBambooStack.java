@@ -1,7 +1,5 @@
 package com.takenoko.layers.bamboo;
 
-import java.util.Objects;
-
 public class LayerBambooStack extends BambooStack {
     public static final int MAX_BAMBOO = 4;
 
