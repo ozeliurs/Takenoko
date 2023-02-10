@@ -3,19 +3,20 @@ package com.takenoko.stats;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BotCSVExporter extends CSVExporter {
-    private HashMap<String, SingleBotStatistics> botsData;
+    private final HashMap<String, SingleBotStatistics> botsData;
 
     private final String[] header = new String[] {"Bot Name", "Wins", "Losses", "Final Score"};
 
     public BotCSVExporter(String filePath) {
         super(filePath);
+        this.botsData = new HashMap<>();
     }
 
     @Override
     protected void readData(List<String[]> data) {
-        this.botsData = new HashMap<>();
         for (String[] line :
                 data.stream()
                         .filter(line -> !line[0].equals("Bot Name"))
@@ -54,5 +55,9 @@ public class BotCSVExporter extends CSVExporter {
                         botsData.put(key.getName(), value);
                     }
                 });
+    }
+
+    public Map<String, SingleBotStatistics> getBotsData() {
+        return botsData;
     }
 }
