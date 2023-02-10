@@ -83,7 +83,7 @@ public class FullRandomBot implements Bot {
             actions.add(getRandomChooseAndApplyWeatherAction());
         }
         if (botState.getAvailableActions().contains(DrawObjectiveAction.class)) {
-            actions.add(getRandomDrawObjectiveAction());
+            actions.add(getRandomDrawObjectiveAction(board));
         }
         if (botState.getAvailableActions().contains(RedeemObjectiveAction.class)) {
             actions.add(getRandomRedeemObjectiveAction(botState));
@@ -237,8 +237,11 @@ public class FullRandomBot implements Bot {
                 gardenerPossibleMoves.get(random.nextInt(gardenerPossibleMoves.size())));
     }
 
-    private Action getRandomDrawObjectiveAction() {
-        List<ObjectiveType> objectiveType = EnumSet.allOf(ObjectiveType.class).stream().toList();
+    private Action getRandomDrawObjectiveAction(Board board) {
+        List<ObjectiveType> objectiveType =
+                EnumSet.allOf(ObjectiveType.class).stream()
+                        .filter(board::hasObjectiveTypeInDeck)
+                        .toList();
         return new DrawObjectiveAction(
                 objectiveType.stream().toList().get(random.nextInt(objectiveType.size())));
     }
