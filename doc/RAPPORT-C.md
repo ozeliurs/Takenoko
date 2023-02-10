@@ -13,17 +13,17 @@
 2. [Architecture and Quality](#architecture-and-quality)
     1. [Architecture](#architecture)
         1. [GameEngine](#game-engine)
-        2. [Action](#action) <- TODO (schema)
+        2. [Action](#action)
         3. [Objective](#objective)
-        4. [Bot](#bot) <- TODO (schema done)
+        4. [Bot](#bot)
         5. [BotManager](#bot-manager)
         6. [Board](#board)
         7. [Layers](#layers)
         8. [Patterns](#patterns)
         9. [Statistics](#statistics)
-    2. [Quality](#quality) <- TODO
-        1. [Good quality](#good-quality) <- TODO
-        2. [Not so good quality](#not-so-good-quality) <- TODO
+    2. [Quality](#quality)
+        1. [Good quality](#good-quality)
+        2. [Not so good quality](#not-so-good-quality)
     3. [Documentation](#documentation)
 3. [Process](#process)
     1. [Task Management](#task-management)
@@ -36,10 +36,10 @@
     3. [Continuous Development and Automation](#continuous-development-and-automation)
         1. [Format check](#format-check)
         2. [Maven compiler](#maven-compiler)
-        3. [Continuous integration with SonarQube](#continuous-integration-with-sonarqube) <- TODO
-            1. [Jacoco](#jacoco) <- TODO
-            2. [PIT test](#pit-test) <- TODO
-            3. [Package](#package) <- TODO
+        3. [Continuous integration with SonarQube](#continuous-integration-with-sonarqube)
+            1. [Jacoco](#jacoco)
+            2. [PIT test](#pit-test)
+            3. [Package](#package)
 
 ## Progress Report
 
@@ -101,7 +101,7 @@ Here is a reminder of the rules for this bot:
 1. Bot gather a maximum of bamboos even when it does not have the colors in its objectives
 2. Bot tries to always have 5 objective cards
 3. Bot first two actions are take a card objective and choose the cloudy weather
-4. Bot takes the cloudy weather, then watershed improvement when getting the question mark meteo (only first rounds)
+4. Bot takes the cloudy weather, then watershed improvement when getting the question mark weather (only first rounds)
 5. Bot tries to focus on multiple objective. If he has two panda objectives he focuses on both
 6. Bot oversees other bot actions and tries to wreck their plans
 
@@ -239,6 +239,12 @@ You can specify the bot managers you want to use in your game by using one of th
 
 #### Action
 
+The action system is composed of one interface to rule the all, each action is at minimum composed of the overridden `execute()`, this, in the end, defines the behaviour of the action on the bot and the board.
+
+Default actions also inherits from the `DefaultAction` class, and implement the `canBePlayed()` method. This is the way to indicate if the action is available to the bot this turn.
+
+Our actions are chosen and returned by our bots as a way to say they chose this action. Each action has a cost specified in itself and optionally can designate the next action(s) to be run.
+
 <p align="center">
     <img src="images/architecture/action.png" alt="action" width="50%">
 </p>
@@ -262,6 +268,16 @@ objective.
 </p>
 
 #### Bot
+
+Each player of Takenoko has to implement a system of action choices to play, in short a brain. The bot class has this role.
+
+Bot is an interface forcing the implementation of chooseAction which finally makes the choice of the next action according to the state of the Board, its state (BotState) and the history of the played actions.
+
+FullRandomBot is a simple implementation of a Bot.
+
+PriorityBot is a better way of doing the brain of a player. It is also an abstract implementation of Bot but allows us to set priorities between actions.
+
+For example ColletBot is a PriorityBot with in itself a DrawObjectiveAction with a priority of 200 and the brains of a SmartPanda and SmartDrawImprovement. It is of course way more complicated than that but this is a good way to build bots with a simple priority system.
 
 <p align="center">
     <img src="images/architecture/bot.png" alt="svg" width="50%">
@@ -329,11 +345,11 @@ SRP (Single Responsibility Principle) this way. We can separate methods that bel
 First of all we have the `Shape` class. It is used to define a shape of tiles using an HashMap of all the elements that
 constitute the shape. Because the shape is defined by a HashMap, we can easily check if a tile is part of the shape or
 not.  
-The most important methods are the following ones : 
+The most important methods are the following ones :
 - `rotate60()` : that allows us to rotate the shape on the board around it center.
 - `translate()` : that allows us to move the shape around the board.
 
-We then have the `Pattern` class which extends from `Shape`. It is used to define the pattern that will be present on the objective cards. 
+We then have the `Pattern` class which extends from `Shape`. It is used to define the pattern that will be present on the objective cards.
 A pattern must contain the origin of the board. We then translate and rotate the shape to find it on the board.
 
 The most important methods are the following ones :
@@ -343,9 +359,9 @@ The most important methods are the following ones :
 
 #### Statistics
 
-The statistics calculated in the project concern 2 main components: Bots and the Board.
+The statistics calculated in the project concern 3 main components: Bots, the Board and the history of the Game.
 
-The bot related statistics are defined as SingleBotStatistics, this class is used to store general game oriented
+The bot related statistics are defined as **SingleBotStatistics**, this class is used to store general game oriented
 information (number of wins and losses + total score) as well as calculate averages and make comparisons in order to
 answer questions such as "How often does the bot choose to perform this action?" or "Which weather does the bot choose
 to apply the most times?". SingleBotStatistics also stores counters for tile placing, irrigation placing, bamboo
@@ -355,20 +371,26 @@ bots' strategy.
 
 As for the board related statistics, their main objective is to offer a general idea of how the game played out in the
 end and paint a picture of the boards final state.
+This contains values such as the total number of bamboo placed or the global irrigation percentage of the tile.
+
+To complete the analysis, history statistics are also collected, this allows us to follow the stream of this game.
+It is composed of which are taken and when as well as what objectives are redeemed per round in each game progress (early game, mid-game and late game).
 
 ### Quality
 
 #### Good quality
 
+Our action system is very object-oriented and very modular. It inherits from the `Action` class and has a `execute(...)` that allows us to specify the modifications on the Board, Bot State and History. Each action is annotated with the `@ActionAnnotation` in order to tell the game that this action is mandatory. It also has the `@ActionCanBePlayedMultipleTimesPerTurn` that indicates that this action can be done multiple times per turn.
 
+Concerning out **Bot** system, it also very Object-Oriented and modular. It inherits from the `Bot` class and has a `chooseAction(...)` that allows us to specify the action that the bot will do. The `PriorityBot` is an implementation of the Bot interface that allows us to specify the priority of each action. The special characteristic of this bot is that it can concatenate behaviours.
 
-
+The Takenoko game has benn built from the beggining to be very strict with permissions between classes. For example the Bots of this game can not edit the Board directly. They are given copies of the objects they interact with and call methods that verify the correctness of this request.
 
 #### Not so good quality
 
+On shady point of our project is the way we test everything. It is not wrong but, as said by our professor, we test our mocks way more than the underlying objects. This can be explained by our complex permissions' system.
 
-
-
+One other thing that could be improved is the way we set up the bot with parameters. We didn't have the time to fine tune the bots, and they are kind of crappy against the Collet bot, this could probably be fixed with time and optimisation of priorities.
 
 ### Documentation
 
@@ -582,8 +604,16 @@ wanted to use and first and foremost to have a unified version of Java on all of
 
 #### Continuous integration with SonarQube
 
+During the project we used SonarQube hosted on our servers combined with a run of the sonarqube check on each and every PR. This tool is very benefit and helps us the track our bugs, coverage and other useful statistics.
+
 ##### Jacoco
+
+In order to generate the coverage report for sonarqube, jacoco, an open source tool, was used. It exports the test results in an XML format and is integrated inside Sonarqube.
 
 ##### PIT test
 
+A way to verify that our tests are correct, we used PITTest, this is a Mutation Coverage measuring tool, he is also integrated inside SonarQube and helps us write better tests.
+
 #### Package
+
+With every release we deploy a package to the maven GitHub repository with a GitHub action.
