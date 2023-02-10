@@ -3,13 +3,13 @@
 ## Summary
 
 1. [Progress Report](#progress-report)
-    1. [Game Functionalities](#game-functionalities) <- TODO
+    1. [Game Functionalities](#game-functionalities)
     2. [Logs Implemented](#logs-implemented) <- TODO
     3. [Statistics Implemented](#statistics-implemented) <- TODO
     4. [Bots implemented](#bots-implemented)
         1. [Bot specified in the specs](#bot-specified-in-the-specs)
-        2. [Our best bot : General Tactics](#our-best-bot--general-tactics) 
-        3. [Which one is the best ?](#which-one-is-the-best-) 
+        2. [Our best bot : General Tactics](#our-best-bot--general-tactics)
+        3. [Which one is the best ?](#which-one-is-the-best-)
 2. [Architecture and Quality](#architecture-and-quality)
     1. [Architecture](#architecture)
         1. [GameEngine](#game-engine)
@@ -57,7 +57,16 @@ bot et une analyse de pourquoi celui qui gagne est le meilleur
 
 ### Game functionalities
 
-- Respect de la pioche
+It would quite long to enumerate all the rules implemented in the game.  
+You can read the official rules to find out what we have in our game since we followed them exactly.
+
+We also used [this video](https://youtu.be/o6MJEbGbCNs) as it is quite complete.
+
+We went quite deep in the game and wanted it to be the most like in the real world and implemented things like :
+
+- When drawing three tiles, the two left are really placed underneath the stack.
+- When placing a tile, you can place an improvement before a bamboo is grown. Which means that you can place a
+  Fertilizer and grow two bamboos on the tile directly if it is irrigated.
 
 ### Logs Implemented
 
