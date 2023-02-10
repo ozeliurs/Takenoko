@@ -1,7 +1,9 @@
-package com.takenoko.engine;
+package com.takenoko.stats;
 
 import com.takenoko.bot.utils.GameProgress;
 import com.takenoko.bot.utils.HistoryAnalysis;
+import com.takenoko.engine.History;
+
 import java.util.HashMap;
 import java.util.UUID;
 

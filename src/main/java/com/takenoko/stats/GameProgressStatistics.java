@@ -1,4 +1,4 @@
-package com.takenoko.engine;
+package com.takenoko.stats;
 
 import com.takenoko.actions.Action;
 import com.takenoko.actions.actors.MoveGardenerAction;
@@ -8,8 +8,10 @@ import com.takenoko.actions.irrigation.StoreIrrigationInInventoryAction;
 import com.takenoko.actions.objective.DrawObjectiveAction;
 import com.takenoko.actions.tile.PlaceTileAction;
 import com.takenoko.bot.utils.GameProgress;
+import com.takenoko.engine.HistoryItem;
+import com.takenoko.engine.TurnHistory;
 import com.takenoko.objective.Objective;
-import com.takenoko.objective.ObjectiveTypes;
+import com.takenoko.objective.ObjectiveType;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class GameProgressStatistics {
     private int totalNbOfAction = 0;
     private final HashMap<String, Float> actions = new HashMap<>();
     private int totalNbOfRedeemedObjectives = 0;
-    private final HashMap<ObjectiveTypes, Float> objectives = new HashMap<>();
+    private final HashMap<ObjectiveType, Float> objectives = new HashMap<>();
 
     public GameProgressStatistics(GameProgress gameProgress) {
         this.gameProgress = gameProgress;
@@ -69,7 +71,7 @@ public class GameProgressStatistics {
         }
     }
 
-    public Float objectiveAverage(ObjectiveTypes objectiveTypes) {
+    public Float objectiveAverage(ObjectiveType objectiveTypes) {
         Float totalOfRedeemedObjective = objectives.get(objectiveTypes);
         return (totalOfRedeemedObjective / totalNbOfRounds);
     }
@@ -110,7 +112,7 @@ public class GameProgressStatistics {
                 .append(indentedLineJump)
                 .append("Objectives redeemed : ")
                 .append(totalNbOfRedeemedObjectives);
-        for (ObjectiveTypes objectiveType : objectives.keySet()) {
+        for (ObjectiveType objectiveType : objectives.keySet()) {
             statistics
                     .append(doubleIndentedLineJump)
                     .append(objectiveType)
