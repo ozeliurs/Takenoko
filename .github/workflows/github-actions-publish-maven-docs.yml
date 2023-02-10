@@ -18,7 +18,7 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
           cache: 'maven'
-      - run: mvn --batch-mode --update-snapshots site
+      - run: mvn --batch-mode --update-snapshots site -DskipPitest=false
       - run: mkdir staging && cp -r target/site/* staging
       - uses: actions/upload-artifact@v3
         with:
