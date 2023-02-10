@@ -16,6 +16,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
 import com.takenoko.layers.tile.ImprovementType;
+import com.takenoko.objective.ObjectiveType;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.Cloudy;
 import java.util.List;
@@ -26,7 +27,14 @@ public class ColletBot extends PriorityBot {
     @Override
     protected void fillAction(Board board, BotState botState, History history) {
         addWithOffset((new SmartDrawIrrigation(3)).compute(board, botState, history), 100);
-        addActionWithPriority(new DrawObjectiveAction(), 200);
+
+        if (board.hasObjectiveTypeInDeck(ObjectiveType.PANDA)) {
+            addActionWithPriority(new DrawObjectiveAction(ObjectiveType.PANDA), 200);
+        } else if (board.hasObjectiveTypeInDeck(ObjectiveType.GARDENER)) {
+            addActionWithPriority(new DrawObjectiveAction(ObjectiveType.GARDENER), 40);
+        } else {
+            addActionWithPriority(new DrawObjectiveAction(ObjectiveType.SHAPE), 10);
+        }
 
         addWithOffset((new SmartPanda()).compute(board, botState, history), 50);
         List<PositionVector> pandaMoveThatEatBamboo = getPandaMovesThatEatBamboo(board);

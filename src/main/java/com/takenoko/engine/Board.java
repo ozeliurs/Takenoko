@@ -11,6 +11,7 @@ import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
 import com.takenoko.objective.Objective;
+import com.takenoko.objective.ObjectiveType;
 import com.takenoko.stats.BoardStatistics;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.Weather;
@@ -340,8 +341,8 @@ public class Board {
         tileLayer.applyImprovement(improvementType, positionVector, this);
     }
 
-    public void drawObjective() {
-        gameAssets.getObjectiveDeck().draw();
+    public void drawObjective(ObjectiveType objectiveType) {
+        gameAssets.getObjectiveDeck().draw(objectiveType);
     }
 
     public Objective peekObjectiveDeck() {
@@ -411,5 +412,9 @@ public class Board {
 
     public boolean hasImprovementInDeck() {
         return !gameAssets.getImprovementDeck().isEmpty();
+    }
+
+    public boolean hasObjectiveTypeInDeck(ObjectiveType objectiveType) {
+        return gameAssets.hasObjectiveTypeInDeck(objectiveType);
     }
 }

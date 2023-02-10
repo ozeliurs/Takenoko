@@ -14,7 +14,7 @@ public class PandaObjective extends Objective {
     private final Map<TileColor, Integer> bambooTarget;
 
     public PandaObjective(Map<TileColor, Integer> bambooTarget, int points) {
-        super(ObjectiveTypes.PANDA, ObjectiveState.NOT_ACHIEVED, points);
+        super(ObjectiveType.PANDA, ObjectiveState.NOT_ACHIEVED, points);
         this.bambooTarget = bambooTarget;
         if (bambooTarget.isEmpty()) {
             throw new IllegalArgumentException("The bamboo target cannot be empty");
