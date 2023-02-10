@@ -100,8 +100,8 @@ Here is a reminder of the rules for this bot:
 
 1. Bot gather a maximum of bamboos even when it does not have the colors in its objectives
 2. Bot tries to always have 5 objective cards
-3. Bot first two actions are take a card objective and choose the cloudy meteo
-4. Bot takes the cloudy meteo, then watershed improvement when getting the question mark meteo (only first rounds)
+3. Bot first two actions are take a card objective and choose the cloudy weather
+4. Bot takes the cloudy weather, then watershed improvement when getting the question mark meteo (only first rounds)
 5. Bot tries to focus on multiple objective. If he has two panda objectives he focuses on both
 6. Bot oversees other bot actions and tries to wreck their plans
 
@@ -118,10 +118,10 @@ We will now explain how we implemented this bot.
    with a priority of 10.
 3. The first two actions of the bot are well-defined in the specs. If the bot is the early game state, he will choose an
    objective card because of the priority
-   of 200, and then he will choose the cloudy meteo to get an irrigation.
-4. The bot always takes the Cloudy meteo and takes the watershed improvement when he gets the question mark meteo thanks
+   of 200, and then he will choose the cloudy weather to get an irrigation.
+4. The bot always takes the Cloudy weather and takes the watershed improvement when he gets the "question mark" weather thanks
    to `SmartChooseAndApplyWeather` behavior which as in
-   argument the cloudy meteo. As for the improvement part, when the bot can draw an improvement, it follows
+   argument the cloudy weather. As for the improvement part, when the bot can draw an improvement, it follows
    the `SmartDrawImprovement` behavior.
 5. Since the bot moves the panda to the bamboo that allows him to complete an objective in his deck, he will prefer to
    go to the bamboo that allows him to complete one of the objective.
@@ -334,7 +334,7 @@ The most important methods are the following ones :
 - `translate()` : that allows us to move the shape around the board.
 
 We then have the `Pattern` class which extends from `Shape`. It is used to define the pattern that will be present on the objective cards. 
-A must pattern must contain the origin of the board. We then translate and rotate the shape to find it on the board.
+A pattern must contain the origin of the board. We then translate and rotate the shape to find it on the board.
 
 The most important methods are the following ones :
 - `match(Board)` :  return a list of all the shapes that match the pattern on the board.
@@ -360,7 +360,15 @@ end and paint a picture of the boards final state.
 
 #### Good quality
 
+
+
+
+
 #### Not so good quality
+
+
+
+
 
 ### Documentation
 
