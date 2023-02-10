@@ -136,12 +136,23 @@ public class GameProgressStatistics {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameProgressStatistics that = (GameProgressStatistics) o;
-        return totalNbOfRounds == that.totalNbOfRounds && totalNbOfAction == that.totalNbOfAction && totalNbOfRedeemedObjectives == that.totalNbOfRedeemedObjectives && gameProgress == that.gameProgress && actions.equals(that.actions) && objectives.equals(that.objectives);
+        return totalNbOfRounds == that.totalNbOfRounds
+                && totalNbOfAction == that.totalNbOfAction
+                && totalNbOfRedeemedObjectives == that.totalNbOfRedeemedObjectives
+                && gameProgress == that.gameProgress
+                && actions.equals(that.actions)
+                && objectives.equals(that.objectives);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(gameProgress, totalNbOfRounds, totalNbOfAction, actions, totalNbOfRedeemedObjectives, objectives);
+        return Objects.hash(
+                gameProgress,
+                totalNbOfRounds,
+                totalNbOfAction,
+                actions,
+                totalNbOfRedeemedObjectives,
+                objectives);
     }
 
     public Map<String, Float> getActions() {
