@@ -14,6 +14,7 @@ import com.takenoko.objective.Objective;
 import com.takenoko.objective.ObjectiveType;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class GameProgressStatistics {
@@ -141,5 +142,9 @@ public class GameProgressStatistics {
     @Override
     public int hashCode() {
         return Objects.hash(gameProgress, totalNbOfRounds, totalNbOfAction, actions, totalNbOfRedeemedObjectives, objectives);
+    }
+
+    public Map<String, Float> getActions() {
+        return actions;
     }
 }
