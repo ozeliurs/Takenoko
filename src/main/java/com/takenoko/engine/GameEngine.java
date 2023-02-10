@@ -25,7 +25,7 @@ public class GameEngine {
     private final List<BotManager> botManagers;
     private final Scoreboard scoreboard;
     private final BotStatistics botStatistics;
-    private History history;
+    private final History history;
 
     public GameEngine(
             int numberOfRounds,
@@ -232,7 +232,7 @@ public class GameEngine {
         }
         board.analyze();
         consoleUserInterface.displayFullStats(botStatistics.toString());
-        consoleUserInterface.displayMessage(history.getHistoryStatistics().toString());
+        consoleUserInterface.displayFullStats(history.getHistoryStatistics().toString());
         consoleUserInterface.displayFullStats(board.getBoardStatistics().toString());
         consoleUserInterface.displayMessage("The game is finished. Thanks for playing !");
         for (BotManager botManager : botManagers) {
