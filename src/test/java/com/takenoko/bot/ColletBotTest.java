@@ -15,7 +15,6 @@ import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.ObjectiveTypes;
-import com.takenoko.objective.PandaObjective;
 import com.takenoko.objective.SingleGardenerObjective;
 import com.takenoko.vector.PositionVector;
 import com.takenoko.weather.WeatherFactory;
@@ -111,20 +110,22 @@ class ColletBotTest {
         }
 
         @Test
-        @DisplayName("When the bot chooses an objective, it takes the PANDA ones if there are some availables")
+        @DisplayName(
+                "When the bot chooses an objective, it takes the PANDA ones if there are some"
+                        + " availables")
         void whenTheBotChoosesAnObjectiveItTakesThePandaOnesIfThereAreSomeAvailables() {
             Board board = spy(new Board());
             BotState botState = spy(BotState.class);
             History history = new History();
             ColletBot colletBot = new ColletBot();
 
-            when(botState.getAvailableActions())
-                    .thenReturn(List.of(DrawObjectiveAction.class));
+            when(botState.getAvailableActions()).thenReturn(List.of(DrawObjectiveAction.class));
 
             Action action = colletBot.chooseAction(board, botState, history);
 
             assertThat(action).isInstanceOf(DrawObjectiveAction.class);
-            assertThat(((DrawObjectiveAction) action).getObjectiveTypes()).isEqualTo(ObjectiveTypes.PANDA);
+            assertThat(((DrawObjectiveAction) action).getObjectiveTypes())
+                    .isEqualTo(ObjectiveTypes.PANDA);
         }
     }
 }

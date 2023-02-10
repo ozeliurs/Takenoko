@@ -18,7 +18,9 @@ public class DrawObjectiveAction implements DefaultAction {
     private final ObjectiveTypes objectiveTypes;
 
     /**
-     * Constructor. The parameter is mandatory as it allows to choose which type of objective you want.
+     * Constructor. The parameter is mandatory as it allows to choose which type of objective you
+     * want.
+     *
      * @param objectiveTypes objectiveTypes
      */
     public DrawObjectiveAction(ObjectiveTypes objectiveTypes) {
@@ -48,6 +50,7 @@ public class DrawObjectiveAction implements DefaultAction {
 
     /**
      * Get the objective type of the action
+     *
      * @return ObjectiveTypes
      */
     public ObjectiveTypes getObjectiveTypes() {
