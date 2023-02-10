@@ -1,5 +1,8 @@
 package com.takenoko.engine;
 
+import com.takenoko.bot.utils.HistoryAnalysis;
+import com.takenoko.stats.HistoryStatistics;
+import com.takenoko.stats.HistoryStatisticsItem;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -7,10 +10,12 @@ import java.util.stream.Collectors;
 public class History extends HashMap<UUID, List<TurnHistory>> {
 
     private UUID currentBotManagerUUID;
+    private HistoryStatistics historyStatistics = new HistoryStatistics();
 
     public History(History historyMap) {
         super(historyMap);
         currentBotManagerUUID = historyMap.currentBotManagerUUID;
+        historyStatistics = historyMap.historyStatistics;
     }
 
     public History() {
@@ -27,10 +32,19 @@ public class History extends HashMap<UUID, List<TurnHistory>> {
 
     public void addBotManager(BotManager botManager) {
         put(botManager.getUniqueID(), new ArrayList<>(List.of()));
+        historyStatistics.put(botManager, new HistoryStatisticsItem());
     }
 
     public void addTurnHistory(BotManager botManager, TurnHistory turnHistory) {
         computeIfAbsent(botManager.getUniqueID(), k -> new ArrayList<>()).add(turnHistory);
+    }
+
+    public void updateHistoryStatistics(BotManager botManager) {
+        if (containsKey(botManager.getUniqueID()) && get(botManager.getUniqueID()).size() > 1) {
+            historyStatistics.incrementNumberOfRounds(
+                    botManager, HistoryAnalysis.getGameProgress(this));
+            historyStatistics.updateEvolution(botManager, this);
+        }
     }
 
     public History copy() {
@@ -71,5 +85,9 @@ public class History extends HashMap<UUID, List<TurnHistory>> {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getCurrentBotManagerUUID());
+    }
+
+    public HistoryStatistics getHistoryStatistics() {
+        return historyStatistics;
     }
 }
