@@ -3,7 +3,6 @@ package com.takenoko.stats;
 import com.takenoko.bot.utils.GameProgress;
 import com.takenoko.engine.BotManager;
 import com.takenoko.engine.History;
-
 import java.util.HashMap;
 import java.util.List;
 

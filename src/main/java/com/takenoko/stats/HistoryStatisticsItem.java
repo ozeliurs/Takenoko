@@ -3,17 +3,16 @@ package com.takenoko.stats;
 import com.takenoko.bot.utils.GameProgress;
 import com.takenoko.bot.utils.HistoryAnalysis;
 import com.takenoko.engine.History;
-
 import java.util.HashMap;
 import java.util.UUID;
 
-public class HistoryStatisticsItem extends HashMap<GameProgress,GameProgressStatistics>{
+public class HistoryStatisticsItem extends HashMap<GameProgress, GameProgressStatistics> {
 
-    public HistoryStatisticsItem(){
+    public HistoryStatisticsItem() {
         super();
-        this.put(GameProgress.EARLY_GAME,new GameProgressStatistics(GameProgress.EARLY_GAME));
-        this.put(GameProgress.MID_GAME,new GameProgressStatistics(GameProgress.MID_GAME));
-        this.put(GameProgress.LATE_GAME,new GameProgressStatistics(GameProgress.LATE_GAME));
+        this.put(GameProgress.EARLY_GAME, new GameProgressStatistics(GameProgress.EARLY_GAME));
+        this.put(GameProgress.MID_GAME, new GameProgressStatistics(GameProgress.MID_GAME));
+        this.put(GameProgress.LATE_GAME, new GameProgressStatistics(GameProgress.LATE_GAME));
     }
 
     @Override

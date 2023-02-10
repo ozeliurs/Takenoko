@@ -3,7 +3,6 @@ package com.takenoko.engine;
 import com.takenoko.bot.utils.HistoryAnalysis;
 import com.takenoko.stats.HistoryStatistics;
 import com.takenoko.stats.HistoryStatisticsItem;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
