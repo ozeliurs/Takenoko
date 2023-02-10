@@ -7,6 +7,7 @@ import com.takenoko.bot.Bot;
 import com.takenoko.bot.FullRandomBot;
 import com.takenoko.inventory.Inventory;
 import com.takenoko.objective.Objective;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +33,7 @@ public class BotManager {
     private final String name;
     private final Bot bot;
     private final int defaultNumberOfActions;
+    private final SingleBotStatistics singleBotStatistics;
     private final UUID uniqueID = UUID.randomUUID();
 
     /**
@@ -41,14 +43,20 @@ public class BotManager {
      * @param name the name of the bot
      * @param bot the bot
      * @param botState the bot state
+     * @param botStatistics the extended statistics for this botManager
      */
     public BotManager(
-            ConsoleUserInterface consoleUserInterface, String name, Bot bot, BotState botState) {
+            ConsoleUserInterface consoleUserInterface,
+            String name,
+            Bot bot,
+            BotState botState,
+            SingleBotStatistics botStatistics) {
         this.botState = botState;
         this.consoleUserInterface = consoleUserInterface;
         this.name = name;
         this.bot = bot;
         this.defaultNumberOfActions = botState.getNumberOfActions();
+        this.singleBotStatistics = botStatistics;
     }
 
     public UUID getUniqueID() {
@@ -57,7 +65,12 @@ public class BotManager {
 
     /** Default constructor for the class */
     public BotManager() {
-        this(DEFAULT_CONSOLE_USER_INTERFACE, DEFAULT_NAME, DEFAULT_BOT, new BotState());
+        this(
+                DEFAULT_CONSOLE_USER_INTERFACE,
+                DEFAULT_NAME,
+                DEFAULT_BOT,
+                new BotState(),
+                new SingleBotStatistics());
     }
 
     /**
@@ -66,7 +79,16 @@ public class BotManager {
      * @param bot the bot
      */
     public BotManager(Bot bot) {
-        this(DEFAULT_CONSOLE_USER_INTERFACE, DEFAULT_NAME, bot, new BotState());
+        this(
+                DEFAULT_CONSOLE_USER_INTERFACE,
+                DEFAULT_NAME,
+                bot,
+                new BotState(),
+                new SingleBotStatistics());
+    }
+
+    public BotManager(Bot bot, String name) {
+        this(DEFAULT_CONSOLE_USER_INTERFACE, name, bot, new BotState(), new SingleBotStatistics());
     }
 
     /**
@@ -85,6 +107,7 @@ public class BotManager {
         if (board.getRoundNumber() > 0) {
             board.rollWeather();
             displayMessage(this.getName() + " rolled weather: " + board.peekWeather());
+            singleBotStatistics.updateWeathersRolled(board.peekWeather().toString());
             botState.addAvailableAction(ChooseIfApplyWeatherAction.class);
         }
         while (canPlayBot()) {
@@ -190,6 +213,7 @@ public class BotManager {
 
     public void reset() {
         this.botState.reset();
+        singleBotStatistics.reset();
     }
 
     public int getObjectiveScore() {
@@ -227,5 +251,13 @@ public class BotManager {
      */
     public void setStartingDeck(List<Objective> objectives) {
         botState.setStartingDeck(objectives);
+    }
+
+    public SingleBotStatistics getSingleBotStatistics() {
+        return singleBotStatistics;
+    }
+
+    public String toString() {
+        return name + "   | Type: " + bot.getClass().getSimpleName();
     }
 }

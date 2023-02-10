@@ -30,7 +30,7 @@ public abstract class PriorityBot extends HashMap<Action, Double> implements Bot
                         // Remove actions that are not available
                         .filter(v -> botState.getAvailableActions().contains(v.getKey().getClass()))
                         // Order by priority
-                        .min(Comparator.comparingDouble(Entry::getValue))
+                        .max(Comparator.comparingDouble(Entry::getValue))
                         // Get the action with the highest priority
                         .map(Map.Entry::getKey);
 
@@ -50,6 +50,8 @@ public abstract class PriorityBot extends HashMap<Action, Double> implements Bot
 
     protected void addActionWithPriority(Action action, double priority) {
         if (action != null) {
+            consoleUserInterface.displayDebug(
+                    "Adding action " + action + " with priority " + priority);
             this.put(action, priority);
         }
     }

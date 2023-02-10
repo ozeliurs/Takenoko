@@ -25,7 +25,7 @@ public class SingleGardenerObjective extends Objective {
             TileColor targetColor,
             ImprovementType targetImprovementType,
             int points) {
-        super(ObjectiveTypes.GARDENER, ObjectiveState.NOT_ACHIEVED, points);
+        super(ObjectiveType.GARDENER, ObjectiveState.NOT_ACHIEVED, points);
         this.targetSize = targetSize;
         this.targetImprovementType = targetImprovementType;
         this.targetColor = targetColor;

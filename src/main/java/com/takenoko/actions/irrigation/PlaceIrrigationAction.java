@@ -22,6 +22,8 @@ public class PlaceIrrigationAction implements Action {
     public ActionResult execute(Board board, BotManager botManager) {
         botManager.displayMessage(
                 botManager.getName() + " placed an irrigation channel at " + edgePosition);
+        botManager.getSingleBotStatistics().incrementIrrigationsPlaced();
+        botManager.getSingleBotStatistics().updateActions(getClass().getSimpleName());
         board.placeIrrigation(edgePosition);
         return new ActionResult(1);
     }

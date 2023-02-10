@@ -24,10 +24,12 @@ public class SmartPanda extends PriorityBot {
                 for (PositionVector position : objective.getValue()) {
                     this.addActionWithPriority(
                             new MovePandaAction(position),
-                            objective.getKey().getPoints() - (double) objective.getValue().size());
+                            objective.getKey().getPoints()
+                                    / objective.getKey().getCompletion(board, botState));
                     this.addActionWithPriority(
                             new ForcedMovePandaAction(position),
-                            objective.getKey().getPoints() - (double) objective.getValue().size());
+                            objective.getKey().getPoints()
+                                    / objective.getKey().getCompletion(board, botState));
                 }
             }
         }

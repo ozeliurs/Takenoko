@@ -1,40 +1,59 @@
 package com.takenoko.bot;
 
+import static com.takenoko.bot.utils.pathfinding.panda.PandaPathfinding.getPandaMovesThatEatBamboo;
+
+import com.takenoko.actions.actors.ForcedMovePandaAction;
+import com.takenoko.actions.actors.MovePandaAction;
+import com.takenoko.actions.improvement.ApplyImprovementAction;
+import com.takenoko.actions.improvement.ApplyImprovementFromInventoryAction;
+import com.takenoko.actions.improvement.DrawImprovementAction;
+import com.takenoko.bot.unitary.SmartDrawImprovement;
+import com.takenoko.bot.unitary.SmartPanda;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotState;
 import com.takenoko.engine.History;
-import java.util.HashMap;
+import com.takenoko.layers.tile.ImprovementType;
+import com.takenoko.vector.PositionVector;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
-public class RushPandaBot extends GeneralTacticBot {
+public class RushPandaBot extends PriorityBot {
     private final transient FullRandomBot randomBot;
 
-    @SuppressWarnings({"java:S3599", "java:S1171"})
     public RushPandaBot() {
-        super(
-                new HashMap<>() {
-                    {
-                        put("MovePanda", 10);
-                        put("MoveGardener", -1);
-                        put("RedeemObjective", -1);
-                        put("SmartPatternPlacing", -1);
-                        put("ChooseAndApplyWeather", -1);
-                        put("ChooseIfApplyWeather", -1);
-                        put("DrawIrrigation", -1);
-                        put("StoreIrrigationInInventory", -1);
-                        put("SmartIrrigationPlacing", -1);
-                    }
-                });
+        super();
         this.randomBot = new FullRandomBot();
     }
 
     @Override
     protected void fillAction(Board board, BotState botState, History history) {
-        super.fillAction(board, botState, history);
-        this.addActionWithPriority(
-                this.randomBot.getRandomForcedMovePandaAction(board), DEFAULT_PRIORITY);
-        this.addActionWithPriority(
-                this.randomBot.getRandomMovePandaAction(board), DEFAULT_PRIORITY);
+
+        this.addWithOffset((new SmartPanda()).compute(board, botState, history), 50);
+
+        this.addWithOffset(
+                (new SmartDrawImprovement(Map.of(ImprovementType.FERTILIZER, 1)))
+                        .compute(board, botState, history),
+                50);
+
+        if (botState.getInventory().hasImprovement(ImprovementType.FERTILIZER)
+                && botState.getAvailableActions().contains(ApplyImprovementAction.class)
+                && !board.getAvailableImprovementPositions().isEmpty()) {
+            this.addActionWithPriority(
+                    new ApplyImprovementFromInventoryAction(
+                            ImprovementType.FERTILIZER,
+                            board.getAvailableImprovementPositions().get(0)),
+                    2);
+        }
+
+        List<PositionVector> pandaMoveThatEatBamboo = getPandaMovesThatEatBamboo(board);
+
+        if (!pandaMoveThatEatBamboo.isEmpty()) {
+            this.addActionWithPriority(new MovePandaAction(pandaMoveThatEatBamboo.get(0)), 100);
+            this.addActionWithPriority(
+                    new ForcedMovePandaAction(pandaMoveThatEatBamboo.get(0)), 100);
+        }
+        this.addActionWithPriority(new DrawImprovementAction(ImprovementType.FERTILIZER), 1);
     }
 
     @Override

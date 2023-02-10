@@ -62,6 +62,11 @@ public class HistoryAnalysis {
         // if someone has completed more than LATE_GAME_THRESHOLD objectives, the game is in the
         // late game
         // otherwise, the game is in the mid-game
+
+        if (history.getLatestHistoryItems() == null) {
+            return GameProgress.EARLY_GAME;
+        }
+
         if (history.getLatestHistoryItems().values().stream()
                 .allMatch(
                         historyItem ->
@@ -127,7 +132,7 @@ public class HistoryAnalysis {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    static Map<UUID, Boolean> analyzeRushPanda(History history) {
+    public static Map<UUID, Boolean> analyzeRushPanda(History history) {
         return analyzeRushPanda(history, DEFAULT_RUSH_PANDA_THRESHOLD);
     }
 }

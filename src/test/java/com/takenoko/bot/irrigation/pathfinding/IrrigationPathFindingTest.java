@@ -17,6 +17,7 @@ import com.takenoko.layers.irrigation.IrrigationLayer;
 import com.takenoko.layers.tile.ImprovementType;
 import com.takenoko.layers.tile.Tile;
 import com.takenoko.layers.tile.TileLayer;
+import com.takenoko.stats.BoardStatistics;
 import com.takenoko.vector.PositionVector;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -43,7 +44,8 @@ class IrrigationPathFindingTest {
                             new Panda(),
                             new Gardener(),
                             gameAssets,
-                            new IrrigationLayer());
+                            new IrrigationLayer(),
+                            new BoardStatistics());
             PositionVector pos1 = new PositionVector(0, -1, 1);
             PositionVector pos2 = new PositionVector(1, -1, 0);
             PositionVector pos3 = new PositionVector(1, -2, 1);
@@ -86,7 +88,8 @@ class IrrigationPathFindingTest {
                             new Panda(),
                             new Gardener(),
                             gameAssets,
-                            new IrrigationLayer());
+                            new IrrigationLayer(),
+                            new BoardStatistics());
             PositionVector target = new PositionVector(-3, 4, -1);
             PositionVector pos1 = new PositionVector(-1, 0, 1);
             PositionVector pos2 = new PositionVector(-1, 1, 0);
@@ -136,7 +139,8 @@ class IrrigationPathFindingTest {
                             new Panda(),
                             new Gardener(),
                             gameAssets,
-                            new IrrigationLayer());
+                            new IrrigationLayer(),
+                            new BoardStatistics());
             List<PositionVector> pos =
                     List.of(
                             new PositionVector(0, -1, 1),

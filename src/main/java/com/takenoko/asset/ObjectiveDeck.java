@@ -131,11 +131,41 @@ public class ObjectiveDeck extends ArrayList<Objective> {
                         new SingleGardenerObjective(3, TileColor.GREEN, 0), 4, 8)); // 3 GREEN
     }
 
-    public void draw() {
+    public void draw(ObjectiveType objectiveType) {
         if (isEmpty()) {
             throw new IllegalStateException("Cannot draw from an empty deck");
         }
-        lastDrawnObjective = get(random.nextInt(size()));
+
+        List<Objective> pandaObjectives =
+                this.stream().filter(o -> o.getType() == ObjectiveType.PANDA).toList();
+        List<Objective> gardenerObjectives =
+                this.stream().filter(o -> o.getType() == ObjectiveType.GARDENER).toList();
+        List<Objective> shapeObjectives =
+                this.stream().filter(o -> o.getType() == ObjectiveType.SHAPE).toList();
+
+        switch (objectiveType) {
+            case PANDA -> {
+                if (pandaObjectives.isEmpty()) {
+                    throw new IllegalStateException("Cannot draw from an empty panda deck");
+                }
+                lastDrawnObjective = pandaObjectives.get(random.nextInt(pandaObjectives.size()));
+            }
+            case GARDENER -> {
+                if (gardenerObjectives.isEmpty()) {
+                    throw new IllegalStateException("Cannot draw from an empty gardener deck");
+                }
+                lastDrawnObjective =
+                        gardenerObjectives.get(random.nextInt(gardenerObjectives.size()));
+            }
+            case SHAPE -> {
+                if (shapeObjectives.isEmpty()) {
+                    throw new IllegalStateException("Cannot draw from an empty shape deck");
+                }
+                lastDrawnObjective = shapeObjectives.get(random.nextInt(shapeObjectives.size()));
+            }
+            default -> throw new IllegalArgumentException(
+                    "Objective type specified does not exists");
+        }
         remove(lastDrawnObjective);
     }
 
@@ -192,5 +222,9 @@ public class ObjectiveDeck extends ArrayList<Objective> {
         }
 
         return drawnObjective;
+    }
+
+    public boolean hasObjectiveType(ObjectiveType objectiveType) {
+        return this.stream().filter(o -> o.getType() == objectiveType).toList().size() > 0;
     }
 }

@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.takenoko.bot.Bot;
 import com.takenoko.inventory.Inventory;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.ui.ConsoleUserInterface;
 import org.junit.jupiter.api.*;
 
@@ -14,6 +15,7 @@ class BotManagerTest {
     Bot bot;
     BotState botState;
     Board board;
+    SingleBotStatistics singleBotStatistics;
 
     @BeforeEach
     void setUp() {
@@ -21,8 +23,10 @@ class BotManagerTest {
         bot = mock(Bot.class);
         botState = mock(BotState.class);
         board = mock(Board.class);
+        singleBotStatistics = mock(SingleBotStatistics.class);
 
-        botManager = new BotManager(consoleUserInterface, "Bot", bot, botState);
+        botManager =
+                new BotManager(consoleUserInterface, "Bot", bot, botState, singleBotStatistics);
     }
 
     @AfterEach

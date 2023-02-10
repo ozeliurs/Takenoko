@@ -7,6 +7,7 @@ import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.layers.bamboo.LayerBambooStack;
 import com.takenoko.layers.tile.Tile;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.vector.PositionVector;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,9 +39,26 @@ public class MoveGardenerActionTest {
         void shouldMoveTheGardenerPlantBamboo() {
             when(board.getGardenerPosition()).thenReturn(new PositionVector(0, 0, 0));
             when(botManager.getName()).thenReturn("Joe");
+            when(botManager.getSingleBotStatistics()).thenReturn(mock(SingleBotStatistics.class));
             when(board.isIrrigatedAt(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
             moveGardenerAction.execute(board, botManager);
             verify(board).moveGardener(new PositionVector(-1, 0, 1));
+        }
+
+        @Test
+        @DisplayName("should update planted bamboo counter and actions in singleBotStatistics")
+        void shouldUpdatePlantedBambooCounterAndActionsInSingleBotStatistics() {
+            SingleBotStatistics singleBotStatistics = mock(SingleBotStatistics.class);
+            when(board.getGardenerPosition()).thenReturn(new PositionVector(0, 0, 0));
+            when(botManager.getName()).thenReturn("Joe");
+            when(botManager.getSingleBotStatistics()).thenReturn(singleBotStatistics);
+            when(board.isIrrigatedAt(any())).thenReturn(true);
+            when(board.getTileAt(any())).thenReturn(mock(Tile.class));
+            moveGardenerAction.execute(board, botManager);
+            verify(singleBotStatistics).updatePlantedBambooCounter(any(), anyInt());
+            verify(singleBotStatistics, times(1))
+                    .updateActions(moveGardenerAction.getClass().getSimpleName());
         }
     }
 

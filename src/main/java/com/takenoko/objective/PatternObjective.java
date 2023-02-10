@@ -10,7 +10,7 @@ public class PatternObjective extends Objective {
     private final Pattern pattern;
 
     public PatternObjective(Pattern pattern, int points) {
-        super(ObjectiveTypes.SHAPE, ObjectiveState.NOT_ACHIEVED, points);
+        super(ObjectiveType.SHAPE, ObjectiveState.NOT_ACHIEVED, points);
         this.pattern = pattern;
     }
 
@@ -51,7 +51,7 @@ public class PatternObjective extends Objective {
 
     @Override
     public float getCompletion(Board board, BotState botState) {
-        return pattern.matchRatio(board);
+        throw new UnsupportedOperationException();
     }
 
     @Override

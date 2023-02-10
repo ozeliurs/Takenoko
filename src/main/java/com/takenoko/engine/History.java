@@ -56,6 +56,7 @@ public class History extends HashMap<UUID, List<TurnHistory>> {
      */
     public Map<UUID, HistoryItem> getLatestHistoryItems() {
         return entrySet().stream()
+                .filter(uuidListEntry -> !uuidListEntry.getValue().isEmpty())
                 .map(
                         uuidListEntry -> {
                             TurnHistory lastRound =

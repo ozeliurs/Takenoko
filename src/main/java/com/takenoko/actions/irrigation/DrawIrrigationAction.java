@@ -27,4 +27,14 @@ public class DrawIrrigationAction implements DefaultAction {
         }
         return new ActionResult(List.of(StoreIrrigationInInventoryAction.class), 0);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof DrawIrrigationAction;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getClass().hashCode();
+    }
 }

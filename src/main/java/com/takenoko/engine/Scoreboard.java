@@ -7,12 +7,19 @@ import java.util.Map;
 /** This class is used to store the number of win for each bot. */
 public class Scoreboard {
     private final HashMap<BotManager, Integer> numberOfVictoryHashMap;
+    private final HashMap<BotManager, Integer> totalScore;
 
     public Scoreboard() {
+        totalScore = new HashMap<>();
         numberOfVictoryHashMap = new HashMap<>();
     }
 
+    public Map<BotManager, Integer> getTotalScore() {
+        return totalScore;
+    }
+
     public void addBotManager(BotManager botManager) {
+        totalScore.put(botManager, 0);
         numberOfVictoryHashMap.put(botManager, 0);
     }
 
@@ -26,17 +33,25 @@ public class Scoreboard {
         numberOfVictoryHashMap.put(botManager, numberOfVictoryHashMap.get(botManager) + 1);
     }
 
+    public void updateScore(BotManager botManager, int scoreToAdd) {
+        totalScore.put(botManager, totalScore.get(botManager) + scoreToAdd);
+    }
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("============== Scoreboard ==============");
+        String lineJump = "\n \t \t \t";
+        stringBuilder.append("============== Scoreboard ==============").append(lineJump);
         for (Map.Entry<BotManager, Integer> entry : numberOfVictoryHashMap.entrySet()) {
             stringBuilder
                     .append("< ")
                     .append(entry.getKey().getName())
-                    .append(" : ")
+                    .append(" : Wins-")
                     .append(entry.getValue())
-                    .append(" > | ");
+                    .append(" Total Score-")
+                    .append(totalScore.get(entry.getKey()))
+                    .append(" > | ")
+                    .append(lineJump);
         }
         return stringBuilder.toString();
     }

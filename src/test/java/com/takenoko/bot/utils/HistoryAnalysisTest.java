@@ -13,6 +13,8 @@ import com.takenoko.bot.GeneralTacticBot;
 import com.takenoko.bot.RushPandaBot;
 import com.takenoko.engine.*;
 import com.takenoko.objective.PandaObjective;
+import com.takenoko.stats.BotStatistics;
+import com.takenoko.stats.SingleBotStatistics;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.List;
@@ -262,7 +264,8 @@ class HistoryAnalysisTest {
                             new ConsoleUserInterface(),
                             "Rush Panda",
                             new RushPandaBot(),
-                            new BotState());
+                            new BotState(),
+                            mock(SingleBotStatistics.class));
 
             GameEngine gameEngine =
                     new GameEngine(
@@ -276,9 +279,11 @@ class HistoryAnalysisTest {
                                                     new ConsoleUserInterface(),
                                                     "Joe",
                                                     new GeneralTacticBot(),
-                                                    new BotState()),
+                                                    new BotState(),
+                                                    mock(SingleBotStatistics.class)),
                                             rushPandaBotManager)),
                             new Scoreboard(),
+                            new BotStatistics(),
                             history);
             gameEngine.newGame();
             gameEngine.startGame();

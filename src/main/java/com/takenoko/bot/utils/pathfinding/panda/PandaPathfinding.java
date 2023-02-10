@@ -53,4 +53,13 @@ public class PandaPathfinding {
                 .filter(v -> !v.getValue().isEmpty())
                 .collect(Collectors.toMap(Pair::getKey, Pair::getValue));
     }
+
+    public static List<PositionVector> getPandaMovesThatEatBamboo(Board board) {
+        return board.getPandaPossibleMoves().stream()
+                .filter(
+                        pandaMove ->
+                                board.isBambooEatableAt(
+                                        board.getPandaPosition().add(pandaMove).toPositionVector()))
+                .toList();
+    }
 }
