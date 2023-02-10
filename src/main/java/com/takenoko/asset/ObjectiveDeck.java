@@ -144,14 +144,25 @@ public class ObjectiveDeck extends ArrayList<Objective> {
                 this.stream().filter(o -> o.getType() == ObjectiveType.SHAPE).toList();
 
         switch (objectiveType) {
-            case PANDA -> lastDrawnObjective =
-                    pandaObjectives.get(random.nextInt(pandaObjectives.size()));
-            case GARDENER -> lastDrawnObjective =
-                    gardenerObjectives.get(random.nextInt(gardenerObjectives.size()));
-            case SHAPE -> lastDrawnObjective =
-                    shapeObjectives.get(random.nextInt(shapeObjectives.size()));
-            case EMPEROR -> lastDrawnObjective =
-                    this.stream().filter(o -> o.getType() == ObjectiveType.EMPEROR).toList().get(0);
+            case PANDA -> {
+                if (pandaObjectives.isEmpty()) {
+                    throw new IllegalStateException("Cannot draw from an empty panda deck");
+                }
+                lastDrawnObjective = pandaObjectives.get(random.nextInt(pandaObjectives.size()));
+            }
+            case GARDENER -> {
+                if (gardenerObjectives.isEmpty()) {
+                    throw new IllegalStateException("Cannot draw from an empty gardener deck");
+                }
+                lastDrawnObjective =
+                        gardenerObjectives.get(random.nextInt(gardenerObjectives.size()));
+            }
+            case SHAPE -> {
+                if (shapeObjectives.isEmpty()) {
+                    throw new IllegalStateException("Cannot draw from an empty shape deck");
+                }
+                lastDrawnObjective = shapeObjectives.get(random.nextInt(shapeObjectives.size()));
+            }
             default -> throw new IllegalArgumentException(
                     "Objective type specified does not exists");
         }

@@ -20,7 +20,19 @@ public class SmartObjective extends PriorityBot {
     @Override
     protected void fillAction(Board board, BotState botState, History history) {
         this.addActionWithPriority(analyzeObjectivesToRedeem(botState, history), DEFAULT_PRIORITY);
-        this.addActionWithPriority(new DrawObjectiveAction(ObjectiveType.PANDA), DEFAULT_PRIORITY);
+
+        if (board.hasObjectiveTypeInDeck(ObjectiveType.PANDA)) {
+            this.addActionWithPriority(
+                    new DrawObjectiveAction(ObjectiveType.PANDA), DEFAULT_PRIORITY);
+        }
+        if (board.hasObjectiveTypeInDeck(ObjectiveType.GARDENER)) {
+            this.addActionWithPriority(
+                    new DrawObjectiveAction(ObjectiveType.GARDENER), DEFAULT_PRIORITY);
+        }
+        if (board.hasObjectiveTypeInDeck(ObjectiveType.SHAPE)) {
+            this.addActionWithPriority(
+                    new DrawObjectiveAction(ObjectiveType.SHAPE), DEFAULT_PRIORITY);
+        }
 
         botState.getAchievedObjectives().stream()
                 .filter(v -> v.getClass() != PandaObjective.class)
@@ -45,7 +57,7 @@ public class SmartObjective extends PriorityBot {
             return new RedeemObjectiveAction(pandaObjectives.get(0));
         }
 
-        // If when we redeem an objective and it does not make us win we don't redeem
+        // If when we redeem an objective, and it does not make us win we don't redeem
         if (botState.getRedeemedObjectives().size() + 1
                 < GameEngine.DEFAULT_NUMBER_OF_OBJECTIVES_TO_WIN.get(history.keySet().size())) {
             return null;

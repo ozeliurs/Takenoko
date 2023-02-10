@@ -31,9 +31,9 @@ public class ColletBot extends PriorityBot {
         if (board.hasObjectiveTypeInDeck(ObjectiveType.PANDA)) {
             addActionWithPriority(new DrawObjectiveAction(ObjectiveType.PANDA), 200);
         } else if (board.hasObjectiveTypeInDeck(ObjectiveType.GARDENER)) {
-            addActionWithPriority(new DrawObjectiveAction(ObjectiveType.GARDENER), 200);
+            addActionWithPriority(new DrawObjectiveAction(ObjectiveType.GARDENER), 40);
         } else {
-            addActionWithPriority(new DrawObjectiveAction(ObjectiveType.SHAPE), 200);
+            addActionWithPriority(new DrawObjectiveAction(ObjectiveType.SHAPE), 10);
         }
 
         addWithOffset((new SmartPanda()).compute(board, botState, history), 50);

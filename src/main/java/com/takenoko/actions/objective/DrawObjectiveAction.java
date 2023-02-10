@@ -4,7 +4,6 @@ import com.takenoko.actions.ActionResult;
 import com.takenoko.actions.DefaultAction;
 import com.takenoko.actions.annotations.ActionAnnotation;
 import com.takenoko.actions.annotations.ActionType;
-import com.takenoko.actions.weather.ChooseAndApplyWeatherAction;
 import com.takenoko.engine.Board;
 import com.takenoko.engine.BotManager;
 import com.takenoko.engine.BotState;
@@ -29,12 +28,6 @@ public class DrawObjectiveAction implements DefaultAction {
 
     @Override
     public ActionResult execute(Board board, BotManager botManager) {
-
-        if (!board.hasObjectiveTypeInDeck(objectiveType)) {
-            botManager.displayMessage("No more " + objectiveType + " in the deck");
-            return new ActionResult(List.of(ChooseAndApplyWeatherAction.class), 0);
-        }
-
         board.drawObjective(objectiveType);
         botManager.addObjective(board.peekObjectiveDeck());
         botManager.displayMessage(
