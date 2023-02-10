@@ -4,7 +4,7 @@
 
 1. [Progress Report](#progress-report)
     1. [Game Functionalities](#game-functionalities)
-    2. [Logs Implemented](#logs-implemented) <- TODO
+    2. [Logs Implemented](#logs-implemented)
     3. [Statistics Implemented](#statistics-implemented)
     4. [Bots implemented](#bots-implemented)
         1. [Bot specified in the specs](#bot-specified-in-the-specs)
@@ -21,8 +21,6 @@
         7. [Layers](#layers) <- TODO
         8. [Shape](#shape) <- TODO
         9. [Statistics](#statistics)
-        10. [Logging](#logging) <- TODO
-        11. [Coordinate](#coordinate) <- TODO
     2. [Quality](#quality) <- TODO
         1. [Good quality](#good-quality) <- TODO
         2. [Not so good quality](#not-so-good-quality) <- TODO
@@ -45,16 +43,6 @@
 
 ## Progress Report
 
-### Consignes - TO DELETE
-
-un résumé des fonctionnalités réalisées sur tout le jeu (couverture des règles du jeu indépendamment de ce qui était
-demandé cette semaine), et éventuellement la liste de ce qui n'a pas été fait.
-• un résumé de ce qui a été fait pour les logs (en quelques lignes max, quels choix ont été faits pour les réaliser)
-• un résumé de ce qui a été fait pour les statistiques en CSV (en quelques lignes max, quels choix ont été faits pour
-les réaliser)
-• un résumé de ce qui a été fait pour le bot spécifique demandé, et éventuellement une comparaison avec votre meilleur
-bot et une analyse de pourquoi celui qui gagne est le meilleur
-
 ### Game functionalities
 
 It would be quite long to enumerate all the rules implemented in the game.  
@@ -69,6 +57,16 @@ We went quite deep in the game and wanted it to be the most like in the real wor
   Fertilizer and grow two bamboos on the tile directly if it is irrigated.
 
 ### Logs Implemented
+
+For the logs, we use `log4j2` and we use the following levels :
+- `info` : for general information about what each bot is doing
+- `debug` : for very detailed information about what each bot is doing and what each has in their inventory
+- `error` : for things that should not happen in the game
+
+We also custom levels for the logs :
+- `FULLSTATS` : for all the statistics of the game
+- `GAMESTATS` : for the statistics of the game at the end of the game
+- `SCOREBOARD` : for the scoreboard with a summary of the number of wins and losses for each bot
 
 ### Statistics Implemented
 
