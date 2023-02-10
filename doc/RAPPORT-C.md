@@ -13,13 +13,13 @@
 2. [Architecture and Quality](#architecture-and-quality)
     1. [Architecture](#architecture)
         1. [GameEngine](#game-engine)
-        2. [Action](#action) <- TODO
+        2. [Action](#action) <- TODO (schema)
         3. [Objective](#objective)
-        4. [Bot](#bot) <- TODO
+        4. [Bot](#bot) <- TODO (schema done)
         5. [BotManager](#bot-manager)
         6. [Board](#board)
-        7. [Layers](#layers) <- TODO
-        8. [Shape](#shape) <- TODO
+        7. [Layers](#layers)
+        8. [Patterns](#patterns)
         9. [Statistics](#statistics)
     2. [Quality](#quality) <- TODO
         1. [Good quality](#good-quality) <- TODO
@@ -59,11 +59,13 @@ We went quite deep in the game and wanted it to be the most like in the real wor
 ### Logs Implemented
 
 For the logs, we use `log4j2` and we use the following levels :
+
 - `info` : for general information about what each bot is doing
 - `debug` : for very detailed information about what each bot is doing and what each has in their inventory
 - `error` : for things that should not happen in the game
 
 We also custom levels for the logs :
+
 - `FULLSTATS` : for all the statistics of the game
 - `GAMESTATS` : for the statistics of the game at the end of the game
 - `SCOREBOARD` : for the scoreboard with a summary of the number of wins and losses for each bot
@@ -308,7 +310,36 @@ Having a facade is also useful because the method called is independent of the m
 
 #### Layers
 
-#### Shape
+Our board is built using layers which are the following :
+
+- Tile layer
+- Bamboo layer
+- Irrigation layer
+
+Those layers are all `HashMap` that map a `PositionVector` to a `Tile` or a `BambooStack` or a boolean for the
+irrigation channels telling whether it is irrigated.
+
+Because all the HashMaps are part of the same board, we can access elements of each layer by using the position of it.
+
+This separation of layers is useful because it allows us to have a more modular board. It is also easier to respect the
+SRP (Single Responsibility Principle) this way. We can separate methods that belongs only to a certain layer.
+
+#### Patterns
+
+First of all we have the `Shape` class. It is used to define a shape of tiles using an HashMap of all the elements that
+constitute the shape. Because the shape is defined by a HashMap, we can easily check if a tile is part of the shape or
+not.  
+The most important methods are the following ones : 
+- `rotate60()` : that allows us to rotate the shape on the board around it center.
+- `translate()` : that allows us to move the shape around the board.
+
+We then have the `Pattern` class which extends from `Shape`. It is used to define the pattern that will be present on the objective cards. 
+A must pattern must contain the origin of the board. We then translate and rotate the shape to find it on the board.
+
+The most important methods are the following ones :
+- `match(Board)` :  return a list of all the shapes that match the pattern on the board.
+- `getSubsetMatchPattern(Board)` : return a list of all the shapes that could match the pattern if complete but are indeed just part of it.
+- `getShapesToCompletePatternObjective(Board)` : return a list of all the shapes that need to be filled in order to complete the pattern.
 
 #### Statistics
 
@@ -324,10 +355,6 @@ bots' strategy.
 
 As for the board related statistics, their main objective is to offer a general idea of how the game played out in the
 end and paint a picture of the boards final state.
-
-#### Logging
-
-#### Coordinate
 
 ### Quality
 
