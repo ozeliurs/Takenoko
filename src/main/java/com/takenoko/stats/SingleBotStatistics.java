@@ -53,6 +53,13 @@ public class SingleBotStatistics {
                 singleBotStatistics.totalNbOfAction);
     }
 
+    public SingleBotStatistics(int wins, int losses, int finalScore) {
+        this();
+        numericStats.replace(WINS, wins);
+        numericStats.replace(LOSSES, losses);
+        numericStats.replace(FINAL_SCORE, finalScore);
+    }
+
     public SingleBotStatistics() {
         this(
                 new HashMap<>(),
@@ -327,5 +334,24 @@ public class SingleBotStatistics {
 
     public Map<String, Integer> getActions() {
         return actions;
+    }
+
+    public void addStatistics(SingleBotStatistics value) {
+        for (Map.Entry<String, Integer> entry : value.getNumericStats().entrySet()) {
+            numericStats.put(entry.getKey(), numericStats.get(entry.getKey()) + entry.getValue());
+        }
+        totalNbOfAction += value.getTotalNbOfAction();
+    }
+
+    public int getWins() {
+        return numericStats.get(WINS);
+    }
+
+    public int getLosses() {
+        return numericStats.get(LOSSES);
+    }
+
+    public int getFinalScore() {
+        return numericStats.get(FINAL_SCORE);
     }
 }
