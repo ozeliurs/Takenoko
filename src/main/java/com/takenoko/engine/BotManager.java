@@ -135,6 +135,7 @@ public class BotManager {
             botState.updateAvailableActions(action, actionResult);
         }
         history.addTurnHistory(this, turnHistory);
+        history.updateHistoryStatistics(this);
         board.getWeather().ifPresent(value -> value.revert(board, this));
     }
 

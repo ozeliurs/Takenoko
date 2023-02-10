@@ -8,6 +8,7 @@ import com.takenoko.objective.EmperorObjective;
 import com.takenoko.objective.Objective;
 import com.takenoko.stats.BoardStatistics;
 import com.takenoko.stats.BotStatistics;
+import com.takenoko.stats.HistoryStatistics;
 import com.takenoko.ui.ConsoleUserInterface;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -313,6 +314,8 @@ class GameEngineTest {
         void endGame_shouldIncrementsVictoriesAndLossesAndUpdateScores() {
             BotStatistics botStatistics = mock(BotStatistics.class);
             Scoreboard scoreboard = spy(Scoreboard.class);
+            History history = mock(History.class);
+            when(history.getHistoryStatistics()).thenReturn(mock(HistoryStatistics.class));
             gameEngine =
                     new GameEngine(
                             3,
@@ -322,7 +325,7 @@ class GameEngineTest {
                             new ArrayList<>(List.of(spy(BotManager.class), spy(BotManager.class))),
                             scoreboard,
                             botStatistics,
-                            mock(History.class));
+                            history);
             gameEngine.newGame();
             gameEngine.startGame();
             gameEngine.endGame();
@@ -338,7 +341,8 @@ class GameEngineTest {
             ConsoleUserInterface consoleUserInterface = mock(ConsoleUserInterface.class);
 
             Scoreboard scoreboard = spy(Scoreboard.class);
-
+            History history = mock(History.class);
+            when(history.getHistoryStatistics()).thenReturn(mock(HistoryStatistics.class));
             gameEngine =
                     new GameEngine(
                             1,
@@ -348,7 +352,7 @@ class GameEngineTest {
                             new ArrayList<>(List.of(spy(BotManager.class), spy(BotManager.class))),
                             scoreboard,
                             new BotStatistics(),
-                            mock(History.class));
+                            history);
 
             gameEngine.startGame();
             gameEngine.endGame();
@@ -399,7 +403,7 @@ class GameEngineTest {
                             new History());
             gameEngine.runGame(2);
             verify(consoleUserInterface, times(1)).displayEnd("All 2 games have been run :");
-            verify(consoleUserInterface, times(4)).displayFullStats(any());
+            verify(consoleUserInterface, times(6)).displayFullStats(any());
             verify(consoleUserInterface, times(1)).displayScoreBoard(any());
             verify(consoleUserInterface, times(1)).displayStats(any());
         }
@@ -414,6 +418,8 @@ class GameEngineTest {
             BotManager botm1 = mock(BotManager.class);
             BotManager botm2 = mock(BotManager.class);
             Scoreboard scoreboard = mock(Scoreboard.class);
+            History history = mock(History.class);
+            when(history.getHistoryStatistics()).thenReturn(mock(HistoryStatistics.class));
             Board board = mock(Board.class);
             when(board.getBoardStatistics()).thenReturn(mock(BoardStatistics.class));
             GameEngine ge =
@@ -425,7 +431,7 @@ class GameEngineTest {
                             List.of(botm1, botm2),
                             scoreboard,
                             mock(BotStatistics.class),
-                            mock(History.class));
+                            history);
             ge.endGame();
             assertThat(ge.getWinner()).isEqualTo(Pair.of(List.of(botm1, botm2), EndGameState.TIE));
             verify(scoreboard, times(1)).incrementNumberOfVictory(botm1);
@@ -441,6 +447,8 @@ class GameEngineTest {
             BotStatistics botStatistics = mock(BotStatistics.class);
             when(botm1.getObjectiveScore()).thenReturn(1);
             when(botm2.getObjectiveScore()).thenReturn(2);
+            History history = mock(History.class);
+            when(history.getHistoryStatistics()).thenReturn(mock(HistoryStatistics.class));
             Board board = mock(Board.class);
             when(board.getBoardStatistics()).thenReturn(mock(BoardStatistics.class));
             GameEngine ge =
@@ -452,7 +460,7 @@ class GameEngineTest {
                             List.of(botm1, botm2),
                             scoreboard,
                             botStatistics,
-                            mock(History.class));
+                            history);
             ge.endGame();
             assertThat(ge.getWinner())
                     .isEqualTo(Pair.of(List.of(botm2), EndGameState.WIN_WITH_OBJECTIVE_POINTS));
@@ -468,6 +476,8 @@ class GameEngineTest {
             when(botm2.getPandaObjectiveScore()).thenReturn(2);
             Scoreboard scoreboard = mock(Scoreboard.class);
             ConsoleUserInterface consoleUserInterface = mock(ConsoleUserInterface.class);
+            History history = mock(History.class);
+            when(history.getHistoryStatistics()).thenReturn(mock(HistoryStatistics.class));
             Board board = mock(Board.class);
             when(board.getBoardStatistics()).thenReturn(mock(BoardStatistics.class));
             GameEngine ge =
@@ -479,7 +489,7 @@ class GameEngineTest {
                             List.of(botm1, botm2),
                             scoreboard,
                             mock(BotStatistics.class),
-                            mock(History.class));
+                            history);
             ge.endGame();
             assertThat(ge.getWinner())
                     .isEqualTo(
